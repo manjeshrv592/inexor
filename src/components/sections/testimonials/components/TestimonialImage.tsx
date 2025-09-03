@@ -1,18 +1,16 @@
 import React from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
-import { Testimonial } from "@/data/testimonials";
+import { Testimonial } from "@/lib/sanity";
 
 interface TestimonialImageProps {
   testimonial: Testimonial;
   currentIndex: number;
-  isAnimating: boolean;
 }
 
 const TestimonialImage: React.FC<TestimonialImageProps> = ({
   testimonial,
   currentIndex,
-  isAnimating,
 }) => {
   return (
     <div className="xxl:max-w-[400px] relative mx-auto w-full max-w-[360px] overflow-hidden">

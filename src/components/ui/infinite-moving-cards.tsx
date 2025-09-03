@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 
 export const InfiniteMovingCards = ({
@@ -25,7 +25,7 @@ export const InfiniteMovingCards = ({
 
   const [start, setStart] = useState(false);
 
-  const getDirection = () => {
+  const getDirection = useCallback(() => {
     if (containerRef.current) {
       if (direction === "left") {
         containerRef.current.style.setProperty(
@@ -39,9 +39,9 @@ export const InfiniteMovingCards = ({
         );
       }
     }
-  };
+  }, [direction]);
 
-  const getSpeed = () => {
+  const getSpeed = useCallback(() => {
     if (containerRef.current) {
       if (speed === "fast") {
         containerRef.current.style.setProperty("--animation-duration", "20s");
@@ -51,7 +51,7 @@ export const InfiniteMovingCards = ({
         containerRef.current.style.setProperty("--animation-duration", "80s");
       }
     }
-  };
+  }, [speed]);
 
   useEffect(() => {
     function addAnimation() {
@@ -72,7 +72,7 @@ export const InfiniteMovingCards = ({
     }
 
     addAnimation();
-  }, [direction, speed]);
+  }, [direction, speed, getDirection, getSpeed]);
   return (
     <div
       ref={containerRef}

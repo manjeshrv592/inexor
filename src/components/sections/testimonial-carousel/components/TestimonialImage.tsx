@@ -8,13 +8,11 @@ import { Testimonial } from "../../../../lib/sanity";
 interface TestimonialImageProps {
   testimonial: Testimonial;
   currentIndex: number;
-  isAnimating: boolean;
 }
 
 const TestimonialImage: React.FC<TestimonialImageProps> = ({
   testimonial,
   currentIndex,
-  isAnimating,
 }) => {
   // Check if image exists and has asset
   const imageUrl = testimonial.image?.asset?.url;

@@ -53,7 +53,6 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
       <TestimonialImage
         testimonial={currentTestimonial}
         currentIndex={currentIndex}
-        isAnimating={isAnimating}
       />
 
       <div className="xxl:px-28 py-6 text-center xl:bg-neutral-900 xl:px-16">

@@ -11,21 +11,8 @@ export const useTestimonialCarousel = (
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Handle case where there are no testimonials
-  if (testimonials.length === 0) {
-    return {
-      currentIndex: 0,
-      currentTestimonial: null,
-      isAnimating: false,
-      nextTestimonial: () => {},
-      prevTestimonial: () => {},
-      goToTestimonial: () => {},
-      totalTestimonials: 0,
-    };
-  }
-
   const nextTestimonial = useCallback(() => {
-    if (isAnimating) return;
+    if (isAnimating || testimonials.length === 0) return;
 
     setIsAnimating(true);
     setCurrentIndex((prevIndex) =>
@@ -34,10 +21,10 @@ export const useTestimonialCarousel = (
 
     // Reset animation state after transition
     setTimeout(() => setIsAnimating(false), 500);
-  }, [isAnimating]);
+  }, [isAnimating, testimonials.length]);
 
   const prevTestimonial = useCallback(() => {
-    if (isAnimating) return;
+    if (isAnimating || testimonials.length === 0) return;
 
     setIsAnimating(true);
     setCurrentIndex((prevIndex) =>
@@ -46,11 +33,12 @@ export const useTestimonialCarousel = (
 
     // Reset animation state after transition
     setTimeout(() => setIsAnimating(false), 500);
-  }, [isAnimating]);
+  }, [isAnimating, testimonials.length]);
 
   const goToTestimonial = useCallback(
     (index: number) => {
-      if (isAnimating || index === currentIndex) return;
+      if (isAnimating || index === currentIndex || testimonials.length === 0)
+        return;
 
       setIsAnimating(true);
       setCurrentIndex(index);
@@ -58,7 +46,7 @@ export const useTestimonialCarousel = (
       // Reset animation state after transition
       setTimeout(() => setIsAnimating(false), 500);
     },
-    [isAnimating, currentIndex],
+    [isAnimating, currentIndex, testimonials.length],
   );
 
   // Auto-play functionality (optional)
@@ -73,6 +61,19 @@ export const useTestimonialCarousel = (
 
     return () => clearInterval(autoPlayInterval);
   }, [nextTestimonial, enableAutoplay, autoplayDuration, testimonials.length]);
+
+  // Handle case where there are no testimonials
+  if (testimonials.length === 0) {
+    return {
+      currentIndex: 0,
+      currentTestimonial: null,
+      isAnimating: false,
+      nextTestimonial: () => {},
+      prevTestimonial: () => {},
+      goToTestimonial: () => {},
+      totalTestimonials: 0,
+    };
+  }
 
   return {
     currentIndex,

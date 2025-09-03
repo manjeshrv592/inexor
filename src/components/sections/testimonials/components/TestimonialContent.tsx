@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
-import { Testimonial } from "@/data/testimonials";
+import { Testimonial } from "@/lib/sanity";
 
 interface TestimonialContentProps {
   testimonial: Testimonial;
