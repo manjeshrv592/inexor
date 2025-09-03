@@ -13,6 +13,9 @@ import {
 } from "@/lib/sanity";
 import React from "react";
 
+// Revalidate every 60 seconds (or set to your preferred interval)
+export const revalidate = 60;
+
 const HomePage = async () => {
   const [heroData, whoWeServeItems, whyData, whyItems, testimonialsData] =
     await Promise.all([
