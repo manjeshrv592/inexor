@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Michroma, Raleway } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/header";
+import LogoutButton from "@/components/auth/LogoutButton";
 
 const michroma = Michroma({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
       >
         <Header />
         {children}
+        <LogoutButton />
       </body>
     </html>
   );
