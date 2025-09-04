@@ -130,7 +130,8 @@ const OurServices = () => {
             {getActiveTitle()}
           </motion.h3>
         </div>
-        <div className="relative h-80">
+        {/* Main elements container start */}
+        <div className="relative h-80 bg-blue-500">
           {/* Left container */}
           {/* This is item 1 */}
           <motion.div
@@ -239,6 +240,7 @@ const OurServices = () => {
             4
           </div> */}
         </div>
+        {/* Main elements container */}
       </Container>
     </Section>
   );

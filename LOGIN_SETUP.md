@@ -13,6 +13,9 @@ WEB_ACCESS_USERNAME=admin
 WEB_ACCESS_PASSWORD=your_password_here
 WEB_ACCESS_SECRET=your_secret_token_here
 
+# Revalidation Settings
+REVALIDATE_SECRET=your_revalidation_secret_here
+
 # Your existing Sanity settings...
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_sanity_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
@@ -25,6 +28,7 @@ SANITY_API_READ_TOKEN=your_sanity_read_token
 - **WEB_ACCESS_USERNAME**: The username for login (e.g., "admin")
 - **WEB_ACCESS_PASSWORD**: The password for login
 - **WEB_ACCESS_SECRET**: A secure random string used for cookie authentication
+- **REVALIDATE_SECRET**: A secure random string used for validating revalidation webhook requests from Sanity
 
 ## How It Works
 
@@ -41,6 +45,7 @@ All routes are protected except:
 - `/favicon*` (Favicon files)
 - `/auth` (Login page)
 - `/api/auth` (Authentication API)
+- `/api/revalidate` (Revalidation webhook)
 - `/studio` (Sanity Studio)
 - Image files (jpg, png, svg, etc.)
 
