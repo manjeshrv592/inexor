@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 interface UseResponsiveAnimationReturn {
-  ref: React.RefObject<HTMLDivElement>;
+  ref: React.RefObject<HTMLDivElement | null>;
   shouldAnimate: boolean;
   isXlScreen: boolean;
 }
