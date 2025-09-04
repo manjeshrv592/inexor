@@ -43,7 +43,7 @@ const HomePage = async () => {
       <AboutOverview aboutData={aboutData} aboutItems={aboutItems} />
       <WhoWeServe items={whoWeServeItems} />
       <Why whyData={whyData} whyItems={whyItems} />
-      <OurServices />
+      {/* <OurServices /> */}
       <Maps />
       <Clients />
 
