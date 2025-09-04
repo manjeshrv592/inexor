@@ -77,7 +77,11 @@ export async function getActiveCountries(): Promise<SanityCountry[]> {
       }
     `;
 
-    return await client.fetch(query);
+    return await client.fetch(
+      query,
+      {},
+      { next: { tags: ["countries", "maps"] } },
+    );
   } catch (error) {
     console.error("Error fetching active countries:", error);
     return [];
@@ -102,7 +106,11 @@ export async function getAllCountries(): Promise<SanityCountry[]> {
       }
     `;
 
-    return await client.fetch(query);
+    return await client.fetch(
+      query,
+      {},
+      { next: { tags: ["countries", "maps"] } },
+    );
   } catch (error) {
     console.error("Error fetching all countries:", error);
     return [];
