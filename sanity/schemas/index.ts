@@ -2,6 +2,8 @@ import whoWeServeItem from "./whoWeServeItem";
 import hero from "./hero";
 import why from "./why";
 import whyItem from "./whyItem";
+import aboutSection from "./aboutSection";
+import aboutItem from "./aboutItem";
 import country from "./country";
 import mapsSection from "./mapsSection";
 import clientLogo from "./clientLogo";
@@ -14,6 +16,8 @@ export const schemaTypes = [
   hero,
   why,
   whyItem,
+  aboutSection,
+  aboutItem,
   country,
   mapsSection,
   clientLogo,

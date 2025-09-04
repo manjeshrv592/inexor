@@ -15,6 +15,16 @@ export const structure = (S: StructureBuilder) =>
                 .title("Hero Section")
                 .child(S.documentTypeList("hero").title("Hero Section")),
               S.listItem()
+                .title("About Section")
+                .child(
+                  S.documentTypeList("aboutSection").title("About Section"),
+                ),
+              S.listItem()
+                .title("About Service Items")
+                .child(
+                  S.documentTypeList("aboutItem").title("About Service Items"),
+                ),
+              S.listItem()
                 .title("Who We Serve Items")
                 .child(
                   S.documentTypeList("whoWeServeItem").title(

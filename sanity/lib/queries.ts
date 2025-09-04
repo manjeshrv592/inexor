@@ -86,3 +86,34 @@ export const TESTIMONIALS_SECTION_QUERY = groq`*[_type == "testimonialsSection" 
     order
   }
 }`;
+
+export const ABOUT_SECTION_QUERY = groq`*[_type == "aboutSection" && isActive == true][0] {
+  _id,
+  title,
+  subtitle,
+  description,
+  leftImage {
+    asset->{
+      url,
+      metadata {
+        dimensions
+      }
+    }
+  },
+  rightImage {
+    asset->{
+      url,
+      metadata {
+        dimensions
+      }
+    }
+  },
+  isActive
+}`;
+
+export const ABOUT_ITEMS_QUERY = groq`*[_type == "aboutItem"] | order(order asc) {
+  _id,
+  content,
+  slug,
+  order
+}`;

@@ -1,3 +1,4 @@
+import AboutOverview from "@/components/sections/about-overview/AboutOverview";
 import Clients from "@/components/sections/Clients";
 import Hero from "@/components/sections/Hero";
 import Maps from "@/components/sections/Maps";
@@ -9,23 +10,35 @@ import {
   getHero,
   getWhy,
   getWhyItems,
+  getAboutSection,
+  getAboutItems,
   getTestimonialsSection,
 } from "@/lib/sanity";
 import React from "react";
 
 const HomePage = async () => {
-  const [heroData, whoWeServeItems, whyData, whyItems, testimonialsData] =
-    await Promise.all([
-      getHero(),
-      getWhoWeServeItems(),
-      getWhy(),
-      getWhyItems(),
-      getTestimonialsSection(),
-    ]);
+  const [
+    heroData,
+    aboutData,
+    aboutItems,
+    whoWeServeItems,
+    whyData,
+    whyItems,
+    testimonialsData,
+  ] = await Promise.all([
+    getHero(),
+    getAboutSection(),
+    getAboutItems(),
+    getWhoWeServeItems(),
+    getWhy(),
+    getWhyItems(),
+    getTestimonialsSection(),
+  ]);
 
   return (
     <main>
       <Hero heroData={heroData} />
+      <AboutOverview aboutData={aboutData} aboutItems={aboutItems} />
       <WhoWeServe items={whoWeServeItems} />
       <Why whyData={whyData} whyItems={whyItems} />
       <Maps />

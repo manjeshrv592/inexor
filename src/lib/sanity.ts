@@ -4,6 +4,8 @@ import {
   HERO_QUERY,
   WHY_QUERY,
   WHY_ITEMS_QUERY,
+  ABOUT_SECTION_QUERY,
+  ABOUT_ITEMS_QUERY,
   CLIENTS_QUERY,
   TESTIMONIALS_QUERY,
   TESTIMONIALS_SECTION_QUERY,
@@ -45,6 +47,37 @@ export interface WhyItem {
   order: number;
 }
 
+export interface AboutImage {
+  asset: {
+    url: string;
+    metadata: {
+      dimensions: {
+        width: number;
+        height: number;
+      };
+    };
+  };
+}
+
+export interface AboutSection {
+  _id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  leftImage: AboutImage;
+  rightImage: AboutImage;
+  isActive: boolean;
+}
+
+export interface AboutItem {
+  _id: string;
+  content: string;
+  slug: {
+    current: string;
+  };
+  order: number;
+}
+
 export async function getWhoWeServeItems(): Promise<WhoWeServeItem[]> {
   return client.fetch(WHO_WE_SERVE_QUERY);
 }
@@ -59,6 +92,14 @@ export async function getWhy(): Promise<Why | null> {
 
 export async function getWhyItems(): Promise<WhyItem[]> {
   return client.fetch(WHY_ITEMS_QUERY);
+}
+
+export async function getAboutSection(): Promise<AboutSection | null> {
+  return client.fetch(ABOUT_SECTION_QUERY);
+}
+
+export async function getAboutItems(): Promise<AboutItem[]> {
+  return client.fetch(ABOUT_ITEMS_QUERY);
 }
 
 export interface ClientLogo {
