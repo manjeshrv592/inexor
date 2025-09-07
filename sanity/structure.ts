@@ -6,11 +6,15 @@ export const structure = (S: StructureBuilder) =>
     .items([
       // Homepage folder
       S.listItem()
-        .title("📄 Homepage")
+        .title("Homepage")
         .child(
           S.list()
             .title("Homepage Content")
             .items([
+              S.listItem()
+                .title("🔍 SEO Settings")
+                .child(S.documentTypeList("homeSeo").title("Home Page SEO")),
+              S.divider(),
               S.listItem()
                 .title("Hero Section")
                 .child(S.documentTypeList("hero").title("Hero Section")),
@@ -93,8 +97,95 @@ export const structure = (S: StructureBuilder) =>
             ]),
         ),
 
+      // FAQ Page folder
+      S.listItem()
+        .title("FAQ's")
+        .child(
+          S.list()
+            .title("FAQ Page Content")
+            .items([
+              S.listItem()
+                .title("🔍 SEO Settings")
+                .child(S.documentTypeList("faqPage").title("FAQ Page SEO")),
+              S.divider(),
+              // Additional FAQ content can be added here
+            ]),
+        ),
+
+      // About Us Page folder
+      S.listItem()
+        .title("About Us")
+        .child(
+          S.list()
+            .title("About Us Page Content")
+            .items([
+              S.listItem()
+                .title("🔍 SEO Settings")
+                .child(
+                  S.documentTypeList("aboutPage").title("About Us Page SEO"),
+                ),
+              S.divider(),
+              // Additional About Us content can be added here
+            ]),
+        ),
+
+      // Services Page folder
+      S.listItem()
+        .title("Services")
+        .child(
+          S.list()
+            .title("Services Page Content")
+            .items([
+              S.listItem()
+                .title("🔍 SEO Settings")
+                .child(
+                  S.documentTypeList("servicesPage").title("Services Page SEO"),
+                ),
+              S.divider(),
+              // Additional Services content can be added here
+            ]),
+        ),
+
+      // Resources Page folder
+      S.listItem()
+        .title("Resources")
+        .child(
+          S.list()
+            .title("Resources Page Content")
+            .items([
+              S.listItem()
+                .title("🔍 SEO Settings")
+                .child(
+                  S.documentTypeList("resourcesPage").title(
+                    "Resources Page SEO",
+                  ),
+                ),
+              S.divider(),
+              // Additional Resources content can be added here
+            ]),
+        ),
+
+      // Contact Us Page folder
+      S.listItem()
+        .title("Contact Us")
+        .child(
+          S.list()
+            .title("Contact Us Page Content")
+            .items([
+              S.listItem()
+                .title("🔍 SEO Settings")
+                .child(
+                  S.documentTypeList("contactPage").title(
+                    "Contact Us Page SEO",
+                  ),
+                ),
+              S.divider(),
+              // Additional Contact Us content can be added here
+            ]),
+        ),
+
       // Divider
       S.divider(),
 
-      // Other content (for future pages - can be added here later)
+      // Other content (for future global content)
     ]);

@@ -13,7 +13,17 @@ import testimonialsSection from "./testimonialsSection";
 import servicesSection from "./servicesSection";
 import serviceItem from "./serviceItem";
 
+// SEO and Page schemas
+import seo from "./seo";
+import homeSeo from "./homeSeo";
+import faqPage from "./faqPage";
+import aboutPage from "./aboutPage";
+import servicesPage from "./servicesPage";
+import resourcesPage from "./resourcesPage";
+import contactPage from "./contactPage";
+
 export const schemaTypes = [
+  // Existing schemas
   whoWeServeItem,
   hero,
   why,
@@ -28,4 +38,13 @@ export const schemaTypes = [
   testimonialsSection,
   servicesSection,
   serviceItem,
+
+  // SEO and Page schemas
+  seo,
+  homeSeo,
+  faqPage,
+  aboutPage,
+  servicesPage,
+  resourcesPage,
+  contactPage,
 ];
