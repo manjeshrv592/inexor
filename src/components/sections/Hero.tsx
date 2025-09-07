@@ -5,6 +5,7 @@ import Container from "../layout/Container";
 import { Button } from "../ui/button";
 import ContactUsButton from "../ui/ContactUsButton";
 import { Hero as HeroType } from "../../lib/sanity";
+import Link from "next/link";
 
 interface HeroProps {
   heroData: HeroType | null;
@@ -34,9 +35,11 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
           <p className="xxl:text-base xxl:max-w-2xl max-w-xl text-sm">
             {description}
           </p>
-          <Button className="font-michroma text-xs tracking-[1px]">
-            Schedule a Call
-          </Button>
+          <Link href="/contact">
+            <Button className="font-michroma text-xs tracking-[1px]">
+              Schedule a Call
+            </Button>
+          </Link>
         </div>
       </Container>
     </Section>

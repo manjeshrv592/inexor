@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "./button";
+import Link from "next/link";
 
 interface ContactUsButtonProps {
   className?: string;
@@ -32,13 +33,15 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className }) => {
   }, []);
 
   return (
-    <Button
-      variant={hasScrolledPastHero ? "default" : "outline"}
-      className={className}
-      size={"sm"}
-    >
-      Contact Us
-    </Button>
+    <Link href="/contact">
+      <Button
+        variant={hasScrolledPastHero ? "default" : "outline"}
+        className={className}
+        size={"sm"}
+      >
+        Contact Us
+      </Button>
+    </Link>
   );
 };
 
