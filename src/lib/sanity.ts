@@ -11,6 +11,10 @@ import {
   TESTIMONIALS_SECTION_QUERY,
   SERVICES_SECTION_QUERY,
   SERVICE_ITEMS_QUERY,
+  FAQ_CATEGORIES_QUERY,
+  FAQ_ITEMS_QUERY,
+  FAQ_ITEMS_BY_CATEGORY_QUERY,
+  FAQ_PAGE_QUERY,
 } from "../../sanity/lib/queries";
 
 // Re-export client for use in other modules
@@ -231,4 +235,67 @@ export async function getServicesSection(): Promise<ServicesSection | null> {
 
 export async function getServiceItems(): Promise<ServiceItem[]> {
   return client.fetch(SERVICE_ITEMS_QUERY);
+}
+
+export interface FAQCategory {
+  _id: string;
+  name: string;
+  slug: {
+    current: string;
+  };
+  description?: string;
+  order: number;
+  isActive: boolean;
+}
+
+export interface FAQItem {
+  _id: string;
+  question: string;
+  answer: string;
+  category: {
+    _id: string;
+    name: string;
+    slug: {
+      current: string;
+    };
+  };
+  slug: {
+    current: string;
+  };
+  order: number;
+  isActive: boolean;
+}
+
+export interface FAQPage {
+  _id: string;
+  seo: Record<string, unknown>; // Generic object type instead of any
+  pageTitle: string;
+  pageDescription?: string;
+  isActive: boolean;
+}
+
+export async function getFAQCategories(): Promise<FAQCategory[]> {
+  return client.fetch(
+    FAQ_CATEGORIES_QUERY,
+    {},
+    { next: { tags: ["faq-categories"] } },
+  );
+}
+
+export async function getFAQItems(): Promise<FAQItem[]> {
+  return client.fetch(FAQ_ITEMS_QUERY, {}, { next: { tags: ["faq-items"] } });
+}
+
+export async function getFAQItemsByCategory(
+  categorySlug: string,
+): Promise<FAQItem[]> {
+  return client.fetch(
+    FAQ_ITEMS_BY_CATEGORY_QUERY,
+    { categorySlug },
+    { next: { tags: ["faq-items", `faq-category-${categorySlug}`] } },
+  );
+}
+
+export async function getFAQPage(): Promise<FAQPage | null> {
+  return client.fetch(FAQ_PAGE_QUERY, {}, { next: { tags: ["faq-page"] } });
 }

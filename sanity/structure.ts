@@ -108,7 +108,26 @@ export const structure = (S: StructureBuilder) =>
                 .title("🔍 SEO Settings")
                 .child(S.documentTypeList("faqPage").title("FAQ Page SEO")),
               S.divider(),
-              // Additional FAQ content can be added here
+              S.listItem()
+                .title("FAQ Categories")
+                .child(
+                  S.documentTypeList("faqCategory")
+                    .title("FAQ Categories")
+                    .defaultOrdering([
+                      { field: "isActive", direction: "desc" },
+                      { field: "order", direction: "asc" },
+                    ]),
+                ),
+              S.listItem()
+                .title("FAQ Items")
+                .child(
+                  S.documentTypeList("faqItem")
+                    .title("FAQ Items")
+                    .defaultOrdering([
+                      { field: "isActive", direction: "desc" },
+                      { field: "order", direction: "asc" },
+                    ]),
+                ),
             ]),
         ),
 

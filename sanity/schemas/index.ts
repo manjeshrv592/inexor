@@ -12,6 +12,8 @@ import testimonial from "./testimonial";
 import testimonialsSection from "./testimonialsSection";
 import servicesSection from "./servicesSection";
 import serviceItem from "./serviceItem";
+import faqCategory from "./faqCategory";
+import faqItem from "./faqItem";
 
 // SEO and Page schemas
 import seo from "./seo";
@@ -38,6 +40,8 @@ export const schemaTypes = [
   testimonialsSection,
   servicesSection,
   serviceItem,
+  faqCategory,
+  faqItem,
 
   // SEO and Page schemas
   seo,

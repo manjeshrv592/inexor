@@ -142,3 +142,48 @@ export const SERVICE_ITEMS_QUERY = groq`*[_type == "serviceItem" && isActive == 
   order,
   isActive
 }`;
+
+export const FAQ_CATEGORIES_QUERY = groq`*[_type == "faqCategory" && isActive == true] | order(order asc) {
+  _id,
+  name,
+  slug,
+  description,
+  order,
+  isActive
+}`;
+
+export const FAQ_ITEMS_QUERY = groq`*[_type == "faqItem" && isActive == true] | order(category->order asc, order asc) {
+  _id,
+  question,
+  answer,
+  category->{
+    _id,
+    name,
+    slug
+  },
+  slug,
+  order,
+  isActive
+}`;
+
+export const FAQ_ITEMS_BY_CATEGORY_QUERY = groq`*[_type == "faqItem" && isActive == true && category->slug.current == $categorySlug] | order(order asc) {
+  _id,
+  question,
+  answer,
+  category->{
+    _id,
+    name,
+    slug
+  },
+  slug,
+  order,
+  isActive
+}`;
+
+export const FAQ_PAGE_QUERY = groq`*[_type == "faqPage" && isActive == true][0] {
+  _id,
+  seo,
+  pageTitle,
+  pageDescription,
+  isActive
+}`;

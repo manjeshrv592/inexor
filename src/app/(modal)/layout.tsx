@@ -4,7 +4,6 @@ import React, { useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import PagePanelBg from "@/components/ui/PagePanelBg";
 import PagePanel from "@/components/ui/PagePanel";
-import CloseButton from "@/components/ui/CloseButton";
 
 interface ModalLayoutProps {
   children: React.ReactNode;
@@ -42,7 +41,7 @@ const ModalLayout = ({ children }: ModalLayoutProps) => {
       >
         <div onClick={(e) => e.stopPropagation()} className="relative">
           <PagePanel>
-            <CloseButton onClose={handleClose} />
+            {/* <CloseButton onClose={handleClose} /> */}
             {children}
           </PagePanel>
         </div>
