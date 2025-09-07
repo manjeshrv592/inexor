@@ -12,7 +12,9 @@
     "populate-all-countries": "tsx scripts/populate-all-countries.ts",
     "populate-complete-countries": "tsx scripts/populate-complete-countries.ts",
     "populate-testimonials": "tsx scripts/populate-testimonials.ts",
-    "populate-faq": "tsx scripts/populate-faq.ts"
+    "populate-faq": "tsx scripts/populate-faq.ts",
+    "populate-about": "tsx scripts/populate-about-page.ts",
+    "populate-process-section": "tsx scripts/populate-process-section.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

@@ -27,6 +27,47 @@ export default defineType({
         "Subtitle displayed below the main title (e.g., 'Your Global Trade Compliance Partner')",
     }),
     defineField({
+      name: "processSection",
+      title: "Process Section",
+      type: "object",
+      description: "The section explaining your clear process",
+      fields: [
+        defineField({
+          name: "title",
+          title: "Process Title",
+          type: "string",
+          initialValue: "We follow a clear process to help you out.",
+        }),
+        defineField({
+          name: "description",
+          title: "Process Description",
+          type: "text",
+          rows: 3,
+        }),
+        defineField({
+          name: "buttonText",
+          title: "Button Text",
+          type: "string",
+          initialValue: "Contact Us",
+        }),
+        defineField({
+          name: "steps",
+          title: "Process Steps",
+          type: "array",
+          of: [{ type: "processStep" }],
+          validation: (Rule) => Rule.max(5),
+        }),
+      ],
+    }),
+    defineField({
+      name: "contentSections",
+      title: "Content Sections",
+      type: "array",
+      description:
+        "Main content sections (Who We Are, What We Do, Our Values, etc.)",
+      of: [{ type: "contentSection" }],
+    }),
+    defineField({
       name: "isActive",
       title: "Is Active",
       type: "boolean",

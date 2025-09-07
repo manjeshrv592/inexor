@@ -14,6 +14,9 @@ import servicesSection from "./servicesSection";
 import serviceItem from "./serviceItem";
 import faqCategory from "./faqCategory";
 import faqItem from "./faqItem";
+import processStep from "./processStep";
+import processSection from "./processSection";
+import contentSection from "./contentSection";
 
 // SEO and Page schemas
 import seo from "./seo";
@@ -42,6 +45,9 @@ export const schemaTypes = [
   serviceItem,
   faqCategory,
   faqItem,
+  processStep,
+  processSection,
+  contentSection,
 
   // SEO and Page schemas
   seo,
