@@ -9,6 +9,8 @@ import {
   CLIENTS_QUERY,
   TESTIMONIALS_QUERY,
   TESTIMONIALS_SECTION_QUERY,
+  SERVICES_SECTION_QUERY,
+  SERVICE_ITEMS_QUERY,
 } from "../../sanity/lib/queries";
 
 // Re-export client for use in other modules
@@ -175,4 +177,42 @@ export async function getTestimonialsSection(): Promise<TestimonialsSection | nu
   }
 
   return section;
+}
+
+export interface ServiceImage {
+  asset: {
+    url: string;
+    metadata: {
+      dimensions: {
+        width: number;
+        height: number;
+      };
+    };
+  };
+}
+
+export interface ServiceItem {
+  _id: string;
+  code: string;
+  title: string;
+  heading1: string;
+  heading2: string;
+  description: string;
+  backgroundImage: ServiceImage;
+  order: number;
+  isActive: boolean;
+}
+
+export interface ServicesSection {
+  _id: string;
+  title: string;
+  isActive: boolean;
+}
+
+export async function getServicesSection(): Promise<ServicesSection | null> {
+  return client.fetch(SERVICES_SECTION_QUERY);
+}
+
+export async function getServiceItems(): Promise<ServiceItem[]> {
+  return client.fetch(SERVICE_ITEMS_QUERY);
 }

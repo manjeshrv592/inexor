@@ -117,3 +117,28 @@ export const ABOUT_ITEMS_QUERY = groq`*[_type == "aboutItem"] | order(order asc)
   slug,
   order
 }`;
+
+export const SERVICES_SECTION_QUERY = groq`*[_type == "servicesSection" && isActive == true][0] {
+  _id,
+  title,
+  isActive
+}`;
+
+export const SERVICE_ITEMS_QUERY = groq`*[_type == "serviceItem" && isActive == true] | order(order asc) {
+  _id,
+  code,
+  title,
+  heading1,
+  heading2,
+  description,
+  backgroundImage {
+    asset->{
+      url,
+      metadata {
+        dimensions
+      }
+    }
+  },
+  order,
+  isActive
+}`;

@@ -1,4 +1,3 @@
-import Ior from "@/components/Ior";
 import AboutOverview from "@/components/sections/about-overview/AboutOverview";
 import Clients from "@/components/sections/Clients";
 import Hero from "@/components/sections/Hero";
@@ -15,6 +14,8 @@ import {
   getAboutSection,
   getAboutItems,
   getTestimonialsSection,
+  getServicesSection,
+  getServiceItems,
 } from "@/lib/sanity";
 import React from "react";
 
@@ -26,6 +27,8 @@ const HomePage = async () => {
     whoWeServeItems,
     whyData,
     whyItems,
+    servicesSection,
+    serviceItems,
     testimonialsData,
   ] = await Promise.all([
     getHero(),
@@ -34,6 +37,8 @@ const HomePage = async () => {
     getWhoWeServeItems(),
     getWhy(),
     getWhyItems(),
+    getServicesSection(),
+    getServiceItems(),
     getTestimonialsSection(),
   ]);
 
@@ -43,7 +48,10 @@ const HomePage = async () => {
       <AboutOverview aboutData={aboutData} aboutItems={aboutItems} />
       <WhoWeServe items={whoWeServeItems} />
       <Why whyData={whyData} whyItems={whyItems} />
-      <OurServices />
+      <OurServices
+        servicesSection={servicesSection}
+        serviceItems={serviceItems}
+      />
       <Maps />
       <Clients />
 

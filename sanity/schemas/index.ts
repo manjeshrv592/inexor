@@ -10,6 +10,8 @@ import clientLogo from "./clientLogo";
 import clientsSection from "./clientsSection";
 import testimonial from "./testimonial";
 import testimonialsSection from "./testimonialsSection";
+import servicesSection from "./servicesSection";
+import serviceItem from "./serviceItem";
 
 export const schemaTypes = [
   whoWeServeItem,
@@ -24,4 +26,6 @@ export const schemaTypes = [
   clientsSection,
   testimonial,
   testimonialsSection,
+  servicesSection,
+  serviceItem,
 ];
