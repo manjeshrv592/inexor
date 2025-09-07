@@ -1,48 +1,158 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Container from "../layout/Container";
-import Ior from "@/components/Ior";
-import Vat from "@/components/Vat";
-import Ddp from "@/components/Ddp";
-import Eor from "@/components/Eor";
+import ServiceComponent from "@/components/ServiceComponent";
 import { ChevronRight } from "lucide-react";
 import Section from "../layout/Section";
 import SectionTitle from "../ui/SectionTitle";
+import { ServicesSection, ServiceItem } from "@/lib/sanity";
 
-const OurServices = () => {
+interface OurServicesProps {
+  servicesSection: ServicesSection | null;
+  serviceItems: ServiceItem[];
+}
+
+const OurServices: React.FC<OurServicesProps> = ({
+  servicesSection,
+  serviceItems,
+}) => {
   const [activeEl, setActiveEl] = useState(4);
   const [clickedItem, setClickedItem] = useState<number | null>(null);
+  const [isDesktop, setIsDesktop] = useState(true);
+
+  // Hook to detect screen size
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsDesktop(window.innerWidth >= 1200);
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  // Set the default service as active
+  useEffect(() => {
+    if (
+      serviceItems.length > 0 &&
+      activeEl > Math.min(serviceItems.length, 4)
+    ) {
+      setActiveEl(Math.min(serviceItems.length, 4));
+    }
+  }, [serviceItems.length, activeEl]);
+
+  // Return early if no service items
+  if (!serviceItems || serviceItems.length === 0) {
+    return (
+      <Section className="overflow-hidden">
+        <Container>
+          <div className="text-center">
+            <SectionTitle>
+              {servicesSection?.title || "OUR SERVICES"}
+            </SectionTitle>
+          </div>
+          <div className="py-12 text-center">
+            <p className="text-neutral-400">
+              No services available at the moment.
+            </p>
+          </div>
+        </Container>
+      </Section>
+    );
+  }
 
   // Function to get animation properties for each item based on active element
   const getItemAnimation = (itemNumber: number) => {
-    const positions = {
+    // Desktop positions (horizontal layout) - fixed for 4 items
+    const desktopPositions = {
       4: {
-        1: { left: 0, width: 34, iconRotated: false },
-        2: { left: 50, width: 34, iconRotated: false },
-        3: { left: 100, width: 34, iconRotated: false },
-        4: { left: 150, width: 34, iconRotated: false },
+        1: { left: 0, width: "34px", iconRotated: false },
+        2: { left: "50px", width: "34px", iconRotated: false },
+        3: { left: "100px", width: "34px", iconRotated: false },
+        4: { left: "150px", width: "34px", iconRotated: false },
       },
       3: {
-        1: { left: 0, width: 34, iconRotated: false },
-        2: { left: 50, width: 84, iconRotated: false },
-        3: { left: 150, width: 34, iconRotated: false },
-        4: { left: "calc(100% - 134px)", width: 134, iconRotated: true },
+        1: { left: 0, width: "34px", iconRotated: false },
+        2: { left: "50px", width: "84px", iconRotated: false },
+        3: { left: "150px", width: "34px", iconRotated: false },
+        4: { left: "calc(100% - 134px)", width: "134px", iconRotated: true },
       },
       2: {
-        1: { left: 0, width: 134, iconRotated: false },
-        2: { left: 150, width: 34, iconRotated: false },
-        3: { left: "calc(100% - 134px)", width: 84, iconRotated: true },
-        4: { left: "calc(100% - 34px)", width: 34, iconRotated: true },
+        1: { left: 0, width: "134px", iconRotated: false },
+        2: { left: "150px", width: "34px", iconRotated: false },
+        3: { left: "calc(100% - 134px)", width: "84px", iconRotated: true },
+        4: { left: "calc(100% - 34px)", width: "34px", iconRotated: true },
       },
       1: {
-        1: { left: 150, width: 34, iconRotated: false },
-        2: { left: "calc(100% - 134px)", width: 34, iconRotated: true },
-        3: { left: "calc(100% - 84px)", width: 34, iconRotated: true },
-        4: { left: "calc(100% - 34px)", width: 34, iconRotated: true },
+        1: { left: "150px", width: "34px", iconRotated: false },
+        2: { left: "calc(100% - 134px)", width: "34px", iconRotated: true },
+        3: { left: "calc(100% - 84px)", width: "34px", iconRotated: true },
+        4: { left: "calc(100% - 34px)", width: "34px", iconRotated: true },
       },
     };
 
+    // Mobile positions (vertical layout) - fixed for 4 items
+    const mobilePositions = {
+      4: {
+        1: { top: 0, height: "34px", width: "100%", iconRotated: false },
+        2: { top: "50px", height: "34px", width: "100%", iconRotated: false },
+        3: { top: "100px", height: "34px", width: "100%", iconRotated: false },
+        4: { top: "150px", height: "34px", width: "100%", iconRotated: false },
+      },
+      3: {
+        1: { top: 0, height: "34px", width: "100%", iconRotated: false },
+        2: { top: "50px", height: "84px", width: "100%", iconRotated: false },
+        3: { top: "150px", height: "34px", width: "100%", iconRotated: false },
+        4: {
+          top: "calc(100% - 134px)",
+          height: "134px",
+          width: "100%",
+          iconRotated: true,
+        },
+      },
+      2: {
+        1: { top: 0, height: "134px", width: "100%", iconRotated: false },
+        2: { top: "150px", height: "34px", width: "100%", iconRotated: false },
+        3: {
+          top: "calc(100% - 134px)",
+          height: "84px",
+          width: "100%",
+          iconRotated: true,
+        },
+        4: {
+          top: "calc(100% - 34px)",
+          height: "34px",
+          width: "100%",
+          iconRotated: true,
+        },
+      },
+      1: {
+        1: { top: "150px", height: "34px", width: "100%", iconRotated: false },
+        2: {
+          top: "calc(100% - 134px)",
+          height: "34px",
+          width: "100%",
+          iconRotated: true,
+        },
+        3: {
+          top: "calc(100% - 84px)",
+          height: "34px",
+          width: "100%",
+          iconRotated: true,
+        },
+        4: {
+          top: "calc(100% - 34px)",
+          height: "34px",
+          width: "100%",
+          iconRotated: true,
+        },
+      },
+    };
+
+    // Use appropriate positions based on screen size
+    const positions = isDesktop ? desktopPositions : mobilePositions;
     const baseAnimation =
       positions[activeEl as keyof typeof positions][
         itemNumber as keyof (typeof positions)[4]
@@ -79,41 +189,38 @@ const OurServices = () => {
 
   // Function to render the appropriate component based on activeEl
   const renderActiveComponent = () => {
-    switch (activeEl) {
-      case 1:
-        return <Vat key="vat" />;
-      case 2:
-        return <Ddp key="ddp" />;
-      case 3:
-        return <Eor key="eor" />;
-      case 4:
-        return <Ior key="ior" />;
-      default:
-        return <Ior key="ior" />;
-    }
+    // Only use the first 4 services for display
+    const displayServices = serviceItems.slice(0, 4);
+    const activeService = displayServices[activeEl - 1];
+    if (!activeService) return null;
+
+    return (
+      <ServiceComponent
+        key={activeService._id}
+        code={activeService.code}
+        heading1={activeService.heading1}
+        heading2={activeService.heading2}
+        description={activeService.description}
+        backgroundImage={activeService.backgroundImage}
+      />
+    );
   };
 
   // Function to get the appropriate title based on activeEl
   const getActiveTitle = () => {
-    switch (activeEl) {
-      case 1:
-        return "GLOBAL VAT REFUND ASSISTANCE (VAT)";
-      case 2:
-        return "DELIVERED DUTY PAID (DDP)";
-      case 3:
-        return "EXPORTER OF RECORD (EOR)";
-      case 4:
-        return "IMPORTER OF RECORD (IOR)";
-      default:
-        return "IMPORTER OF RECORD (IOR)";
-    }
+    // Only use the first 4 services for display
+    const displayServices = serviceItems.slice(0, 4);
+    const activeService = displayServices[activeEl - 1];
+    return activeService?.title || "";
   };
 
   return (
     <Section className="overflow-hidden">
       <Container>
         <div className="text-center">
-          <SectionTitle>OUR SERVICES</SectionTitle>
+          <SectionTitle>
+            {servicesSection?.title || "OUR SERVICES"}
+          </SectionTitle>
         </div>
 
         <div className="text-center">
@@ -130,92 +237,68 @@ const OurServices = () => {
             {getActiveTitle()}
           </motion.h3>
         </div>
-        {/* Main elements container start */}
-        <div className="relative h-80 bg-blue-500">
-          {/* Left container */}
-          {/* This is item 1 */}
-          <motion.div
-            className="absolute top-0 cursor-pointer bg-[#2e2e2e] xl:h-full"
-            animate={getItemAnimation(1)}
-            transition={transition}
-            onAnimationComplete={() => handleAnimationComplete(1)}
-            onClick={() => handleItemClick(1)}
-          >
-            <div className="font-michroma absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs xl:-rotate-90">
-              VAT
-            </div>
-            <span
-              className={`absolute bottom-2 left-1/2 flex -translate-x-1/2 transition-transform duration-500 ${
-                getItemAnimation(1).iconRotated ? "rotate-180" : "rotate-0"
-              }`}
-            >
-              <ChevronRight size={16} color="#f65009" />
-              <ChevronRight className="-ml-[10px]" size={16} color="#f65009" />
-            </span>
-          </motion.div>
-          {/* This is item 2 */}
-          <motion.div
-            className="absolute top-0 cursor-pointer bg-[#2e2e2e] xl:h-full"
-            animate={getItemAnimation(2)}
-            transition={transition}
-            onAnimationComplete={() => handleAnimationComplete(2)}
-            onClick={() => handleItemClick(2)}
-          >
-            <div className="font-michroma absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs xl:-rotate-90">
-              DDP
-            </div>
-            <span
-              className={`absolute bottom-2 left-1/2 flex -translate-x-1/2 transition-transform duration-500 ${
-                getItemAnimation(2).iconRotated ? "rotate-180" : "rotate-0"
-              }`}
-            >
-              <ChevronRight size={16} color="#f65009" />
-              <ChevronRight className="-ml-[10px]" size={16} color="#f65009" />
-            </span>
-          </motion.div>
-          {/* This is item 3 */}
-          <motion.div
-            className="absolute top-0 cursor-pointer bg-[#2e2e2e] xl:h-full"
-            animate={getItemAnimation(3)}
-            transition={transition}
-            onAnimationComplete={() => handleAnimationComplete(3)}
-            onClick={() => handleItemClick(3)}
-          >
-            <div className="font-michroma absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs xl:-rotate-90">
-              EOR
-            </div>
-            <span
-              className={`absolute bottom-2 left-1/2 flex -translate-x-1/2 transition-transform duration-500 ${
-                getItemAnimation(3).iconRotated ? "rotate-180" : "rotate-0"
-              }`}
-            >
-              <ChevronRight size={16} color="#f65009" />
-              <ChevronRight className="-ml-[10px]" size={16} color="#f65009" />
-            </span>
-          </motion.div>
-          {/* This is item 4 */}
-          <motion.div
-            className="absolute top-0 cursor-pointer bg-[#2e2e2e] xl:h-full"
-            animate={getItemAnimation(4)}
-            transition={transition}
-            onAnimationComplete={() => handleAnimationComplete(4)}
-            onClick={() => handleItemClick(4)}
-          >
-            <div className="font-michroma absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs xl:-rotate-90">
-              IOR
-            </div>
-            <span
-              className={`absolute bottom-2 left-1/2 flex -translate-x-1/2 transition-transform duration-500 ${
-                getItemAnimation(4).iconRotated ? "rotate-180" : "rotate-0"
-              }`}
-            >
-              <ChevronRight size={16} color="#f65009" />
-              <ChevronRight className="-ml-[10px]" size={16} color="#f65009" />
-            </span>
-          </motion.div>
+        {/* Main animation container start */}
+        <div className="relative h-[80vh] xl:h-80">
+          {/* 
+            Render service items dynamically - limited to first 4 items 
+            Note: The fixed positioning is designed for exactly 4 services.
+            To support more services, you would need to implement dynamic positioning
+            or create additional position configurations.
+          */}
+          {serviceItems.slice(0, 4).map((service, index) => {
+            const itemNumber = index + 1;
+            const animation = getItemAnimation(itemNumber);
+
+            return (
+              <motion.div
+                key={service._id}
+                className={`absolute cursor-pointer bg-[#2e2e2e] ${
+                  isDesktop ? "top-0 h-full" : "left-0 w-full"
+                }`}
+                animate={animation}
+                transition={transition}
+                onAnimationComplete={() => handleAnimationComplete(itemNumber)}
+                onClick={() => handleItemClick(itemNumber)}
+              >
+                <div
+                  className={`font-michroma absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs ${
+                    isDesktop ? "-rotate-90" : "rotate-0"
+                  }`}
+                >
+                  {service.code}
+                </div>
+                <span
+                  className={`absolute ${
+                    isDesktop
+                      ? "bottom-2 left-1/2 -translate-x-1/2"
+                      : "top-1/2 right-2 -translate-y-1/2"
+                  } flex transition-transform duration-500 ${
+                    animation.iconRotated
+                      ? isDesktop
+                        ? "rotate-180"
+                        : "rotate-90"
+                      : isDesktop
+                        ? "rotate-0"
+                        : "-rotate-90"
+                  }`}
+                >
+                  <ChevronRight size={16} color="#f65009" />
+                  <ChevronRight
+                    className="-ml-[10px]"
+                    size={16}
+                    color="#f65009"
+                  />
+                </span>
+              </motion.div>
+            );
+          })}
           {/* Center container */}
           <motion.div
-            className="absolute top-0 left-1/2 z-20 h-full w-[calc(100%-300px)] -translate-x-1/2"
+            className={`absolute z-20 ${
+              isDesktop
+                ? "top-0 left-1/2 h-full w-[calc(100%-300px)] -translate-x-1/2"
+                : "top-1/2 left-0 h-[calc(100%-300px)] w-full -translate-y-1/2"
+            }`}
             key={activeEl}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -226,21 +309,8 @@ const OurServices = () => {
           >
             {renderActiveComponent()}
           </motion.div>
-          {/* Right container */}
-          {/* <div className="absolute right-[150px] top-0 w-[34px] bg-neutral-900 h-full cursor-pointer">
-            1
-          </div>
-          <div className="absolute right-[100px] top-0 w-[34px] bg-neutral-900 h-full cursor-pointer">
-            2
-          </div>
-          <div className="absolute right-[50px] top-0 w-[34px] bg-neutral-900 h-full cursor-pointer">
-            3
-          </div>
-          <div className="absolute right-0 top-0 w-[34px] bg-neutral-900 h-full cursor-pointer">
-            4
-          </div> */}
         </div>
-        {/* Main elements container */}
+        {/* Main animation container end */}
       </Container>
     </Section>
   );

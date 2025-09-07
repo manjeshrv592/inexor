@@ -42,6 +42,23 @@ export const structure = (S: StructureBuilder) =>
                   S.documentTypeList("whyItem").title("Why Choose Us Items"),
                 ),
               S.listItem()
+                .title("Services Section")
+                .child(
+                  S.documentTypeList("servicesSection").title(
+                    "Services Section",
+                  ),
+                ),
+              S.listItem()
+                .title("Service Items")
+                .child(
+                  S.documentTypeList("serviceItem")
+                    .title("Service Items")
+                    .defaultOrdering([
+                      { field: "isActive", direction: "desc" },
+                      { field: "order", direction: "asc" },
+                    ]),
+                ),
+              S.listItem()
                 .title("Countries Service Management")
                 .child(
                   S.documentTypeList("country")
