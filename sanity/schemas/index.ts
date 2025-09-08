@@ -26,6 +26,7 @@ import aboutPage from "./aboutPage";
 import servicesPage from "./servicesPage";
 import resourcesPage from "./resourcesPage";
 import contactPage from "./contactPage";
+import blogPost from "./blogPost";
 
 export const schemaTypes = [
   // Existing schemas
@@ -57,4 +58,5 @@ export const schemaTypes = [
   servicesPage,
   resourcesPage,
   contactPage,
+  blogPost,
 ];

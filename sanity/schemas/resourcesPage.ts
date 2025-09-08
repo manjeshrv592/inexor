@@ -25,6 +25,29 @@ export default defineType({
       description: "Description text displayed below the page title",
     }),
     defineField({
+      name: "blogSectionTitle",
+      title: "Blog Section Title",
+      type: "string",
+      description: "Title for the blog section (e.g., 'LATEST BLOGS')",
+      initialValue: "LATEST BLOGS",
+    }),
+    defineField({
+      name: "blogSectionSubtitle",
+      title: "Blog Section Subtitle",
+      type: "string",
+      description: "Subtitle for the blog section",
+    }),
+    defineField({
+      name: "defaultBlogImage",
+      title: "Default Blog Image",
+      type: "image",
+      description:
+        "Default image to use for blog posts without featured images",
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
       name: "isActive",
       title: "Is Active",
       type: "boolean",

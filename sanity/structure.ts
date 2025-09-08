@@ -200,7 +200,16 @@ export const structure = (S: StructureBuilder) =>
                   ),
                 ),
               S.divider(),
-              // Additional Resources content can be added here
+              S.listItem()
+                .title("Blog Posts")
+                .child(
+                  S.documentTypeList("blogPost")
+                    .title("Blog Posts")
+                    .defaultOrdering([
+                      { field: "isActive", direction: "desc" },
+                      { field: "publishedAt", direction: "desc" },
+                    ]),
+                ),
             ]),
         ),
 

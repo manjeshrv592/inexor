@@ -1,11 +1,9 @@
-import { Button } from "@/components/ui/button";
 import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
 import ProcessSteps from "@/components/ui/ProcessSteps";
 import ContentSection from "@/components/ui/ContentSection";
 import Image from "next/image";
 import React from "react";
 import { getAboutPageData } from "@/lib/sanity/aboutPage";
-import { AboutPageData } from "@/types/aboutPage";
 
 const AboutPage = async () => {
   const { aboutPage, processSection, processSteps, contentSections } =

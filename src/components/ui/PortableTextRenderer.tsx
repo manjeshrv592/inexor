@@ -1,8 +1,9 @@
 import React from "react";
 import { PortableText, PortableTextComponents } from "next-sanity";
+import { PortableTextBlock } from "@portabletext/types";
 
 interface PortableTextRendererProps {
-  content: any[];
+  content: PortableTextBlock[];
   className?: string;
 }
 

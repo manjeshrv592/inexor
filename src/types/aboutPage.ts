@@ -1,3 +1,5 @@
+import { PortableTextBlock } from "@portabletext/types";
+
 export interface ProcessStep {
   stepNumber: number;
   title: string;
@@ -7,7 +9,7 @@ export interface ProcessStep {
 export interface ContentSection {
   sectionTitle?: string;
   titleStyle: "orange" | "white";
-  content: any[]; // Portable text content
+  content: PortableTextBlock[]; // Portable text content
 }
 
 export interface AboutPageData {

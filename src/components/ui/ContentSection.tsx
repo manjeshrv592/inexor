@@ -1,10 +1,11 @@
 import React from "react";
+import { PortableTextBlock } from "@portabletext/types";
 import PortableTextRenderer from "./PortableTextRenderer";
 
 interface ContentSectionProps {
   sectionTitle?: string;
   titleStyle?: "orange" | "white";
-  content: any[];
+  content: PortableTextBlock[];
   className?: string;
 }
 
