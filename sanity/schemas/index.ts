@@ -12,11 +12,14 @@ import testimonial from "./testimonial";
 import testimonialsSection from "./testimonialsSection";
 import servicesSection from "./servicesSection";
 import serviceItem from "./serviceItem";
+import service from "./service";
 import faqCategory from "./faqCategory";
 import faqItem from "./faqItem";
 import processStep from "./processStep";
 import processSection from "./processSection";
 import contentSection from "./contentSection";
+import serviceUseCase from "./services/serviceUseCase";
+import serviceUseCasesSection from "./services/serviceUseCasesSection";
 
 // SEO and Page schemas
 import seo from "./seo";
@@ -44,11 +47,14 @@ export const schemaTypes = [
   testimonialsSection,
   servicesSection,
   serviceItem,
+  service,
   faqCategory,
   faqItem,
   processStep,
   processSection,
   contentSection,
+  serviceUseCase,
+  serviceUseCasesSection,
 
   // SEO and Page schemas
   seo,

@@ -35,7 +35,7 @@ const ProcessSteps: React.FC<ProcessStepsProps> = ({
           {buttonText}
         </Button>
       </div>
-      <div className="after:border-brand-orange-500 relative grid gap-4 after:absolute after:top-0 after:left-[21px] after:h-[200px] after:w-0.5 after:border-l-2 after:border-dashed after:content-['']">
+      <div className="after:border-brand-orange-500 relative grid gap-4 after:absolute after:top-0 after:left-[21px] after:h-[calc(100%-25px)] after:w-0.5 after:border-l-2 after:border-dashed after:content-['']">
         {steps.map((step) => (
           <div key={step.stepNumber} className="text-sm">
             <div className="flex items-center gap-8">

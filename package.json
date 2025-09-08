@@ -14,7 +14,9 @@
     "populate-testimonials": "tsx scripts/populate-testimonials.ts",
     "populate-faq": "tsx scripts/populate-faq.ts",
     "populate-about": "tsx scripts/populate-about-page.ts",
-    "populate-process-section": "tsx scripts/populate-process-section.ts"
+    "populate-process-section": "tsx scripts/populate-process-section.ts",
+    "populate-services-page": "tsx scripts/populate-services-page.ts",
+    "delete-services-content": "tsx scripts/delete-services-content.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

@@ -181,7 +181,16 @@ export const structure = (S: StructureBuilder) =>
                   S.documentTypeList("servicesPage").title("Services Page SEO"),
                 ),
               S.divider(),
-              // Additional Services content can be added here
+              S.listItem()
+                .title("Services")
+                .child(
+                  S.documentTypeList("service")
+                    .title("Services")
+                    .defaultOrdering([
+                      { field: "isActive", direction: "desc" },
+                      { field: "order", direction: "asc" },
+                    ]),
+                ),
             ]),
         ),
 
