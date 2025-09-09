@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
 import { loginSchema } from "@/lib/validations/auth";
-import { serialize } from "cookie";
-
-const COOKIE_NAME = "web_access";
-const MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
 export async function POST(req: Request) {
   if (process.env.WEB_ACCESS_ENABLED !== "true") {
@@ -34,18 +30,10 @@ export async function POST(req: Request) {
     );
   }
 
-  // Valid credentials – set secure cookie
-  const cookie = serialize(COOKIE_NAME, process.env.WEB_ACCESS_SECRET!, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: MAX_AGE,
-    // Add domain in production if needed
-    // domain: process.env.NODE_ENV === 'production' ? '.yourdomain.com' : undefined'
+  // Valid credentials – return success without setting session cookie
+  // The actual session will be set after OTP verification
+  return NextResponse.json({ 
+    ok: true,
+    message: 'Please verify OTP to continue'
   });
-
-  const res = NextResponse.json({ ok: true });
-  res.headers.append("Set-Cookie", cookie);
-  return res;
 }
