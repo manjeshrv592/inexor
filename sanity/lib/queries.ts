@@ -187,3 +187,80 @@ export const FAQ_PAGE_QUERY = groq`*[_type == "faqPage" && isActive == true][0] 
   pageDescription,
   isActive
 }`;
+
+export const KEY_VALUE_PILLARS_SECTION_QUERY = groq`*[_type == "keyValuePillarsSection" && isActive == true][0] {
+  _id,
+  description,
+  isActive
+}`;
+
+export const KEY_VALUE_PILLAR_ITEMS_QUERY = groq`*[_type == "keyValuePillarItem" && isActive == true] | order(order asc) {
+  _id,
+  title,
+  description,
+  icon {
+    asset->{
+      url,
+      metadata {
+        dimensions
+      }
+    }
+  },
+  slug,
+  order,
+  isActive
+}`;
+
+export const FOOTER_QUERY = groq`*[_type == "footer" && isActive == true][0] {
+  _id,
+  heading,
+  copyrightText,
+  logo {
+    asset->{
+      url,
+      metadata {
+        dimensions
+      }
+    }
+  },
+  ctaButtonText,
+  ctaButtonLink,
+  privacyPolicyLink,
+  termsConditionsLink,
+  socialLinks[] {
+    platform,
+    url,
+    isActive
+  },
+  isActive
+}`;
+
+export const PRIVACY_POLICY_PAGE_QUERY = groq`*[_type == "privacyPolicyPage" && isActive == true][0] {
+  _id,
+  seo,
+  pageTitle,
+  pageSubtitle,
+  isActive
+}`;
+
+export const PRIVACY_POLICY_CONTENT_QUERY = groq`*[_type == "privacyPolicyContent" && isActive == true][0] {
+  _id,
+  content,
+  lastUpdated,
+  isActive
+}`;
+
+export const TERMS_CONDITIONS_PAGE_QUERY = groq`*[_type == "termsConditionsPage" && isActive == true][0] {
+  _id,
+  seo,
+  pageTitle,
+  pageSubtitle,
+  isActive
+}`;
+
+export const TERMS_CONDITIONS_CONTENT_QUERY = groq`*[_type == "termsConditionsContent" && isActive == true][0] {
+  _id,
+  content,
+  lastUpdated,
+  isActive
+}`;

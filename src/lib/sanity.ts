@@ -15,7 +15,15 @@ import {
   FAQ_ITEMS_QUERY,
   FAQ_ITEMS_BY_CATEGORY_QUERY,
   FAQ_PAGE_QUERY,
+  KEY_VALUE_PILLARS_SECTION_QUERY,
+  KEY_VALUE_PILLAR_ITEMS_QUERY,
+  FOOTER_QUERY,
+  PRIVACY_POLICY_PAGE_QUERY,
+  PRIVACY_POLICY_CONTENT_QUERY,
+  TERMS_CONDITIONS_PAGE_QUERY,
+  TERMS_CONDITIONS_CONTENT_QUERY,
 } from "../../sanity/lib/queries";
+import { PortableTextBlock } from "@portabletext/types";
 
 // Re-export client for use in other modules
 export { client };
@@ -298,4 +306,155 @@ export async function getFAQItemsByCategory(
 
 export async function getFAQPage(): Promise<FAQPage | null> {
   return client.fetch(FAQ_PAGE_QUERY, {}, { next: { tags: ["faq-page"] } });
+}
+
+export interface KeyValuePillarsSection {
+  _id: string;
+  description: string;
+  isActive: boolean;
+}
+
+export interface KeyValuePillarItem {
+  _id: string;
+  title: string;
+  description: string;
+  icon: {
+    asset: {
+      url: string;
+      metadata: {
+        dimensions: {
+          width: number;
+          height: number;
+        };
+      };
+    };
+  };
+  slug: {
+    current: string;
+  };
+  order: number;
+  isActive: boolean;
+}
+
+export async function getKeyValuePillarsSection(): Promise<KeyValuePillarsSection | null> {
+  return client.fetch(
+    KEY_VALUE_PILLARS_SECTION_QUERY,
+    {},
+    { next: { tags: ["key-value-pillars-section"] } },
+  );
+}
+
+export async function getKeyValuePillarItems(): Promise<KeyValuePillarItem[]> {
+  return client.fetch(
+    KEY_VALUE_PILLAR_ITEMS_QUERY,
+    {},
+    { next: { tags: ["key-value-pillar-items"] } },
+  );
+}
+
+export interface SocialLink {
+  platform: string;
+  url: string;
+  isActive: boolean;
+}
+
+export interface Footer {
+  _id: string;
+  heading: string;
+  copyrightText: string;
+  logo: {
+    asset: {
+      url: string;
+      metadata: {
+        dimensions: {
+          width: number;
+          height: number;
+        };
+      };
+    };
+  };
+  ctaButtonText: string;
+  ctaButtonLink?: string;
+  privacyPolicyLink: string;
+  termsConditionsLink: string;
+  socialLinks: SocialLink[];
+  isActive: boolean;
+}
+
+export async function getFooter(): Promise<Footer | null> {
+  return client.fetch(FOOTER_QUERY, {}, { next: { tags: ["footer"] } });
+}
+
+// Privacy Policy and Terms & Conditions interfaces and functions
+export interface SEO {
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+  ogImage?: {
+    asset: {
+      url: string;
+    };
+  };
+}
+
+export interface PrivacyPolicyPage {
+  _id: string;
+  seo: SEO;
+  pageTitle: string;
+  pageSubtitle?: string;
+  isActive: boolean;
+}
+
+export interface PrivacyPolicyContent {
+  _id: string;
+  content: PortableTextBlock[];
+  lastUpdated: string;
+  isActive: boolean;
+}
+
+export interface TermsConditionsPage {
+  _id: string;
+  seo: SEO;
+  pageTitle: string;
+  pageSubtitle?: string;
+  isActive: boolean;
+}
+
+export interface TermsConditionsContent {
+  _id: string;
+  content: PortableTextBlock[];
+  lastUpdated: string;
+  isActive: boolean;
+}
+
+export async function getPrivacyPolicyPage(): Promise<PrivacyPolicyPage | null> {
+  return client.fetch(
+    PRIVACY_POLICY_PAGE_QUERY,
+    {},
+    { next: { tags: ["privacy-policy-page"] } }
+  );
+}
+
+export async function getPrivacyPolicyContent(): Promise<PrivacyPolicyContent | null> {
+  return client.fetch(
+    PRIVACY_POLICY_CONTENT_QUERY,
+    {},
+    { next: { tags: ["privacy-policy-content"] } }
+  );
+}
+
+export async function getTermsConditionsPage(): Promise<TermsConditionsPage | null> {
+  return client.fetch(
+    TERMS_CONDITIONS_PAGE_QUERY,
+    {},
+    { next: { tags: ["terms-conditions-page"] } }
+  );
+}
+
+export async function getTermsConditionsContent(): Promise<TermsConditionsContent | null> {
+  return client.fetch(
+    TERMS_CONDITIONS_CONTENT_QUERY,
+    {},
+    { next: { tags: ["terms-conditions-content"] } }
+  );
 }

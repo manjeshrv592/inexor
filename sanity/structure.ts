@@ -46,6 +46,20 @@ export const structure = (S: StructureBuilder) =>
                   S.documentTypeList("whyItem").title("Why Choose Us Items"),
                 ),
               S.listItem()
+                .title("Key Value Pillars Section")
+                .child(
+                  S.documentTypeList("keyValuePillarsSection").title(
+                    "Key Value Pillars Section",
+                  ),
+                ),
+              S.listItem()
+                .title("Key Value Pillar Items")
+                .child(
+                  S.documentTypeList("keyValuePillarItem").title(
+                    "Key Value Pillar Items",
+                  ),
+                ),
+              S.listItem()
                 .title("Services Section")
                 .child(
                   S.documentTypeList("servicesSection").title(
@@ -243,6 +257,66 @@ export const structure = (S: StructureBuilder) =>
 
       // Divider
       S.divider(),
+
+      // Privacy Policy folder
+      S.listItem()
+        .title("Privacy Policy")
+        .child(
+          S.list()
+            .title("Privacy Policy")
+            .items([
+              S.listItem()
+                .title("🔍 SEO Settings")
+                .child(
+                  S.document()
+                    .schemaType("privacyPolicyPage")
+                    .documentId("privacy-policy-page")
+                ),
+              S.listItem()
+                .title("Privacy Policy Content")
+                .child(
+                  S.document()
+                    .schemaType("privacyPolicyContent")
+                    .documentId("privacy-policy-content")
+                ),
+            ])
+        ),
+      S.listItem()
+        .title("Terms & Conditions")
+        .child(
+          S.list()
+            .title("Terms & Conditions")
+            .items([
+              S.listItem()
+                .title("🔍 SEO Settings")
+                .child(
+                  S.document()
+                    .schemaType("termsConditionsPage")
+                    .documentId("terms-conditions-page")
+                ),
+              S.listItem()
+                .title("Terms & Conditions Content")
+                .child(
+                  S.document()
+                    .schemaType("termsConditionsContent")
+                    .documentId("terms-conditions-content")
+                ),
+            ])
+        ),
+      S.divider(),
+
+      // Footer folder
+      S.listItem()
+        .title("Footer")
+        .child(
+          S.list()
+            .title("Footer Content")
+            .items([
+              S.listItem()
+                .title("Footer Settings")
+                .child(S.documentTypeList("footer").title("Footer Settings")),
+            ]),
+        ),
 
       // Other content (for future global content)
     ]);

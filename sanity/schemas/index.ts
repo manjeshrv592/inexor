@@ -18,6 +18,10 @@ import faqItem from "./faqItem";
 import processStep from "./processStep";
 import processSection from "./processSection";
 import contentSection from "./contentSection";
+import keyValuePillarsSection from "./keyValuePillarsSection";
+import keyValuePillarItem from "./keyValuePillarItem";
+import footer from "./footer";
+import socialLink from "./socialLink";
 import serviceUseCase from "./services/serviceUseCase";
 import serviceUseCasesSection from "./services/serviceUseCasesSection";
 
@@ -30,6 +34,8 @@ import servicesPage from "./servicesPage";
 import resourcesPage from "./resourcesPage";
 import contactPage from "./contactPage";
 import blogPost from "./blogPost";
+import { privacySchemas } from "./privacy";
+import { termsSchemas } from "./terms";
 
 export const schemaTypes = [
   // Existing schemas
@@ -53,6 +59,10 @@ export const schemaTypes = [
   processStep,
   processSection,
   contentSection,
+  keyValuePillarsSection,
+  keyValuePillarItem,
+  footer,
+  socialLink,
   serviceUseCase,
   serviceUseCasesSection,
 
@@ -65,4 +75,6 @@ export const schemaTypes = [
   resourcesPage,
   contactPage,
   blogPost,
+  ...privacySchemas,
+  ...termsSchemas,
 ];

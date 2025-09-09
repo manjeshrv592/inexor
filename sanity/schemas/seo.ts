@@ -90,7 +90,7 @@ export default defineType({
     prepare(selection) {
       const { title, subtitle } = selection;
       return {
-        title: title || "SEO Settings",
+        title: title || "🔍 SEO Settings",
         subtitle: subtitle || "Configure SEO options",
       };
     },
