@@ -41,6 +41,8 @@ export async function POST(req: Request) {
     sameSite: "lax",
     path: "/",
     maxAge: MAX_AGE,
+    // Add domain in production if needed
+    // domain: process.env.NODE_ENV === 'production' ? '.yourdomain.com' : undefined'
   });
 
   const res = NextResponse.json({ ok: true });

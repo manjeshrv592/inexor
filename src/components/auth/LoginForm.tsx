@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginInput } from "@/lib/validations/auth";
@@ -18,7 +18,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export default function LoginForm() {
-  const router = useRouter();
   const search = useSearchParams();
   const redirect = search.get("redirect") || "/";
   const [error, setError] = useState<string | null>(null);
@@ -30,16 +29,23 @@ export default function LoginForm() {
 
   async function onSubmit(values: LoginInput) {
     setError(null);
-    const res = await fetch("/api/auth", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
-    if (res.ok) {
-      router.replace(redirect);
-    } else {
-      const data = await res.json();
-      setError(data?.message || "Invalid credentials");
+    try {
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+        credentials: "same-origin"
+      });
+      
+      if (res.ok) {
+        // Force a full page reload to ensure the cookie is properly set
+        window.location.href = redirect;
+      } else {
+        const data = await res.json();
+        setError(data?.message || "Invalid credentials");
+      }
+    } catch {
+      setError("An error occurred during login");
     }
   }
 
