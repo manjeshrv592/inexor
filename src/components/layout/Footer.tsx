@@ -14,7 +14,7 @@ import {
 } from "react-icons/fa6";
 import { FaTiktok } from "react-icons/fa6";
 import { motion } from "framer-motion";
-import { Footer as FooterType, SocialLink } from "@/lib/sanity";
+import { Footer as FooterType } from "@/lib/sanity";
 
 interface FooterProps {
   footerData: FooterType | null;

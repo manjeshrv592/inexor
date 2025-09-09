@@ -12,6 +12,14 @@ export const HERO_QUERY = groq`*[_type == "hero" && isActive == true][0] {
   _id,
   title,
   description,
+  backgroundImage {
+    asset->{
+      url,
+      metadata {
+        dimensions
+      }
+    }
+  },
   isActive
 }`;
 
@@ -262,5 +270,20 @@ export const TERMS_CONDITIONS_CONTENT_QUERY = groq`*[_type == "termsConditionsCo
   _id,
   content,
   lastUpdated,
+  isActive
+}`;
+
+export const HOME_SEO_QUERY = groq`*[_type == "homeSeo" && isActive == true][0] {
+  _id,
+  seo {
+    metaTitle,
+    metaDescription,
+    keywords,
+    ogImage {
+      asset->{
+        url
+      }
+    }
+  },
   isActive
 }`;

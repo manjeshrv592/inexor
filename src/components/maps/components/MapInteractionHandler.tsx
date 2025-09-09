@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
 import { useMapEvents } from "react-leaflet";
 import { LeafletMouseEvent } from "leaflet";
 import { ServiceLocation, CountriesGeoJSON, TooltipPosition } from "../types";
@@ -19,6 +19,27 @@ export const MapInteractionHandler = ({
   const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const currentCountryRef = useRef<string>("");
   const lastMousePositionRef = useRef<TooltipPosition | null>(null);
+
+  // Close tooltip on page scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (tooltipRef.current) {
+        tooltipRef.current.remove();
+        tooltipRef.current = null;
+      }
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+        debounceTimeoutRef.current = null;
+      }
+      currentCountryRef.current = "";
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   // Simple point-in-polygon algorithm
   const isPointInPolygon = useCallback(

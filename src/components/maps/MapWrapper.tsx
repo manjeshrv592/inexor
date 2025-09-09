@@ -8,6 +8,7 @@ import {
   ServiceMarkers,
   CountryOverlay,
   MapInteractionHandler,
+  ScrollWheelHandler,
   useCountriesData,
   TILE_LAYER_CONFIG,
 } from "./index";
@@ -50,7 +51,7 @@ const MapWrapper: React.FC<MapWrapperProps> = ({
         [90, 180],
       ]} // Restrict to world bounds
       maxBoundsViscosity={1.0} // Makes bounds completely rigid
-      scrollWheelZoom={true}
+      scrollWheelZoom={false}
       className="h-full w-full"
       style={{ minHeight: "400px" }}
       key={`map-${Date.now()}`} // Force re-render on hot reload
@@ -64,7 +65,7 @@ const MapWrapper: React.FC<MapWrapperProps> = ({
 
       {countriesData && <CountryOverlay countriesData={countriesData} />}
 
-      <ServiceMarkers serviceLocations={serviceLocations} />
+      <ServiceMarkers serviceLocations={serviceLocations} showAnimation={false} />
 
       <HomeButton
         initialCenter={mapCenter}
@@ -75,6 +76,8 @@ const MapWrapper: React.FC<MapWrapperProps> = ({
         serviceLocations={serviceLocations}
         countriesData={countriesData}
       />
+
+      <ScrollWheelHandler />
     </MapContainer>
   );
 };

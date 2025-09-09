@@ -13,7 +13,7 @@ const AboutPage = async () => {
       <div className="relative h-44 xl:h-full">
         <div className="absolute size-full bg-black">
           <Image
-            src="/img/left-image.jpg"
+            src="/img/about-us.jpg"
             alt="faq bg"
             fill
             className="object-cover opacity-40 grayscale"

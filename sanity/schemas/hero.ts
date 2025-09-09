@@ -18,6 +18,15 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "backgroundImage",
+      title: "Background Image",
+      type: "image",
+      options: {
+        hotspot: true,
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "isActive",
       title: "Is Active",
       type: "boolean",

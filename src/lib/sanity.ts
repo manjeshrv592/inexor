@@ -22,6 +22,7 @@ import {
   PRIVACY_POLICY_CONTENT_QUERY,
   TERMS_CONDITIONS_PAGE_QUERY,
   TERMS_CONDITIONS_CONTENT_QUERY,
+  HOME_SEO_QUERY,
 } from "../../sanity/lib/queries";
 import { PortableTextBlock } from "@portabletext/types";
 
@@ -42,6 +43,17 @@ export interface Hero {
   _id: string;
   title: string;
   description: string;
+  backgroundImage: {
+    asset: {
+      url: string;
+      metadata: {
+        dimensions: {
+          width: number;
+          height: number;
+        };
+      };
+    };
+  };
   isActive: boolean;
 }
 
@@ -456,5 +468,20 @@ export async function getTermsConditionsContent(): Promise<TermsConditionsConten
     TERMS_CONDITIONS_CONTENT_QUERY,
     {},
     { next: { tags: ["terms-conditions-content"] } }
+  );
+}
+
+// Home SEO interfaces and functions
+export interface HomeSeo {
+  _id: string;
+  seo: SEO;
+  isActive: boolean;
+}
+
+export async function getHomeSeo(): Promise<HomeSeo | null> {
+  return client.fetch(
+    HOME_SEO_QUERY,
+    {},
+    { next: { tags: ["home-seo"] } }
   );
 }

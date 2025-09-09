@@ -5,9 +5,10 @@ import styles from "../styles/Maps.module.css";
 
 interface ServiceMarkersProps {
   serviceLocations: ServiceLocation[];
+  showAnimation?: boolean;
 }
 
-export const ServiceMarkers = ({ serviceLocations }: ServiceMarkersProps) => {
+export const ServiceMarkers = ({ serviceLocations, showAnimation = true }: ServiceMarkersProps) => {
   return (
     <>
       {serviceLocations.map((location) => (
@@ -16,7 +17,7 @@ export const ServiceMarkers = ({ serviceLocations }: ServiceMarkersProps) => {
           position={location.coordinates}
           icon={
             new DivIcon({
-              html: `<div class="${styles.serviceDotRipple}"></div>`,
+              html: `<div class="${showAnimation ? styles.serviceDotRipple : styles.serviceDotStatic}"></div>`,
               className: styles.serviceMarkerContainer,
               iconSize: [20, 20],
               iconAnchor: [10, 10],

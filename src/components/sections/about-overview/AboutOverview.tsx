@@ -19,9 +19,9 @@ const AboutOverview: React.FC<AboutOverviewProps> = ({
 
   // Fallback image URLs
   const leftImageSrc =
-    aboutData?.leftImage?.asset?.url || "/img/left-image.jpg";
+    aboutData?.leftImage?.asset?.url || "/img/about-left.jpg";
   const rightImageSrc =
-    aboutData?.rightImage?.asset?.url || "/img/right-image.jpg";
+    aboutData?.rightImage?.asset?.url || "/img/about-right.jpg";
 
   return (
     <section className="py-12 text-neutral-200 xl:h-[calc(100vh-64px)] xl:max-h-[600px]">

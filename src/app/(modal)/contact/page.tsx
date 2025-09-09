@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
 import {
   contactFormSchema,
   type ContactFormData,
@@ -36,13 +37,28 @@ const ContactPage = () => {
     type: "success" | "error";
     text: string;
   } | null>(null);
+  const submitButtonRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to submit button when message is shown
+  useEffect(() => {
+    if (submitMessage && submitButtonRef.current) {
+      // Add a small delay to ensure the message is rendered
+      setTimeout(() => {
+        submitButtonRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+          inline: "nearest",
+        });
+      }, 100);
+    }
+  }, [submitMessage]);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
       name: "",
       email: "",
-      countryCode: "",
+      countryCode: "US",
       phone: "",
       company: "",
       service: "",
@@ -131,235 +147,244 @@ const ContactPage = () => {
               <p className="text-center text-sm">
                 Our experts simplify global trade compliance and deliver
                 tailored solutions. Driven by integrity, expertise, and client
-                focus—let's make global shipping seamless together.
+                focus—let&apos;s make global shipping seamless together.
               </p>
             </div>
           </div>
         </div>
 
         {/* Right Panel - Contact Form */}
-        <div className="h-full overflow-y-scroll bg-neutral-800 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)]">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {/* Name Field */}
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-white">
-                      Name{" "}
-                      <span className="-ml-2 text-3xl text-red-500">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Enter your full name" />
-                    </FormControl>
-                    <FormMessage className="text-red-400" />
-                  </FormItem>
-                )}
-              />
+        <div className="xxl:h-[calc(100vh-128px)] h-[calc(100vh-118.14px)] bg-neutral-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:h-[calc(100vh-112px)]">
+          <AutoScrollContainer className="h-full" contentClassName="p-4">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
+                {/* Name Field */}
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">
+                        Name{" "}
+                        <span className="-ml-2 text-3xl text-red-500">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Enter your full name" />
+                      </FormControl>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
 
-              {/* Email Field */}
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-white">
-                      Email{" "}
-                      <span className="-ml-2 text-3xl text-red-500">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="email"
-                        placeholder="Enter your email address"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-400" />
-                  </FormItem>
-                )}
-              />
+                {/* Email Field */}
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">
+                        Email{" "}
+                        <span className="-ml-2 text-3xl text-red-500">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="email"
+                          placeholder="Enter your email address"
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
 
-              {/* Phone Number Fields */}
-              <div className="space-y-2">
-                <FormLabel className="text-white">Phone Number</FormLabel>
-                <div className="flex">
-                  <FormField
-                    control={form.control}
-                    name="countryCode"
-                    render={({ field }) => (
-                      <FormItem className="w-[140px]">
-                        <FormControl>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <SelectTrigger className="bg-transparent text-white">
-                              <SelectValue placeholder="Country" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                <SelectLabel>Country Code</SelectLabel>
-                                {countryCodes.map((country, index) => (
-                                  <SelectItem
-                                    key={`${country.code}-${country.country}-${index}`}
-                                    value={country.country}
-                                  >
-                                    <div className="flex items-center gap-2">
-                                      <span>{country.flag}</span>
-                                      <span>{country.code}</span>
-                                      <span className="text-muted-foreground text-sm">
-                                        {country.country}
-                                      </span>
-                                    </div>
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
+                {/* Phone Number Fields */}
+                <div className="space-y-2">
+                  <FormLabel className="text-white">Phone Number</FormLabel>
+                  <div className="flex gap-2">
+                    <FormField
+                      control={form.control}
+                      name="countryCode"
+                      render={({ field }) => (
+                        <FormItem className="w-[80px]">
+                          <FormControl>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={field.value}
+                            >
+                              <SelectTrigger className="border-neutral-900 bg-transparent text-white">
+                                <SelectValue placeholder="Country" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectLabel>Country Code</SelectLabel>
+                                  {countryCodes.map((country, index) => (
+                                    <SelectItem
+                                      key={`${country.code}-${country.country}-${index}`}
+                                      value={country.country}
+                                    >
+                                      <div className="flex items-center gap-2">
+                                        <span>{country.flag}</span>
+                                        <span>{country.code}</span>
+                                        <span className="text-muted-foreground text-sm">
+                                          {country.country}
+                                        </span>
+                                      </div>
+                                    </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
 
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormControl>
-                          <Input
-                            {...field}
-                            type="tel"
-                            placeholder="Enter phone number"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormControl>
+                            <Input
+                              {...field}
+                              type="tel"
+                              placeholder="Enter phone number"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  {(form.formState.errors.countryCode ||
+                    form.formState.errors.phone) && (
+                    <div className="space-y-1">
+                      {form.formState.errors.countryCode && (
+                        <p className="text-sm text-red-400">
+                          {form.formState.errors.countryCode.message}
+                        </p>
+                      )}
+                      {form.formState.errors.phone && (
+                        <p className="text-sm text-red-400">
+                          {form.formState.errors.phone.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
-                {(form.formState.errors.countryCode ||
-                  form.formState.errors.phone) && (
-                  <div className="space-y-1">
-                    {form.formState.errors.countryCode && (
-                      <p className="text-sm text-red-400">
-                        {form.formState.errors.countryCode.message}
-                      </p>
-                    )}
-                    {form.formState.errors.phone && (
-                      <p className="text-sm text-red-400">
-                        {form.formState.errors.phone.message}
-                      </p>
-                    )}
+
+                {/* Company Field */}
+                <FormField
+                  control={form.control}
+                  name="company"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">Company Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Enter your company name"
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Service Selection */}
+                <FormField
+                  control={form.control}
+                  name="service"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">
+                        Select Services
+                      </FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger className="border-neutral-900 bg-transparent text-white">
+                            <SelectValue placeholder="Choose a service" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Services</SelectLabel>
+                              {serviceOptions.map((service) => (
+                                <SelectItem
+                                  key={service.value}
+                                  value={service.value}
+                                >
+                                  {service.label}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Message Field */}
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">Message</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          placeholder="Tell us more about your requirements..."
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Submit Button */}
+                <div className="text-center" ref={submitButtonRef}>
+                  <Button
+                    className="font-michroma text-[10px] tracking-[1px]"
+                    type="submit"
+                    size="sm"
+                    disabled={isSubmitting}
+                    variant="outline"
+                    onClick={() => {
+                      console.log("🔘 Submit button clicked!");
+                      console.log("🔘 Form state:", {
+                        isValid: form.formState.isValid,
+                        isSubmitting: form.formState.isSubmitting,
+                        errors: Object.keys(form.formState.errors),
+                      });
+                    }}
+                  >
+                    {isSubmitting ? "Sending..." : "Send Message"}
+                  </Button>
+                </div>
+
+                {/* Submit Message */}
+                {submitMessage && (
+                  <div
+                    className={`rounded-lg p-4 text-center text-xs ${
+                      submitMessage.type === "success"
+                        ? "border border-green-700 bg-green-900/30 text-green-400"
+                        : "border border-red-700 bg-red-900/30 text-red-400"
+                    }`}
+                  >
+                    {submitMessage.text}
                   </div>
                 )}
-              </div>
-
-              {/* Company Field */}
-              <FormField
-                control={form.control}
-                name="company"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-white">Company Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Enter your company name" />
-                    </FormControl>
-                    <FormMessage className="text-red-400" />
-                  </FormItem>
-                )}
-              />
-
-              {/* Service Selection */}
-              <FormField
-                control={form.control}
-                name="service"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-white">
-                      Select Services
-                    </FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <SelectTrigger className="border-neutral-900 bg-transparent text-white">
-                          <SelectValue placeholder="Choose a service" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectLabel>Services</SelectLabel>
-                            {serviceOptions.map((service) => (
-                              <SelectItem
-                                key={service.value}
-                                value={service.value}
-                              >
-                                {service.label}
-                              </SelectItem>
-                            ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage className="text-red-400" />
-                  </FormItem>
-                )}
-              />
-
-              {/* Message Field */}
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-white">Message</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Tell us more about your requirements..."
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-400" />
-                  </FormItem>
-                )}
-              />
-
-              {/* Submit Message */}
-              {submitMessage && (
-                <div
-                  className={`rounded-lg p-4 text-center text-xs ${
-                    submitMessage.type === "success"
-                      ? "border border-green-700 bg-green-900/30 text-green-400"
-                      : "border border-red-700 bg-red-900/30 text-red-400"
-                  }`}
-                >
-                  {submitMessage.text}
-                </div>
-              )}
-
-              {/* Submit Button */}
-              <div className="text-center">
-                <Button
-                  type="submit"
-                  size="sm"
-                  disabled={isSubmitting}
-                  variant="outline"
-                  onClick={(e) => {
-                    console.log("🔘 Submit button clicked!");
-                    console.log("🔘 Form state:", {
-                      isValid: form.formState.isValid,
-                      isSubmitting: form.formState.isSubmitting,
-                      errors: Object.keys(form.formState.errors),
-                    });
-                  }}
-                >
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                </Button>
-              </div>
-            </form>
-          </Form>
+              </form>
+            </Form>
+          </AutoScrollContainer>
         </div>
       </div>
     </div>

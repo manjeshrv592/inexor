@@ -112,6 +112,16 @@
   margin: 7px;
 }
 
+/* Service location static dot (no animation) */
+.serviceDotStatic {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  background-color: #ff6600;
+  border-radius: 50%;
+  margin: 7px;
+}
+
 .serviceDotRipple::before {
   content: "";
   position: absolute;

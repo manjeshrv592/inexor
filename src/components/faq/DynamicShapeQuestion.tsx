@@ -98,7 +98,7 @@ const DynamicShapeQuestion = ({
       </span>
 
       {/* Question Text */}
-      <div ref={shapeRef} className="relative z-10 flex items-center px-4 py-4">
+      <div ref={shapeRef} className="relative z-10 flex items-center px-2 py-4">
         <p className="text-sm font-medium text-white">{children}</p>
       </div>
     </motion.div>

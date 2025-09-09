@@ -115,7 +115,7 @@ const FAQPage = () => {
       <div className="relative">
         <div className="absolute inset-0 hidden size-full xl:block">
           <Image
-            src="/img/left-image.jpg"
+            src="/img/faq.jpg"
             alt="Nature image"
             fill
             className="object-cover grayscale"
@@ -192,7 +192,7 @@ const FAQPage = () => {
       {/* Questions Panel */}
       <div className="xxl:h-[calc(100vh-128px)] h-full bg-[#2b2b2b] xl:h-[calc(100vh-112px)]">
         <AutoScrollContainer className="py-4 xl:py-8">
-          <div className="flex flex-col gap-6 px-4">
+          <div className="flex flex-col gap-6 px-2">
             {faqItems.map((item) => (
               <FAQItem
                 key={item._id}

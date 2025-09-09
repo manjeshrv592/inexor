@@ -213,7 +213,10 @@ const ResourcesPage = () => {
       </div>
 
       {/* Right Panel - Blog Content */}
-      <div ref={rightPanelRef} className="h-full overflow-y-auto px-2 py-4">
+      <div
+        ref={rightPanelRef}
+        className="h-full overflow-y-auto bg-neutral-900 px-2 py-4"
+      >
         <AnimatePresence mode="wait">
           {activeBlogPost ? (
             <motion.div
@@ -228,7 +231,7 @@ const ResourcesPage = () => {
               </h3>
 
               {/* Featured Image */}
-              <div className="relative mb-6 h-[200px]">
+              <div className="relative h-[200px]">
                 <div className="absolute top-0 left-0 size-full bg-black">
                   <Image
                     src={
@@ -258,16 +261,16 @@ const ResourcesPage = () => {
                           className="size-full object-cover"
                         />
                       ) : (
-                        <div className="flex size-full items-center justify-center font-bold text-white">
+                        <div className="flex size-full items-center justify-center text-sm text-white">
                           {activeBlogPost.author.name.charAt(0)}
                         </div>
                       )}
                     </span>
-                    <span className="font-michroma text-xs xl:text-base">
+                    <span className="font-michroma text-xs">
                       {activeBlogPost.author.name.toUpperCase()}
                     </span>
                   </div>
-                  <div className="text-brand-orange-500 flex items-center gap-4 text-[10px] xl:text-xs">
+                  <div className="text-brand-orange-500 flex items-center gap-4 text-[10px]">
                     <span className="font-michroma">
                       {new Date(activeBlogPost.publishedAt).toLocaleDateString(
                         "en-US",

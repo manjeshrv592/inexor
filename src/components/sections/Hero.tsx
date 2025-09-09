@@ -5,7 +5,6 @@ import Container from "../layout/Container";
 import { Button } from "../ui/button";
 import ContactUsButton from "../ui/ContactUsButton";
 import { Hero as HeroType } from "../../lib/sanity";
-import Link from "next/link";
 
 interface HeroProps {
   heroData: HeroType | null;
@@ -15,6 +14,8 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
   // Fallback data for title and description when no Sanity data exists
   const title = heroData?.title || "Title";
   const description = heroData?.description || "description";
+  const backgroundImageUrl =
+    heroData?.backgroundImage?.asset?.url || "/hero-bg.jpg";
 
   return (
     <Section className="relative h-screen">
@@ -23,23 +24,30 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
       </span>
       <div className="absolute inset-0">
         <Image
-          src="/hero-bg.jpg"
-          alt="Placeholder image"
+          src={backgroundImageUrl}
+          alt="Hero background image"
           fill
-          className="object-cover"
+          className="object-cover object-bottom"
         />
       </div>
       <Container className="h-full">
-        <div className="relative z-10 flex h-full flex-col items-center justify-center gap-4 text-center">
+        <div className="relative z-10 flex h-full flex-col items-center justify-center pt-24 text-center">
           <h1 className="font-michroma xxl:text-4xl xl:text-3xl">{title}</h1>
-          <p className="xxl:text-base xxl:max-w-2xl max-w-xl text-sm">
+          <p className="xxl:text-base xxl:max-w-2xl mt-3 mb-40 max-w-xl text-sm">
             {description}
           </p>
-          <Link href="/contact">
-            <Button className="font-michroma text-xs tracking-[1px]">
+          <a
+            href="https://calendar.app.google/it8hbPUuhXvCG4YE8"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button
+              className="font-michroma text-[10px] tracking-[1px]"
+              size={"sm"}
+            >
               Schedule a Call
             </Button>
-          </Link>
+          </a>
         </div>
       </Container>
     </Section>
