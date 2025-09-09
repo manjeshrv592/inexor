@@ -43,7 +43,6 @@ export function middleware(request: NextRequest) {
   const loginUrl = request.nextUrl.clone();
   loginUrl.pathname = "/auth";
   loginUrl.searchParams.set("redirect", pathname);
-  console.log("Hello");
   return NextResponse.redirect(loginUrl);
 }
 
