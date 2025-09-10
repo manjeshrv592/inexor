@@ -41,7 +41,8 @@ const InactivityTracker = () => {
           clearInterval(countdownInterval.current);
           countdownInterval.current = null;
         }
-      } else if (!showWarning) { // Only show if not already showing
+      } else {
+        // Always show warning when requested, regardless of current state
         console.log('[InactivityTracker] Showing warning');
         setShowWarning(true);
         setCountdown(warningTime);
@@ -57,11 +58,31 @@ const InactivityTracker = () => {
         clearInterval(countdownInterval.current);
       }
     };
-  }, [registerWarningCallback, warningTime, showWarning]);
+  }, [registerWarningCallback, warningTime]);
 
   // Handle resetting the timer when user interacts
-  const handleStayLoggedIn = useCallback(() => {
+  const handleStayLoggedIn = useCallback(async () => {
     console.log('[InactivityTracker] User clicked Stay Logged In');
+    
+    // Refresh session first
+    try {
+      const response = await fetch('/api/auth/refresh-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (!response.ok) {
+        console.error('[InactivityTracker] Failed to refresh session');
+        // If session refresh fails, log out
+        handleLogout();
+        return;
+      }
+    } catch (error) {
+      console.error('[InactivityTracker] Session refresh error:', error);
+      handleLogout();
+      return;
+    }
+    
     // Pass true to reset the warning state
     resetTimer(true);
     // Reset the local state
@@ -72,7 +93,7 @@ const InactivityTracker = () => {
       clearInterval(countdownInterval.current);
       countdownInterval.current = null;
     }
-  }, [resetTimer]);
+  }, [resetTimer, handleLogout]);
 
   // Update countdown every second when warning is shown
   useEffect(() => {

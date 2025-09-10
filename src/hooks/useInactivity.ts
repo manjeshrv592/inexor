@@ -32,6 +32,26 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
     return minutes * 60 * 1000;
   }, []);
 
+  const refreshSession = useCallback(async () => {
+    try {
+      const response = await fetch('/api/auth/refresh-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (response.ok) {
+        console.log('[Inactivity Timer] Session refreshed successfully');
+        return true;
+      } else {
+        console.log('[Inactivity Timer] Session refresh failed');
+        return false;
+      }
+    } catch (error) {
+      console.error('[Inactivity Timer] Session refresh error:', error);
+      return false;
+    }
+  }, []);
+
   const resetTimer = useCallback((resetWarningState: boolean = false): void => {
     // Clear existing timers
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -43,17 +63,9 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
       // Always notify to hide the warning when there's user activity
       console.log('[Inactivity Timer] Hiding warning due to user activity');
       warningCallbackRef.current?.(true);
-      // Reset the warning timer ref to allow the warning to be shown again
-      warningTimerRef.current = null;
-    } else {
-      // Normal reset, set up the warning timer
-      const warningTimeout = Math.max(0, timeout - warningTimeMs);
-      console.log(`[Inactivity Timer] Setting timers - warning in ${warningTimeout}ms, logout in ${timeout}ms`);
       
-      warningTimerRef.current = setTimeout(() => {
-        console.log('[Inactivity Timer] Showing warning');
-        warningCallbackRef.current?.(false);
-      }, warningTimeout);
+      // Refresh session on user activity
+      refreshSession();
     }
 
     // Set the logout timer
@@ -65,55 +77,22 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
     // Set up the warning timer if we have time for a warning
     if (timeout > warningTimeMs) {
       const warningTimeout = timeout - warningTimeMs;
-      console.log(`[Inactivity Timer] Next warning in ${warningTimeout}ms`);
+      console.log(`[Inactivity Timer] Setting warning timer for ${warningTimeout}ms`);
       
       warningTimerRef.current = setTimeout(() => {
         console.log('[Inactivity Timer] Showing warning');
         warningCallbackRef.current?.(false);
-        
-        // After showing the warning, set up the next check
-        const remainingTime = warningTimeMs;
-        console.log(`[Inactivity Timer] Will logout in ${remainingTime}ms`);
       }, warningTimeout);
     }
-  }, [onInactive, timeout, warningTimeMs]);
+  }, [onInactive, timeout, warningTimeMs, refreshSession]);
 
-  // Handle tab close
-  const handleBeforeUnload = useCallback(() => {
-    // Only proceed if web access is enabled
-    if (process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED !== 'true') {
-      return;
-    }
+  // Removed all tab close detection - only use inactivity timeout
 
-    try {
-      console.log('[Inactivity Timer] Tab is being closed, sending beacon logout');
-      // Use sendBeacon for a more reliable way to send the logout request
-      const blob = new Blob([JSON.stringify({})], { type: 'application/json' });
-      navigator.sendBeacon('/api/auth/logout', blob);
-    } catch (error) {
-      console.error('[Inactivity Timer] Error during beacon logout:', error);
-      // Fallback to fetch with keepalive if beacon fails
-      try {
-        fetch('/api/auth/logout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({}),
-          keepalive: true // This ensures the request continues even if the page is closed
-        });
-      } catch (err) {
-        console.error('[Inactivity Timer] Fallback logout also failed:', err);
-      }
-    }
-    
-    // Clear any pending timeouts
-    if (timerRef.current) clearTimeout(timerRef.current);
-    if (warningTimerRef.current) clearTimeout(warningTimerRef.current);
-  }, []);
 
-  // Set up event listeners for user activity and tab close
+
+  // Set up event listeners for user activity only
   useEffect(() => {
-    // Add beforeunload event listener for tab close
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    console.log('[Inactivity Timer] Setting up user activity listeners only');
     
     // Define handleActivity inside the effect to avoid dependency issues
     const handleActivity = (event: Event) => {
@@ -178,14 +157,13 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
         window.removeEventListener(event, handleActivity, { capture: true });
       });
       
-      // Remove beforeunload listener
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      // No tab close listeners to remove
       
       // Clear any pending timeouts
       if (timerRef.current) clearTimeout(timerRef.current);
       if (warningTimerRef.current) clearTimeout(warningTimerRef.current);
     };
-  }, [events, resetTimer, handleBeforeUnload]);
+  }, [events, resetTimer]);
 
   const registerWarningCallback = useCallback((callback: (hideWarning?: boolean) => void) => {
     warningCallbackRef.current = callback;

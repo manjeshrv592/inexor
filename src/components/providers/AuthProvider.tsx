@@ -22,6 +22,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
   const [isClient, setIsClient] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [userAuthenticated, setUserAuthenticated] = useState<boolean>(false);
   const pathname = usePathname();
   const router = useRouter();
   
@@ -44,12 +45,15 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     try {
       const isAuth = await isAuthenticated();
       if (!isAuth) {
+        setUserAuthenticated(false);
         router.push('/auth');
       } else {
+        setUserAuthenticated(true);
         setIsLoading(false);
       }
     } catch (error) {
       console.error('Auth check failed:', error);
+      setUserAuthenticated(false);
       setIsLoading(false);
     }
   }, [isClient, pathname, router]);
@@ -69,11 +73,17 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     );
   }
 
-  // Only render InactivityTracker if web access is enabled
-  const shouldShowInactivityTracker = process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED === 'true';
+  // Only render InactivityTracker if web access is enabled AND user is authenticated AND not on auth page
+  const shouldShowInactivityTracker = 
+    process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED === 'true' && 
+    userAuthenticated && 
+    pathname !== '/auth';
+    
   console.log('[AuthProvider] Should show inactivity tracker:', shouldShowInactivityTracker, {
-    value: process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED,
-    type: typeof process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED
+    webAccessEnabled: process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED,
+    userAuthenticated,
+    pathname,
+    isAuthPage: pathname === '/auth'
   });
   
   return (

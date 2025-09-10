@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { loginSchema } from "@/lib/validations/auth";
 
 export async function POST(req: Request) {
-  if (process.env.WEB_ACCESS_ENABLED !== "true") {
+  if (process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED !== "true") {
     return NextResponse.json(
       { message: "Web access protection disabled" },
       { status: 400 },

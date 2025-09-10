@@ -26,8 +26,12 @@ export async function POST(request: Request) {
       );
     }
 
-    // Valid OTP – set secure cookie
-    const cookie = `${COOKIE_NAME}=${process.env.WEB_ACCESS_SECRET!}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${MAX_AGE}${process.env.NODE_ENV === 'production' ? '; Secure' : ''};`;
+    // Valid OTP – set secure cookie with session expiration timestamp
+    const sessionTimeoutMinutes = parseInt(process.env.NEXT_PUBLIC_SESSION_TIMEOUT || '15');
+    const sessionTimeout = sessionTimeoutMinutes * 60 * 1000; // Convert minutes to milliseconds
+    const expiresAt = Date.now() + sessionTimeout;
+    const cookieValue = `${process.env.NEXT_PUBLIC_WEB_ACCESS_SECRET!}:${expiresAt}`;
+    const cookie = `${COOKIE_NAME}=${cookieValue}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${MAX_AGE}${process.env.NODE_ENV === 'production' ? '; Secure' : ''};`;
 
     // Return success response with Set-Cookie header
     return new NextResponse(JSON.stringify({ ok: true }), {

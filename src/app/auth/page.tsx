@@ -9,10 +9,24 @@ export const metadata = {
 
 export default async function AuthPage() {
   const cookieStore = await cookies();
-  const isAuthenticated = cookieStore.get('web_access');
-
-  if (isAuthenticated) {
-    redirect('/');
+  const authCookie = cookieStore.get('web_access');
+  
+  // Check if user is already authenticated with valid secret and session not expired
+  if (authCookie?.value) {
+    const [cookieSecret, expiresAtStr] = authCookie.value.split(':');
+    
+    if (cookieSecret === process.env.NEXT_PUBLIC_WEB_ACCESS_SECRET) {
+      // Check if session has not expired
+      if (expiresAtStr) {
+        const expiresAt = parseInt(expiresAtStr);
+        if (Date.now() <= expiresAt) {
+          redirect('/');
+        }
+      } else {
+        // Legacy cookie without timestamp, redirect anyway
+        redirect('/');
+      }
+    }
   }
 
   return (
