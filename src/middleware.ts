@@ -3,11 +3,11 @@ import { NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
   console.log("🔐 Middleware running:", {
-    enabled: process.env.WEB_ACCESS_ENABLED,
+    enabled: process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED,
     pathname: request.nextUrl.pathname,
   });
 
-  if (process.env.WEB_ACCESS_ENABLED !== "true") {
+  if (process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED !== "true") {
     console.log("🚫 Auth disabled, allowing request");
     return NextResponse.next();
   }

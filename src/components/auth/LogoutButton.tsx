@@ -1,20 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LogOut } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
-import { useState } from "react";
 
 export default function LogoutButton() {
   const router = useRouter();
   const pathname = usePathname();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [showButton, setShowButton] = useState(false);
 
-  // Check if we should show the button based on current pathname
-  const isVisible =
-    !pathname.startsWith("/auth") && !pathname.startsWith("/studio");
+  // Check web access setting on client side
+  useEffect(() => {
+    setShowButton(process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED === 'true');
+  }, []);
 
-  if (!isVisible) {
+  // Don't show on auth page or if web access is disabled
+  if (pathname === "/auth" || !showButton) {
     return null;
   }
 

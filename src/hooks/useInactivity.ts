@@ -78,8 +78,44 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
     }
   }, [onInactive, timeout, warningTimeMs]);
 
-  // Set up event listeners for user activity
+  // Handle tab close
+  const handleBeforeUnload = useCallback(() => {
+    // Only proceed if web access is enabled
+    if (process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED !== 'true') {
+      return;
+    }
+
+    try {
+      console.log('[Inactivity Timer] Tab is being closed, sending beacon logout');
+      // Use sendBeacon for a more reliable way to send the logout request
+      const blob = new Blob([JSON.stringify({})], { type: 'application/json' });
+      navigator.sendBeacon('/api/auth/logout', blob);
+    } catch (error) {
+      console.error('[Inactivity Timer] Error during beacon logout:', error);
+      // Fallback to fetch with keepalive if beacon fails
+      try {
+        fetch('/api/auth/logout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({}),
+          keepalive: true // This ensures the request continues even if the page is closed
+        });
+      } catch (err) {
+        console.error('[Inactivity Timer] Fallback logout also failed:', err);
+      }
+    }
+    
+    // Clear any pending timeouts
+    if (timerRef.current) clearTimeout(timerRef.current);
+    if (warningTimerRef.current) clearTimeout(warningTimerRef.current);
+  }, []);
+
+  // Set up event listeners for user activity and tab close
   useEffect(() => {
+    // Add beforeunload event listener for tab close
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    
+    // Define handleActivity inside the effect to avoid dependency issues
     const handleActivity = (event: Event) => {
       // Skip frequent events to improve performance
       if (event.type === 'mousemove' || event.type === 'touchmove') {
@@ -118,19 +154,18 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
       // Always reset the timers on activity
       resetTimer(true);
     };
-    
-    // Add event listeners with appropriate options
+
+    // Add event listeners for user activity
     events.forEach(event => {
+      // Skip visibilitychange since we're not using it anymore
+      if (event === 'visibilitychange') return;
+      
       // Different options for different event types
       const eventOptions = ['touchstart', 'touchmove', 'wheel'].includes(event) 
         ? { passive: true, capture: true }
         : { capture: true };
       
-      if (event === 'visibilitychange') {
-        document.addEventListener(event, handleActivity, { capture: true });
-      } else {
-        window.addEventListener(event, handleActivity, eventOptions);
-      }
+      window.addEventListener(event, handleActivity, eventOptions);
     });
 
     // Start the initial timer
@@ -139,20 +174,20 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
     return () => {
       // Clean up event listeners when the component unmounts
       events.forEach(event => {
-        if (event === 'visibilitychange') {
-          document.removeEventListener(event, handleActivity, { capture: true });
-        } else {
-          window.removeEventListener(event, handleActivity, { capture: true });
-        }
+        if (event === 'visibilitychange') return;
+        window.removeEventListener(event, handleActivity, { capture: true });
       });
+      
+      // Remove beforeunload listener
+      window.removeEventListener('beforeunload', handleBeforeUnload);
       
       // Clear any pending timeouts
       if (timerRef.current) clearTimeout(timerRef.current);
       if (warningTimerRef.current) clearTimeout(warningTimerRef.current);
     };
-  }, [events, resetTimer]);
+  }, [events, resetTimer, handleBeforeUnload]);
 
-  const registerWarningCallback = useCallback((callback: () => void) => {
+  const registerWarningCallback = useCallback((callback: (hideWarning?: boolean) => void) => {
     warningCallbackRef.current = callback;
   }, []);
 
