@@ -29,7 +29,9 @@ export async function verifyOTP(token: string, userOtp: string): Promise<{ isVal
     const secret = new TextEncoder().encode(OTP_SECRET);
     const { payload } = await jwtVerify(token, secret);
     
-    const { email, otp, expiresAt } = payload as OTPPayload;
+    // Safely cast the payload to OTPPayload
+    const otpData = payload as unknown as OTPPayload;
+    const { email, otp, expiresAt } = otpData;
     
     // Check if OTP is expired
     if (Date.now() > expiresAt) {
