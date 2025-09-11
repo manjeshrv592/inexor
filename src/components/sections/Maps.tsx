@@ -27,7 +27,7 @@ const Maps = () => {
     "Reach Over 120 Markets With Zero Compliance Issues";
 
   return (
-    <Section>
+    <Section className="xxl:pl-20 lg:pl-20">
       <Container>
         <div className="relative z-10">
           <div className="mb-4">

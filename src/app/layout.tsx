@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${michroma.variable} ${raleway.variable} xxl:pl-32 bg-[#050505] text-white antialiased lg:pl-28`}
+        className={`${michroma.variable} ${raleway.variable} bg-[#050505] text-white antialiased`}
       >
         <AuthProvider>
           <Header />

@@ -98,7 +98,7 @@ const Footer = ({ footerData }: FooterProps) => {
       ));
   };
   return (
-    <footer className="bg-neutral-800 py-12 text-white [box-shadow:inset_0_2px_2px_rgba(0,0,0,0.2)]">
+    <footer className="xxl:pl-20 bg-neutral-800 py-12 text-white [box-shadow:inset_0_2px_2px_rgba(0,0,0,0.2)] lg:pl-20">
       <Container>
         <div className="xxl:grid-cols-[3fr_2fr] grid items-center gap-8 xl:grid-cols-2 xl:gap-0">
           <div className="text-center">

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Logo = () => {
   return (
-    <div className="xxl:p-5 border-b border-neutral-800 bg-[#050505] p-3 pb-6 xl:border-none">
+    <div className="border-b border-neutral-800 p-3 pb-6 lg:p-1 xl:border-none">
       <Link href="/" className="block">
         <Image
           src="/logo.svg"

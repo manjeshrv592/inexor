@@ -15,8 +15,8 @@ const AnimatedImagePanel: React.FC<AnimatedImagePanelProps> = ({
   isXlScreen,
 }) => {
   const positionClasses = {
-    left: "absolute top-0 left-0 z-30 h-full w-1/8 origin-left",
-    right: "absolute top-0 right-0 z-30 h-full w-1/8 origin-right",
+    left: "absolute top-0 left-0 z-30 h-full origin-left",
+    right: "absolute top-0 right-0 z-30 h-full origin-right",
   };
 
   // Don't render if no image source is provided
@@ -28,9 +28,9 @@ const AnimatedImagePanel: React.FC<AnimatedImagePanelProps> = ({
     <motion.div
       className={`${positionClasses[position]} transform bg-cover bg-center grayscale filter`}
       style={{ backgroundImage: `url('${imageSrc}')` }}
-      initial={{ scale: 8 }}
+      initial={{ width: "50%" }}
       animate={{
-        scale: shouldAnimate ? (isXlScreen ? 1 : 0) : 8,
+        width: shouldAnimate ? (isXlScreen ? "12.5%" : "0%") : "50%",
       }}
       transition={{
         type: "spring",

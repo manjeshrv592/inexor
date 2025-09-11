@@ -12,6 +12,7 @@ import {
   getBlogPostBySlug,
   type BlogPost,
 } from "@/lib/sanity/blog";
+import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
 
 const ResourcesPage = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
@@ -116,15 +117,15 @@ const ResourcesPage = () => {
         </div>
       </div>
 
-      {/* Middle Panel - Blog List */}
-      <div className="p-5 xl:p-1 xl:pt-12">
+      {/* Middle Panel - Blog List Mobile */}
+      <div className="p-5 xl:hidden xl:h-full xl:flex-col xl:p-1 xl:pt-12">
         <h3 className="font-michroma mb-5 hidden text-center text-xs tracking-[1px] xl:block">
           LATEST <span className="text-brand-orange-500">BLOGS</span>
         </h3>
 
         {/* Mobile list */}
         <div
-          className="flex flex-nowrap gap-4 overflow-x-auto xl:hidden [&::-webkit-scrollbar]:hidden"
+          className="flex flex-nowrap gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
@@ -148,68 +149,76 @@ const ResourcesPage = () => {
             </div>
           ))}
         </div>
+      </div>
 
-        {/* Desktop list */}
-        <div className="hidden xl:block">
-          <DynamicShape
-            fill="transparent"
-            stroke="#1a1a1a"
-            strokeWidth={1}
-            padding="p-2"
-          >
-            <div className="space-y-2">
-              {blogPosts.map((post, index) => (
-                <DynamicShape
-                  key={post._id}
-                  fill={activeIndex === index ? "#2a2a2a" : "#404040"}
-                  stroke="none"
-                  strokeWidth={0}
-                  padding="p-0"
-                >
-                  <div
-                    className="flex cursor-pointer font-medium text-white transition-opacity hover:opacity-90"
-                    onClick={() => handleBlogPostClick(post, index)}
+      {/* Middle Panel - Blog List - Desktop */}
+      <div className="xxl:h-[calc(100vh-128px)] hidden xl:flex xl:h-[calc(100vh-112px)] xl:flex-1 xl:flex-col xl:p-1">
+        <AutoScrollContainer className="">
+          <h3 className="font-michroma mt-10 mb-5 hidden text-center text-xs tracking-[1px] xl:block">
+            LATEST <span className="text-brand-orange-500">BLOGS</span>
+          </h3>
+
+          <div className="pr-1">
+            <DynamicShape
+              fill="transparent"
+              stroke="#1a1a1a"
+              strokeWidth={1}
+              padding="p-2"
+            >
+              <div className="space-y-2">
+                {blogPosts.map((post, index) => (
+                  <DynamicShape
+                    key={post._id}
+                    fill={activeIndex === index ? "#2a2a2a" : "#404040"}
+                    stroke="none"
+                    strokeWidth={0}
+                    padding="p-0"
                   >
-                    <Image
-                      src={
-                        post.featuredImage?.asset.url || "/img/left-image.jpg"
-                      }
-                      alt={post.featuredImage?.alt || post.title}
-                      width={200}
-                      height={200}
-                      className="h-[64px] w-[80px] object-cover grayscale"
-                      style={{
-                        clipPath:
-                          "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))",
-                      }}
-                    />
-                    <div className="flex flex-col p-2">
-                      <div className="font-michroma pr-2 text-right text-[7px] tracking-[1px]">
-                        {new Date(post.publishedAt).toLocaleDateString(
-                          "en-US",
-                          {
-                            day: "2-digit",
-                            month: "2-digit",
-                            year: "numeric",
-                          },
-                        )}
+                    <div
+                      className="flex cursor-pointer font-medium text-white transition-opacity hover:opacity-90"
+                      onClick={() => handleBlogPostClick(post, index)}
+                    >
+                      <Image
+                        src={
+                          post.featuredImage?.asset.url || "/img/left-image.jpg"
+                        }
+                        alt={post.featuredImage?.alt || post.title}
+                        width={200}
+                        height={200}
+                        className="h-[64px] w-[80px] object-cover grayscale"
+                        style={{
+                          clipPath:
+                            "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))",
+                        }}
+                      />
+                      <div className="flex w-full flex-col p-2">
+                        <div className="font-michroma w-full pr-2 text-right text-[7px] tracking-[1px]">
+                          {new Date(post.publishedAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                            },
+                          )}
+                        </div>
+                        <h3 className="font-michroma text-brand-orange-500 mt-auto line-clamp-2 text-[10px]">
+                          {post.title}
+                        </h3>
                       </div>
-                      <h3 className="font-michroma text-brand-orange-500 mt-auto line-clamp-2 text-[10px]">
-                        {post.title}
-                      </h3>
                     </div>
-                  </div>
-                </DynamicShape>
-              ))}
+                  </DynamicShape>
+                ))}
 
-              {blogPosts.length === 0 && !loading && (
-                <div className="py-4 text-center text-gray-400">
-                  No blog posts available.
-                </div>
-              )}
-            </div>
-          </DynamicShape>
-        </div>
+                {blogPosts.length === 0 && !loading && (
+                  <div className="py-4 text-center text-gray-400">
+                    No blog posts available.
+                  </div>
+                )}
+              </div>
+            </DynamicShape>
+          </div>
+        </AutoScrollContainer>
       </div>
 
       {/* Right Panel - Blog Content */}

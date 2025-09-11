@@ -24,7 +24,7 @@ const AboutOverview: React.FC<AboutOverviewProps> = ({
     aboutData?.rightImage?.asset?.url || "/img/about-right.jpg";
 
   return (
-    <section className="py-12 text-neutral-200 xl:h-[calc(100vh-64px)] xl:max-h-[600px]">
+    <section className="xxl:pl-20 py-12 text-neutral-200 lg:pl-20 xl:h-[calc(100vh-64px)] xl:max-h-[600px]">
       <div
         ref={ref}
         className="relative flex h-full justify-center overflow-hidden"

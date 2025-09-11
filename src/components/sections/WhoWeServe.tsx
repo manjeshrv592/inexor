@@ -11,7 +11,7 @@ interface WhoWeServeProps {
 
 const WhoWeServe: React.FC<WhoWeServeProps> = ({ items }) => {
   return (
-    <Section>
+    <Section className="xxl:pl-20 lg:pl-20">
       <Container>
         <div className="text-center">
           <SectionTitle>WHO WE SERVE</SectionTitle>

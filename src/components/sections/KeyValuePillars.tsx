@@ -97,7 +97,7 @@ const KeyValuePillars = ({ sectionData, items }: KeyValuePillarsProps) => {
   };
 
   return (
-    <section className="py-12">
+    <section className="xxl:pl-20 py-12 lg:pl-20">
       <Container>
         <p className="mx-auto mb-4 max-w-2xl text-center text-xs text-neutral-300 xl:text-sm">
           {sectionData.description}

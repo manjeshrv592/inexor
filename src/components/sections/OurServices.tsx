@@ -215,7 +215,7 @@ const OurServices: React.FC<OurServicesProps> = ({
   };
 
   return (
-    <Section className="overflow-hidden">
+    <Section className="xxl:pl-20 overflow-hidden lg:pl-20">
       <Container>
         <div className="text-center">
           <SectionTitle>
@@ -238,8 +238,8 @@ const OurServices: React.FC<OurServicesProps> = ({
           </motion.h3>
         </div>
         {/* Main animation container start */}
-        <div className="relative h-[80vh] xl:h-80">
-          {/* 
+        <div className="relative h-[80vh] xl:max-h-[450px]">
+          {/*
             Render service items dynamically - limited to first 4 items 
             Note: The fixed positioning is designed for exactly 4 services.
             To support more services, you would need to implement dynamic positioning

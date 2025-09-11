@@ -77,7 +77,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
 
   return (
     <motion.main
-      className="xxl:left-32 xxl:top-16 xxl:h-[calc(100vh-128px)] xxl:w-[calc(100%-(128px*2))] fixed top-[118.14px] left-0 z-[100] h-[calc(100vh-118.14px)] w-full overflow-visible rounded-lg shadow-2xl xl:top-14 xl:left-28 xl:h-[calc(100vh-112px)] xl:w-[calc(100%-(112px*2))]"
+      className="xxl:left-24 xxl:top-16 xxl:h-[calc(100vh-128px)] xxl:w-[calc(100%-(128px*2))] fixed top-[118.14px] left-0 z-[100] h-[calc(100vh-118.14px)] w-full overflow-visible rounded-lg shadow-2xl xl:top-14 xl:left-20 xl:h-[calc(100vh-112px)] xl:w-[calc(100%-(112px*2))]"
       style={{ backgroundColor: "#1c1b1b" }}
       variants={slideVariants}
       initial="hidden"

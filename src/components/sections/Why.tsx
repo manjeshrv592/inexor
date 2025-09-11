@@ -45,7 +45,7 @@ const Why: React.FC<WhyProps> = ({ whyData, whyItems }) => {
 
   const items = whyItems.length > 0 ? whyItems : defaultItems;
   return (
-    <Section>
+    <Section className="xxl:pl-20 lg:pl-20">
       <Container className="text-center">
         <div className="text-center">
           <SectionTitle>WHY CHOOSE INEXOR</SectionTitle>

@@ -138,7 +138,7 @@ const ServicesPage = () => {
                 </div>
               </div>
 
-              <div className="text-sm text-neutral-100">
+              <div className="mx-auto max-w-3xl text-sm text-neutral-100">
                 {/* Service Content */}
                 {activeService.content && (
                   <RichTextRenderer content={activeService.content} />

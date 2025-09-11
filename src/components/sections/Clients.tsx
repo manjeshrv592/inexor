@@ -8,7 +8,7 @@ import { getClientsSection } from "@/lib/sanity";
 export async function Clients() {
   const clientsData = await getClientsSection();
   return (
-    <Section>
+    <Section className="xxl:pl-20 lg:pl-20">
       <Container>
         <div className="text-center">
           <SectionTitle>TRUSTED BY 40+ INDUSTRY LEADERS</SectionTitle>
