@@ -24,7 +24,6 @@ const TestimonialControls: React.FC<TestimonialControlsProps> = ({
           variant="outline"
           onClick={onPrev}
           disabled={isAnimating}
-          className="hover:bg-brand-orange-500 hover:border-brand-orange-500 transition-all duration-200"
         >
           <ArrowLeft size={16} />
         </Button>
@@ -36,7 +35,6 @@ const TestimonialControls: React.FC<TestimonialControlsProps> = ({
           variant="outline"
           onClick={onNext}
           disabled={isAnimating}
-          className="hover:bg-brand-orange-500 hover:border-brand-orange-500 transition-all duration-200"
         >
           <ArrowRight size={16} />
         </Button>

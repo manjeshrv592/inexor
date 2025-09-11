@@ -11,6 +11,7 @@ import {
   getServiceByCode,
   type Service,
 } from "@/lib/sanity/service";
+import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
 
 const ServicesPage = () => {
   const [services, setServices] = useState<Service[]>([]);
@@ -69,7 +70,7 @@ const ServicesPage = () => {
 
   return (
     <div
-      className="bg-[#2f2f2f] xl:grid xl:h-full xl:grid-cols-[150px_1fr]"
+      className="h-full bg-[#2f2f2f] xl:grid xl:h-full xl:grid-cols-[150px_1fr]"
       style={{
         boxShadow:
           "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
@@ -78,7 +79,7 @@ const ServicesPage = () => {
       {/* Left Panel */}
       <div className="relative h-20 xl:h-full">
         <div className="relative z-10 flex size-full flex-col items-center justify-center gap-5">
-          <div className="flex flex-col gap-5">
+          <div className="flex gap-5 xl:flex-col">
             {services.map((service, index) => (
               <Button
                 key={service._id}
@@ -104,79 +105,88 @@ const ServicesPage = () => {
       </div>
 
       {/* Right Panel - Service Content */}
-      <div ref={rightPanelRef} className="h-full overflow-y-auto px-2 pb-4">
-        <AnimatePresence mode="wait">
-          {activeService ? (
-            <motion.div
-              key={activeService._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-            >
-              {/* Featured Image */}
-              <div className="relative mb-6 h-[300px]">
-                <div className="absolute top-0 left-0 size-full">
-                  <div className="absolute inset-0 z-10 bg-black/80"></div>
-                  <Image
-                    src={
-                      activeService.featuredImage?.asset.url ||
-                      "/img/left-image.jpg"
-                    }
-                    alt={
-                      activeService.featuredImage?.alt || activeService.title
-                    }
-                    fill
-                    className="object-cover grayscale"
-                  />
-                </div>
-                <div className="relative z-10 flex size-full flex-col items-center justify-center gap-2 text-center">
-                  <h5 className="font-michroma text-[10px]">
-                    {activeService.subtitle.toUpperCase()}
-                  </h5>
-                  <h2 className="text-lg">{activeService.title}</h2>
-                </div>
-              </div>
+      <div
+        ref={rightPanelRef}
+        className="xxl:h-[calc(100vh-128px)] h-[calc(100vh-80px)] pb-48 xl:h-[calc(100vh-112px)] xl:pb-0"
+      >
+        <AutoScrollContainer>
+          <div className="px-2 pb-4">
+            <AnimatePresence mode="wait">
+              {activeService ? (
+                <motion.div
+                  key={activeService._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                >
+                  {/* Featured Image */}
+                  <div className="relative mb-6 h-[300px]">
+                    <div className="absolute top-0 left-0 size-full">
+                      <div className="absolute inset-0 z-10 bg-black/80"></div>
+                      <Image
+                        src={
+                          activeService.featuredImage?.asset.url ||
+                          "/img/left-image.jpg"
+                        }
+                        alt={
+                          activeService.featuredImage?.alt ||
+                          activeService.title
+                        }
+                        fill
+                        className="object-cover grayscale"
+                      />
+                    </div>
+                    <div className="relative z-10 flex size-full flex-col items-center justify-center gap-2 text-center">
+                      <h5 className="font-michroma text-[10px]">
+                        {activeService.subtitle.toUpperCase()}
+                      </h5>
+                      <h2 className="text-lg">{activeService.title}</h2>
+                    </div>
+                  </div>
 
-              <div className="mx-auto max-w-3xl text-sm text-neutral-100">
-                {/* Service Content */}
-                {activeService.content && (
-                  <RichTextRenderer content={activeService.content} />
-                )}
-                {/* Use Cases Section - placed at the end of the blog content */}
-                {activeService.useCases?.steps &&
-                  activeService.useCases.steps.length > 0 && (
-                    <UseCasesSection
-                      title={activeService.useCases.title || "Use cases"}
-                      steps={activeService.useCases.steps}
-                      imageUrl={
-                        activeService.useCases.image?.asset?.url ||
-                        "/img/left-image.jpg"
-                      }
-                      imageAlt={
-                        activeService.useCases.image?.alt || activeService.title
-                      }
-                    />
-                  )}
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="placeholder"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="flex h-full items-center justify-center"
-            >
-              <p className="text-center text-gray-400">
-                {services.length === 0
-                  ? "No services available."
-                  : "Select a service to read."}
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                  <div className="mx-auto max-w-3xl text-sm text-neutral-100">
+                    {/* Service Content */}
+                    {activeService.content && (
+                      <RichTextRenderer content={activeService.content} />
+                    )}
+                    {/* Use Cases Section - placed at the end of the blog content */}
+                    {activeService.useCases?.steps &&
+                      activeService.useCases.steps.length > 0 && (
+                        <UseCasesSection
+                          title={activeService.useCases.title || "Use cases"}
+                          steps={activeService.useCases.steps}
+                          imageUrl={
+                            activeService.useCases.image?.asset?.url ||
+                            "/img/left-image.jpg"
+                          }
+                          imageAlt={
+                            activeService.useCases.image?.alt ||
+                            activeService.title
+                          }
+                        />
+                      )}
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="placeholder"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex h-full items-center justify-center"
+                >
+                  <p className="text-center text-gray-400">
+                    {services.length === 0
+                      ? "No services available."
+                      : "Select a service to read."}
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </AutoScrollContainer>
       </div>
     </div>
   );

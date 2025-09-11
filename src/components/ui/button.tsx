@@ -24,7 +24,7 @@ const buttonVariants = cva(
         destructive:
           "text-white hover:[&_svg_path]:fill-[#e04808] hover:[&_svg]:drop-shadow-[0px_4px_8px_rgba(0,0,0,0.25)]",
         outline:
-          "text-white hover:[&_span_svg_path]:fill-[#f65009] hover:[&_span_svg_path]:stroke-[#f65009] hover:[&_svg]:drop-shadow-[0px_4px_8px_rgba(0,0,0,0.25)] hover:text-white [&_.icon-svg]:text-white hover:[&_.icon-svg]:text-white",
+          "text-white hover:[&_.bg-svg_path]:fill-[#f65009] hover:[&_.bg-svg_path]:stroke-[#f65009] hover:[&_svg]:drop-shadow-[0px_4px_8px_rgba(0,0,0,0.25)] hover:text-white [&_.icon-svg]:text-white hover:[&_.icon-svg]:text-white",
         secondary:
           "text-white hover:[&_svg_path]:fill-[#e04808] hover:[&_svg]:drop-shadow-[0px_4px_8px_rgba(0,0,0,0.25)]",
         ghost:
@@ -144,7 +144,7 @@ function Button({
             height="100%"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="transition-all duration-200 ease-in-out"
+            className="bg-svg transition-all duration-200 ease-in-out"
           >
             <path
               d={svgPath}

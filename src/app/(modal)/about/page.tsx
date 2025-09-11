@@ -20,7 +20,7 @@ const AboutPage = async () => {
           />
         </div>
       </div>
-      <div className="xxl:h-[calc(100vh-128px)] col-span-2 h-[calc(100vh-118.14px)] xl:h-[calc(100vh-112px)]">
+      <div className="xxl:h-[calc(100vh-128px)] col-span-2 h-[calc(100vh-118.14px)] pb-56 xl:h-[calc(100vh-112px)] xl:pb-0">
         <AutoScrollContainer>
           <div className="p-5 xl:p-12">
             {/* Page Header */}

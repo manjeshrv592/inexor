@@ -113,47 +113,49 @@ const Footer = ({ footerData }: FooterProps) => {
           </div>
 
           <div className="flex flex-col gap-8 lg:hidden">
-            <motion.div
-              initial={{ height: 0 }}
-              whileInView={{ height: "auto" }}
-              viewport={{ once: false, amount: 0.2 }}
-              transition={{
-                height: {
-                  type: "tween",
-                  ease: [0.22, 1, 0.36, 1],
-                  duration: 0.9,
-                },
-              }}
-              style={{ willChange: "height" }}
-              className="overflow-hidden"
-            >
-              <div className="flex h-full flex-col justify-center px-8 py-2">
-                <div className="mb-4 flex flex-1 items-center">
-                  <Image
-                    src={footerData?.logo?.asset?.url || "/img/x-logo.svg"}
-                    alt="Company Logo"
-                    width={300}
-                    height={100}
-                    className="mx-auto max-h-[128px] w-auto"
-                  />
+            <div>
+              <motion.div
+                initial={{ height: 0 }}
+                whileInView={{ height: "auto" }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{
+                  height: {
+                    type: "tween",
+                    ease: [0.22, 1, 0.36, 1],
+                    duration: 0.9,
+                  },
+                }}
+                style={{ willChange: "height" }}
+                className="overflow-hidden"
+              >
+                <div className="flex h-full flex-col justify-center px-8 py-2">
+                  <div className="mb-4 flex flex-1 items-center">
+                    <Image
+                      src={footerData?.logo?.asset?.url || "/img/x-logo.svg"}
+                      alt="Company Logo"
+                      width={300}
+                      height={100}
+                      className="mx-auto max-h-[128px] w-auto"
+                    />
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <Link
+                      href="/privacy-policy"
+                      className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
+                    >
+                      Privacy Policy
+                    </Link>
+                    <span> | </span>
+                    <Link
+                      href="/terms-conditions"
+                      className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
+                    >
+                      Terms & Conditions
+                    </Link>
+                  </div>
                 </div>
-                <div className="flex justify-between text-xs">
-                  <Link
-                    href="/privacy-policy"
-                    className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
-                  >
-                    Privacy Policy
-                  </Link>
-                  <span> | </span>
-                  <Link
-                    href="/terms-conditions"
-                    className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
-                  >
-                    Terms & Conditions
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
             <div className="">
               <div className="flex h-full flex-col items-center justify-center gap-4">
                 <div className="flex justify-center gap-4">
@@ -185,46 +187,48 @@ const Footer = ({ footerData }: FooterProps) => {
           </div>
 
           <div className="hidden lg:flex">
-            <motion.div
-              initial={{ width: "0%" }}
-              whileInView={{ width: "50%" }}
-              viewport={{ once: false, amount: 0.4 }}
-              transition={{
-                width: {
-                  type: "tween",
-                  ease: [0.22, 1, 0.36, 1],
-                  duration: 0.9,
-                },
-              }}
-              className="w-1/2 overflow-hidden"
-            >
-              <div className="flex h-full flex-col justify-center px-8 py-2">
-                <div className="mb-2 flex flex-1 items-center">
-                  <Image
-                    src={footerData?.logo?.asset?.url || "/img/x-logo.svg"}
-                    className="mx-auto max-w-[128px]"
-                    alt="Company Logo"
-                    width={300}
-                    height={100}
-                  />
+            <div>
+              <motion.div
+                initial={{ width: "0%" }}
+                whileInView={{ width: "100%" }}
+                viewport={{ once: false, amount: 0.4 }}
+                transition={{
+                  width: {
+                    type: "tween",
+                    ease: [0.22, 1, 0.36, 1],
+                    duration: 0.9,
+                  },
+                }}
+                className="w-1/2 overflow-hidden"
+              >
+                <div className="flex h-full flex-col justify-center px-8 py-2">
+                  <div className="mb-2 flex flex-1 items-center">
+                    <Image
+                      src={footerData?.logo?.asset?.url || "/img/x-logo.svg"}
+                      className="mx-auto max-w-[128px]"
+                      alt="Company Logo"
+                      width={300}
+                      height={100}
+                    />
+                  </div>
+                  <div className="flex justify-between gap-4 text-xs">
+                    <Link
+                      href="/privacy-policy"
+                      className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
+                    >
+                      Privacy Policy
+                    </Link>
+                    <span> | </span>
+                    <Link
+                      href="/terms-conditions"
+                      className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
+                    >
+                      Terms & Conditions
+                    </Link>
+                  </div>
                 </div>
-                <div className="flex justify-between text-xs">
-                  <Link
-                    href="/privacy-policy"
-                    className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
-                  >
-                    Privacy Policy
-                  </Link>
-                  <span> | </span>
-                  <Link
-                    href="/terms-conditions"
-                    className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
-                  >
-                    Terms & Conditions
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
             <div className="w-1/2">
               <div className="flex h-full flex-col items-center justify-center gap-4">
                 <div className="text-center">

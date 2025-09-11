@@ -191,25 +191,27 @@ const FAQPage = () => {
 
       {/* Questions Panel */}
       <div className="xxl:h-[calc(100vh-128px)] h-full bg-[#2b2b2b] xl:h-[calc(100vh-112px)]">
-        <AutoScrollContainer className="py-4 xl:py-8">
-          <div className="flex flex-col gap-6 px-2">
-            {faqItems.map((item) => (
-              <FAQItem
-                key={item._id}
-                questionId={item._id}
-                question={item.question}
-                answer={item.answer}
-                isMobile={isMobile}
-                activeQuestionId={activeQuestionId}
-                onQuestionClick={handleQuestionClick}
-              />
-            ))}
+        <AutoScrollContainer>
+          <div className="py-12">
+            <div className="flex flex-col gap-6 px-2">
+              {faqItems.map((item) => (
+                <FAQItem
+                  key={item._id}
+                  questionId={item._id}
+                  question={item.question}
+                  answer={item.answer}
+                  isMobile={isMobile}
+                  activeQuestionId={activeQuestionId}
+                  onQuestionClick={handleQuestionClick}
+                />
+              ))}
 
-            {faqItems.length === 0 && !loading && (
-              <div className="text-center text-gray-400">
-                No questions found for this category.
-              </div>
-            )}
+              {faqItems.length === 0 && !loading && (
+                <div className="text-center text-gray-400">
+                  No questions found for this category.
+                </div>
+              )}
+            </div>
           </div>
         </AutoScrollContainer>
       </div>

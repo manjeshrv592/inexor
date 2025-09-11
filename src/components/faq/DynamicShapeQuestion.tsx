@@ -2,6 +2,8 @@
 
 import React from "react";
 import { motion } from "motion/react";
+import { Button } from "../ui/button";
+import { PlusIcon, MinusIcon } from "lucide-react";
 
 interface DynamicShapeQuestionProps {
   children: React.ReactNode;
@@ -98,7 +100,13 @@ const DynamicShapeQuestion = ({
       </span>
 
       {/* Question Text */}
-      <div ref={shapeRef} className="relative z-10 flex items-center px-2 py-4">
+      <div
+        ref={shapeRef}
+        className="relative z-10 flex items-center gap-4 px-2 py-4"
+      >
+        <Button className="hidden xl:inline-flex" size={"sm"}>
+          {isActive ? <MinusIcon size={16} /> : <PlusIcon size={16} />}
+        </Button>
         <p className="text-sm font-medium text-white">{children}</p>
       </div>
     </motion.div>
