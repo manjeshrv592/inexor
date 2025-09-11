@@ -41,29 +41,36 @@ export async function POST(request: Request) {
     const sessionTimeout = sessionTimeoutMinutes * 60 * 1000; // Convert minutes to milliseconds
     const expiresAt = Date.now() + sessionTimeout;
     const cookieValue = `${process.env.NEXT_PUBLIC_WEB_ACCESS_SECRET!}:${expiresAt}`;
-    // Enable Secure flag for HTTPS environments
-    const isSecure = process.env.NODE_ENV === 'production' && process.env.HTTPS_ENABLED === 'true';
-    const cookie = `${COOKIE_NAME}=${cookieValue}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${MAX_AGE}${isSecure ? '; Secure' : ''};`;
-
-    console.log("🍪 Setting cookie:", {
+    
+    console.log("🍪 Cookie setup:", {
       cookieName: COOKIE_NAME,
       hasValue: !!cookieValue,
-      isSecure,
-      cookieString: cookie,
       secretLength: process.env.NEXT_PUBLIC_WEB_ACCESS_SECRET?.length,
-      expiresAt: new Date(expiresAt).toISOString()
+      expiresAt: new Date(expiresAt).toISOString(),
+      nodeEnv: process.env.NODE_ENV,
+      httpsEnabled: process.env.HTTPS_ENABLED
     });
 
-    // Return success response with Set-Cookie header
+    // Use NextResponse.cookies() method instead of manual Set-Cookie header
     const response = new NextResponse(JSON.stringify({ ok: true }), {
       status: 200,
       headers: {
-        'Content-Type': 'application/json',
-        'Set-Cookie': cookie
+        'Content-Type': 'application/json'
       }
     });
 
-    console.log("📤 Response headers:", Object.fromEntries(response.headers.entries()));
+    // Set cookie using Next.js built-in method - temporarily disable secure for testing
+    response.cookies.set({
+      name: COOKIE_NAME,
+      value: cookieValue,
+      path: '/',
+      httpOnly: true,
+      sameSite: 'lax',
+      maxAge: MAX_AGE,
+      secure: false // Temporarily disabled for VPS testing
+    });
+
+    console.log("📤 Cookie set via response.cookies.set()");
     return response;
 
   } catch (error) {
