@@ -31,7 +31,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
         />
         {/* Vignette overlay with edge blur */}
         <div
-          className="absolute inset-0 opacity-80"
+          className="absolute inset-0 opacity-40"
           style={{
             background:
               "radial-gradient(ellipse 0% 0%, rgba(0,0,0,0) 0%, rgba(0,0,0,.9) 100%)",
