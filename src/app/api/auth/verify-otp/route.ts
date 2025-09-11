@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     const sessionTimeout = sessionTimeoutMinutes * 60 * 1000; // Convert minutes to milliseconds
     const expiresAt = Date.now() + sessionTimeout;
     const cookieValue = `${process.env.NEXT_PUBLIC_WEB_ACCESS_SECRET!}:${expiresAt}`;
-    // Only add Secure flag if HTTPS is available
+    // Enable Secure flag for HTTPS environments
     const isSecure = process.env.NODE_ENV === 'production' && process.env.HTTPS_ENABLED === 'true';
     const cookie = `${COOKIE_NAME}=${cookieValue}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${MAX_AGE}${isSecure ? '; Secure' : ''};`;
 
@@ -49,17 +49,22 @@ export async function POST(request: Request) {
       cookieName: COOKIE_NAME,
       hasValue: !!cookieValue,
       isSecure,
-      cookieString: cookie.substring(0, 50) + "..."
+      cookieString: cookie,
+      secretLength: process.env.NEXT_PUBLIC_WEB_ACCESS_SECRET?.length,
+      expiresAt: new Date(expiresAt).toISOString()
     });
 
     // Return success response with Set-Cookie header
-    return new NextResponse(JSON.stringify({ ok: true }), {
+    const response = new NextResponse(JSON.stringify({ ok: true }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
         'Set-Cookie': cookie
       }
     });
+
+    console.log("📤 Response headers:", Object.fromEntries(response.headers.entries()));
+    return response;
 
   } catch (error) {
     console.error("OTP verification error:", error);
