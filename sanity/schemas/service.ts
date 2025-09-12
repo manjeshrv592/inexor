@@ -10,7 +10,15 @@ export default defineType({
       title: "Service Title",
       type: "string",
       description:
-        "Full service title (e.g., 'Reliable Importer of Record Services for Global Business')",
+        "Main service title displayed (e.g., 'IMPORTER OF RECORDS')",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "shortDescription",
+      title: "Short Description",
+      type: "string",
+      description:
+        "Brief description of the service (e.g., 'Reliable Importer of Record Services for Global Business')",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -28,14 +36,6 @@ export default defineType({
         source: "code",
         maxLength: 96,
       },
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "subtitle",
-      title: "Service Subtitle",
-      type: "string",
-      description:
-        "Subtitle displayed above the main title (e.g., 'IMPORTOR OF RECORDS')",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -152,6 +152,56 @@ export default defineType({
       description:
         "Shown at the end of the service content. Image on the right (fallback used if empty).",
     }),
+
+    // Homepage Preview Section
+    defineField({
+      name: "homepagePreview",
+      title: "Homepage Preview",
+      type: "object",
+      description: "Fields used for displaying this service on the homepage",
+      fields: [
+        defineField({
+          name: "heading1",
+          title: "First Heading Line",
+          type: "string",
+          description: "First line of the service heading for homepage",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "heading2",
+          title: "Second Heading Line",
+          type: "string",
+          description: "Second line of the service heading for homepage",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "description",
+          title: "Homepage Description",
+          type: "text",
+          description: "Short description for homepage display",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "backgroundImage",
+          title: "Homepage Background Image",
+          type: "image",
+          description: "Background image for homepage service card",
+          options: {
+            hotspot: true,
+          },
+          fields: [
+            {
+              name: "alt",
+              type: "string",
+              title: "Alternative Text",
+              description: "Important for SEO and accessibility",
+            },
+          ],
+          validation: (Rule) => Rule.required(),
+        }),
+      ],
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
       name: "order",
       title: "Display Order",
@@ -183,7 +233,7 @@ export default defineType({
   preview: {
     select: {
       title: "code",
-      subtitle: "title",
+      subtitle: "shortDescription",
       order: "order",
       isActive: "isActive",
       media: "featuredImage",

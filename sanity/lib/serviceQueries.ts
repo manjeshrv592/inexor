@@ -4,7 +4,7 @@ export const SERVICES_QUERY = `*[_type == "service" && isActive == true] | order
   title,
   code,
   slug,
-  subtitle,
+  shortDescription,
   excerpt,
   "featuredImage": featuredImage {
     asset->{
@@ -39,7 +39,7 @@ export const SERVICE_BY_SLUG_QUERY = `*[_type == "service" && slug.current == $s
   title,
   code,
   slug,
-  subtitle,
+  shortDescription,
   excerpt,
   "featuredImage": featuredImage {
     asset->{
@@ -89,7 +89,7 @@ export const SERVICE_BY_CODE_QUERY = `*[_type == "service" && code == $code && i
   title,
   code,
   slug,
-  subtitle,
+  shortDescription,
   excerpt,
   "featuredImage": featuredImage {
     asset->{

@@ -21,7 +21,7 @@ const NavItem: React.FC<NavItemProps> = ({
     <li>
       <Link
         href={href}
-        className={`font-michroma hover:text-brand-orange-500 flex cursor-pointer items-center gap-1 border-none bg-transparent text-[10px] tracking-[1px] duration-300 xl:rotate-180 xl:[writing-mode:vertical-rl] ${
+        className={`font-michroma hover:text-brand-orange-500 flex cursor-pointer items-center gap-1 border-none bg-transparent text-[10px] tracking-[1px] duration-300 xl:rotate-180 xl:text-xs xl:[writing-mode:vertical-rl] ${
           isActive ? "text-brand-orange-500" : "text-white"
         }`}
       >

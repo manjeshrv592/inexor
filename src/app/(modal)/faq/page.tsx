@@ -112,7 +112,7 @@ const FAQPage = () => {
       }}
     >
       {/* Left Panel - Category Selection */}
-      <div className="relative">
+      <div className="relative h-[55px] xl:h-full">
         <div className="absolute inset-0 hidden size-full xl:block">
           <Image
             src="/img/faq.jpg"

@@ -132,19 +132,22 @@ export const SERVICES_SECTION_QUERY = groq`*[_type == "servicesSection" && isAct
   isActive
 }`;
 
-export const SERVICE_ITEMS_QUERY = groq`*[_type == "serviceItem" && isActive == true] | order(order asc) {
+export const SERVICES_FOR_HOMEPAGE_QUERY = groq`*[_type == "service" && isActive == true] | order(order asc) {
   _id,
   code,
   title,
-  heading1,
-  heading2,
-  description,
-  backgroundImage {
-    asset->{
-      url,
-      metadata {
-        dimensions
-      }
+  homepagePreview {
+    heading1,
+    heading2,
+    description,
+    backgroundImage {
+      asset->{
+        url,
+        metadata {
+          dimensions
+        }
+      },
+      alt
     }
   },
   order,

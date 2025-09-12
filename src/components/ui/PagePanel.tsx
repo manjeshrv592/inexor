@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { ChevronLeftIcon } from "lucide-react";
 
 interface PagePanelProps {
   children: React.ReactNode;
@@ -10,7 +11,9 @@ interface PagePanelProps {
 
 const PagePanel = ({ children }: PagePanelProps) => {
   const [currentBreakpoint, setCurrentBreakpoint] = useState<string>("xl");
+  const [isClosing, setIsClosing] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   // Determine slide direction based on route and screen size
   const getSlideDirection = () => {
@@ -47,15 +50,15 @@ const PagePanel = ({ children }: PagePanelProps) => {
   const getInitialPosition = (direction: string) => {
     switch (direction) {
       case "left":
-        return { x: "-100%" };
+        return { x: "-100vw" };
       case "right":
-        return { x: "100%" };
+        return { x: "100vw" };
       case "top":
-        return { y: "-100%" };
+        return { y: "-100vh" };
       case "bottom":
-        return { y: "100%" };
+        return { y: "100vh" };
       default:
-        return { x: "100%" };
+        return { x: "100vw" };
     }
   };
 
@@ -73,18 +76,67 @@ const PagePanel = ({ children }: PagePanelProps) => {
         duration: 0.5,
       },
     },
+    exit: {
+      ...getInitialPosition(currentDirection),
+      transition: {
+        type: "spring" as const,
+        damping: 25,
+        stiffness: 200,
+        duration: 0.5,
+      },
+    },
+  };
+
+  const handleClose = () => {
+    setIsClosing(true);
+    // Wait for animation to complete before navigating
+    setTimeout(() => {
+      router.push("/", { scroll: false });
+    }, 500);
   };
 
   return (
-    <motion.main
-      className="xxl:left-24 xxl:top-16 xxl:h-[calc(100vh-128px)] xxl:w-[calc(100%-(128px*2))] fixed top-[118.14px] left-0 z-[100] h-[calc(100vh-118.14px)] w-full overflow-visible rounded-lg shadow-2xl xl:top-14 xl:left-20 xl:h-[calc(100vh-112px)] xl:w-[calc(100%-(112px*2))]"
-      style={{ backgroundColor: "#1c1b1b" }}
+    <motion.div
+      className="fixed z-[100] overflow-visible rounded-lg shadow-2xl"
+      style={{
+        backgroundColor: "#1c1b1b",
+        top:
+          currentBreakpoint === "xl" || currentBreakpoint === "xxl"
+            ? currentBreakpoint === "xxl"
+              ? "64px"
+              : "56px"
+            : "118.14px",
+        left:
+          currentBreakpoint === "xl" || currentBreakpoint === "xxl"
+            ? currentBreakpoint === "xxl"
+              ? "96px"
+              : "80px"
+            : "10px",
+        width:
+          currentBreakpoint === "xl" || currentBreakpoint === "xxl"
+            ? currentBreakpoint === "xxl"
+              ? "calc(100% - 192px)"
+              : "calc(100% - 160px)"
+            : "calc(100% - 20px)",
+        height:
+          currentBreakpoint === "xl" || currentBreakpoint === "xxl"
+            ? currentBreakpoint === "xxl"
+              ? "calc(100vh - 128px)"
+              : "calc(100vh - 112px)"
+            : "calc(100vh - 143.14px)",
+      }}
       variants={slideVariants}
       initial="hidden"
-      animate="visible"
+      animate={isClosing ? "exit" : "visible"}
     >
       {children}
-    </motion.main>
+      <button
+        onClick={handleClose}
+        className="absolute right-1/2 bottom-0 z-50 flex size-10 translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-orange-500 transition-colors hover:bg-orange-600 xl:top-1/2 xl:right-0 xl:bottom-auto xl:-translate-y-1/2"
+      >
+        <ChevronLeftIcon className="rotate-90 xl:rotate-0" />
+      </button>
+    </motion.div>
   );
 };
 

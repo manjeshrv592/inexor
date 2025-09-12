@@ -30,6 +30,9 @@ NEXT_PUBLIC_OTP_AUTH_FROM=01-01-2025
 # Examples: 'Asia/Kolkata', 'America/New_York', 'Europe/London', 'UTC'
 # If not set, uses server's local timezone
 NEXT_PUBLIC_TIMEZONE=Asia/Kolkata
+
+# Site URL for sitemap generation (required for production)
+NEXT_PUBLIC_SITE_URL=https://yourdomain.com
 ```
 
 ## Steps to set up:

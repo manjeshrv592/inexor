@@ -6,6 +6,7 @@ import UseCasesSection from "@/components/ui/UseCasesSection";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { useSearchParams } from "next/navigation";
 import {
   getServices,
   getServiceByCode,
@@ -14,6 +15,7 @@ import {
 import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
 
 const ServicesPage = () => {
+  const searchParams = useSearchParams();
   const [services, setServices] = useState<Service[]>([]);
   const [activeService, setActiveService] = useState<Service | null>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -28,11 +30,29 @@ const ServicesPage = () => {
         const servicesData = await getServices();
         setServices(servicesData);
 
-        // Set first service as active if services exist
-        if (servicesData.length > 0) {
-          const firstService = await getServiceByCode(servicesData[0].code);
-          setActiveService(firstService);
-          setActiveIndex(0);
+        // Check if there's a service parameter in URL
+        const serviceParam = searchParams.get('service');
+        let targetService = null;
+        let targetIndex = 0;
+
+        if (serviceParam && servicesData.length > 0) {
+          // Find service by code from URL parameter
+          const serviceIndex = servicesData.findIndex(s => s.code.toLowerCase() === serviceParam.toLowerCase());
+          if (serviceIndex !== -1) {
+            targetService = await getServiceByCode(servicesData[serviceIndex].code);
+            targetIndex = serviceIndex;
+          }
+        }
+
+        // Fallback to first service if no URL param or service not found
+        if (!targetService && servicesData.length > 0) {
+          targetService = await getServiceByCode(servicesData[0].code);
+          targetIndex = 0;
+        }
+
+        if (targetService) {
+          setActiveService(targetService);
+          setActiveIndex(targetIndex);
         }
       } catch (error) {
         console.error("Error fetching services data:", error);
@@ -42,7 +62,7 @@ const ServicesPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [searchParams]);
 
   // Handle service click
   const handleServiceClick = async (service: Service, index: number) => {
@@ -77,7 +97,7 @@ const ServicesPage = () => {
       }}
     >
       {/* Left Panel */}
-      <div className="relative h-20 xl:h-full">
+      <div className="relative h-[55px] xl:h-full">
         <div className="relative z-10 flex size-full flex-col items-center justify-center gap-5">
           <div className="flex gap-5 xl:flex-col">
             {services.map((service, index) => (
@@ -139,9 +159,9 @@ const ServicesPage = () => {
                     </div>
                     <div className="relative z-10 flex size-full flex-col items-center justify-center gap-2 text-center">
                       <h5 className="font-michroma text-[10px]">
-                        {activeService.subtitle.toUpperCase()}
+                        {activeService.title.toUpperCase()}
                       </h5>
-                      <h2 className="text-lg">{activeService.title}</h2>
+                      <h2 className="text-lg">{activeService.shortDescription}</h2>
                     </div>
                   </div>
 

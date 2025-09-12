@@ -17,7 +17,7 @@ import {
   getAboutItems,
   getTestimonialsSection,
   getServicesSection,
-  getServiceItems,
+  getServicesForHomepage,
   getKeyValuePillarsSection,
   getKeyValuePillarItems,
   getFooter,
@@ -63,7 +63,7 @@ const HomePage = async () => {
     getWhy(),
     getWhyItems(),
     getServicesSection(),
-    getServiceItems(),
+    getServicesForHomepage(),
     getTestimonialsSection(),
     getFooter(),
   ]);

@@ -96,7 +96,7 @@ const ResourcesPage = () => {
       }}
     >
       {/* Left Panel */}
-      <div className="relative h-20 xl:h-full">
+      <div className="relative h-[55px] xl:h-full">
         <div className="relative flex size-full items-center justify-center">
           <Button
             className="font-michroma text-[10px] tracking-[1px]"

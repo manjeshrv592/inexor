@@ -11,7 +11,6 @@ import clientsSection from "./clientsSection";
 import testimonial from "./testimonial";
 import testimonialsSection from "./testimonialsSection";
 import servicesSection from "./servicesSection";
-import serviceItem from "./serviceItem";
 import service from "./service";
 import faqCategory from "./faqCategory";
 import faqItem from "./faqItem";
@@ -52,7 +51,6 @@ export const schemaTypes = [
   testimonial,
   testimonialsSection,
   servicesSection,
-  serviceItem,
   service,
   faqCategory,
   faqItem,

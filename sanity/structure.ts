@@ -67,16 +67,6 @@ export const structure = (S: StructureBuilder) =>
                   ),
                 ),
               S.listItem()
-                .title("Service Items")
-                .child(
-                  S.documentTypeList("serviceItem")
-                    .title("Service Items")
-                    .defaultOrdering([
-                      { field: "isActive", direction: "desc" },
-                      { field: "order", direction: "asc" },
-                    ]),
-                ),
-              S.listItem()
                 .title("Countries Service Management")
                 .child(
                   S.documentTypeList("country")
@@ -270,16 +260,16 @@ export const structure = (S: StructureBuilder) =>
                 .child(
                   S.document()
                     .schemaType("privacyPolicyPage")
-                    .documentId("privacy-policy-page")
+                    .documentId("privacy-policy-page"),
                 ),
               S.listItem()
                 .title("Privacy Policy Content")
                 .child(
                   S.document()
                     .schemaType("privacyPolicyContent")
-                    .documentId("privacy-policy-content")
+                    .documentId("privacy-policy-content"),
                 ),
-            ])
+            ]),
         ),
       S.listItem()
         .title("Terms & Conditions")
@@ -292,16 +282,16 @@ export const structure = (S: StructureBuilder) =>
                 .child(
                   S.document()
                     .schemaType("termsConditionsPage")
-                    .documentId("terms-conditions-page")
+                    .documentId("terms-conditions-page"),
                 ),
               S.listItem()
                 .title("Terms & Conditions Content")
                 .child(
                   S.document()
                     .schemaType("termsConditionsContent")
-                    .documentId("terms-conditions-content")
+                    .documentId("terms-conditions-content"),
                 ),
-            ])
+            ]),
         ),
       S.divider(),
 

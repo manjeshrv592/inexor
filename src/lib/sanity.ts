@@ -10,7 +10,7 @@ import {
   TESTIMONIALS_QUERY,
   TESTIMONIALS_SECTION_QUERY,
   SERVICES_SECTION_QUERY,
-  SERVICE_ITEMS_QUERY,
+  SERVICES_FOR_HOMEPAGE_QUERY,
   FAQ_CATEGORIES_QUERY,
   FAQ_ITEMS_QUERY,
   FAQ_ITEMS_BY_CATEGORY_QUERY,
@@ -231,14 +231,16 @@ export interface ServiceImage {
   };
 }
 
-export interface ServiceItem {
+export interface ServiceForHomepage {
   _id: string;
   code: string;
   title: string;
-  heading1: string;
-  heading2: string;
-  description: string;
-  backgroundImage: ServiceImage;
+  homepagePreview: {
+    heading1: string;
+    heading2: string;
+    description: string;
+    backgroundImage: ServiceImage & { alt?: string };
+  };
   order: number;
   isActive: boolean;
 }
@@ -253,8 +255,8 @@ export async function getServicesSection(): Promise<ServicesSection | null> {
   return client.fetch(SERVICES_SECTION_QUERY);
 }
 
-export async function getServiceItems(): Promise<ServiceItem[]> {
-  return client.fetch(SERVICE_ITEMS_QUERY);
+export async function getServicesForHomepage(): Promise<ServiceForHomepage[]> {
+  return client.fetch(SERVICES_FOR_HOMEPAGE_QUERY);
 }
 
 export interface FAQCategory {
@@ -443,7 +445,7 @@ export async function getPrivacyPolicyPage(): Promise<PrivacyPolicyPage | null> 
   return client.fetch(
     PRIVACY_POLICY_PAGE_QUERY,
     {},
-    { next: { tags: ["privacy-policy-page"] } }
+    { next: { tags: ["privacy-policy-page"] } },
   );
 }
 
@@ -451,7 +453,7 @@ export async function getPrivacyPolicyContent(): Promise<PrivacyPolicyContent | 
   return client.fetch(
     PRIVACY_POLICY_CONTENT_QUERY,
     {},
-    { next: { tags: ["privacy-policy-content"] } }
+    { next: { tags: ["privacy-policy-content"] } },
   );
 }
 
@@ -459,7 +461,7 @@ export async function getTermsConditionsPage(): Promise<TermsConditionsPage | nu
   return client.fetch(
     TERMS_CONDITIONS_PAGE_QUERY,
     {},
-    { next: { tags: ["terms-conditions-page"] } }
+    { next: { tags: ["terms-conditions-page"] } },
   );
 }
 
@@ -467,7 +469,7 @@ export async function getTermsConditionsContent(): Promise<TermsConditionsConten
   return client.fetch(
     TERMS_CONDITIONS_CONTENT_QUERY,
     {},
-    { next: { tags: ["terms-conditions-content"] } }
+    { next: { tags: ["terms-conditions-content"] } },
   );
 }
 
@@ -479,9 +481,5 @@ export interface HomeSeo {
 }
 
 export async function getHomeSeo(): Promise<HomeSeo | null> {
-  return client.fetch(
-    HOME_SEO_QUERY,
-    {},
-    { next: { tags: ["home-seo"] } }
-  );
+  return client.fetch(HOME_SEO_QUERY, {}, { next: { tags: ["home-seo"] } });
 }

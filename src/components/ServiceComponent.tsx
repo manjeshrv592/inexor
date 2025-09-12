@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 interface ServiceComponentProps {
   code: string;
@@ -17,7 +18,9 @@ interface ServiceComponentProps {
         };
       };
     };
+    alt?: string;
   };
+  serviceCode: string;
 }
 
 const ServiceComponent: React.FC<ServiceComponentProps> = ({
@@ -26,6 +29,7 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
   heading2,
   description,
   backgroundImage,
+  serviceCode,
 }) => {
   const backgroundImageUrl = backgroundImage?.asset?.url;
 
@@ -54,16 +58,18 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
           &quot;{description}&quot;
         </p>
         <div className="mt-4 text-center">
-          <Button
-            className="font-michroma text-[10px] tracking-[1px] xl:text-xs"
-            size={"sm"}
-            variant="outline"
-          >
-            <span className="flex items-center gap-1 xl:py-2">
-              <span>Read More</span>
-              <ArrowRight size={16} />
-            </span>
-          </Button>
+          <Link href={`/services?service=${serviceCode}`}>
+            <Button
+              className="font-michroma text-[10px] tracking-[1px] xl:text-xs"
+              size={"sm"}
+              variant="outline"
+            >
+              <span className="flex items-center gap-1 xl:py-2">
+                <span>Read More</span>
+                <ArrowRight size={16} />
+              </span>
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

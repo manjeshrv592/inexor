@@ -43,7 +43,7 @@ export interface Service {
   slug: {
     current: string;
   };
-  subtitle: string;
+  shortDescription: string;
   excerpt?: string;
   featuredImage?: ServiceImage;
   content?: PortableTextBlock[]; // Rich text content

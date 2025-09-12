@@ -6,11 +6,11 @@ import ServiceComponent from "@/components/ServiceComponent";
 import { ChevronRight } from "lucide-react";
 import Section from "../layout/Section";
 import SectionTitle from "../ui/SectionTitle";
-import { ServicesSection, ServiceItem } from "@/lib/sanity";
+import { ServicesSection, ServiceForHomepage } from "@/lib/sanity";
 
 interface OurServicesProps {
   servicesSection: ServicesSection | null;
-  serviceItems: ServiceItem[];
+  serviceItems: ServiceForHomepage[];
 }
 
 const OurServices: React.FC<OurServicesProps> = ({
@@ -198,10 +198,11 @@ const OurServices: React.FC<OurServicesProps> = ({
       <ServiceComponent
         key={activeService._id}
         code={activeService.code}
-        heading1={activeService.heading1}
-        heading2={activeService.heading2}
-        description={activeService.description}
-        backgroundImage={activeService.backgroundImage}
+        heading1={activeService.homepagePreview.heading1}
+        heading2={activeService.homepagePreview.heading2}
+        description={activeService.homepagePreview.description}
+        backgroundImage={activeService.homepagePreview.backgroundImage}
+        serviceCode={activeService.code}
       />
     );
   };
