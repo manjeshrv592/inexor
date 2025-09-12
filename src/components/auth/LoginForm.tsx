@@ -116,10 +116,24 @@ export default function LoginForm() {
       const data = await res.json();
 
       if (res.ok) {
-        // If OTP was sent successfully
-        setOtpToken(data.token);
-        setOtpEmail(process.env.EMAIL_RECEIVER || "");
-        setStep("otp");
+        // Check if user was authenticated directly (OTP bypassed)
+        if (data.authenticated) {
+          // Direct authentication successful - redirect to dashboard
+          const decodedRedirect = decodeURIComponent(redirect);
+          const redirectUrl = new URL(decodedRedirect, window.location.origin);
+
+          // Only allow same-origin redirects for security
+          if (redirectUrl.origin === window.location.origin) {
+            window.location.href = redirectUrl.pathname + redirectUrl.search;
+          } else {
+            window.location.href = "/";
+          }
+        } else {
+          // OTP was sent successfully - proceed to OTP step
+          setOtpToken(data.token);
+          setOtpEmail(process.env.EMAIL_RECEIVER || "");
+          setStep("otp");
+        }
       } else {
         setError(data?.message || "Invalid credentials");
       }

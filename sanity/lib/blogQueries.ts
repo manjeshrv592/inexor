@@ -56,7 +56,21 @@ export const BLOG_POST_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current ==
     }
   },
   publishedAt,
-  content,
+  content[] {
+    ...,
+    _type == "image" => {
+      ...,
+      asset->{
+        url,
+        metadata {
+          dimensions {
+            width,
+            height
+          }
+        }
+      }
+    }
+  },
   tags,
   readingTime,
   isActive

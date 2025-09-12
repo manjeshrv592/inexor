@@ -52,7 +52,7 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
     }
   }, []);
 
-  const resetTimer = useCallback((resetWarningState: boolean = false): void => {
+  const resetTimer = useCallback((resetWarningState: boolean = false, skipSessionRefresh: boolean = false): void => {
     // Clear existing timers
     if (timerRef.current) clearTimeout(timerRef.current);
     if (warningTimerRef.current) clearTimeout(warningTimerRef.current);
@@ -64,8 +64,12 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
       console.log('[Inactivity Timer] Hiding warning due to user activity');
       warningCallbackRef.current?.(true);
       
-      // Refresh session on user activity
-      refreshSession();
+      // Refresh session on user activity, unless we should skip it (e.g., logout button)
+      if (!skipSessionRefresh) {
+        refreshSession();
+      } else {
+        console.log('[Inactivity Timer] Skipping session refresh (logout button clicked)');
+      }
     }
 
     // Set the logout timer
@@ -122,6 +126,17 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
       
       console.log(`[Inactivity Timer] Activity detected (${event.type}), resetting timers`);
       
+      // Check if this is a logout button click - prevent session refresh
+      const isLogoutButton = target && 
+          typeof target === 'object' && 
+          'closest' in target && 
+          typeof target.closest === 'function' && 
+          (target.closest('button[title="Logout"]') || target.closest('button[aria-label="Logout"]'));
+      
+      if (isLogoutButton) {
+        console.log('[Inactivity Timer] Logout button clicked - skipping session refresh');
+      }
+      
       // If we're in warning state, reset it
       if (warningTimerRef.current === null) {
         console.log('[Inactivity Timer] Resetting warning state due to activity');
@@ -130,8 +145,8 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
         warningTimerRef.current = null;
       }
       
-      // Always reset the timers on activity
-      resetTimer(true);
+      // Reset timers but conditionally refresh session
+      resetTimer(true, isLogoutButton);
     };
 
     // Add event listeners for user activity

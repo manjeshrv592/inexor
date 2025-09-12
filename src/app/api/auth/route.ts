@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { loginSchema } from "@/lib/validations/auth";
+import { isOTPRequired } from "@/lib/dateUtils";
 
 export async function POST(req: Request) {
   if (process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED !== "true") {
@@ -30,10 +31,53 @@ export async function POST(req: Request) {
     );
   }
 
-  // Valid credentials – return success without setting session cookie
+  // Check if OTP is required based on the configured date
+  const otpRequired = isOTPRequired();
+  
+  console.log("🔐 Authentication Debug:", {
+    otpRequired,
+    otpAuthFrom: process.env.NEXT_PUBLIC_OTP_AUTH_FROM,
+    currentDate: new Date().toISOString().split('T')[0]
+  });
+
+  if (!otpRequired) {
+    // OTP not required - set session cookie directly and authenticate user
+    const sessionTimeoutMinutes = parseInt(process.env.NEXT_PUBLIC_SESSION_TIMEOUT || '15');
+    const sessionTimeout = sessionTimeoutMinutes * 60 * 1000; // Convert minutes to milliseconds
+    const expiresAt = Date.now() + sessionTimeout;
+    const cookieValue = `${process.env.NEXT_PUBLIC_WEB_ACCESS_SECRET!}:${expiresAt}`;
+    
+    const response = new NextResponse(JSON.stringify({ 
+      ok: true,
+      authenticated: true,
+      message: 'Authentication successful'
+    }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    // Set authentication cookie
+    response.cookies.set({
+      name: 'web_access',
+      value: cookieValue,
+      path: '/',
+      httpOnly: true,
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      secure: false // Temporarily disabled for VPS testing
+    });
+
+    console.log("✅ Direct authentication successful - OTP bypassed");
+    return response;
+  }
+
+  // OTP is required - return success without setting session cookie
   // The actual session will be set after OTP verification
   return NextResponse.json({ 
     ok: true,
+    otpRequired: true,
     message: 'Please verify OTP to continue'
   });
 }

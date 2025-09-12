@@ -53,7 +53,21 @@ export const SERVICE_BY_SLUG_QUERY = `*[_type == "service" && slug.current == $s
     },
     alt
   },
-  content,
+  content[] {
+    ...,
+    _type == "image" => {
+      ...,
+      asset->{
+        url,
+        metadata {
+          dimensions {
+            width,
+            height
+          }
+        }
+      }
+    }
+  },
   "useCases": useCases {
     title,
     "image": image {
@@ -89,7 +103,21 @@ export const SERVICE_BY_CODE_QUERY = `*[_type == "service" && code == $code && i
     },
     alt
   },
-  content,
+  content[] {
+    ...,
+    _type == "image" => {
+      ...,
+      asset->{
+        url,
+        metadata {
+          dimensions {
+            width,
+            height
+          }
+        }
+      }
+    }
+  },
   "useCases": useCases {
     title,
     "image": image {

@@ -2,10 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { LogOut } from "lucide-react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function LogoutButton() {
-  const router = useRouter();
   const pathname = usePathname();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [showButton, setShowButton] = useState(false);
@@ -26,15 +25,41 @@ export default function LogoutButton() {
     setIsLoggingOut(true);
 
     try {
-      await fetch("/api/auth/logout", {
+      // Call logout API with a timeout to prevent hanging
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+      const response = await fetch("/api/auth/logout", {
         method: "POST",
+        signal: controller.signal,
+        credentials: "same-origin", // Ensure cookies are sent
       });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        console.warn("Logout API returned non-OK status:", response.status);
+      } else {
+        console.log("✅ Logout API successful");
+      }
     } catch (error) {
       console.error("Logout error:", error);
-    } finally {
-      // Redirect to login page regardless of API response
-      router.push("/auth");
+      // Continue with logout even if API fails
     }
+
+    // Clear any client-side authentication state
+    try {
+      // Clear localStorage/sessionStorage if any auth data is stored there
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_data');
+      sessionStorage.removeItem('auth_token');
+      sessionStorage.removeItem('user_data');
+    } catch (error) {
+      console.warn("Error clearing local storage:", error);
+    }
+
+    // Force reload to ensure all state is cleared and redirect to auth page
+    window.location.href = "/auth";
   };
 
   return (
