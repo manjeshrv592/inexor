@@ -1,35 +1,21 @@
 import { defineField, defineType } from "sanity";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "resourcesPage",
-  title: "Resources Page",
+  title: "Resources Page Settings",
   type: "document",
   fields: [
-    defineField({
-      name: "seo",
-      title: "SEO Settings",
-      type: "seo",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "pageTitle",
-      title: "Page Title",
-      type: "string",
-      description: "Main title displayed on the Resources page",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "pageDescription",
-      title: "Page Description",
-      type: "text",
-      description: "Description text displayed below the page title",
-    }),
     defineField({
       name: "blogSectionTitle",
       title: "Blog Section Title",
       type: "string",
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 50, fieldType: 'string' }),
+      },
       description: "Title for the blog section (e.g., 'LATEST BLOGS')",
       initialValue: "LATEST BLOGS",
+      validation: (Rule) => Rule.required().max(50),
     }),
     defineField({
       name: "blogSectionSubtitle",
@@ -57,15 +43,15 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: "pageTitle",
-      subtitle: "seo.metaTitle",
+      title: "blogSectionTitle",
+      subtitle: "blogSectionSubtitle",
       isActive: "isActive",
     },
     prepare(selection) {
       const { title, subtitle, isActive } = selection;
       return {
-        title: `${isActive ? "🟢" : "🔴"} ${title || "Resources Page"}`,
-        subtitle: subtitle || "Resources page configuration",
+        title: `${isActive ? "🟢" : "🔴"} ${title || "Resources Page Settings"}`,
+        subtitle: subtitle || "Resources page content settings",
       };
     },
   },

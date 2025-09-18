@@ -10,6 +10,7 @@ import WhoWeServe from "@/components/sections/WhoWeServe";
 import Why from "@/components/sections/Why";
 import {
   getWhoWeServeItems,
+  getWhoWeServeSection,
   getHero,
   getWhy,
   getWhyItems,
@@ -47,6 +48,7 @@ const HomePage = async () => {
     aboutData,
     aboutItems,
     whoWeServeItems,
+    whoWeServeSection,
     whyData,
     whyItems,
     servicesSection,
@@ -60,6 +62,7 @@ const HomePage = async () => {
     getAboutSection(),
     getAboutItems(),
     getWhoWeServeItems(),
+    getWhoWeServeSection(),
     getWhy(),
     getWhyItems(),
     getServicesSection(),
@@ -76,7 +79,7 @@ const HomePage = async () => {
         items={keyValuePillarItems}
       />
       <AboutOverview aboutData={aboutData} aboutItems={aboutItems} />
-      <WhoWeServe items={whoWeServeItems} />
+      <WhoWeServe items={whoWeServeItems} sectionData={whoWeServeSection} />
       <Why whyData={whyData} whyItems={whyItems} />
       <OurServices
         servicesSection={servicesSection}

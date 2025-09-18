@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "servicesSection",
@@ -9,8 +10,12 @@ export default defineType({
       name: "title",
       title: "Section Title",
       type: "string",
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 100, fieldType: 'string' }),
+      },
       initialValue: "OUR SERVICES",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().max(100),
+      description: "Main title displayed at the top of the services section",
     }),
     defineField({
       name: "isActive",

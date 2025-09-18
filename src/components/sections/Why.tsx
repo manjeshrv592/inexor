@@ -12,6 +12,7 @@ interface WhyProps {
 
 const Why: React.FC<WhyProps> = ({ whyData, whyItems }) => {
   // Fallback data when no Sanity data exists
+  const title = whyData?.title || "WHY CHOOSE INEXOR";
   const subtitle = whyData?.subtitle || "Sub Title";
   const description = whyData?.description || "Description";
 
@@ -48,7 +49,7 @@ const Why: React.FC<WhyProps> = ({ whyData, whyItems }) => {
     <Section className="xxl:pl-20 lg:pl-20">
       <Container className="text-center">
         <div className="text-center">
-          <SectionTitle>WHY CHOOSE INEXOR</SectionTitle>
+          <SectionTitle>{title}</SectionTitle>
         </div>
         <h3 className="mb-4 text-lg">{subtitle}</h3>
         <p className="mx-auto mb-8 max-w-4xl text-sm">{description}</p>

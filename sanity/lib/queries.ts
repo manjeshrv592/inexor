@@ -8,6 +8,14 @@ export const WHO_WE_SERVE_QUERY = groq`*[_type == "whoWeServeItem"] | order(orde
   order
 }`;
 
+export const WHO_WE_SERVE_SECTION_QUERY = groq`*[_type == "whoWeServeSection" && isActive == true][0] {
+  _id,
+  title,
+  subtitle,
+  description,
+  isActive
+}`;
+
 export const HERO_QUERY = groq`*[_type == "hero" && isActive == true][0] {
   _id,
   title,
@@ -25,6 +33,7 @@ export const HERO_QUERY = groq`*[_type == "hero" && isActive == true][0] {
 
 export const WHY_QUERY = groq`*[_type == "why" && isActive == true][0] {
   _id,
+  title,
   subtitle,
   description,
   isActive
@@ -39,6 +48,7 @@ export const WHY_ITEMS_QUERY = groq`*[_type == "whyItem"] | order(order asc) {
 
 export const CLIENTS_QUERY = groq`*[_type == "clientsSection"][0] {
   _id,
+  title,
   logos[] {
     logo {
       asset->{

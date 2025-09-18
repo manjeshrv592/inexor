@@ -1,4 +1,4 @@
-import { client } from "./sanity";
+import { client } from "../../sanity/lib/client";
 
 export interface SanityCountry {
   _id: string;
@@ -37,10 +37,34 @@ export interface SanityMapsSection {
 // Fetch active maps section with all countries
 export async function getMapsSection(): Promise<SanityMapsSection | null> {
   try {
-    // Get all active countries directly
+    // Fetch maps section from Sanity
+    const query = `
+      *[_type == "mapsSection" && isActive == true][0] {
+        _id,
+        title,
+        description,
+        isActive,
+        mapConfig
+      }
+    `;
+
+    const mapsSection = await client.fetch(
+      query,
+      {},
+      { next: { tags: ["mapsSection"] } }
+    );
+
+    // Get all active countries separately
     const activeCountries = await getActiveCountries();
 
-    // Return a hardcoded maps section with the active countries
+    if (mapsSection) {
+      return {
+        ...mapsSection,
+        countries: activeCountries,
+      };
+    }
+
+    // Fallback if no maps section found in Sanity
     return {
       _id: "default-maps-section",
       title: "GO GLOBAL. INSTANTLY.",

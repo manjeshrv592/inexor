@@ -1,10 +1,19 @@
 import { defineField, defineType } from "sanity";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "why",
   title: "Why Choose Us Section",
   type: "document",
   fields: [
+    defineField({
+      name: "title",
+      title: "Main Title",
+      type: "string",
+      initialValue: "WHY CHOOSE INEXOR",
+      validation: (Rule) => Rule.required().max(100),
+      description: "Main section title (e.g., 'WHY CHOOSE INEXOR')",
+    }),
     defineField({
       name: "subtitle",
       title: "Subtitle (H3)",
@@ -15,7 +24,13 @@ export default defineType({
       name: "description",
       title: "Description",
       type: "text",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 1000 }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(1000)
+          .error('Description must be 1000 characters or less'),
     }),
     defineField({
       name: "isActive",
@@ -27,8 +42,8 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: "subtitle",
-      subtitle: "description",
+      title: "title",
+      subtitle: "subtitle",
       isActive: "isActive",
     },
     prepare(selection) {

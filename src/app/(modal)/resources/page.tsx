@@ -12,6 +12,7 @@ import {
   getBlogPostBySlug,
   type BlogPost,
 } from "@/lib/sanity/blog";
+import { getResourcesPage, type ResourcesPage } from "@/lib/sanity";
 import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
 
 const ResourcesPage = () => {
@@ -19,6 +20,7 @@ const ResourcesPage = () => {
   const [activeBlogPost, setActiveBlogPost] = useState<BlogPost | null>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [loading, setLoading] = useState(true);
+  const [resourcesPageData, setResourcesPageData] = useState<ResourcesPage | null>(null);
   const rightPanelRef = React.useRef<HTMLDivElement>(null);
 
   // Fetch initial data
@@ -26,8 +28,15 @@ const ResourcesPage = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const posts = await getBlogPosts();
+        
+        // Fetch both blog posts and resources page data
+        const [posts, pageData] = await Promise.all([
+          getBlogPosts(),
+          getResourcesPage()
+        ]);
+        
         setBlogPosts(posts);
+        setResourcesPageData(pageData);
 
         // Set first post as active if posts exist
         if (posts.length > 0) {
@@ -120,7 +129,7 @@ const ResourcesPage = () => {
       {/* Middle Panel - Blog List Mobile */}
       <div className="p-5 xl:hidden xl:h-full xl:flex-col xl:p-1 xl:pt-12">
         <h3 className="font-michroma mb-5 hidden text-center text-xs tracking-[1px] xl:block">
-          LATEST <span className="text-brand-orange-500">BLOGS</span>
+          {resourcesPageData?.blogSectionTitle || "LATEST BLOGS"}
         </h3>
 
         {/* Mobile list */}
@@ -155,7 +164,7 @@ const ResourcesPage = () => {
       <div className="xxl:h-[calc(100vh-128px)] hidden xl:flex xl:h-[calc(100vh-112px)] xl:flex-1 xl:flex-col xl:p-1">
         <AutoScrollContainer className="">
           <h3 className="font-michroma mt-10 mb-5 hidden text-center text-xs tracking-[1px] xl:block">
-            LATEST <span className="text-brand-orange-500">BLOGS</span>
+            {resourcesPageData?.blogSectionTitle || "LATEST BLOGS"}
           </h3>
 
           <div className="pr-1">

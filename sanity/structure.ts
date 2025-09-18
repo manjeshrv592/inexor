@@ -29,6 +29,13 @@ export const structure = (S: StructureBuilder) =>
                   S.documentTypeList("aboutItem").title("About Service Items"),
                 ),
               S.listItem()
+                .title("Who We Serve Section")
+                .child(
+                  S.documentTypeList("whoWeServeSection").title(
+                    "Who We Serve Section",
+                  ),
+                ),
+              S.listItem()
                 .title("Who We Serve Items")
                 .child(
                   S.documentTypeList("whoWeServeItem").title(
@@ -60,11 +67,9 @@ export const structure = (S: StructureBuilder) =>
                   ),
                 ),
               S.listItem()
-                .title("Services Section")
+                .title("Maps Section")
                 .child(
-                  S.documentTypeList("servicesSection").title(
-                    "Services Section",
-                  ),
+                  S.documentTypeList("mapsSection").title("Maps Section"),
                 ),
               S.listItem()
                 .title("Countries Service Management")
@@ -186,6 +191,11 @@ export const structure = (S: StructureBuilder) =>
                 ),
               S.divider(),
               S.listItem()
+                .title("Services Section")
+                .child(
+                  S.documentTypeList("servicesSection").title("Services Section"),
+                ),
+              S.listItem()
                 .title("Services")
                 .child(
                   S.documentTypeList("service")
@@ -208,11 +218,18 @@ export const structure = (S: StructureBuilder) =>
               S.listItem()
                 .title("🔍 SEO Settings")
                 .child(
-                  S.documentTypeList("resourcesPage").title(
+                  S.documentTypeList("resourcesPageSeo").title(
                     "Resources Page SEO",
                   ),
                 ),
               S.divider(),
+              S.listItem()
+                .title("Resources Page Settings")
+                .child(
+                  S.documentTypeList("resourcesPage").title(
+                    "Resources Page Settings",
+                  ),
+                ),
               S.listItem()
                 .title("Blog Posts")
                 .child(
@@ -293,6 +310,18 @@ export const structure = (S: StructureBuilder) =>
                 ),
             ]),
         ),
+      S.divider(),
+
+      // Navigation Bar folder
+      S.listItem()
+        .title("Navigation Bar")
+        .child(
+          S.document()
+            .schemaType("navigationConfig")
+            .documentId("navigation-config")
+            .title("Navigation Configuration")
+        ),
+
       S.divider(),
 
       // Footer folder

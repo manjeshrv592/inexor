@@ -1,4 +1,5 @@
 import whoWeServeItem from "./whoWeServeItem";
+import whoWeServeSection from "./whoWeServeSection";
 import hero from "./hero";
 import why from "./why";
 import whyItem from "./whyItem";
@@ -31,14 +32,17 @@ import faqPage from "./faqPage";
 import aboutPage from "./aboutPage";
 import servicesPage from "./servicesPage";
 import resourcesPage from "./resourcesPage";
+import resourcesPageSeo from "./resourcesPageSeo";
 import contactPage from "./contactPage";
 import blogPost from "./blogPost";
 import { privacySchemas } from "./privacy";
 import { termsSchemas } from "./terms";
+import { navigationSchemas } from "./navigation";
 
 export const schemaTypes = [
   // Existing schemas
   whoWeServeItem,
+  whoWeServeSection,
   hero,
   why,
   whyItem,
@@ -71,8 +75,10 @@ export const schemaTypes = [
   aboutPage,
   servicesPage,
   resourcesPage,
+  resourcesPageSeo,
   contactPage,
   blogPost,
   ...privacySchemas,
   ...termsSchemas,
+  ...navigationSchemas,
 ];

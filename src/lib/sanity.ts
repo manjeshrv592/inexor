@@ -1,6 +1,7 @@
 import { client } from "../../sanity/lib/client";
 import {
   WHO_WE_SERVE_QUERY,
+  WHO_WE_SERVE_SECTION_QUERY,
   HERO_QUERY,
   WHY_QUERY,
   WHY_ITEMS_QUERY,
@@ -39,6 +40,14 @@ export interface WhoWeServeItem {
   order: number;
 }
 
+export interface WhoWeServeSection {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  isActive: boolean;
+}
+
 export interface Hero {
   _id: string;
   title: string;
@@ -59,6 +68,7 @@ export interface Hero {
 
 export interface Why {
   _id: string;
+  title: string;
   subtitle: string;
   description: string;
   isActive: boolean;
@@ -112,6 +122,14 @@ export async function getWhoWeServeItems(): Promise<WhoWeServeItem[]> {
   );
 }
 
+export async function getWhoWeServeSection(): Promise<WhoWeServeSection | null> {
+  return client.fetch(
+    WHO_WE_SERVE_SECTION_QUERY,
+    {},
+    { next: { tags: ["who-we-serve-section"] } },
+  );
+}
+
 export async function getHero(): Promise<Hero | null> {
   return client.fetch(HERO_QUERY, {}, { next: { tags: ["hero"] } });
 }
@@ -153,11 +171,30 @@ export interface ClientLogo {
 
 export interface ClientsSection {
   _id: string;
+  title: string;
   logos: ClientLogo[];
 }
 
 export async function getClientsSection(): Promise<ClientsSection | null> {
   return client.fetch(CLIENTS_QUERY, {}, { next: { tags: ["clients"] } });
+}
+
+export interface ResourcesPage {
+  _id: string;
+  blogSectionTitle: string;
+  blogSectionSubtitle?: string;
+  isActive: boolean;
+}
+
+export async function getResourcesPage(): Promise<ResourcesPage | null> {
+  const query = `*[_type == "resourcesPage" && isActive == true][0] {
+    _id,
+    blogSectionTitle,
+    blogSectionSubtitle,
+    isActive
+  }`;
+  
+  return client.fetch(query, {}, { next: { tags: ["resourcesPage"] } });
 }
 
 export interface TestimonialImage {

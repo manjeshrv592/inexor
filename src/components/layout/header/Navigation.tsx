@@ -1,19 +1,46 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import NavItem from "./NavItem";
+import { NavigationItem, getNavigationData } from "@/lib/sanity/navigation";
 
 interface NavigationProps {
   isOpen: boolean;
 }
 
 const Navigation: React.FC<NavigationProps> = ({ isOpen }) => {
-  const navigationItems = [
-    { href: "/resources", label: "Resources", hasDropdown: true },
-    { href: "/services", label: "Services", hasDropdown: true },
-    { href: "/about", label: "About Us", hasDropdown: false },
-    { href: "/faq", label: "FAQ's", hasDropdown: false },
-  ];
+  const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
+
+  useEffect(() => {
+    const fetchNavigationData = async () => {
+      try {
+        console.log("🔄 Fetching navigation configuration from Sanity...");
+        const { items } = await getNavigationData();
+        console.log("✅ Navigation configuration received:", { items });
+        console.log("📋 Items details:", items.map(item => ({ label: item.label, href: item.href, hasDropdown: item.hasDropdown })));
+        setNavigationItems(items);
+      } catch (error) {
+        console.error("❌ Failed to fetch navigation configuration:", error);
+        // Don't set any fallback items - keep navigationItems empty
+      }
+    };
+
+    fetchNavigationData();
+  }, []);
+
+  const displayItems = navigationItems;
+
+  console.log("🎯 Navigation render state:", { 
+    itemsCount: displayItems.length,
+    items: displayItems 
+  });
+
+  // Don't render navigation if no items are available
+  if (displayItems.length === 0) {
+    console.log("⚠️ No navigation configuration found - returning null");
+    return null;
+  }
 
   return (
     <motion.nav
@@ -42,9 +69,9 @@ const Navigation: React.FC<NavigationProps> = ({ isOpen }) => {
           ease: [0.68, -0.55, 0.27, 1.55],
         }}
       >
-        {navigationItems.map((item, index) => (
+        {displayItems.map((item, index) => (
           <motion.div
-            key={item.href}
+            key={item._id || item.href}
             initial={{ opacity: 0, y: -20 }}
             animate={{
               opacity: isOpen ? 1 : 0,

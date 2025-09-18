@@ -7,11 +7,15 @@ import { getClientsSection } from "@/lib/sanity";
 
 export async function Clients() {
   const clientsData = await getClientsSection();
+  
+  // Use title from Sanity or fallback to default
+  const title = clientsData?.title || "TRUSTED BY 40+ INDUSTRY LEADERS";
+  
   return (
     <Section className="xxl:pl-20 lg:pl-20">
       <Container>
         <div className="text-center">
-          <SectionTitle>TRUSTED BY 40+ INDUSTRY LEADERS</SectionTitle>
+          <SectionTitle>{title}</SectionTitle>
         </div>
         <div className="relative flex flex-col items-center justify-center overflow-hidden antialiased">
           {clientsData?.logos && (

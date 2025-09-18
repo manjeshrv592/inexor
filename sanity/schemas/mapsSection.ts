@@ -1,17 +1,21 @@
 import { defineField, defineType } from "sanity";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "mapsSection",
   title: "Maps Section",
   type: "document",
   fields: [
-    // Hidden internal fields - hardcoded values
     defineField({
       name: "title",
       title: "Section Title",
       type: "string",
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 100, fieldType: 'string' }),
+      },
       initialValue: "GO GLOBAL. INSTANTLY.",
-      hidden: true,
+      validation: (Rule) => Rule.required().max(100),
+      description: "Main title displayed at the top of the maps section",
     }),
     defineField({
       name: "description",
@@ -25,7 +29,7 @@ export default defineType({
       title: "Is Active",
       type: "boolean",
       initialValue: true,
-      hidden: true,
+      description: "Enable/disable this maps section",
     }),
     defineField({
       name: "mapConfig",
