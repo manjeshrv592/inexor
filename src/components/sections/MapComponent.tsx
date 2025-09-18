@@ -2,12 +2,11 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
-import "leaflet/dist/leaflet.css";
 import { useSanityMapsData } from "../maps/hooks/useSanityMapsData";
 import styles from "../maps/styles/Maps.module.css";
 
-// Dynamically import the entire map component to avoid hot reload issues
-const DynamicMap = dynamic(() => import("../maps/MapWrapper"), {
+// Dynamically import the new SVG map component to avoid SSR issues
+const DynamicSvgMap = dynamic(() => import("../maps/SvgMapWrapper"), {
   ssr: false,
   loading: () => (
     <div className="flex h-full w-full items-center justify-center bg-gray-900">
@@ -51,7 +50,7 @@ const MapComponent = () => {
 
   return (
     <div className={styles.mapContainer}>
-      <DynamicMap
+      <DynamicSvgMap
         mapsSection={mapsSection}
         serviceLocations={serviceLocations}
       />

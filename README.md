@@ -1,8 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# INEXOR
+
+A modern Next.js web application featuring an interactive world map for service location visualization and business information management.
+
+## Features
+
+### 🗺️ Interactive World Map
+- **Dual-view system**: Continent view and detailed country view
+- **Smooth transitions**: 750ms animated zoom transitions between views
+- **Service location markers**: Visual indicators for countries with available services
+- **Smart tooltips**: Cursor-following tooltips with service details (tax, duties, lead time)
+- **Zoom-independent elements**: Consistent border widths and marker sizes at all zoom levels
+- **Professional hover effects**: Subtle visual feedback without distracting animations
+
+### 🎨 Modern UI/UX
+- **Clean interface**: Minimal design with focus on content
+- **Lucide icons**: Consistent iconography throughout the application
+- **Responsive design**: Optimized for desktop and mobile devices
+- **Smooth animations**: Professional transitions and hover effects
+
+### 🔐 Authentication System
+- **Conditional OTP**: Date-based OTP requirement configuration
+- **Session management**: Inactivity timeout protection
+- **Secure cookies**: Proper authentication state management
+
+### 📊 Content Management
+- **Sanity CMS integration**: Dynamic content management
+- **Navigation management**: Configurable navigation items
+- **SEO optimization**: Meta tags and structured data
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18+ 
+- npm/yarn/pnpm/bun
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+3. Set up environment variables (see ENV_SETUP.md)
+
+4. Run the development server:
 
 ```bash
 npm run dev
@@ -14,23 +63,67 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/                    # Next.js app router
+├── components/
+│   ├── maps/              # Interactive world map components
+│   ├── sections/          # Page sections
+│   ├── layout/            # Layout components
+│   └── ui/                # Reusable UI components
+├── lib/                   # Utility functions
+├── sanity/                # Sanity CMS configuration
+└── styles/                # Global styles
+```
+
+## Maps Component
+
+The interactive world map is the centerpiece of the application, featuring:
+
+- **D3.js powered**: High-performance SVG-based rendering
+- **Continent navigation**: Click continents to explore countries
+- **Service visualization**: Orange markers and borders for service locations
+- **Consistent scaling**: Elements maintain visual size across zoom levels
+- **Professional interactions**: Clean hover effects and smooth transitions
+
+For detailed maps documentation, see [src/components/maps/README.md](src/components/maps/README.md).
+
+## Technologies Used
+
+- **Frontend**: Next.js 14, React 18, TypeScript
+- **Mapping**: D3.js (d3-geo, d3-zoom, d3-selection)
+- **Styling**: Tailwind CSS, CSS Modules
+- **Icons**: Lucide React
+- **CMS**: Sanity
+- **Authentication**: Custom JWT-based system
+
+## Environment Configuration
+
+The application uses environment variables for configuration. See `ENV_SETUP.md` for detailed setup instructions.
+
+Key environment variables:
+- `NEXT_PUBLIC_WEB_ACCESS_ENABLED`: Enable/disable authentication
+- `NEXT_PUBLIC_OTP_AUTH_FROM`: Date from which OTP is required
+- `NEXT_PUBLIC_SESSION_TIMEOUT`: Session timeout duration
+
+## Deployment
+
+The application is optimized for deployment on Vercel:
+
+```bash
+npm run build
+npm run start
+```
+
+For other deployment platforms, ensure environment variables are properly configured.
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js Documentation](https://nextjs.org/docs) - Next.js features and API
+- [D3.js Documentation](https://d3js.org/) - Data visualization library
+- [Sanity Documentation](https://www.sanity.io/docs) - Content management system
+- [Tailwind CSS](https://tailwindcss.com/docs) - Utility-first CSS framework
