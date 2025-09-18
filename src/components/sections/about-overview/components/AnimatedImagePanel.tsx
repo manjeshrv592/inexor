@@ -39,7 +39,18 @@ const AnimatedImagePanel: React.FC<AnimatedImagePanelProps> = ({
         mass: 1,
         delay: 0.1,
       }}
-    />
+    >
+      {/* Gradient overlay for left positioned images */}
+      {position === "left" && (
+        <div
+          className="absolute h-full w-full"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%)",
+          }}
+        />
+      )}
+    </motion.div>
   );
 };
 

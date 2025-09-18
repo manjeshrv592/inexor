@@ -58,8 +58,10 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
       </div>
       <Container className="h-full">
         <div className="relative z-10 flex h-full flex-col items-center justify-center pt-40 text-center">
-          <h1 className="font-michroma xxl:text-4xl xl:text-3xl">{title}</h1>
-          <p className="xxl:text-base xxl:max-w-2xl mt-3 mb-40 max-w-xl text-sm">
+          <h1 className="font-michroma xxl:text-4xl mt-12 xl:text-3xl">
+            {title}
+          </h1>
+          <p className="xxl:text-base xxl:max-w-2xl mt-3 mb-48 max-w-xl text-sm">
             {description}
           </p>
           <a
@@ -67,7 +69,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button className="font-michroma tracking-[1px]" size={"sm"}>
+            <Button className="font-michroma text-xs tracking-[1px]">
               Schedule a Call
             </Button>
           </a>

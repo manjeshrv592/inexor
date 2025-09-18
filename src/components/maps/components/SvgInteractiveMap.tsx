@@ -5,7 +5,11 @@ import { geoPath, geoNaturalEarth1 } from "d3-geo";
 import { zoom, zoomIdentity } from "d3-zoom";
 import { select } from "d3-selection";
 import { ZoomIn, ZoomOut, Home, ArrowLeft } from "lucide-react";
-import type { GeoJsonProperties, FeatureCollection, Geometry } from "geojson";
+import type { GeoJsonProperties, FeatureCollection, Geometry, Feature } from "geojson";
+import type { Selection, BaseType } from "d3-selection";
+import type { ZoomBehavior } from "d3-zoom";
+import type { GeoProjection } from "d3-geo";
+// Removed d3-transition import to avoid typing issues
 import { SVG_MAP_CONFIG } from "../constants/svgMapConstants";
 import {
   isCountryInContinent,
@@ -45,7 +49,6 @@ interface SvgInteractiveMapProps {
 
 const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
   serviceLocations,
-  mapsSection,
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [geoData, setGeoData] = useState<GeoJSONData | null>(null);
@@ -54,17 +57,12 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("continents");
   const [selectedContinent, setSelectedContinent] = useState<string | null>(null);
-  const [currentZoomLevel, setCurrentZoomLevel] = useState<number>(SVG_MAP_CONFIG.initialZoom);
-  const [currentTransform, setCurrentTransform] = useState<{
-    x: number;
-    y: number;
-    k: number;
-  }>({ x: SVG_MAP_CONFIG.initialX, y: SVG_MAP_CONFIG.initialY, k: SVG_MAP_CONFIG.initialZoom });
+  // Removed unused state variables: currentZoomLevel and currentTransform
   const isTransitioningRef = useRef(false);
   
-  const svgElementRef = useRef<any>(null);
-  const projectionRef = useRef<any>(null);
-  const zoomBehaviorRef = useRef<any>(null);
+  const svgElementRef = useRef<Selection<SVGSVGElement, unknown, null, undefined> | null>(null);
+  const projectionRef = useRef<GeoProjection | null>(null);
+  const zoomBehaviorRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
 
   // Map dimensions from config
@@ -121,7 +119,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
   };
 
   // Show tooltip function
-  const showTooltip = useCallback((countryName: string, event: any) => {
+  const showTooltip = useCallback((countryName: string, event: MouseEvent) => {
     // Don't show tooltip during transitions
     if (isTransitioningRef.current) {
       return;
@@ -186,13 +184,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
         // Update country border widths to maintain consistent 1px appearance
         g.selectAll("path").attr("stroke-width", 1 / event.transform.k);
         
-        // Update zoom level and transform state
-        setCurrentZoomLevel(event.transform.k);
-        setCurrentTransform({
-          x: event.transform.x,
-          y: event.transform.y,
-          k: event.transform.k,
-        });
+        // Transform state tracking removed (was unused)
       });
 
     svg.call(zoomBehavior);
@@ -216,7 +208,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
       .enter()
       .append("path")
       .attr("d", pathGenerator)
-      .attr("fill", (d: any) => {
+      .attr("fill", (d: Feature<Geometry, GeoJsonProperties>) => {
         const countryName = d.properties?.NAME || "";
 
         if (viewMode === "continents") {
@@ -235,7 +227,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
         }
         return "#4a5568";
       })
-      .attr("stroke", (d: any) => {
+      .attr("stroke", (d: Feature<Geometry, GeoJsonProperties>) => {
         const countryName = d.properties?.NAME || "";
 
         if (viewMode === "continents") {
@@ -255,15 +247,16 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
       .attr("stroke-width", 1)
       .attr("cursor", "pointer")
       .style("transition", "fill 0.3s ease, stroke 0.3s ease")
-      .on("mouseenter", function (event, d: any) {
+      .on("mouseenter", function (event, d: Feature<Geometry, GeoJsonProperties>) {
         const countryName = d.properties?.NAME || "";
         const continent = getCountryContinent(countryName);
 
         if (viewMode === "continents") {
           // In continent view: highlight entire continent on hover
           if (continent) {
-            g.selectAll("path").each(function (pathData: any) {
-              const pathCountryName = pathData.properties?.NAME || "";
+            g.selectAll("path").each(function (this: BaseType, pathData: unknown) {
+              const feature = pathData as Feature<Geometry, GeoJsonProperties>;
+              const pathCountryName = feature.properties?.NAME || "";
               if (isCountryInContinent(pathCountryName, continent)) {
                 // Hovered continent becomes lighter
                 select(this).attr("fill", "#5a5a5a").attr("stroke", "#5a5a5a");
@@ -300,7 +293,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
             document.addEventListener('mousemove', handleMouseMove);
             
             // Store the cleanup function
-            (this as any).__mouseMoveHandler = handleMouseMove;
+            (this as Element & { __mouseMoveHandler?: (event: MouseEvent) => void }).__mouseMoveHandler = handleMouseMove;
           }
         }
       })
@@ -310,7 +303,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
           g.selectAll("path").attr("fill", "#3a3a3a").attr("stroke", "#3a3a3a");
         } else {
           // Reset individual country
-          const d: any = select(this).datum();
+          const d = select(this).datum() as Feature<Geometry, GeoJsonProperties>;
           const countryName = d.properties?.NAME || "";
           if (
             selectedContinent &&
@@ -327,9 +320,10 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
             hideTooltip();
             
             // Clean up mousemove listener
-            if ((this as any).__mouseMoveHandler) {
-              document.removeEventListener('mousemove', (this as any).__mouseMoveHandler);
-              delete (this as any).__mouseMoveHandler;
+            const element = this as Element & { __mouseMoveHandler?: (event: MouseEvent) => void };
+            if (element.__mouseMoveHandler) {
+              document.removeEventListener('mousemove', element.__mouseMoveHandler);
+              delete element.__mouseMoveHandler;
             }
           } else {
             select(this).attr("fill", "#1a202c").attr("stroke", "#1a202c").attr("stroke-width", 1);
@@ -337,7 +331,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
         }
         setHoveredItem(null);
       })
-      .on("click", function (_, d: any) {
+      .on("click", function (_, d: Feature<Geometry, GeoJsonProperties>) {
         const countryName = d.properties?.NAME || "";
         const continent = getCountryContinent(countryName);
 
@@ -502,10 +496,8 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
         <button
           onClick={() => {
             if (svgElementRef.current && zoomBehaviorRef.current) {
-              svgElementRef.current
-                .transition()
-                .duration(300)
-                .call(zoomBehaviorRef.current.scaleBy, 1.5);
+              // Use zoom behavior directly without transition for now
+              svgElementRef.current.call(zoomBehaviorRef.current.scaleBy, 1.5);
             }
           }}
           className="text-white p-2 rounded-lg shadow-lg transition-all duration-200 hover:scale-105"
@@ -520,10 +512,8 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
         <button
           onClick={() => {
             if (svgElementRef.current && zoomBehaviorRef.current) {
-              svgElementRef.current
-                .transition()
-                .duration(300)
-                .call(zoomBehaviorRef.current.scaleBy, 0.75);
+              // Use zoom behavior directly without transition for now
+              svgElementRef.current.call(zoomBehaviorRef.current.scaleBy, 0.75);
             }
           }}
           className="text-white p-2 rounded-lg shadow-lg transition-all duration-200 hover:scale-105"

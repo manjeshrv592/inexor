@@ -36,8 +36,8 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className }) => {
     <Link href="/contact">
       <Button
         variant={hasScrolledPastHero ? "default" : "outline"}
-        className={className}
-        size={"sm"}
+        size={hasScrolledPastHero ? "sm" : undefined}
+        className={`font-michroma text-xs tracking-[1px] ${className}`}
       >
         Contact Us
       </Button>
