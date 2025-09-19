@@ -100,12 +100,12 @@ const Footer = ({ footerData }: FooterProps) => {
   return (
     <footer className="bg-[#323232] text-white [box-shadow:inset_0_2px_2px_rgba(0,0,0,0.2)] lg:pl-28">
       <div className="xxl:grid-cols-[3fr_2fr] grid items-center gap-8 xl:grid-cols-2 xl:items-stretch xl:gap-12">
-        <div className="px-5 pt-8 text-center xl:py-14">
-          <h4 className="font-michroma mb-4 bg-gradient-to-r from-white to-neutral-500 bg-clip-text text-transparent md:text-xl xl:text-2xl">
+        <div className="px-5 pt-8 text-center xl:pt-14 xl:pb-3">
+          <h4 className="font-michroma mb-4 bg-gradient-to-r from-white to-neutral-500 bg-clip-text text-transparent md:text-xl xl:mb-10 xl:text-2xl">
             {footerData?.heading ||
               "Ready to Witness Global Shipping Become Seamless?"}
           </h4>
-          <p className="font-michroma mt-4 text-[10px] text-neutral-300">
+          <p className="font-michroma mt-4 text-[10px] text-[#575757]">
             {footerData?.copyrightText || "© 2025 INEXOR, All right reserved"}
           </p>
         </div>
@@ -154,8 +154,8 @@ const Footer = ({ footerData }: FooterProps) => {
               </div>
             </motion.div>
           </div>
-          <div className="pb-8">
-            <div className="flex h-full flex-col items-center justify-center gap-4">
+          <div className="pt-8 pb-2">
+            <div className="mb-10 flex h-full flex-col items-center justify-center gap-4">
               <div className="flex justify-center gap-4">
                 {renderSocialLinks()}
               </div>
@@ -181,6 +181,10 @@ const Footer = ({ footerData }: FooterProps) => {
                 )}
               </div>
             </div>
+            <p className="font-michroma mt-4 text-center text-[10px] text-[#575757]">
+              {footerData?.copyrightText ||
+                "© 2025 INEXOR, All right reserved"}
+            </p>
           </div>
         </div>
 
