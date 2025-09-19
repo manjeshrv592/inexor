@@ -188,6 +188,9 @@
 /* Map container */
 .mapContainer {
   height: calc(100vh - 100px);
+  max-height: 420px;
+  border: 1px solid #303030;
+  overflow: hidden;
 }
 
 /* Remove Leaflet's default border and rounded corners */

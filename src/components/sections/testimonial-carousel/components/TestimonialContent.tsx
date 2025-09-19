@@ -28,6 +28,7 @@ const TestimonialContent: React.FC<TestimonialContentProps> = ({
 
       <AnimatePresence mode="wait">
         <motion.div
+          className="flex-1"
           key={currentIndex}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

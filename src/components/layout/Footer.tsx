@@ -187,11 +187,13 @@ const Footer = ({ footerData }: FooterProps) => {
           </div>
         </div>
 
-        <div className="hidden lg:flex">
-          <div className="h-full">
+        <div className="hidden lg:flex relative h-full">
+          {/* Container that holds both logo and social media sections */}
+          <div className="flex w-full h-full relative">
+            {/* Animated Logo Box - starts at width 0 and expands */}
             <motion.div
               initial={{ width: "0%" }}
-              whileInView={{ width: "100%" }}
+              whileInView={{ width: "50%" }}
               viewport={{ once: false, amount: 0.4 }}
               transition={{
                 width: {
@@ -200,9 +202,9 @@ const Footer = ({ footerData }: FooterProps) => {
                   duration: 0.9,
                 },
               }}
-              className="h-full w-1/2 overflow-hidden"
+              className="h-full overflow-hidden"
             >
-              <div className="flex h-full flex-col justify-center bg-[#2f2f2f] px-8 py-2 [box-shadow:inset_0_2px_4px_rgba(0,0,0,0.3)]">
+              <div className="flex h-full flex-col justify-center bg-[#2f2f2f] px-8 py-2 [box-shadow:inset_0_2px_4px_rgba(0,0,0,0.3)] w-full">
                 <div className="mb-2 flex flex-1 items-center">
                   <Image
                     src={footerData?.logo?.asset?.url || "/img/x-logo.svg"}
@@ -229,12 +231,34 @@ const Footer = ({ footerData }: FooterProps) => {
                 </div>
               </div>
             </motion.div>
-          </div>
-          <div className="w-1/2">
-            <div className="flex h-full flex-col items-center justify-center gap-4">
-              <div className="text-center">
-                {footerData?.ctaButtonLink ? (
-                  <Link href={footerData.ctaButtonLink}>
+            
+            {/* Social Media Section - gets pushed to the right as logo expands */}
+            <motion.div
+              initial={{ x: "0%" }}
+              whileInView={{ x: "0%" }}
+              viewport={{ once: false, amount: 0.4 }}
+              transition={{
+                x: {
+                  type: "tween",
+                  ease: [0.22, 1, 0.36, 1],
+                  duration: 0.9,
+                },
+              }}
+              className="flex-1 h-full"
+            >
+              <div className="flex h-full flex-col items-center justify-center gap-4">
+                <div className="text-center">
+                  {footerData?.ctaButtonLink ? (
+                    <Link href={footerData.ctaButtonLink}>
+                      <Button
+                        variant={"outline"}
+                        size={"sm"}
+                        className="font-michroma text-xs tracking-[1px]"
+                      >
+                        {footerData?.ctaButtonText || "Schedule a Call"}
+                      </Button>
+                    </Link>
+                  ) : (
                     <Button
                       variant={"outline"}
                       size={"sm"}
@@ -242,21 +266,13 @@ const Footer = ({ footerData }: FooterProps) => {
                     >
                       {footerData?.ctaButtonText || "Schedule a Call"}
                     </Button>
-                  </Link>
-                ) : (
-                  <Button
-                    variant={"outline"}
-                    size={"sm"}
-                    className="font-michroma text-xs tracking-[1px]"
-                  >
-                    {footerData?.ctaButtonText || "Schedule a Call"}
-                  </Button>
-                )}
+                  )}
+                </div>
+                <div className="flex justify-center gap-4">
+                  {renderSocialLinks()}
+                </div>
               </div>
-              <div className="flex justify-center gap-4">
-                {renderSocialLinks()}
-              </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

@@ -15,7 +15,11 @@ const DynamicSvgMap = dynamic(() => import("../maps/SvgMapWrapper"), {
   ),
 });
 
-const MapComponent = () => {
+interface MapComponentProps {
+  onInteraction?: () => void;
+}
+
+const MapComponent: React.FC<MapComponentProps> = ({ onInteraction }) => {
   const { mapsSection, serviceLocations, loading, error } = useSanityMapsData();
 
   if (loading) {
@@ -53,6 +57,7 @@ const MapComponent = () => {
       <DynamicSvgMap
         mapsSection={mapsSection}
         serviceLocations={serviceLocations}
+        onInteraction={onInteraction}
       />
     </div>
   );

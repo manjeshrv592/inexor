@@ -63,6 +63,25 @@ const OurServices: React.FC<OurServicesProps> = ({
     );
   }
 
+  // Function to get chevron opacity based on active element and item number
+  const getChevronOpacity = (itemNumber: number) => {
+    if (activeEl === 1 || activeEl === 4) {
+      switch (itemNumber) {
+        case 1:
+          return 0.25; // 10%
+        case 2:
+          return 0.5; // 40%
+        case 3:
+          return 0.75; // 80%
+        case 4:
+          return 1; // 100%
+        default:
+          return 1;
+      }
+    }
+    return 1; // Default opacity for other active states
+  };
+
   // Function to get animation properties for each item based on active element
   const getItemAnimation = (itemNumber: number) => {
     // Desktop positions (horizontal layout) - fixed for 4 items
@@ -262,7 +281,7 @@ const OurServices: React.FC<OurServicesProps> = ({
                 onClick={() => handleItemClick(itemNumber)}
               >
                 <div
-                  className={`font-michroma absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs ${
+                  className={`font-michroma absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] ${
                     isDesktop ? "-rotate-90" : "rotate-0"
                   }`}
                 >
@@ -282,6 +301,7 @@ const OurServices: React.FC<OurServicesProps> = ({
                         ? "rotate-0"
                         : "-rotate-90"
                   }`}
+                  style={{ opacity: getChevronOpacity(itemNumber) }}
                 >
                   <ChevronRight size={16} color="#f65009" />
                   <ChevronRight

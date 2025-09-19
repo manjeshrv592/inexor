@@ -11,7 +11,9 @@ const WhoWeServeItem: React.FC<WhoWeServeItemProps> = ({
 }) => {
   return (
     <div className="text-center">
-      <h5 className="text-brand-orange-500 mb-2 font-semibold">{title}</h5>
+      <h5 className="text-brand-orange-500 mb-2 text-sm font-semibold xl:min-h-[40px]">
+        {title}
+      </h5>
       <p className="text-sm">{description}</p>
     </div>
   );

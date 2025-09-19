@@ -151,11 +151,7 @@ function Button({
               fill={
                 variant === "outline" ? "transparent" : BUTTON_COLORS.primary
               }
-              stroke={
-                variant === "outline"
-                  ? BUTTON_COLORS.white
-                  : BUTTON_COLORS.stroke
-              }
+              stroke={BUTTON_COLORS.stroke}
               strokeWidth={SVG_CONFIG.strokeWidth}
               strokeLinejoin="round"
               strokeLinecap="round"

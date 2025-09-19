@@ -39,7 +39,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
   }
 
   return (
-    <article className="xxl:grid-cols-[400px_1fr] xl:grid xl:grid-cols-[360px_1fr]">
+    <article className="xxl:grid-cols-[400px_1fr] xl:grid xl:h-[360px] xl:grid-cols-[360px_1fr]">
       <span className="mb-2 block text-center xl:hidden">
         <Image
           src="/quotes.svg"

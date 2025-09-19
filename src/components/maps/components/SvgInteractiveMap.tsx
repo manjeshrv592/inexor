@@ -45,10 +45,12 @@ interface SvgInteractiveMapProps {
       zoomLevel: number;
     };
   };
+  onInteraction?: () => void;
 }
 
 const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
   serviceLocations,
+  onInteraction,
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [geoData, setGeoData] = useState<GeoJSONData | null>(null);
@@ -335,6 +337,9 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
         const countryName = d.properties?.NAME || "";
         const continent = getCountryContinent(countryName);
 
+        // Trigger interaction callback to hide instruction tooltip
+        onInteraction?.();
+
         if (continent) {
           if (viewMode === "continents") {
             // Switch to country view for the clicked continent
@@ -414,6 +419,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
     width,
     height,
     showTooltip,
+    onInteraction,
   ]);
 
   if (loading) {
@@ -467,6 +473,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
           {viewMode === "countries" && (
             <button
               onClick={() => {
+                onInteraction?.();
                 setViewMode("continents");
                 setSelectedContinent(null);
                 setHoveredItem(null);
@@ -495,6 +502,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
       <div className="absolute bottom-4 right-4 flex flex-col gap-2">
         <button
           onClick={() => {
+            onInteraction?.();
             if (svgElementRef.current && zoomBehaviorRef.current) {
               // Use zoom behavior directly without transition for now
               svgElementRef.current.call(zoomBehaviorRef.current.scaleBy, 1.5);
@@ -511,6 +519,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
 
         <button
           onClick={() => {
+            onInteraction?.();
             if (svgElementRef.current && zoomBehaviorRef.current) {
               // Use zoom behavior directly without transition for now
               svgElementRef.current.call(zoomBehaviorRef.current.scaleBy, 0.75);
@@ -527,6 +536,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
 
         <button
           onClick={() => {
+            onInteraction?.();
             // Hide tooltip and set transition state immediately
             hideTooltip();
             setHoveredItem(null);
