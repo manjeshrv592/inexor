@@ -98,7 +98,7 @@ const Footer = ({ footerData }: FooterProps) => {
       ));
   };
   return (
-    <footer className="xxl:pl-20 bg-neutral-800 py-12 text-white [box-shadow:inset_0_2px_2px_rgba(0,0,0,0.2)] lg:pl-20">
+    <footer className="bg-[#323232] text-white [box-shadow:inset_0_2px_2px_rgba(0,0,0,0.2)] lg:pl-28">
       <Container>
         <div className="xxl:grid-cols-[3fr_2fr] grid items-center gap-8 xl:grid-cols-2 xl:gap-0">
           <div className="text-center">
@@ -113,7 +113,7 @@ const Footer = ({ footerData }: FooterProps) => {
           </div>
 
           <div className="flex flex-col gap-8 lg:hidden">
-            <div>
+            <div className="">
               <motion.div
                 initial={{ height: 0 }}
                 whileInView={{ height: "auto" }}
@@ -201,7 +201,7 @@ const Footer = ({ footerData }: FooterProps) => {
                 }}
                 className="w-1/2 overflow-hidden"
               >
-                <div className="flex h-full flex-col justify-center px-8 py-2">
+                <div className="flex h-full flex-col justify-center bg-[#2f2f2f] px-8 py-2 [box-shadow:inset_0_2px_4px_rgba(0,0,0,0.3)]">
                   <div className="mb-2 flex flex-1 items-center">
                     <Image
                       src={footerData?.logo?.asset?.url || "/img/x-logo.svg"}
