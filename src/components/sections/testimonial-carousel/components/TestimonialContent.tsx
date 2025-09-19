@@ -43,7 +43,7 @@ const TestimonialContent: React.FC<TestimonialContentProps> = ({
             </h4>
           </div>
 
-          <p className="xxl:mb-16 mb-8 text-center text-sm text-neutral-300 md:text-base lg:mb-12">
+          <p className="xxl:mb-16 flex-1 text-center text-sm text-neutral-300 md:text-base">
             &quot;{testimonial.quote}&quot;
           </p>
         </motion.div>

@@ -18,7 +18,14 @@ const Navigation: React.FC<NavigationProps> = ({ isOpen }) => {
         console.log("🔄 Fetching navigation configuration from Sanity...");
         const { items } = await getNavigationData();
         console.log("✅ Navigation configuration received:", { items });
-        console.log("📋 Items details:", items.map(item => ({ label: item.label, href: item.href, hasDropdown: item.hasDropdown })));
+        console.log(
+          "📋 Items details:",
+          items.map((item) => ({
+            label: item.label,
+            href: item.href,
+            hasDropdown: item.hasDropdown,
+          })),
+        );
         setNavigationItems(items);
       } catch (error) {
         console.error("❌ Failed to fetch navigation configuration:", error);
@@ -31,9 +38,9 @@ const Navigation: React.FC<NavigationProps> = ({ isOpen }) => {
 
   const displayItems = navigationItems;
 
-  console.log("🎯 Navigation render state:", { 
+  console.log("🎯 Navigation render state:", {
     itemsCount: displayItems.length,
-    items: displayItems 
+    items: displayItems,
   });
 
   // Don't render navigation if no items are available

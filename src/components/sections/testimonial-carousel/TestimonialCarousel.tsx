@@ -55,7 +55,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
         currentIndex={currentIndex}
       />
 
-      <div className="xxl:px-28 py-6 text-center xl:bg-neutral-900 xl:px-16">
+      <div className="xxl:px-28 flex flex-col py-6 text-center xl:bg-neutral-900 xl:px-16">
         <TestimonialContent
           testimonial={currentTestimonial}
           currentIndex={currentIndex}

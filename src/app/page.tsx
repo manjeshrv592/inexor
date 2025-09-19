@@ -29,14 +29,18 @@ import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   const homeSeoData = await getHomeSeo();
-  
+
   return {
     title: homeSeoData?.seo?.metaTitle || "Inexor - Your Business Partner",
-    description: homeSeoData?.seo?.metaDescription || "Professional business services and solutions",
+    description:
+      homeSeoData?.seo?.metaDescription ||
+      "Professional business services and solutions",
     keywords: homeSeoData?.seo?.keywords,
-    openGraph: homeSeoData?.seo?.ogImage?.asset?.url ? {
-      images: [homeSeoData.seo.ogImage.asset.url],
-    } : undefined,
+    openGraph: homeSeoData?.seo?.ogImage?.asset?.url
+      ? {
+          images: [homeSeoData.seo.ogImage.asset.url],
+        }
+      : undefined,
   };
 }
 
@@ -80,12 +84,13 @@ const HomePage = async () => {
       />
       <AboutOverview aboutData={aboutData} aboutItems={aboutItems} />
       <WhoWeServe items={whoWeServeItems} sectionData={whoWeServeSection} />
-      <Why whyData={whyData} whyItems={whyItems} />
+
       <OurServices
         servicesSection={servicesSection}
         serviceItems={serviceItems}
       />
       <Maps />
+      <Why whyData={whyData} whyItems={whyItems} />
       <Clients />
       <Testimonials testimonialsData={testimonialsData} />
       <Footer footerData={footerData} />

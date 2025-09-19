@@ -30,7 +30,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
           className="object-cover"
         />
         {/* Vignette overlay with edge blur */}
-        <div
+        {/* <div
           className="absolute inset-0 opacity-80"
           style={{
             background:
@@ -42,9 +42,9 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
             WebkitMaskImage:
               "radial-gradient(ellipse 0% 0%, transparent 0%, black 100%)",
           }}
-        ></div>
+        ></div> */}
         {/* Edge blur overlay */}
-        <div
+        {/* <div
           className="absolute inset-0"
           style={{
             backdropFilter: "blur(40px)",
@@ -54,7 +54,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
             WebkitMaskImage:
               "radial-gradient(ellipse 70% 50%, transparent 0%, transparent 50%, rgba(0,0,0,0.5) 75%, black 100%)",
           }}
-        ></div>
+        ></div> */}
       </div>
       <Container className="h-full">
         <div className="relative z-10 flex h-full flex-col items-center justify-center pt-40 text-center">

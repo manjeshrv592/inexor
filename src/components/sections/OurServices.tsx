@@ -49,7 +49,7 @@ const OurServices: React.FC<OurServicesProps> = ({
       <Section className="overflow-hidden">
         <Container>
           <div className="text-center">
-            <SectionTitle>
+            <SectionTitle className="mb-2">
               {servicesSection?.title || "OUR SERVICES"}
             </SectionTitle>
           </div>
@@ -219,7 +219,7 @@ const OurServices: React.FC<OurServicesProps> = ({
     <Section className="xxl:pl-20 overflow-hidden lg:pl-20">
       <Container>
         <div className="text-center">
-          <SectionTitle>
+          <SectionTitle className="mb-2">
             {servicesSection?.title || "OUR SERVICES"}
           </SectionTitle>
         </div>

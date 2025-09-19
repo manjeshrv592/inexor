@@ -49,7 +49,7 @@ const Why: React.FC<WhyProps> = ({ whyData, whyItems }) => {
     <Section className="xxl:pl-20 lg:pl-20">
       <Container className="text-center">
         <div className="text-center">
-          <SectionTitle>{title}</SectionTitle>
+          <SectionTitle className="mb-2">{title}</SectionTitle>
         </div>
         <h3 className="mb-4 text-lg">{subtitle}</h3>
         <p className="mx-auto mb-8 max-w-4xl text-sm">{description}</p>
