@@ -31,6 +31,11 @@ import {
   serviceOptions,
 } from "@/lib/validations/contact";
 import { Mail, PhoneIcon } from "lucide-react";
+import {
+  getContactInfo,
+  fallbackContactInfo,
+  type ContactInfo,
+} from "@/lib/sanity/contact";
 
 const ContactPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,7 +43,26 @@ const ContactPage = () => {
     type: "success" | "error";
     text: string;
   } | null>(null);
+  const [contactInfo, setContactInfo] =
+    useState<ContactInfo>(fallbackContactInfo);
   const submitButtonRef = useRef<HTMLDivElement>(null);
+
+  // Fetch contact info from Sanity on component mount
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      try {
+        const sanityContactInfo = await getContactInfo();
+        if (sanityContactInfo) {
+          setContactInfo(sanityContactInfo);
+        }
+      } catch (error) {
+        console.error("Failed to fetch contact info from Sanity:", error);
+        // Keep using fallback data
+      }
+    };
+
+    fetchContactInfo();
+  }, []);
 
   // Auto-scroll to submit button when message is shown
   useEffect(() => {
@@ -139,17 +163,13 @@ const ContactPage = () => {
         <div className="items-center shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:flex">
           <div className="xl:flex-1">
             <h5 className="font-michroma text-brand-orange-500 my-4 hidden text-center text-sm xl:block">
-              Contact Us
+              {contactInfo.mainTitle}
             </h5>
             <div className="bg-neutral-900 px-8 py-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-12px_18px_-12px_rgba(0,0,0,0.85),inset_0_12px_18px_-12px_rgba(0,0,0,0.9)] xl:h-[200px] xl:py-1">
               <h5 className="font-michroma text-brand-orange-500 my-4 hidden text-center text-sm xl:block">
-                Get a Quote/Contact Us
+                {contactInfo.subTitle}
               </h5>
-              <p className="text-center text-sm">
-                Our experts simplify global trade compliance and deliver
-                tailored solutions. Driven by integrity, expertise, and client
-                focus—let&apos;s make global shipping seamless together.
-              </p>
+              <p className="text-center text-sm">{contactInfo.description}</p>
             </div>
             {/* Special shape for div */}
             <div className="relative flex justify-center pt-5 after:absolute after:top-0 after:left-1/2 after:inline-block after:h-full after:w-[3px] after:translate-x-1/2 after:bg-[#212121] after:content-['']">
@@ -174,20 +194,33 @@ const ContactPage = () => {
 
                 {/* Content */}
                 <div className="relative z-10 flex items-center justify-center gap-16 px-8 py-3">
-                  <div className="flex items-center gap-4">
-                    <span className="text-sm font-medium">623211512211</span>
-                    <span className="flex size-12 items-center justify-center rounded-full bg-orange-500">
-                      <PhoneIcon size={16} />
+                  <a 
+                    href={`tel:${contactInfo.phoneNumber}`}
+                    className="flex items-center gap-4 hover:text-orange-500 transition-colors cursor-pointer group"
+                  >
+                    <span className="text-sm font-medium">
+                      {contactInfo.phoneNumber}
                     </span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="flex size-12 items-center justify-center rounded-full bg-orange-500">
-                      <Mail size={16} />
+                    <span className="flex size-12 items-center justify-center rounded-full bg-orange-500 group-hover:bg-orange-600 transition-colors">
+                      <PhoneIcon size={16} className="text-white" />
                     </span>
-                    <span className="text-sm font-medium">hello@inexor.io</span>
-                  </div>
+                  </a>
+                  <a 
+                    href={`mailto:${contactInfo.email}`}
+                    className="flex items-center gap-4 hover:text-orange-500 transition-colors cursor-pointer group"
+                  >
+                    <span className="flex size-12 items-center justify-center rounded-full bg-orange-500 group-hover:bg-orange-600 transition-colors">
+                      <Mail size={16} className="text-white" />
+                    </span>
+                    <span className="text-sm font-medium">
+                      {contactInfo.email}
+                    </span>
+                  </a>
                 </div>
               </div>
+            </div>
+            <div className="mx-auto mt-4 max-w-[300px] px-2 text-center text-sm">
+              {contactInfo.address}
             </div>
           </div>
         </div>

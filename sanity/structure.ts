@@ -258,7 +258,16 @@ export const structure = (S: StructureBuilder) =>
                   ),
                 ),
               S.divider(),
-              // Additional Contact Us content can be added here
+              S.listItem()
+                .title("📞 Contact Information")
+                .child(
+                  S.documentTypeList("contactInfo")
+                    .title("Contact Information")
+                    .defaultOrdering([
+                      { field: "isActive", direction: "desc" },
+                      { field: "lastUpdated", direction: "desc" },
+                    ]),
+                ),
             ]),
         ),
 

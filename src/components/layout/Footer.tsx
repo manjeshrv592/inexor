@@ -214,17 +214,17 @@ const Footer = ({ footerData }: FooterProps) => {
                     height={100}
                   />
                 </div>
-                <div className="flex justify-between gap-4 text-xs">
+                <div className="flex justify-center items-center gap-2 text-xs min-w-0">
                   <Link
                     href="/privacy-policy"
-                    className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
+                    className="hover:text-brand-orange-500 flex-shrink-0 cursor-pointer duration-300 whitespace-nowrap"
                   >
                     Privacy Policy
                   </Link>
-                  <span> | </span>
+                  <span className="flex-shrink-0"> | </span>
                   <Link
                     href="/terms-conditions"
-                    className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
+                    className="hover:text-brand-orange-500 flex-shrink-0 cursor-pointer duration-300 whitespace-nowrap"
                   >
                     Terms & Conditions
                   </Link>

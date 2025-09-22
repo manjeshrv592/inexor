@@ -34,6 +34,7 @@ import servicesPage from "./servicesPage";
 import resourcesPage from "./resourcesPage";
 import resourcesPageSeo from "./resourcesPageSeo";
 import contactPage from "./contactPage";
+import contactInfo from "./contactInfo";
 import blogPost from "./blogPost";
 import { privacySchemas } from "./privacy";
 import { termsSchemas } from "./terms";
@@ -77,6 +78,7 @@ export const schemaTypes = [
   resourcesPage,
   resourcesPageSeo,
   contactPage,
+  contactInfo,
   blogPost,
   ...privacySchemas,
   ...termsSchemas,

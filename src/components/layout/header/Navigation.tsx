@@ -11,7 +11,11 @@ interface NavigationProps {
   onNavItemClick?: (href: string) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ isOpen, activePagePath, onNavItemClick }) => {
+const Navigation: React.FC<NavigationProps> = ({
+  isOpen,
+  activePagePath,
+  onNavItemClick,
+}) => {
   const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
 
   useEffect(() => {
@@ -67,7 +71,7 @@ const Navigation: React.FC<NavigationProps> = ({ isOpen, activePagePath, onNavIt
       }}
     >
       <motion.ul
-        className="xxl:p-0 flex w-[calc(100%-40px)] items-center justify-center bg-[#1f1f1f] px-4 py-6 [box-shadow:inset_0_-4px_4px_0_rgba(0,0,0,0.25),inset_0_4px_4px_0_rgba(0,0,0,0.25)] xl:h-full xl:w-auto xl:flex-col xl:gap-8 xl:bg-transparent xl:px-0 xl:py-8 xl:!opacity-100 xl:[box-shadow:none]"
+        className="xxl:p-0 flex w-[calc(100%-40px)] items-center justify-center bg-[#1f1f1f] px-4 py-6 [box-shadow:inset_0_-4px_4px_0_rgba(0,0,0,0.25),inset_0_4px_4px_0_rgba(0,0,0,0.25)] xl:h-full xl:w-auto xl:flex-col xl:gap-6 xl:bg-transparent xl:px-0 xl:py-8 xl:!opacity-100 xl:[box-shadow:none]"
         initial={{ opacity: 0 }}
         animate={{
           opacity: isOpen ? 1 : 0,
@@ -93,8 +97,8 @@ const Navigation: React.FC<NavigationProps> = ({ isOpen, activePagePath, onNavIt
               ease: [0.68, -0.55, 0.27, 1.55],
             }}
           >
-            <NavItem 
-              href={item.href} 
+            <NavItem
+              href={item.href}
               hasDropdown={item.hasDropdown}
               isActive={activePagePath === item.href}
               onNavItemClick={onNavItemClick}

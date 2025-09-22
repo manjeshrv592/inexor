@@ -18,10 +18,15 @@ const PagePanel = ({ children }: PagePanelProps) => {
   // Determine slide direction based on route and screen size
   const getSlideDirection = () => {
     const isContactPage = pathname === "/contact";
+    const isPrivacyOrTermsPage = pathname === "/privacy-policy" || pathname === "/terms-conditions";
     const isDesktop = currentBreakpoint === "xl" || currentBreakpoint === "xxl";
 
     if (isContactPage) {
       return "top"; // Contact always slides from top
+    }
+
+    if (isPrivacyOrTermsPage) {
+      return "bottom"; // Privacy policy and terms & conditions slide from bottom
     }
 
     if (isDesktop) {
@@ -63,6 +68,8 @@ const PagePanel = ({ children }: PagePanelProps) => {
   };
 
   const currentDirection = getSlideDirection();
+  const isContactPage = pathname === "/contact";
+  const isPrivacyOrTermsPage = pathname === "/privacy-policy" || pathname === "/terms-conditions";
 
   const slideVariants = {
     hidden: getInitialPosition(currentDirection),
@@ -91,13 +98,13 @@ const PagePanel = ({ children }: PagePanelProps) => {
     setIsClosing(true);
     // Wait for animation to complete before navigating
     setTimeout(() => {
-      router.push("/", { scroll: false });
+      router.back();
     }, 500);
   };
 
   return (
     <motion.div
-      className="fixed z-[100] overflow-visible rounded-lg shadow-2xl"
+      className="fixed z-[100] overflow-visible rounded-lg shadow-2xl cursor-default"
       style={{
         backgroundColor: "#1c1b1b",
         top:
@@ -132,9 +139,15 @@ const PagePanel = ({ children }: PagePanelProps) => {
       {children}
       <button
         onClick={handleClose}
-        className="absolute right-1/2 bottom-0 z-50 flex size-10 translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-orange-500 transition-colors hover:bg-orange-600 xl:top-1/2 xl:right-0 xl:bottom-auto xl:-translate-y-1/2"
+        className="absolute right-1/2 bottom-0 z-50 flex size-10 translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-orange-500 transition-colors hover:bg-orange-600 cursor-pointer xl:top-1/2 xl:right-0 xl:bottom-auto xl:-translate-y-1/2"
       >
-        <ChevronLeftIcon className="rotate-90 xl:rotate-0" />
+        <ChevronLeftIcon className={`${
+          isContactPage 
+            ? 'rotate-90' 
+            : isPrivacyOrTermsPage 
+            ? '-rotate-90' 
+            : 'rotate-90 xl:rotate-0'
+        }`} />
       </button>
     </motion.div>
   );
