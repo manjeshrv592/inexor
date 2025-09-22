@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { geoPath, geoNaturalEarth1 } from "d3-geo";
+import { geoPath, geoEquirectangular } from "d3-geo";
 import { zoom, zoomIdentity } from "d3-zoom";
 import { select } from "d3-selection";
 import { ZoomIn, ZoomOut, Home /* , ArrowLeft */ } from "lucide-react";
@@ -59,7 +59,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [geoData, setGeoData] = useState<GeoJSONData | null>(null);
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  // Removed hoveredItem state - no longer needed after removing debug tooltip
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("continents");
@@ -94,8 +94,66 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
           throw new Error("Failed to load GeoJSON data");
         }
         const countries: GeoJSONData = await response.json();
-        setGeoData(countries);
-        setError(null);
+
+        // Special handling for France MultiPolygon - split into separate features
+        const processedFeatures = [];
+
+        for (const feature of countries.features) {
+          const countryName = feature.properties?.name || feature.properties?.NAME || '';
+
+          if (countryName === 'France' && feature.geometry.type === 'MultiPolygon') {
+            // Split France MultiPolygon into separate features
+            const coordinates = feature.geometry.coordinates;
+
+            coordinates.forEach((polygon) => {
+              if (polygon[0] && polygon[0][0]) {
+                const firstCoord = polygon[0][0];
+                const newFeature = {
+                  ...feature,
+                  geometry: {
+                    type: 'Polygon',
+                    coordinates: polygon
+                  }
+                };
+
+                // Determine if this polygon is in South America (French Guiana)
+                if (firstCoord[0] < -30) {
+                  // This is French Guiana or Caribbean territories
+                  newFeature.properties = {
+                    ...feature.properties,
+                    NAME: 'French Guiana',
+                    name: 'French Guiana'
+                  };
+                } else {
+                  // This is mainland France or European territories
+                  newFeature.properties = {
+                    ...feature.properties,
+                    NAME: 'France',
+                    name: 'France'
+                  };
+                }
+
+                processedFeatures.push(newFeature);
+              }
+            });
+          } else {
+            // Keep other countries as-is
+            processedFeatures.push(feature);
+          }
+        }
+
+        const processedCountries = {
+          ...countries,
+          features: processedFeatures
+        };
+
+        console.log('🗺️ GeoJSON loaded and processed:', {
+          originalFeatureCount: countries.features.length,
+          processedFeatureCount: processedFeatures.length,
+          dataUrl: SVG_MAP_CONFIG.dataUrl
+        });
+
+        setGeoData(processedCountries);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error occurred");
       } finally {
@@ -221,10 +279,12 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
     const svg = select(svgRef.current);
     svg.selectAll("*").remove(); // Clear previous render
 
-    // Set up projection
-    const projection = geoNaturalEarth1()
-      .scale(150)
-      .translate([width / 2, height / 2]);
+    // Set up projection - using Equirectangular for accurate country shapes
+    // Shifted down since Antarctica is removed from the data
+    const projection = geoEquirectangular()
+      .scale(190)
+      .translate([width / 2, height / 2 + 50]) // Moved down by 50px to better utilize space without Antarctica
+      .precision(0.1);
 
     const pathGenerator = geoPath().projection(projection);
 
@@ -336,7 +396,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
                     .attr("stroke", "#1a1a1a");
                 }
               });
-              setHoveredItem(continent);
+              // Removed setHoveredItem - no longer needed
               // Show continent tooltip
               showContinentTooltip(continent, event);
 
@@ -370,7 +430,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
                 // Regular country hover - lighter fill, keep original border width
                 select(this).attr("fill", "#5a5a5a").attr("stroke", "#050505");
               }
-              setHoveredItem(countryName);
+              // Removed setHoveredItem - no longer needed
               // Show tooltip only for countries in selected continent
               showTooltip(countryName, event);
 
@@ -455,11 +515,15 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
               .attr("stroke-width", 1);
           }
         }
-        setHoveredItem(null);
+        // Removed setHoveredItem - no longer needed
       })
-      .on("click", function (_, d: Feature<Geometry, GeoJsonProperties>) {
+      .on("click", function (event, d: Feature<Geometry, GeoJsonProperties>) {
         const countryName = d.properties?.NAME || "";
         const continent = getCountryContinent(countryName);
+
+        // Capture current cursor position for tooltip positioning after transition
+        const currentCursorX = event.clientX;
+        const currentCursorY = event.clientY;
 
         // Trigger interaction callback to hide instruction tooltip
         onInteraction?.();
@@ -469,7 +533,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
             // Switch to country view for the clicked continent
             setSelectedContinent(continent);
             setViewMode("countries");
-            setHoveredItem(null);
+            // Removed setHoveredItem - no longer needed
             hideTooltip();
             isTransitioningRef.current = true;
 
@@ -484,6 +548,25 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
                 // End transition after zoom completes
                 setTimeout(() => {
                   isTransitioningRef.current = false;
+                  
+                  // Fix: Force re-evaluation of hover state after transition
+                  // This solves the tooltip issue when cursor is already over a country
+                  if (svgElementRef.current) {
+                    const allPaths = svgElementRef.current.selectAll('path');
+                    allPaths.each(function() {
+                      const element = this as SVGPathElement;
+                      // Check if this element is currently being hovered
+                      if (element.matches(':hover')) {
+                        // Trigger mouseenter event manually using the captured cursor position
+                        const enterEvent = new MouseEvent('mouseenter', {
+                          clientX: currentCursorX,
+                          clientY: currentCursorY,
+                          bubbles: true
+                        });
+                        element.dispatchEvent(enterEvent);
+                      }
+                    });
+                  }
                 }, 750);
               }
             }, 100);
@@ -493,7 +576,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
           ) {
             // Switch to different continent in country view
             setSelectedContinent(continent);
-            setHoveredItem(null);
+            // Removed setHoveredItem - no longer needed
             hideTooltip();
             isTransitioningRef.current = true;
 
@@ -594,12 +677,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
         preserveAspectRatio="xMidYMid meet"
       />
 
-      {/* Item name tooltip - only show in country view for debugging */}
-      {hoveredItem && viewMode === "countries" && (
-        <div className="bg-opacity-75 absolute top-4 right-4 rounded-lg bg-black px-3 py-2 text-white shadow-lg">
-          <div className="font-semibold">{hoveredItem}</div>
-        </div>
-      )}
+      {/* Debugging tooltip removed - country names are shown in main tooltip */}
 
       {/* View mode indicator and back button - commented out continent view text and button - can be uncommented when needed in future */}
 
@@ -652,7 +730,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
             onInteraction?.();
             // Hide tooltip and set transition state immediately
             hideTooltip();
-            setHoveredItem(null);
+            // Removed setHoveredItem - no longer needed
             isTransitioningRef.current = true;
 
             // Start zoom transition immediately

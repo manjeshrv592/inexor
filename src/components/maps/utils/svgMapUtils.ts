@@ -29,6 +29,14 @@ export const isCountryInContinent = (
     // Exact match first (most reliable)
     if (countryName === continentCountry) return true;
 
+    // Special handling for problematic partial matches
+    // Prevent "Oman" from matching "Romania"
+    if (continentCountry === "Romania" && countryName === "Oman") return false;
+    if (continentCountry === "Oman" && countryName === "Romania") return false;
+    
+    // Note: France MultiPolygon is now split at data processing level
+    // so no special handling needed here anymore
+
     // Special handling for Guinea variants to prevent cross-continent matches
     if (continentCountry === "Guinea") {
       return countryName === "Guinea";
@@ -43,36 +51,11 @@ export const isCountryInContinent = (
       return countryName === "Guinea-Bissau";
     }
 
-    if (continentCountry === "Equatorial Guinea") {
-      return countryName === "Equatorial Guinea";
+    if (continentCountry === "Eq. Guinea") {
+      return countryName === "Eq. Guinea";
     }
 
-    // For other countries, allow partial matching but be more careful
-    if (continentCountry.length >= 5) {
-      if (
-        countryName.includes(continentCountry) ||
-        continentCountry.includes(countryName)
-      ) {
-        return true;
-      }
-    }
-
-    // Handle common abbreviations and variations for longer names
-    const normalizedCountry = countryName
-      .toLowerCase()
-      .replace(/[^a-z\s]/g, "");
-    const normalizedContinent = continentCountry
-      .toLowerCase()
-      .replace(/[^a-z\s]/g, "");
-
-    // Only match if normalized names are substantial and similar enough
-    if (normalizedContinent.length >= 5) {
-      return (
-        normalizedCountry.includes(normalizedContinent) ||
-        normalizedContinent.includes(normalizedCountry)
-      );
-    }
-
+    // For exact matches only - no more partial matching to prevent false positives
     return false;
   });
 };

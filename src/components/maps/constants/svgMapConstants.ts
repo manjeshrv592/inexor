@@ -1,4 +1,5 @@
 // Continent-to-country mapping for accurate geographic classification
+// Updated to match exact GeoJSON country names and ensure flag compatibility
 export const CONTINENT_MAPPING: Record<string, string[]> = {
   Asia: [
     "China",
@@ -9,7 +10,6 @@ export const CONTINENT_MAPPING: Record<string, string[]> = {
     "Japan",
     "Philippines",
     "Vietnam",
-    "Turkey",
     "Iran",
     "Thailand",
     "Myanmar",
@@ -27,7 +27,6 @@ export const CONTINENT_MAPPING: Record<string, string[]> = {
     "Syria",
     "Cambodia",
     "Jordan",
-    "Azerbaijan",
     "United Arab Emirates",
     "Tajikistan",
     "Israel",
@@ -35,20 +34,25 @@ export const CONTINENT_MAPPING: Record<string, string[]> = {
     "Singapore",
     "Oman",
     "Kuwait",
-    "Georgia",
     "Mongolia",
-    "Armenia",
     "Qatar",
     "Bahrain",
-    "East Timor",
+    "Timor-Leste", // Fixed: was "East Timor"
     "Palestine",
     "Lebanon",
     "Kyrgyzstan",
     "Turkmenistan",
     "Bhutan",
     "Brunei",
-    "Maldives",
-    "Russia",
+    // Transcontinental countries - Asian part
+    "Russia", // Mostly in Asia
+    "Turkey", // Mostly in Asia (Anatolia)
+    "Georgia", // Transcontinental, traditionally considered Asia
+    "Armenia", // Transcontinental, traditionally considered Asia
+    "Azerbaijan", // Transcontinental, traditionally considered Asia
+    // Additional Asian countries from GeoJSON
+    "Taiwan",
+    "Macao",
   ],
   Africa: [
     "Nigeria",
@@ -65,7 +69,6 @@ export const CONTINENT_MAPPING: Record<string, string[]> = {
     "Mozambique",
     "Madagascar",
     "Cameroon",
-    "Ivory Coast",
     "Niger",
     "Burkina Faso",
     "Mali",
@@ -84,7 +87,6 @@ export const CONTINENT_MAPPING: Record<string, string[]> = {
     "Sierra Leone",
     "Libya",
     "Liberia",
-    "Central African Republic",
     "Mauritania",
     "Eritrea",
     "Gambia",
@@ -93,22 +95,20 @@ export const CONTINENT_MAPPING: Record<string, string[]> = {
     "Gabon",
     "Lesotho",
     "Guinea-Bissau",
-    "Equatorial Guinea",
     "Mauritius",
-    "Eswatini",
+    "eSwatini", // Fixed: was "Eswatini"
     "Djibouti",
-    "Comoros",
-    "Cape Verde",
-    "São Tomé and Príncipe",
-    "Seychelles",
-    "South Sudan",
+    "Cabo Verde", // Fixed: was "Cape Verde"
     "Tanzania",
-    // Exact GeoJSON names for missing countries
+    // Exact GeoJSON names
     "Dem. Rep. Congo",
     "Congo",
-    "Central African Rep.",
+    "Central African Rep.", // Fixed: was "Central African Republic"
     "W. Sahara",
-    "Côte d'Ivoire",
+    "Côte d'Ivoire", // Fixed: removed duplicate "Ivory Coast"
+    "S. Sudan", // Fixed: was "South Sudan"
+    "São Tomé and Principe", // Fixed: was "São Tomé and Príncipe"
+    "Eq. Guinea", // Fixed: was "Equatorial Guinea"
   ],
   Europe: [
     "Germany",
@@ -121,7 +121,7 @@ export const CONTINENT_MAPPING: Record<string, string[]> = {
     "Romania",
     "Netherlands",
     "Belgium",
-    "Czech Republic",
+    "Czechia", // Fixed: was "Czech Republic"
     "Greece",
     "Portugal",
     "Sweden",
@@ -137,13 +137,13 @@ export const CONTINENT_MAPPING: Record<string, string[]> = {
     "Norway",
     "Ireland",
     "Croatia",
-    "Bosnia and Herzegovina",
+    "Bosnia and Herz.", // Fixed: was "Bosnia and Herzegovina"
     "Albania",
     "Lithuania",
     "Slovenia",
     "Latvia",
     "Estonia",
-    "Macedonia",
+    "North Macedonia", // Fixed: was "Macedonia"
     "Moldova",
     "Luxembourg",
     "Malta",
@@ -154,17 +154,23 @@ export const CONTINENT_MAPPING: Record<string, string[]> = {
     "Liechtenstein",
     "Monaco",
     "San Marino",
-    "Vatican City",
+    "Vatican", // Fixed: was "Vatican City"
     "Kosovo",
+    // Additional European territories from GeoJSON
+    "Guernsey",
+    "Jersey",
+    "Isle of Man",
+    "N. Cyprus",
+    "Åland",
   ],
   "North America": [
-    "United States",
+    "United States of America", // Fixed: was "United States"
     "Canada",
     "Mexico",
     "Guatemala",
     "Cuba",
     "Haiti",
-    "Dominican Republic",
+    "Dominican Rep.", // Fixed: was "Dominican Republic"
     "Honduras",
     "Nicaragua",
     "Costa Rica",
@@ -177,10 +183,12 @@ export const CONTINENT_MAPPING: Record<string, string[]> = {
     "Saint Lucia",
     "Grenada",
     "Saint Vincent and the Grenadines",
-    "Antigua and Barbuda",
+    "Antigua and Barb.", // Fixed: was "Antigua and Barbuda"
     "Dominica",
     "Saint Kitts and Nevis",
     "El Salvador",
+    // Additional North American territories from GeoJSON
+    "Curaçao",
   ],
   "South America": [
     "Brazil",
@@ -195,7 +203,7 @@ export const CONTINENT_MAPPING: Record<string, string[]> = {
     "Uruguay",
     "Guyana",
     "Suriname",
-    "French Guiana",
+    "French Guiana", // Now split from France MultiPolygon in processing
   ],
   Oceania: [
     "Australia",
@@ -229,9 +237,9 @@ export const CONTINENT_ZOOM_COORDS = {
 export const SVG_MAP_CONFIG = {
   width: 1200,
   height: 600,
-  initialZoom: 1.5,
-  initialX: -340,
-  initialY: -94,
-  zoomExtent: [1.5, 8] as [number, number], // Minimum zoom is now 1.5, maximum is 8
+  initialZoom: 1.0, // Reduced initial zoom for Equirectangular projection
+  initialX: 0, // Centered for Equirectangular
+  initialY: 0, // Centered for Equirectangular
+  zoomExtent: [1.0, 8] as [number, number], // Adjusted minimum zoom
   dataUrl: "/world-countries.geojson",
 };
