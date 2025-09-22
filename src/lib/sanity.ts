@@ -183,6 +183,12 @@ export interface ResourcesPage {
   _id: string;
   blogSectionTitle: string;
   blogSectionSubtitle?: string;
+  leftPanelBackgroundImage?: {
+    asset: {
+      url: string;
+    };
+    alt?: string;
+  };
   isActive: boolean;
 }
 
@@ -191,6 +197,12 @@ export async function getResourcesPage(): Promise<ResourcesPage | null> {
     _id,
     blogSectionTitle,
     blogSectionSubtitle,
+    leftPanelBackgroundImage {
+      asset-> {
+        url
+      },
+      alt
+    },
     isActive
   }`;
   

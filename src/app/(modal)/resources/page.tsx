@@ -20,7 +20,8 @@ const ResourcesPage = () => {
   const [activeBlogPost, setActiveBlogPost] = useState<BlogPost | null>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [loading, setLoading] = useState(true);
-  const [resourcesPageData, setResourcesPageData] = useState<ResourcesPage | null>(null);
+  const [resourcesPageData, setResourcesPageData] =
+    useState<ResourcesPage | null>(null);
   const rightPanelRef = React.useRef<HTMLDivElement>(null);
 
   // Fetch initial data
@@ -28,13 +29,13 @@ const ResourcesPage = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        
+
         // Fetch both blog posts and resources page data
         const [posts, pageData] = await Promise.all([
           getBlogPosts(),
-          getResourcesPage()
+          getResourcesPage(),
         ]);
-        
+
         setBlogPosts(posts);
         setResourcesPageData(pageData);
 
@@ -109,7 +110,6 @@ const ResourcesPage = () => {
         <div className="relative flex size-full items-center justify-center">
           <Button
             className="font-michroma text-[10px] tracking-[1px]"
-            size="sm"
             variant={"default"}
           >
             Blogs
@@ -117,8 +117,11 @@ const ResourcesPage = () => {
         </div>
         <div className="absolute top-0 left-0 size-full">
           <Image
-            src="/img/left-image.jpg"
-            alt="blog bg"
+            src={
+              resourcesPageData?.leftPanelBackgroundImage?.asset?.url ||
+              "/img/left-image.jpg"
+            }
+            alt={resourcesPageData?.leftPanelBackgroundImage?.alt || "blog bg"}
             fill
             className="object-cover grayscale"
           />
@@ -162,18 +165,18 @@ const ResourcesPage = () => {
 
       {/* Middle Panel - Blog List - Desktop */}
       <div className="xxl:h-[calc(100vh-128px)] hidden xl:flex xl:h-[calc(100vh-112px)] xl:flex-1 xl:flex-col xl:p-1">
-        <AutoScrollContainer className="">
-          <h3 className="font-michroma mt-10 mb-5 hidden text-center text-xs tracking-[1px] xl:block">
-            {resourcesPageData?.blogSectionTitle || "LATEST BLOGS"}
-          </h3>
-
-          <div className="pr-1">
-            <DynamicShape
-              fill="transparent"
-              stroke="#1a1a1a"
-              strokeWidth={1}
-              padding="p-2"
-            >
+        <h3 className="font-michroma mt-10 mb-5 hidden text-center text-xs tracking-[1px] xl:block">
+          {resourcesPageData?.blogSectionTitle || "LATEST BLOGS"}
+        </h3>
+        <DynamicShape
+          fill="transparent"
+          stroke="#1a1a1a"
+          strokeWidth={1}
+          padding="p-2 pr-1 py-4"
+          className=""
+        >
+          <AutoScrollContainer className="xxl:h-[456px] h-[360px]">
+            <div className="pr-1">
               <div className="space-y-2">
                 {blogPosts.map((post, index) => (
                   <DynamicShape
@@ -194,14 +197,14 @@ const ResourcesPage = () => {
                         alt={post.featuredImage?.alt || post.title}
                         width={200}
                         height={200}
-                        className="h-[64px] w-[80px] object-cover grayscale"
+                        className="xxl:h-[64px] xxl:w-[80px] h-[48px] w-[64px] object-cover grayscale"
                         style={{
                           clipPath:
                             "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))",
                         }}
                       />
                       <div className="flex w-full flex-col p-2">
-                        <div className="font-michroma w-full pr-2 text-right text-[7px] tracking-[1px]">
+                        <div className="font-michroma xxl:text-[7px] w-full pr-2 text-right text-[5px] tracking-[1px]">
                           {new Date(post.publishedAt).toLocaleDateString(
                             "en-US",
                             {
@@ -211,7 +214,7 @@ const ResourcesPage = () => {
                             },
                           )}
                         </div>
-                        <h3 className="font-michroma text-brand-orange-500 mt-auto line-clamp-2 text-[10px]">
+                        <h3 className="font-michroma text-brand-orange-500 xxl:text-[10px] mt-auto line-clamp-2 text-[8px]">
                           {post.title}
                         </h3>
                       </div>
@@ -225,18 +228,18 @@ const ResourcesPage = () => {
                   </div>
                 )}
               </div>
-            </DynamicShape>
-          </div>
-        </AutoScrollContainer>
+            </div>
+          </AutoScrollContainer>
+        </DynamicShape>
       </div>
 
       {/* Right Panel - Blog Content */}
       <div
         ref={rightPanelRef}
-        className="xxl:h-[calc(100vh-128px)] h-[calc(100vh-80px)] bg-neutral-900 px-2 py-4 pb-64 xl:h-[calc(100vh-112px)] xl:pb-0"
+        className="xxl:h-[calc(100vh-128px)] h-[calc(100vh-80px)] bg-neutral-900 py-4 pr-0 pb-64 pl-2 xl:h-[calc(100vh-112px)] xl:pb-0"
       >
         <AutoScrollContainer>
-          <div className="">
+          <div className="pr-2">
             <AnimatePresence mode="wait">
               {activeBlogPost ? (
                 <motion.div
@@ -246,7 +249,7 @@ const ResourcesPage = () => {
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                 >
-                  <h3 className="font-michroma mb-4 text-center text-xl text-orange-500">
+                  <h3 className="font-michroma mb-4 text-center text-xl text-white">
                     {activeBlogPost.title}
                   </h3>
 
@@ -315,7 +318,7 @@ const ResourcesPage = () => {
                     )}
 
                     {/* Navigation Footer */}
-                    <footer className="mt-8 flex justify-between gap-2 border-t-2 border-neutral-300 pt-6">
+                    <footer className="mt-8 flex justify-between gap-2 border-t-2 border-neutral-300 pt-6 pb-4">
                       <div>
                         {hasPrev && prevPost ? (
                           <>

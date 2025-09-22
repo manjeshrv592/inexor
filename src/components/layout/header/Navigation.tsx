@@ -7,9 +7,11 @@ import { NavigationItem, getNavigationData } from "@/lib/sanity/navigation";
 
 interface NavigationProps {
   isOpen: boolean;
+  activePagePath?: string | null;
+  onNavItemClick?: (href: string) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ isOpen }) => {
+const Navigation: React.FC<NavigationProps> = ({ isOpen, activePagePath, onNavItemClick }) => {
   const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
 
   useEffect(() => {
@@ -91,7 +93,12 @@ const Navigation: React.FC<NavigationProps> = ({ isOpen }) => {
               ease: [0.68, -0.55, 0.27, 1.55],
             }}
           >
-            <NavItem href={item.href} hasDropdown={item.hasDropdown}>
+            <NavItem 
+              href={item.href} 
+              hasDropdown={item.hasDropdown}
+              isActive={activePagePath === item.href}
+              onNavItemClick={onNavItemClick}
+            >
               {item.label}
             </NavItem>
           </motion.div>

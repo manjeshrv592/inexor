@@ -34,6 +34,24 @@ export default defineType({
       },
     }),
     defineField({
+      name: "leftPanelBackgroundImage",
+      title: "Left Panel Background Image",
+      type: "image",
+      description:
+        "Background image for the left panel with the 'Blogs' button",
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: "alt",
+          type: "string",
+          title: "Alternative Text",
+          description: "Important for SEO and accessibility",
+        },
+      ],
+    }),
+    defineField({
       name: "isActive",
       title: "Is Active",
       type: "boolean",

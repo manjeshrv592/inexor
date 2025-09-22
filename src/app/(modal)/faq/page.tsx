@@ -82,6 +82,11 @@ const FAQPage = () => {
 
       const items = await getFAQItemsByCategory(categorySlug);
       setFaqItems(items);
+
+      // Auto-select first question if items exist
+      if (items.length > 0) {
+        setActiveQuestionId(items[0]._id);
+      }
     } catch (error) {
       console.error("Error fetching FAQ items for category:", error);
     }

@@ -1,37 +1,74 @@
 "use client";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 interface NavItemProps {
   href: string;
   children: React.ReactNode;
   hasDropdown?: boolean;
+  isActive?: boolean;
+  onNavItemClick?: (href: string) => void;
 }
 
 const NavItem: React.FC<NavItemProps> = ({
   href,
   children,
   hasDropdown = false,
+  isActive = false,
+  onNavItemClick,
 }) => {
-  const pathname = usePathname();
-  const isActive = pathname === href;
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsDesktop(window.innerWidth >= 1280);
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onNavItemClick) {
+      onNavItemClick(href);
+    }
+  };
+
+  // Calculate chevron rotation based on active state and screen size
+  const getChevronRotation = () => {
+    if (isActive) {
+      return isDesktop ? 270 : 180; // Point up when active
+    }
+    return isDesktop ? 90 : 0; // Default position
+  };
 
   return (
     <li>
       <Link
         href={href}
+        onClick={handleClick}
         className={`font-michroma hover:text-brand-orange-500 xxl:text-sm flex cursor-pointer items-center gap-0 border-none bg-transparent text-[10px] tracking-[1px] duration-300 xl:rotate-180 xl:[writing-mode:vertical-rl] ${
           isActive ? "text-brand-orange-500" : "text-white"
         }`}
       >
         <span>{children}</span>
         {hasDropdown && (
-          <ChevronDown
-            className="mr-[6px] xl:rotate-90"
-            size={16}
-            color="#f65009"
-          />
+          <motion.div
+            animate={{ 
+              rotate: getChevronRotation()
+            }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="mr-[6px]"
+          >
+            <ChevronDown
+              size={16}
+              color="#f65009"
+            />
+          </motion.div>
         )}
       </Link>
     </li>

@@ -18,6 +18,7 @@ const DynamicShapeQuestion = ({
 }: DynamicShapeQuestionProps) => {
   const shapeRef = React.useRef<HTMLDivElement>(null);
   const [svgPath, setSvgPath] = React.useState("");
+  const [clipPath, setClipPath] = React.useState("");
 
   // SVG path generation constants (same as button)
   const SVG_CONFIG = React.useMemo(
@@ -53,14 +54,41 @@ const DynamicShapeQuestion = ({
     [SVG_CONFIG],
   );
 
-  // Update SVG path when dimensions change
+  // Function to generate clip-path polygon from the same shape coordinates
+  const generateClipPath = React.useCallback(
+    (width: number, height: number) => {
+      const { rightCutRatio, leftCutRatio, strokeWidth } = SVG_CONFIG;
+
+      // Calculate proportional cut angles
+      const rightCutAngle = rightCutRatio * height;
+      const leftCutAngle = leftCutRatio * height;
+      const halfStroke = strokeWidth / 2;
+
+      // Convert coordinates to percentages for clip-path polygon
+      const points = [
+        `${(halfStroke / width) * 100}% ${(halfStroke / height) * 100}%`, // Top-left
+        `${((width - rightCutAngle) / width) * 100}% ${(halfStroke / height) * 100}%`, // Top-right before cut
+        `${((width - halfStroke) / width) * 100}% ${(rightCutAngle / height) * 100}%`, // Top-right after cut
+        `${((width - halfStroke) / width) * 100}% ${((height - halfStroke) / height) * 100}%`, // Bottom-right
+        `${(leftCutAngle / width) * 100}% ${((height - halfStroke) / height) * 100}%`, // Bottom-left before cut
+        `${(halfStroke / width) * 100}% ${((height - leftCutAngle) / height) * 100}%`, // Bottom-left after cut
+      ];
+
+      return `polygon(${points.join(", ")})`;
+    },
+    [SVG_CONFIG],
+  );
+
+  // Update SVG path and clip-path when dimensions change
   React.useEffect(() => {
     if (shapeRef.current) {
       const updatePath = () => {
         const rect = shapeRef.current?.getBoundingClientRect();
         if (rect) {
           const newPath = generateSVGPath(rect.width, rect.height);
+          const newClipPath = generateClipPath(rect.width, rect.height);
           setSvgPath(newPath);
+          setClipPath(newClipPath);
         }
       };
 
@@ -73,13 +101,12 @@ const DynamicShapeQuestion = ({
 
       return () => resizeObserver.disconnect();
     }
-  }, [generateSVGPath]);
+  }, [generateSVGPath, generateClipPath]);
 
   return (
     <motion.div
       className="relative cursor-pointer"
       onClick={onClick}
-      whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
     >
       {/* Dynamic SVG Background Shape */}
@@ -93,7 +120,7 @@ const DynamicShapeQuestion = ({
         >
           <path
             d={svgPath}
-            fill={isActive ? "#1f1f1f" : "#323232"}
+            fill="#323232"
             className="transition-all duration-200 ease-in-out"
           />
         </svg>
@@ -102,12 +129,40 @@ const DynamicShapeQuestion = ({
       {/* Question Text */}
       <div
         ref={shapeRef}
-        className="relative z-10 flex items-center gap-4 px-2 py-4"
+        className="relative z-10 flex items-center gap-4 overflow-hidden px-2 py-2"
+        style={{
+          clipPath: clipPath || undefined,
+        }}
       >
+        {/* Inner shadow spans - animated with Framer Motion */}
+        <motion.span 
+          className="absolute top-0 left-0 h-1 w-[calc(100%-15px)] bg-black blur-[1px]"
+          animate={{ 
+            opacity: isActive ? 0.5 : 0 
+          }}
+          transition={{ 
+            duration: 0.3, 
+            ease: "easeInOut" 
+          }}
+        >
+          &nbsp;
+        </motion.span>
+        <motion.span 
+          className="absolute top-[-3px] right-[6px] h-[24px] w-1 -rotate-45 bg-black blur-[1px]"
+          animate={{ 
+            opacity: isActive ? 0.5 : 0 
+          }}
+          transition={{ 
+            duration: 0.3, 
+            ease: "easeInOut" 
+          }}
+        >
+          &nbsp;
+        </motion.span>
         <Button className="hidden xl:inline-flex" size={"sm"}>
           {isActive ? <MinusIcon size={16} /> : <PlusIcon size={16} />}
         </Button>
-        <p className="text-sm font-medium text-white">{children}</p>
+        <p className="text-xs font-medium text-white">{children}</p>
       </div>
     </motion.div>
   );

@@ -31,15 +31,19 @@ const ServicesPage = () => {
         setServices(servicesData);
 
         // Check if there's a service parameter in URL
-        const serviceParam = searchParams.get('service');
+        const serviceParam = searchParams.get("service");
         let targetService = null;
         let targetIndex = 0;
 
         if (serviceParam && servicesData.length > 0) {
           // Find service by code from URL parameter
-          const serviceIndex = servicesData.findIndex(s => s.code.toLowerCase() === serviceParam.toLowerCase());
+          const serviceIndex = servicesData.findIndex(
+            (s) => s.code.toLowerCase() === serviceParam.toLowerCase(),
+          );
           if (serviceIndex !== -1) {
-            targetService = await getServiceByCode(servicesData[serviceIndex].code);
+            targetService = await getServiceByCode(
+              servicesData[serviceIndex].code,
+            );
             targetIndex = serviceIndex;
           }
         }
@@ -98,13 +102,12 @@ const ServicesPage = () => {
     >
       {/* Left Panel */}
       <div className="relative h-[55px] xl:h-full">
-        <div className="relative z-10 flex size-full flex-col items-center justify-center gap-5">
+        <div className="relative z-10 flex size-full flex-col justify-center gap-5 px-2">
           <div className="flex gap-5 xl:flex-col">
             {services.map((service, index) => (
               <Button
                 key={service._id}
-                className="font-michroma text-[10px] tracking-[1px]"
-                size="sm"
+                className="font-michroma text-[10px] tracking-[1px] xl:w-full"
                 variant={activeIndex === index ? "default" : "outline"}
                 onClick={() => handleServiceClick(service, index)}
               >
@@ -130,7 +133,7 @@ const ServicesPage = () => {
         className="xxl:h-[calc(100vh-128px)] h-[calc(100vh-80px)] pb-48 xl:h-[calc(100vh-112px)] xl:pb-0"
       >
         <AutoScrollContainer>
-          <div className="px-2 pb-4">
+          <div className="pb-4">
             <AnimatePresence mode="wait">
               {activeService ? (
                 <motion.div
@@ -161,7 +164,9 @@ const ServicesPage = () => {
                       <h5 className="font-michroma text-[10px]">
                         {activeService.title.toUpperCase()}
                       </h5>
-                      <h2 className="text-lg">{activeService.shortDescription}</h2>
+                      <h2 className="text-lg">
+                        {activeService.shortDescription}
+                      </h2>
                     </div>
                   </div>
 
