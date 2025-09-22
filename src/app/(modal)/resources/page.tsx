@@ -13,7 +13,9 @@ import {
   type BlogPost,
 } from "@/lib/sanity/blog";
 import { getResourcesPage, type ResourcesPage } from "@/lib/sanity";
-import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
+import AutoScrollContainer, {
+  AutoScrollContainerRef,
+} from "@/components/ui/AutoScrollContainer";
 
 const ResourcesPage = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
@@ -23,6 +25,7 @@ const ResourcesPage = () => {
   const [resourcesPageData, setResourcesPageData] =
     useState<ResourcesPage | null>(null);
   const rightPanelRef = React.useRef<HTMLDivElement>(null);
+  const blogContentScrollRef = React.useRef<AutoScrollContainerRef>(null);
 
   // Fetch initial data
   useEffect(() => {
@@ -62,9 +65,16 @@ const ResourcesPage = () => {
       setActiveBlogPost(fullPost);
       setActiveIndex(index);
 
-      // Scroll right panel to top
+      // Scroll both containers to ensure we reach the very top
+      // Scroll the outer right panel container immediately
       if (rightPanelRef.current) {
+        rightPanelRef.current.scrollTop = 0;
         rightPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // Scroll the inner AutoScrollContainer content immediately
+      if (blogContentScrollRef.current) {
+        blogContentScrollRef.current.scrollToTop();
       }
     } catch (error) {
       console.error("Error fetching blog post:", error);
@@ -164,8 +174,8 @@ const ResourcesPage = () => {
       </div>
 
       {/* Middle Panel - Blog List - Desktop */}
-      <div className="xxl:h-[calc(100vh-128px)] hidden xl:flex xl:h-[calc(100vh-112px)] xl:flex-1 xl:flex-col xl:p-1">
-        <h3 className="font-michroma mt-10 mb-5 hidden text-center text-xs tracking-[1px] xl:block">
+      <div className="xxl:h-[calc(100vh-128px)] hidden xl:flex xl:h-[calc(100vh-112px)] xl:flex-1 xl:flex-col xl:justify-center xl:p-1">
+        <h3 className="font-michroma mb-5 hidden text-center text-xs tracking-[1px] xl:block">
           {resourcesPageData?.blogSectionTitle || "LATEST BLOGS"}
         </h3>
         <DynamicShape
@@ -238,7 +248,7 @@ const ResourcesPage = () => {
         ref={rightPanelRef}
         className="xxl:h-[calc(100vh-128px)] h-[calc(100vh-80px)] bg-neutral-900 py-4 pr-0 pb-64 pl-2 xl:h-[calc(100vh-112px)] xl:pb-0"
       >
-        <AutoScrollContainer>
+        <AutoScrollContainer ref={blogContentScrollRef}>
           <div className="pr-2">
             <AnimatePresence mode="wait">
               {activeBlogPost ? (
@@ -318,7 +328,7 @@ const ResourcesPage = () => {
                     )}
 
                     {/* Navigation Footer */}
-                    <footer className="mt-8 flex justify-between gap-2 border-t-2 border-neutral-300 pt-6 pb-4">
+                    <footer className="mt-8 flex flex-col justify-between gap-4 border-t-2 border-neutral-300 pt-6 pb-4 md:flex-row">
                       <div>
                         {hasPrev && prevPost ? (
                           <>
@@ -338,7 +348,7 @@ const ResourcesPage = () => {
                           <div></div>
                         )}
                       </div>
-                      <div>
+                      <div className="md:flex md:flex-col md:items-end">
                         {hasNext && nextPost ? (
                           <>
                             <Button

@@ -9,14 +9,32 @@ interface AutoScrollContainerProps {
   contentClassName?: string;
 }
 
-const AutoScrollContainer = ({
+export interface AutoScrollContainerRef {
+  scrollToTop: () => void;
+}
+
+const AutoScrollContainer = React.forwardRef<
+  AutoScrollContainerRef,
+  AutoScrollContainerProps
+>(({
   children,
   className,
   contentClassName,
-}: AutoScrollContainerProps) => {
+}, ref) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
   const [needsScroll, setNeedsScroll] = React.useState(false);
+
+  // Expose scroll functionality through ref
+  React.useImperativeHandle(ref, () => ({
+    scrollToTop: () => {
+      if (contentRef.current) {
+        // Use both methods for maximum compatibility
+        contentRef.current.scrollTop = 0;
+        contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    },
+  }));
 
   React.useEffect(() => {
     const checkOverflow = () => {
@@ -73,6 +91,8 @@ const AutoScrollContainer = ({
       </div>
     </div>
   );
-};
+});
+
+AutoScrollContainer.displayName = "AutoScrollContainer";
 
 export default AutoScrollContainer;
