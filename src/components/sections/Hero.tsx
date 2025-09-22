@@ -61,7 +61,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
           <h1 className="font-michroma xxl:text-4xl mt-12 xl:text-3xl">
             {title}
           </h1>
-          <p className="xxl:text-base xxl:max-w-2xl mt-3 mb-48 max-w-xl text-sm">
+          <p className="xxl:text-base xxl:max-w-2xl mt-2 mb-48 max-w-xl text-sm">
             {description}
           </p>
           <a

@@ -2,6 +2,8 @@ import React from "react";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
 import { PortableTextBlock } from "@portabletext/types";
 import Image from "next/image";
+import { urlForBlogImage } from "../../../sanity/lib/image";
+import { BlogImage } from "@/lib/sanity/blog";
 
 interface RichTextRendererProps {
   content: PortableTextBlock[];
@@ -13,30 +15,39 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
       image: ({
         value,
       }: {
-        value: {
-          asset: {
-            url: string;
-            metadata: { dimensions: { width: number; height: number } };
-          };
-          alt?: string;
-          caption?: string;
+        value: BlogImage;
+      }) => {
+        // Use Sanity image builder to respect crop/hotspot data
+        const imageUrl = urlForBlogImage(value, 800, 600).url();
+        const dimensions = value.asset.metadata?.dimensions || { width: 800, height: 600 };
+        
+        // Apply grayscale conditionally - default to true if not specified to match site style
+        const shouldApplyGrayscale = value.isGrayscale !== false;
+        const grayscaleClass = shouldApplyGrayscale ? "grayscale" : "";
+        
+        // Apply the unique clip-path shape (same as buttons/cards)
+        const clipPathStyle = {
+          clipPath: "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))"
         };
-      }) => (
-        <div className="my-6">
-          <Image
-            src={value.asset.url}
-            alt={value.alt || "Blog image"}
-            width={value.asset.metadata.dimensions.width}
-            height={value.asset.metadata.dimensions.height}
-            className="h-auto w-full rounded-lg"
-          />
-          {value.caption && (
-            <p className="mt-2 text-center text-sm text-gray-400 italic">
-              {value.caption}
-            </p>
-          )}
-        </div>
-      ),
+        
+        return (
+          <div className="my-6">
+            <Image
+              src={imageUrl}
+              alt={value.alt || "Blog image"}
+              width={dimensions.width}
+              height={dimensions.height}
+              className={`h-auto w-full ${grayscaleClass}`}
+              style={clipPathStyle}
+            />
+            {value.caption && (
+              <p className="mt-2 text-center text-sm text-gray-400 italic">
+                {value.caption}
+              </p>
+            )}
+          </div>
+        );
+      },
     },
     block: {
       normal: ({ children }) => <p className="mb-4">{children}</p>,

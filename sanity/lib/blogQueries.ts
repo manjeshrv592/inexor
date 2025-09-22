@@ -5,7 +5,10 @@ export const BLOG_POSTS_QUERY = `*[_type == "blogPost" && isActive == true] | or
   slug,
   excerpt,
   "featuredImage": featuredImage {
+    _type,
     asset->{
+      _ref,
+      _type,
       url,
       metadata {
         dimensions {
@@ -14,6 +17,8 @@ export const BLOG_POSTS_QUERY = `*[_type == "blogPost" && isActive == true] | or
         }
       }
     },
+    crop,
+    hotspot,
     alt
   },
   author,
@@ -30,7 +35,10 @@ export const BLOG_POST_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current ==
   slug,
   excerpt,
   "featuredImage": featuredImage {
+    _type,
     asset->{
+      _ref,
+      _type,
       url,
       metadata {
         dimensions {
@@ -39,12 +47,17 @@ export const BLOG_POST_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current ==
         }
       }
     },
+    crop,
+    hotspot,
     alt
   },
   author {
     name,
     "image": image {
+      _type,
       asset->{
+        _ref,
+        _type,
         url,
         metadata {
           dimensions {
@@ -52,7 +65,9 @@ export const BLOG_POST_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current ==
             height
           }
         }
-      }
+      },
+      crop,
+      hotspot
     }
   },
   publishedAt,
@@ -60,7 +75,10 @@ export const BLOG_POST_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current ==
     ...,
     _type == "image" => {
       ...,
+      _type,
       asset->{
+        _ref,
+        _type,
         url,
         metadata {
           dimensions {
@@ -68,7 +86,12 @@ export const BLOG_POST_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current ==
             height
           }
         }
-      }
+      },
+      crop,
+      hotspot,
+      alt,
+      caption,
+      isGrayscale
     }
   },
   tags,
@@ -97,7 +120,10 @@ export const RECENT_BLOG_POSTS_QUERY = `*[_type == "blogPost" && isActive == tru
   slug,
   excerpt,
   "featuredImage": featuredImage {
+    _type,
     asset->{
+      _ref,
+      _type,
       url,
       metadata {
         dimensions {
@@ -106,6 +132,8 @@ export const RECENT_BLOG_POSTS_QUERY = `*[_type == "blogPost" && isActive == tru
         }
       }
     },
+    crop,
+    hotspot,
     alt
   },
   author,

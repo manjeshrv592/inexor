@@ -149,3 +149,25 @@ export const SERVICE_NAVIGATION_QUERY = `{
     slug
   }
 }`;
+
+// Services Page Settings Query
+export const SERVICES_PAGE_SETTINGS_QUERY = `*[_type == "servicesPageSettings" && isActive == true][0] {
+  _id,
+  "leftPanelImage": leftPanelImage {
+    asset->{
+      url,
+      metadata {
+        dimensions {
+          width,
+          height
+        }
+      }
+    },
+    alt
+  },
+  overlayOpacity,
+  applyGrayscale,
+  isActive,
+  lastUpdated,
+  notes
+}`;

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronLeftIcon } from "lucide-react";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
 interface PagePanelProps {
   children: React.ReactNode;
@@ -137,18 +138,29 @@ const PagePanel = ({ children }: PagePanelProps) => {
       animate={isClosing ? "exit" : "visible"}
     >
       {children}
-      <button
-        onClick={handleClose}
-        className="absolute right-1/2 bottom-0 z-50 flex size-10 translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-orange-500 transition-colors hover:bg-orange-600 cursor-pointer xl:top-1/2 xl:right-0 xl:bottom-auto xl:-translate-y-1/2"
-      >
-        <ChevronLeftIcon className={`${
-          isContactPage 
-            ? 'rotate-90' 
-            : isPrivacyOrTermsPage 
-            ? '-rotate-90' 
-            : 'rotate-90 xl:rotate-0'
-        }`} />
-      </button>
+      <Tooltip delayDuration={300}>
+        <TooltipTrigger asChild>
+          <button
+            onClick={handleClose}
+            className="absolute right-1/2 bottom-0 z-50 flex size-10 translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-orange-500 transition-colors hover:bg-orange-600 cursor-pointer xl:top-1/2 xl:right-0 xl:bottom-auto xl:-translate-y-1/2"
+          >
+            <ChevronLeftIcon className={`${
+              isContactPage 
+                ? 'rotate-90' 
+                : isPrivacyOrTermsPage 
+                ? '-rotate-90' 
+                : 'rotate-90 xl:rotate-0'
+            }`} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent 
+          side="left" 
+          sideOffset={10}
+          className="z-[200] bg-[#050505] text-brand-orange-500 border border-[#050505]"
+        >
+          <p className="tracking-wide">GO BACK</p>
+        </TooltipContent>
+      </Tooltip>
     </motion.div>
   );
 };

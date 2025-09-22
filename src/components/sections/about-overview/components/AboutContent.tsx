@@ -50,9 +50,9 @@ const AboutContent: React.FC<AboutContentProps> = ({
   return (
     <div className="grid h-full w-[calc(100%-40px)] max-w-[1000px] grid-rows-[max-content_max-content] content-center gap-6 py-8 xl:mx-8 xl:w-[calc(75%-128px)] xl:px-20 xl:py-0">
       <div className="px-6 text-center">
-        <div className="mb-4 flex flex-col items-center justify-center gap-4">
+        <div className="mb-4 flex flex-col items-center justify-center">
           <div className="text-center">
-            <SectionTitle className="mb-0">{title}</SectionTitle>
+            <SectionTitle className="mb-2">{title}</SectionTitle>
           </div>
           <h3 className="mb-4 text-lg">{subtitle}</h3>
         </div>

@@ -149,6 +149,13 @@ export default defineType({
               type: "string",
               title: "Caption",
             },
+            {
+              name: "isGrayscale",
+              type: "boolean",
+              title: "Grayscale",
+              description: "Apply grayscale filter to this image",
+              initialValue: true, // Default to grayscale to match your site's style
+            },
           ],
         },
       ],

@@ -9,16 +9,35 @@ import {
 
 // Types
 export interface BlogImage {
+  _type: 'image';
   asset: {
-    url: string;
-    metadata: {
+    _ref: string;
+    _type: 'reference';
+    url?: string; // Keep for backward compatibility
+    metadata?: {
       dimensions: {
         width: number;
         height: number;
       };
     };
   };
+  crop?: {
+    _type: 'sanity.imageCrop';
+    bottom: number;
+    left: number;
+    right: number;
+    top: number;
+  };
+  hotspot?: {
+    _type: 'sanity.imageHotspot';
+    height: number;
+    width: number;
+    x: number;
+    y: number;
+  };
   alt?: string;
+  caption?: string;
+  isGrayscale?: boolean;
 }
 
 export interface BlogAuthor {

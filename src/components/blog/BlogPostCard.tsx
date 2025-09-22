@@ -2,6 +2,7 @@ import React from "react";
 import { DynamicShape } from "../ui/DynamicShape";
 import Image from "next/image";
 import { BlogPost } from "@/lib/sanity/blog";
+import { urlForFeaturedImage } from "../../../sanity/lib/image";
 
 interface BlogPostCardProps {
   post: BlogPost;
@@ -35,7 +36,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
       >
         {post.featuredImage && (
           <Image
-            src={post.featuredImage.asset.url}
+            src={urlForFeaturedImage(post.featuredImage, 200, 200).url()}
             alt={post.featuredImage.alt || post.title}
             width={200}
             height={200}

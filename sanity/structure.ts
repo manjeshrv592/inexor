@@ -191,6 +191,16 @@ export const structure = (S: StructureBuilder) =>
                 ),
               S.divider(),
               S.listItem()
+                .title("⚙️ Services Page Settings")
+                .child(
+                  S.documentTypeList("servicesPageSettings")
+                    .title("Services Page Settings")
+                    .defaultOrdering([
+                      { field: "isActive", direction: "desc" },
+                      { field: "lastUpdated", direction: "desc" },
+                    ]),
+                ),
+              S.listItem()
                 .title("Services Section")
                 .child(
                   S.documentTypeList("servicesSection").title("Services Section"),

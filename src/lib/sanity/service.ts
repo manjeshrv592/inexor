@@ -71,6 +71,16 @@ export interface ServiceNavigation {
   } | null;
 }
 
+export interface ServicesPageSettings {
+  _id: string;
+  leftPanelImage?: ServiceImage;
+  overlayOpacity: number;
+  applyGrayscale: boolean;
+  isActive: boolean;
+  lastUpdated: string;
+  notes?: string;
+}
+
 // Functions
 export async function getServices(): Promise<Service[]> {
   return client.fetch(SERVICES_QUERY, {}, { next: { tags: ["services"] } });

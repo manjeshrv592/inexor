@@ -16,6 +16,7 @@ import { getResourcesPage, type ResourcesPage } from "@/lib/sanity";
 import AutoScrollContainer, {
   AutoScrollContainerRef,
 } from "@/components/ui/AutoScrollContainer";
+import { urlForImage } from "../../../../sanity/lib/image";
 
 const ResourcesPage = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
@@ -117,9 +118,9 @@ const ResourcesPage = () => {
     >
       {/* Left Panel */}
       <div className="relative h-[55px] xl:h-full">
-        <div className="relative flex size-full items-center justify-center">
+        <div className="relative z-10 flex size-full flex-col justify-center gap-5 px-2">
           <Button
-            className="font-michroma text-[10px] tracking-[1px]"
+            className="font-michroma text-[10px] tracking-[1px] xl:w-full"
             variant={"default"}
           >
             Blogs
@@ -288,7 +289,7 @@ const ResourcesPage = () => {
                         <span className="inline-block size-10 overflow-hidden rounded-full bg-neutral-700">
                           {activeBlogPost.author.image ? (
                             <Image
-                              src={activeBlogPost.author.image.asset.url}
+                              src={urlForImage(activeBlogPost.author.image).width(80).height(80).url()}
                               alt={activeBlogPost.author.name}
                               height={80}
                               width={80}
