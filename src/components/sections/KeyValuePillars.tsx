@@ -129,9 +129,7 @@ const KeyValuePillars = ({ sectionData, items }: KeyValuePillarsProps) => {
           isEven ? "ml-auto" : ""
         } w-[calc(100%-64px)] bg-[#262626] px-4 py-2 ${
           isEven ? "pl-16 text-left" : "pr-16 text-right"
-        } [box-shadow:inset_0_0px_3px_2px_rgba(0,0,0,.25)] [clip-path:polygon(0%_0%,20px_0%,calc(100%-20px)_0%,100%_20px,100%_100%,calc(100%-20px)_100%,20px_100%,0%_calc(100%-20px))] before:absolute before:bottom-[-8px] before:left-[-8px] before:size-5 before:rotate-45 before:bg-[#262626] before:[box-shadow:0_0px_3px_3px_rgba(0,0,0,.25)] before:content-[''] after:absolute after:top-[-8px] after:right-[-8px] after:size-5 after:rotate-45 after:bg-[#262626] after:[box-shadow:0_0px_3px_3px_rgba(0,0,0,.25)] after:content-[''] ${
-          index >= 2 ? "lg:scale-90" : ""
-        } lg:w-auto lg:px-10 ${
+        } [box-shadow:inset_0_0px_3px_2px_rgba(0,0,0,.25)] [clip-path:polygon(0%_0%,20px_0%,calc(100%-20px)_0%,100%_20px,100%_100%,calc(100%-20px)_100%,20px_100%,0%_calc(100%-20px))] before:absolute before:bottom-[-8px] before:left-[-8px] before:size-5 before:rotate-45 before:bg-[#262626] before:[box-shadow:0_0px_3px_3px_rgba(0,0,0,.25)] before:content-[''] after:absolute after:top-[-8px] after:right-[-8px] after:size-5 after:rotate-45 after:bg-[#262626] after:[box-shadow:0_0px_3px_3px_rgba(0,0,0,.25)] after:content-[''] lg:w-auto lg:px-10 ${
           isEven
             ? index >= 2
               ? "lg:pl-22"
@@ -172,13 +170,13 @@ const KeyValuePillars = ({ sectionData, items }: KeyValuePillarsProps) => {
           }}
         >
           <Image
-            src={item.icon.asset.url}
+            src="/img/features-icon/feature-04.svg"
             height={28}
             width={28}
-            alt={`${item.title} Icon`}
+            alt="Globe Icon"
           />
         </motion.span>
-        <h5 className="text-brand-orange-500 text-sm">{item.title}</h5>
+        <h5 className="text-brand-orange-500 text-base">{item.title}</h5>
         <p className="text-xs text-neutral-300 xl:text-sm">
           {item.description}
         </p>
