@@ -59,7 +59,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
       <Container className="h-full">
         <div className="relative z-10 flex size-full flex-col items-center justify-end pb-[12vh] text-center xl:pb-[8vh]">
           <div className="mb-[28vh] bg-black/10 p-4 backdrop-blur-sm">
-            <h1 className="font-michroma xxl:text-4xl xxxl:text-5xl mb-4 max-w-3xl lg:text-3xl">
+            <h1 className="font-michroma xxl:text-4xl xxxl:text-5xl mb-4 lg:text-3xl">
               {title}
             </h1>
             <p className="xxl:text-base xxl:max-w-2xl xxxl:text-lg xxxl:max-w-3xl mx-auto max-w-xl text-sm">

@@ -193,7 +193,7 @@ const ContactPage = () => {
                 </div>
 
                 {/* Content */}
-                <div className="relative z-10 flex flex-col items-center justify-center gap-16 px-8 py-3">
+                <div className="relative z-10 flex items-center justify-center gap-16 px-8 py-3">
                   <a
                     href={`tel:${contactInfo.phoneNumber}`}
                     className="group flex cursor-pointer items-center gap-4 transition-colors hover:text-orange-500"
