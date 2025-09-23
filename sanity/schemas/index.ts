@@ -37,6 +37,7 @@ import resourcesPageSeo from "./resourcesPageSeo";
 import contactPage from "./contactPage";
 import contactInfo from "./contactInfo";
 import blogPost from "./blogPost";
+import imageTextBlock from "./imageTextBlock";
 import { privacySchemas } from "./privacy";
 import { termsSchemas } from "./terms";
 import { navigationSchemas } from "./navigation";
@@ -82,6 +83,7 @@ export const schemaTypes = [
   contactPage,
   contactInfo,
   blogPost,
+  imageTextBlock,
   ...privacySchemas,
   ...termsSchemas,
   ...navigationSchemas,

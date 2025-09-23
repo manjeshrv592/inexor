@@ -118,7 +118,7 @@ const ResourcesPage = () => {
     >
       {/* Left Panel */}
       <div className="relative h-[55px] xl:h-full">
-        <div className="relative z-10 flex size-full flex-col justify-center gap-5 px-2">
+        <div className="relative z-10 flex size-full flex-col items-center justify-center gap-5 px-2">
           <Button
             className="font-michroma text-[10px] tracking-[1px] xl:w-full"
             variant={"default"}
@@ -289,7 +289,10 @@ const ResourcesPage = () => {
                         <span className="inline-block size-10 overflow-hidden rounded-full bg-neutral-700">
                           {activeBlogPost.author.image ? (
                             <Image
-                              src={urlForImage(activeBlogPost.author.image).width(80).height(80).url()}
+                              src={urlForImage(activeBlogPost.author.image)
+                                .width(80)
+                                .height(80)
+                                .url()}
                               alt={activeBlogPost.author.name}
                               height={80}
                               width={80}
@@ -305,15 +308,26 @@ const ResourcesPage = () => {
                           {activeBlogPost.author.name.toUpperCase()}
                         </span>
                       </div>
-                      <div className="text-brand-orange-500 flex items-center gap-4 text-[10px]">
+                      <div className="text-brand-orange-500 flex flex-col items-end gap-2 text-[10px] lg:flex-row lg:items-center lg:gap-4">
                         <span className="font-michroma">
-                          {new Date(
-                            activeBlogPost.publishedAt,
-                          ).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })}
+                          <span className="lg:hidden">
+                            {new Date(
+                              activeBlogPost.publishedAt,
+                            ).toLocaleDateString("en-US", {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            })}
+                          </span>
+                          <span className="hidden lg:inline">
+                            {new Date(
+                              activeBlogPost.publishedAt,
+                            ).toLocaleDateString("en-US", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            })}
+                          </span>
                         </span>
                         {activeBlogPost.readingTime && (
                           <span className="font-michroma">

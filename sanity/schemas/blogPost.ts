@@ -158,6 +158,9 @@ export default defineType({
             },
           ],
         },
+        {
+          type: "imageTextBlock",
+        },
       ],
       validation: (Rule) => Rule.required(),
     }),

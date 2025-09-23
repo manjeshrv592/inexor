@@ -5,6 +5,15 @@ import Image from "next/image";
 import { urlForBlogImage } from "../../../sanity/lib/image";
 import { BlogImage } from "@/lib/sanity/blog";
 
+// Define the ImageTextBlock interface
+interface ImageTextBlock {
+  _type: "imageTextBlock";
+  image: BlogImage;
+  text: PortableTextBlock[];
+  layout: "imageLeft" | "textLeft";
+  verticalAlignment: "top" | "center" | "bottom";
+}
+
 interface RichTextRendererProps {
   content: PortableTextBlock[];
 }
@@ -12,26 +21,26 @@ interface RichTextRendererProps {
 const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
   const components: PortableTextComponents = {
     types: {
-      image: ({
-        value,
-      }: {
-        value: BlogImage;
-      }) => {
+      image: ({ value }: { value: BlogImage }) => {
         // Use Sanity image builder to respect crop/hotspot data
         const imageUrl = urlForBlogImage(value, 800, 600).url();
-        const dimensions = value.asset.metadata?.dimensions || { width: 800, height: 600 };
-        
+        const dimensions = value.asset.metadata?.dimensions || {
+          width: 800,
+          height: 600,
+        };
+
         // Apply grayscale conditionally - default to true if not specified to match site style
         const shouldApplyGrayscale = value.isGrayscale !== false;
         const grayscaleClass = shouldApplyGrayscale ? "grayscale" : "";
-        
+
         // Apply the unique clip-path shape (same as buttons/cards)
         const clipPathStyle = {
-          clipPath: "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))"
+          clipPath:
+            "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))",
         };
-        
+
         return (
-          <div className="my-6">
+          <div className="mx-auto my-6 max-w-[600px]">
             <Image
               src={imageUrl}
               alt={value.alt || "Blog image"}
@@ -44,6 +53,72 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
               <p className="mt-2 text-center text-sm text-gray-400 italic">
                 {value.caption}
               </p>
+            )}
+          </div>
+        );
+      },
+      imageTextBlock: ({ value }: { value: ImageTextBlock }) => {
+        const imageUrl = urlForBlogImage(value.image, 600, 400).url();
+        const dimensions = value.image.asset.metadata?.dimensions || {
+          width: 600,
+          height: 400,
+        };
+
+        // Apply grayscale conditionally - default to true if not specified
+        const shouldApplyGrayscale = value.image.isGrayscale !== false;
+        const grayscaleClass = shouldApplyGrayscale ? "grayscale" : "";
+
+        // Apply the unique clip-path shape
+        const clipPathStyle = {
+          clipPath:
+            "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))",
+        };
+
+        // Determine alignment classes
+        const alignmentClasses = {
+          top: "items-start",
+          center: "items-center",
+          bottom: "items-end",
+        };
+
+        const ImageComponent = (
+          <div className="relative mx-auto max-w-[600px]">
+            <Image
+              src={imageUrl}
+              alt={value.image.alt || "Blog image"}
+              width={dimensions.width}
+              height={dimensions.height}
+              className={`h-auto w-full ${grayscaleClass}`}
+              style={clipPathStyle}
+            />
+            {value.image.caption && (
+              <p className="mt-2 text-center text-sm text-gray-400 italic">
+                {value.image.caption}
+              </p>
+            )}
+          </div>
+        );
+
+        const TextComponent = (
+          <div className="prose prose-invert max-w-none">
+            <PortableText value={value.text} components={components} />
+          </div>
+        );
+
+        return (
+          <div
+            className={`my-8 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:gap-8 ${alignmentClasses[value.verticalAlignment]}`}
+          >
+            {value.layout === "imageLeft" ? (
+              <>
+                {ImageComponent}
+                {TextComponent}
+              </>
+            ) : (
+              <>
+                {TextComponent}
+                {ImageComponent}
+              </>
             )}
           </div>
         );
