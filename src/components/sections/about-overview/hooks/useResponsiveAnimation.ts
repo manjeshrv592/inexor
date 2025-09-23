@@ -14,7 +14,7 @@ export const useResponsiveAnimation = (): UseResponsiveAnimationReturn => {
   // Check screen size
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsXlScreen(window.innerWidth >= 1200);
+      setIsXlScreen(window.innerWidth >= 992);
     };
 
     // Check initial screen size

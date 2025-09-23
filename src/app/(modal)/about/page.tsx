@@ -9,8 +9,8 @@ const AboutPage = async () => {
   const { aboutPage, processSection, processSteps, contentSections } =
     await getAboutPageData();
   return (
-    <div className="size-full grid-cols-[2fr_3fr_2fr] bg-[#2f2f2f] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:grid">
-      <div className="relative h-44 xl:h-full">
+    <div className="size-full grid-cols-[2fr_3fr_2fr] bg-[#2f2f2f] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] lg:grid">
+      <div className="relative h-44 lg:h-full">
         <div className="absolute size-full bg-black">
           <Image
             src="/img/about-us.jpg"
@@ -20,9 +20,9 @@ const AboutPage = async () => {
           />
         </div>
       </div>
-      <div className="xxl:h-[calc(100vh-128px)] col-span-2 h-[calc(100vh-118.14px)] pb-56 xl:h-[calc(100vh-112px)] xl:pb-0">
+      <div className="xxl:h-[calc(100vh-128px)] col-span-2 h-[calc(100vh-118.14px)] pb-56 lg:h-[calc(100vh-112px)] lg:pb-0">
         <AutoScrollContainer>
-          <div className="p-5 xl:p-12">
+          <div className="p-5 lg:p-12">
             {/* Page Header */}
             <h3 className="font-michroma mb-2 text-center text-xl text-orange-500">
               {aboutPage?.pageTitle || "About Inexor"}

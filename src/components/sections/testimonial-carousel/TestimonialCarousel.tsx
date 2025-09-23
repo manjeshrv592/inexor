@@ -39,8 +39,8 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
   }
 
   return (
-    <article className="xxl:grid-cols-[400px_1fr] xl:grid xl:h-[360px] xl:grid-cols-[360px_1fr]">
-      <span className="mb-2 block text-center xl:hidden">
+    <article className="xxl:grid-cols-[400px_1fr] lg:grid lg:h-[360px] lg:grid-cols-[360px_1fr]">
+      <span className="mb-2 block text-center lg:hidden">
         <Image
           src="/quotes.svg"
           alt="quotes icon"
@@ -55,7 +55,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
         currentIndex={currentIndex}
       />
 
-      <div className="xxl:px-28 flex flex-col py-6 text-center xl:bg-neutral-900 xl:px-16">
+      <div className="xxl:px-28 flex flex-col py-6 text-center lg:bg-neutral-900 lg:px-16">
         <TestimonialContent
           testimonial={currentTestimonial}
           currentIndex={currentIndex}

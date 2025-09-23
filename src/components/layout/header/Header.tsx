@@ -18,7 +18,7 @@ const Header = () => {
 
   const handleNavItemClick = (href: string) => {
     const isCurrentlyActive = activePagePath === href;
-    
+
     if (isCurrentlyActive) {
       // If clicking on active page, close it
       setActivePagePath(null);
@@ -40,11 +40,11 @@ const Header = () => {
   }, [pathname]);
 
   return (
-    <header className="fixed top-0 left-0 z-200 flex w-full flex-col lg:w-28 xl:h-screen">
+    <header className="fixed top-0 left-0 z-200 flex w-full flex-col lg:h-screen lg:w-28">
       <MobileToggle isOpen={isMobileNavOpen} onToggle={toggleMobileNav} />
       <Logo />
-      <Navigation 
-        isOpen={isMobileNavOpen} 
+      <Navigation
+        isOpen={isMobileNavOpen}
         activePagePath={activePagePath}
         onNavItemClick={handleNavItemClick}
       />

@@ -26,7 +26,7 @@ const FAQPage = () => {
   // Check if mobile on mount and resize
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1280); // xl breakpoint
+      setIsMobile(window.innerWidth < 992); // lg breakpoint
     };
 
     checkMobile();
@@ -110,15 +110,15 @@ const FAQPage = () => {
 
   return (
     <div
-      className="h-full bg-[#2f2f2f] xl:grid xl:grid-cols-[2fr_3fr_2fr]"
+      className="h-full bg-[#2f2f2f] lg:grid lg:grid-cols-[2fr_3fr_2fr]"
       style={{
         boxShadow:
           "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
       }}
     >
       {/* Left Panel - Category Selection */}
-      <div className="relative h-[55px] xl:h-full">
-        <div className="absolute inset-0 hidden size-full xl:block">
+      <div className="relative h-[55px] lg:h-full">
+        <div className="absolute inset-0 hidden size-full lg:block">
           <Image
             src="/img/faq.jpg"
             alt="Nature image"
@@ -128,11 +128,11 @@ const FAQPage = () => {
           <div className="absolute inset-0 z-10 bg-black/85"></div>
         </div>
         <div className="relative z-10 flex h-full flex-col items-center justify-center gap-4 p-8 text-center">
-          <p className="hidden text-sm xl:block">
+          <p className="hidden text-sm lg:block">
             {faqPageData?.pageDescription ||
               "Our FAQ Section Offers Fast, Clear Answers To Popular Questions, So You Can Find Information Easily."}
           </p>
-          <h5 className="font-michroma hidden xl:block">
+          <h5 className="font-michroma hidden lg:block">
             Select <span className="text-brand-orange-500">Category</span>
           </h5>
           <div className="flex flex-wrap justify-center gap-4">
@@ -150,7 +150,7 @@ const FAQPage = () => {
       </div>
 
       {/* Desktop Answer Panel */}
-      <div className="hidden h-full xl:grid xl:grid-rows-3">
+      <div className="hidden h-full lg:grid lg:grid-rows-3">
         <div className="flex items-end justify-center pb-8">
           <h4 className="font-michroma text-brand-orange-500 text-center">
             {faqPageData?.pageTitle || "FAQ's"}
@@ -195,7 +195,7 @@ const FAQPage = () => {
       </div>
 
       {/* Questions Panel */}
-      <div className="xxl:h-[calc(100vh-128px)] h-full bg-[#2b2b2b] xl:h-[calc(100vh-112px)]">
+      <div className="xxl:h-[calc(100vh-128px)] h-full bg-[#2b2b2b] lg:h-[calc(100vh-112px)]">
         <AutoScrollContainer>
           <div className="py-12">
             <div className="flex flex-col gap-6 px-2">

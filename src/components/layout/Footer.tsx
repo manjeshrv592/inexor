@@ -98,9 +98,9 @@ const Footer = ({ footerData }: FooterProps) => {
   };
   return (
     <footer className="bg-[#323232] text-white [box-shadow:inset_0_2px_2px_rgba(0,0,0,0.2)] lg:pl-28">
-      <div className="xxl:grid-cols-[3fr_2fr] grid items-center gap-8 xl:grid-cols-2 xl:items-stretch xl:gap-12">
-        <div className="px-5 pt-8 text-center xl:pt-14 xl:pb-3">
-          <h4 className="font-michroma mb-4 bg-gradient-to-r from-white to-neutral-500 bg-clip-text text-transparent md:text-xl xl:mb-10 xl:text-2xl">
+      <div className="xxl:grid-cols-[3fr_2fr] grid items-center gap-8 lg:grid-cols-2 lg:items-stretch lg:gap-12">
+        <div className="px-5 pt-8 text-center lg:pt-14 lg:pb-3">
+          <h4 className="font-michroma mb-4 bg-gradient-to-r from-white to-neutral-500 bg-clip-text text-transparent md:text-lg lg:mb-10 xl:text-2xl">
             {footerData?.heading ||
               "Ready to Witness Global Shipping Become Seamless?"}
           </h4>
@@ -187,9 +187,9 @@ const Footer = ({ footerData }: FooterProps) => {
           </div>
         </div>
 
-        <div className="hidden lg:flex relative h-full">
+        <div className="relative hidden h-full lg:flex">
           {/* Container that holds both logo and social media sections */}
-          <div className="flex w-full h-full relative">
+          <div className="relative flex h-full w-full">
             {/* Animated Logo Box - starts at width 0 and expands */}
             <motion.div
               initial={{ width: "0%" }}
@@ -204,7 +204,7 @@ const Footer = ({ footerData }: FooterProps) => {
               }}
               className="h-full overflow-hidden"
             >
-              <div className="flex h-full flex-col justify-center bg-[#2f2f2f] px-8 py-2 [box-shadow:inset_0_2px_4px_rgba(0,0,0,0.3)] w-full">
+              <div className="flex h-full w-full flex-col justify-center bg-[#2f2f2f] px-8 py-2 [box-shadow:inset_0_2px_4px_rgba(0,0,0,0.3)]">
                 <div className="mb-2 flex flex-1 items-center">
                   <Image
                     src={footerData?.logo?.asset?.url || "/img/x-logo.svg"}
@@ -214,24 +214,24 @@ const Footer = ({ footerData }: FooterProps) => {
                     height={100}
                   />
                 </div>
-                <div className="flex justify-center items-center gap-2 text-xs min-w-0">
+                <div className="flex min-w-0 items-center justify-center gap-2 text-xs">
                   <Link
                     href="/privacy-policy"
-                    className="hover:text-brand-orange-500 flex-shrink-0 cursor-pointer duration-300 whitespace-nowrap"
+                    className="hover:text-brand-orange-500 flex-shrink-0 cursor-pointer whitespace-nowrap duration-300"
                   >
                     Privacy Policy
                   </Link>
                   <span className="flex-shrink-0"> | </span>
                   <Link
                     href="/terms-conditions"
-                    className="hover:text-brand-orange-500 flex-shrink-0 cursor-pointer duration-300 whitespace-nowrap"
+                    className="hover:text-brand-orange-500 flex-shrink-0 cursor-pointer whitespace-nowrap duration-300"
                   >
                     Terms & Conditions
                   </Link>
                 </div>
               </div>
             </motion.div>
-            
+
             {/* Social Media Section - gets pushed to the right as logo expands */}
             <motion.div
               initial={{ x: "0%" }}
@@ -244,7 +244,7 @@ const Footer = ({ footerData }: FooterProps) => {
                   duration: 0.9,
                 },
               }}
-              className="flex-1 h-full"
+              className="h-full flex-1"
             >
               <div className="flex h-full flex-col items-center justify-center gap-4">
                 <div className="text-center">

@@ -94,20 +94,20 @@ const ServicesPage = () => {
 
   return (
     <div
-      className="h-full bg-[#2f2f2f] xl:grid xl:h-full xl:grid-cols-[150px_1fr]"
+      className="h-full bg-[#2f2f2f] lg:grid lg:h-full lg:grid-cols-[150px_1fr]"
       style={{
         boxShadow:
           "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
       }}
     >
       {/* Left Panel */}
-      <div className="relative h-[55px] xl:h-full">
+      <div className="relative h-[55px] lg:h-full">
         <div className="relative z-10 flex size-full flex-col justify-center gap-5 px-2">
-          <div className="flex gap-5 xl:flex-col">
+          <div className="flex gap-5 lg:flex-col">
             {services.map((service, index) => (
               <Button
                 key={service._id}
-                className="font-michroma text-[10px] tracking-[1px] xl:w-full"
+                className="font-michroma text-[10px] tracking-[1px] lg:w-full"
                 variant={activeIndex === index ? "default" : "outline"}
                 onClick={() => handleServiceClick(service, index)}
               >
@@ -130,7 +130,7 @@ const ServicesPage = () => {
       {/* Right Panel - Service Content */}
       <div
         ref={rightPanelRef}
-        className="xxl:h-[calc(100vh-128px)] h-[calc(100vh-80px)] pb-48 xl:h-[calc(100vh-112px)] xl:pb-0"
+        className="xxl:h-[calc(100vh-128px)] h-[calc(100vh-80px)] pb-48 lg:h-[calc(100vh-112px)] lg:pb-0"
       >
         <AutoScrollContainer>
           <div className="pb-4">

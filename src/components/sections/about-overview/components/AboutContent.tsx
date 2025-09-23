@@ -48,7 +48,7 @@ const AboutContent: React.FC<AboutContentProps> = ({
   const items = aboutItems.length > 0 ? aboutItems : defaultItems;
 
   return (
-    <div className="grid h-full w-[calc(100%-40px)] max-w-[1000px] grid-rows-[max-content_max-content] content-center gap-6 py-8 xl:mx-8 xl:w-[calc(75%-128px)] xl:px-20 xl:py-0">
+    <div className="grid h-full w-[calc(100%-40px)] max-w-[1000px] grid-rows-[max-content_max-content] content-center gap-6 py-8 lg:mx-8 lg:w-[calc(100%-128px)] lg:px-20 lg:py-0 xl:w-[calc(75%-128px)]">
       <div className="px-6 text-center">
         <div className="mb-4 flex flex-col items-center justify-center">
           <div className="text-center">
@@ -58,7 +58,7 @@ const AboutContent: React.FC<AboutContentProps> = ({
         </div>
         <p className="text-sm">{description}</p>
       </div>
-      <div className="grid grid-cols-2 gap-4 text-xs xl:grid-cols-4 xl:gap-6">
+      <div className="grid grid-cols-2 gap-4 text-xs lg:grid-cols-4 xl:gap-6">
         {items.map((item) => (
           <ServiceCard key={item._id}>{item.content}</ServiceCard>
         ))}

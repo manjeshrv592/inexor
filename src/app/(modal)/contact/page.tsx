@@ -172,7 +172,7 @@ const ContactPage = () => {
               <p className="text-center text-sm">{contactInfo.description}</p>
             </div>
             {/* Special shape for div */}
-            <div className="relative flex justify-center pt-5 after:absolute after:top-0 after:left-1/2 after:inline-block after:h-full after:w-[3px] after:translate-x-1/2 after:bg-[#212121] after:content-['']">
+            <div className="relative flex justify-center pt-5 after:absolute after:top-0 after:left-1/2 after:hidden after:h-full after:w-[3px] after:translate-x-1/2 after:bg-[#212121] after:content-['']">
               <div className="relative mx-auto inline-block text-sm">
                 {/* SVG Background Shape */}
                 <div className="absolute inset-0">
@@ -193,23 +193,23 @@ const ContactPage = () => {
                 </div>
 
                 {/* Content */}
-                <div className="relative z-10 flex items-center justify-center gap-16 px-8 py-3">
-                  <a 
+                <div className="relative z-10 flex flex-col items-center justify-center gap-16 px-8 py-3">
+                  <a
                     href={`tel:${contactInfo.phoneNumber}`}
-                    className="flex items-center gap-4 hover:text-orange-500 transition-colors cursor-pointer group"
+                    className="group flex cursor-pointer items-center gap-4 transition-colors hover:text-orange-500"
                   >
                     <span className="text-sm font-medium">
                       {contactInfo.phoneNumber}
                     </span>
-                    <span className="flex size-12 items-center justify-center rounded-full bg-orange-500 group-hover:bg-orange-600 transition-colors">
+                    <span className="flex size-12 items-center justify-center rounded-full bg-orange-500 transition-colors group-hover:bg-orange-600">
                       <PhoneIcon size={16} className="text-white" />
                     </span>
                   </a>
-                  <a 
+                  <a
                     href={`mailto:${contactInfo.email}`}
-                    className="flex items-center gap-4 hover:text-orange-500 transition-colors cursor-pointer group"
+                    className="group flex cursor-pointer items-center gap-4 transition-colors hover:text-orange-500"
                   >
-                    <span className="flex size-12 items-center justify-center rounded-full bg-orange-500 group-hover:bg-orange-600 transition-colors">
+                    <span className="flex size-12 items-center justify-center rounded-full bg-orange-500 transition-colors group-hover:bg-orange-600">
                       <Mail size={16} className="text-white" />
                     </span>
                     <span className="text-sm font-medium">
@@ -226,9 +226,9 @@ const ContactPage = () => {
         </div>
 
         {/* Right Panel - Contact Form */}
-        <div className="xxl:h-[calc(100vh-128px)] bg-neutral-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:h-[calc(100vh-112px)]">
+        <div className="xxl:h-[calc(100vh-128px)] h-[calc(100vh-118.14px)] bg-neutral-800 pb-[80%] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] md:pb-[30%] xl:h-[calc(100vh-112px)]">
           <AutoScrollContainer>
-            <div>
+            <div className="pb-4">
               <h3 className="font-michroma py-5 text-center">
                 Contact{" "}
                 <span className="text-brand-orange-500">Information</span>

@@ -16,7 +16,7 @@ const TestimonialContent: React.FC<TestimonialContentProps> = ({
 }) => {
   return (
     <>
-      <span className="mb-4 hidden text-center xl:block">
+      <span className="mb-4 hidden text-center lg:block">
         <Image
           src="/quotes.svg"
           alt="quotes icon"

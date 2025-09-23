@@ -4,7 +4,11 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronLeftIcon } from "lucide-react";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 
 interface PagePanelProps {
   children: React.ReactNode;
@@ -19,8 +23,9 @@ const PagePanel = ({ children }: PagePanelProps) => {
   // Determine slide direction based on route and screen size
   const getSlideDirection = () => {
     const isContactPage = pathname === "/contact";
-    const isPrivacyOrTermsPage = pathname === "/privacy-policy" || pathname === "/terms-conditions";
-    const isDesktop = currentBreakpoint === "xl" || currentBreakpoint === "xxl";
+    const isPrivacyOrTermsPage =
+      pathname === "/privacy-policy" || pathname === "/terms-conditions";
+    const isDesktop = currentBreakpoint === "lg" || currentBreakpoint === "xl" || currentBreakpoint === "xxl";
 
     if (isContactPage) {
       return "top"; // Contact always slides from top
@@ -70,7 +75,8 @@ const PagePanel = ({ children }: PagePanelProps) => {
 
   const currentDirection = getSlideDirection();
   const isContactPage = pathname === "/contact";
-  const isPrivacyOrTermsPage = pathname === "/privacy-policy" || pathname === "/terms-conditions";
+  const isPrivacyOrTermsPage =
+    pathname === "/privacy-policy" || pathname === "/terms-conditions";
 
   const slideVariants = {
     hidden: getInitialPosition(currentDirection),
@@ -105,29 +111,29 @@ const PagePanel = ({ children }: PagePanelProps) => {
 
   return (
     <motion.div
-      className="fixed z-[100] overflow-visible rounded-lg shadow-2xl cursor-default"
+      className="fixed z-[100] cursor-default overflow-visible rounded-lg shadow-2xl"
       style={{
         backgroundColor: "#1c1b1b",
         top:
-          currentBreakpoint === "xl" || currentBreakpoint === "xxl"
+          currentBreakpoint === "lg" || currentBreakpoint === "xl" || currentBreakpoint === "xxl"
             ? currentBreakpoint === "xxl"
               ? "64px"
               : "56px"
             : "118.14px",
         left:
-          currentBreakpoint === "xl" || currentBreakpoint === "xxl"
+          currentBreakpoint === "lg" || currentBreakpoint === "xl" || currentBreakpoint === "xxl"
             ? currentBreakpoint === "xxl"
               ? "96px"
               : "80px"
             : "10px",
         width:
-          currentBreakpoint === "xl" || currentBreakpoint === "xxl"
+          currentBreakpoint === "lg" || currentBreakpoint === "xl" || currentBreakpoint === "xxl"
             ? currentBreakpoint === "xxl"
               ? "calc(100% - 192px)"
               : "calc(100% - 160px)"
             : "calc(100% - 20px)",
         height:
-          currentBreakpoint === "xl" || currentBreakpoint === "xxl"
+          currentBreakpoint === "lg" || currentBreakpoint === "xl" || currentBreakpoint === "xxl"
             ? currentBreakpoint === "xxl"
               ? "calc(100vh - 128px)"
               : "calc(100vh - 112px)"
@@ -142,21 +148,23 @@ const PagePanel = ({ children }: PagePanelProps) => {
         <TooltipTrigger asChild>
           <button
             onClick={handleClose}
-            className="absolute right-1/2 bottom-0 z-50 flex size-10 translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-orange-500 transition-colors hover:bg-orange-600 cursor-pointer xl:top-1/2 xl:right-0 xl:bottom-auto xl:-translate-y-1/2"
+            className="absolute right-1/2 bottom-0 z-50 flex size-10 translate-x-1/2 translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-orange-500 transition-colors hover:bg-orange-600 lg:top-1/2 lg:right-0 lg:bottom-auto lg:-translate-y-1/2"
           >
-            <ChevronLeftIcon className={`${
-              isContactPage 
-                ? 'rotate-90' 
-                : isPrivacyOrTermsPage 
-                ? '-rotate-90' 
-                : 'rotate-90 xl:rotate-0'
-            }`} />
+            <ChevronLeftIcon
+              className={`${
+                isContactPage
+                  ? "rotate-90"
+                  : isPrivacyOrTermsPage
+                    ? "-rotate-90"
+                    : "rotate-90 lg:rotate-0"
+              }`}
+            />
           </button>
         </TooltipTrigger>
-        <TooltipContent 
-          side="left" 
+        <TooltipContent
+          side="left"
           sideOffset={10}
-          className="z-[200] bg-[#050505] text-brand-orange-500 border border-[#050505]"
+          className="text-brand-orange-500 z-[200] border border-[#050505] bg-[#050505]"
         >
           <p className="tracking-wide">GO BACK</p>
         </TooltipContent>

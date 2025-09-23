@@ -13,7 +13,7 @@ const ModalLayout = ({ children }: ModalLayoutProps) => {
   const router = useRouter();
 
   const handleClose = useCallback(() => {
-    router.back(); // Go back to previous page preserving scroll position
+    router.push('/'); // Go directly to home page
   }, [router]);
 
   const handleBackgroundClick = () => {

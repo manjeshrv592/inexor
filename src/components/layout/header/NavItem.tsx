@@ -23,7 +23,7 @@ const NavItem: React.FC<NavItemProps> = ({
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsDesktop(window.innerWidth >= 1280);
+      setIsDesktop(window.innerWidth >= 992);
     };
 
     checkScreenSize();
@@ -51,23 +51,20 @@ const NavItem: React.FC<NavItemProps> = ({
       <Link
         href={href}
         onClick={handleClick}
-        className={`font-michroma hover:text-brand-orange-500 xxl:text-sm flex cursor-pointer items-center gap-0 border-none bg-transparent text-[10px] tracking-[1px] duration-300 xl:rotate-180 xl:[writing-mode:vertical-rl] ${
+        className={`font-michroma hover:text-brand-orange-500 xxl:text-sm flex cursor-pointer items-center gap-0 border-none bg-transparent text-[10px] tracking-[1px] duration-300 lg:rotate-180 lg:[writing-mode:vertical-rl] ${
           isActive ? "text-brand-orange-500" : "text-white"
         }`}
       >
         <span>{children}</span>
         {hasDropdown && (
           <motion.div
-            animate={{ 
-              rotate: getChevronRotation()
+            animate={{
+              rotate: getChevronRotation(),
             }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="mr-[6px]"
           >
-            <ChevronDown
-              size={16}
-              color="#f65009"
-            />
+            <ChevronDown size={16} color="#f65009" />
           </motion.div>
         )}
       </Link>

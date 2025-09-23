@@ -24,7 +24,7 @@ const OurServices: React.FC<OurServicesProps> = ({
   // Hook to detect screen size
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsDesktop(window.innerWidth >= 1200);
+      setIsDesktop(window.innerWidth >= 992);
     };
 
     checkScreenSize();
@@ -258,7 +258,7 @@ const OurServices: React.FC<OurServicesProps> = ({
           </motion.h3>
         </div>
         {/* Main animation container start */}
-        <div className="relative h-[80vh] xl:max-h-[450px]">
+        <div className="relative h-[80vh] lg:max-h-[450px]">
           {/*
             Render service items dynamically - limited to first 4 items 
             Note: The fixed positioning is designed for exactly 4 services.

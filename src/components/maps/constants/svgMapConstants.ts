@@ -76,6 +76,7 @@ export const CONTINENT_MAPPING: Record<string, string[]> = {
     "Zambia",
     "Senegal",
     "Somalia",
+    "Somaliland", // Disputed territory claimed by Somalia
     "Chad",
     "Zimbabwe",
     "Guinea",
@@ -162,6 +163,8 @@ export const CONTINENT_MAPPING: Record<string, string[]> = {
     "Isle of Man",
     "N. Cyprus",
     "Åland",
+    // Russian territories in Europe
+    "Kaliningrad", // Kaliningrad Oblast (Russian exclave)
   ],
   "North America": [
     "United States of America", // Fixed: was "United States"
@@ -233,13 +236,108 @@ export const CONTINENT_ZOOM_COORDS = {
   Asia: { zoom: 3, x: -1739, y: -250 },
 };
 
+// Projection configurations for testing different map projections
+export const PROJECTION_CONFIGS = {
+  equirectangular: {
+    name: "Equirectangular",
+    description: "Simple linear mapping (current)",
+    scale: 190,
+    translateX: 0,
+    translateY: 50,
+    initialZoom: 1.0,
+    initialX: 0,
+    initialY: 0,
+    zoomExtent: [1.0, 8] as [number, number],
+  },
+  naturalEarth1: {
+    name: "Natural Earth I",
+    description: "Balanced distortion, great for world maps",
+    scale: 190,
+    translateX: 0,
+    translateY: 30,
+    initialZoom: 1.0,
+    initialX: 0,
+    initialY: 0,
+    zoomExtent: [1.0, 8] as [number, number],
+  },
+  robinson: {
+    name: "Robinson",
+    description: "Popular compromise projection",
+    scale: 150,
+    translateX: 0,
+    translateY: 30,
+    initialZoom: 1.0,
+    initialX: 0,
+    initialY: 0,
+    zoomExtent: [1.0, 8] as [number, number],
+  },
+  orthographic: {
+    name: "Orthographic",
+    description: "3D globe appearance",
+    scale: 250,
+    translateX: 0,
+    translateY: 0,
+    initialZoom: 1.0,
+    initialX: 0,
+    initialY: 0,
+    zoomExtent: [1.0, 4] as [number, number],
+  },
+  mercator: {
+    name: "Mercator",
+    description: "Web standard (Google Maps style)",
+    scale: 120,
+    translateX: 0,
+    translateY: 100,
+    initialZoom: 1.0,
+    initialX: 0,
+    initialY: 0,
+    zoomExtent: [1.0, 8] as [number, number],
+  },
+  winkel3: {
+    name: "Winkel III",
+    description: "Used by National Geographic",
+    scale: 170,
+    translateX: 0,
+    translateY: 20,
+    initialZoom: 1.0,
+    initialX: 0,
+    initialY: 0,
+    zoomExtent: [1.0, 8] as [number, number],
+  },
+  mollweide: {
+    name: "Mollweide",
+    description: "Equal-area elliptical",
+    scale: 180,
+    translateX: 0,
+    translateY: 20,
+    initialZoom: 1.0,
+    initialX: 0,
+    initialY: 0,
+    zoomExtent: [1.0, 8] as [number, number],
+  },
+  eckert4: {
+    name: "Eckert IV",
+    description: "Equal-area with curved meridians",
+    scale: 180,
+    translateX: 0,
+    translateY: 20,
+    initialZoom: 1.0,
+    initialX: 0,
+    initialY: 0,
+    zoomExtent: [1.0, 8] as [number, number],
+  },
+};
+
+export type ProjectionType = keyof typeof PROJECTION_CONFIGS;
+
 // SVG Map configuration constants
 export const SVG_MAP_CONFIG = {
   width: 1200,
   height: 600,
-  initialZoom: 1.0, // Reduced initial zoom for Equirectangular projection
-  initialX: 0, // Centered for Equirectangular
-  initialY: 0, // Centered for Equirectangular
-  zoomExtent: [1.0, 8] as [number, number], // Adjusted minimum zoom
+  initialZoom: 1.0,
+  initialX: 0,
+  initialY: 0,
+  zoomExtent: [1.0, 8] as [number, number],
   dataUrl: "/world-countries.geojson",
+  defaultProjection: "equirectangular" as ProjectionType,
 };

@@ -22,12 +22,8 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
   const components: PortableTextComponents = {
     types: {
       image: ({ value }: { value: BlogImage }) => {
-        // Use Sanity image builder to respect crop/hotspot data
-        const imageUrl = urlForBlogImage(value, 800, 600).url();
-        const dimensions = value.asset.metadata?.dimensions || {
-          width: 800,
-          height: 600,
-        };
+        // Use Sanity image builder with 16:6 aspect ratio (800x300)
+        const imageUrl = urlForBlogImage(value, 800, 300).url();
 
         // Apply grayscale conditionally - default to true if not specified to match site style
         const shouldApplyGrayscale = value.isGrayscale !== false;
@@ -40,15 +36,17 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
         };
 
         return (
-          <div className="mx-auto my-6 max-w-[600px]">
-            <Image
-              src={imageUrl}
-              alt={value.alt || "Blog image"}
-              width={dimensions.width}
-              height={dimensions.height}
-              className={`h-auto w-full ${grayscaleClass}`}
-              style={clipPathStyle}
-            />
+          <div className="mx-auto my-6 max-w-[800px]">
+            <div className="relative w-full" style={{ aspectRatio: '16/6' }}>
+              <Image
+                src={imageUrl}
+                alt={value.alt || "Blog image"}
+                fill
+                className={`object-cover ${grayscaleClass}`}
+                style={clipPathStyle}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 800px"
+              />
+            </div>
             {value.caption && (
               <p className="mt-2 text-center text-sm text-gray-400 italic">
                 {value.caption}

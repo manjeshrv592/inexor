@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { geoPath, geoEquirectangular } from "d3-geo";
+import { geoPath, geoMercator } from "d3-geo";
 import { zoom, zoomIdentity } from "d3-zoom";
 import { select } from "d3-selection";
 import { ZoomIn, ZoomOut, Home /* , ArrowLeft */ } from "lucide-react";
@@ -19,7 +19,7 @@ import { SVG_MAP_CONFIG } from "../constants/svgMapConstants";
 import {
   isCountryInContinent,
   getCountryContinent,
-  zoomToContinent,
+  zoomToContinentAuto,
   resetToInitialView,
   hasServiceData,
   getServiceData,
@@ -130,6 +130,42 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
                     ...feature.properties,
                     NAME: 'France',
                     name: 'France'
+                  };
+                }
+
+                processedFeatures.push(newFeature);
+              }
+            });
+          } else if (countryName === 'Russia' && feature.geometry.type === 'MultiPolygon') {
+            // Split Russia MultiPolygon to separate Kaliningrad (Europe) from main Russia (Asia)
+            const coordinates = feature.geometry.coordinates;
+
+            coordinates.forEach((polygon) => {
+              if (polygon[0] && polygon[0][0]) {
+                const firstCoord = polygon[0][0];
+                const newFeature = {
+                  ...feature,
+                  geometry: {
+                    type: 'Polygon',
+                    coordinates: polygon
+                  }
+                };
+
+                // Kaliningrad Oblast is around 20°E, 54°N (longitude < 30°E and longitude > 10°E)
+                // Main Russia starts from around 30°E eastward
+                if (firstCoord[0] > 10 && firstCoord[0] < 30) {
+                  // This is Kaliningrad Oblast - belongs to Europe
+                  newFeature.properties = {
+                    ...feature.properties,
+                    NAME: 'Kaliningrad',
+                    name: 'Kaliningrad'
+                  };
+                } else {
+                  // This is main Russia - belongs to Asia
+                  newFeature.properties = {
+                    ...feature.properties,
+                    NAME: 'Russia',
+                    name: 'Russia'
                   };
                 }
 
@@ -279,11 +315,11 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
     const svg = select(svgRef.current);
     svg.selectAll("*").remove(); // Clear previous render
 
-    // Set up projection - using Equirectangular for accurate country shapes
-    // Shifted down since Antarctica is removed from the data
-    const projection = geoEquirectangular()
-      .scale(190)
-      .translate([width / 2, height / 2 + 50]) // Moved down by 50px to better utilize space without Antarctica
+    // Set up projection - using Mercator like Google Maps
+    // Mercator projection preserves angles and shapes, perfect for web maps
+    const projection = geoMercator()
+      .scale(160) // Increased scale for larger map
+      .translate([width / 2, height / 2 + 80]) // Adjusted translation for better centering
       .precision(0.1);
 
     const pathGenerator = geoPath().projection(projection);
@@ -537,11 +573,13 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
             hideTooltip();
             isTransitioningRef.current = true;
 
-            // Zoom to the continent using optimal coordinates
+            // Zoom to the continent using auto-calculated center
             setTimeout(() => {
-              if (svgElementRef.current && zoomBehaviorRef.current) {
-                zoomToContinent(
+              if (svgElementRef.current && zoomBehaviorRef.current && projectionRef.current && geoData) {
+                zoomToContinentAuto(
                   continent,
+                  geoData,
+                  projectionRef.current,
                   svgElementRef.current,
                   zoomBehaviorRef.current,
                 );
@@ -580,11 +618,13 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
             hideTooltip();
             isTransitioningRef.current = true;
 
-            // Zoom to the new continent using optimal coordinates
+            // Zoom to the new continent using auto-calculated center
             setTimeout(() => {
-              if (svgElementRef.current && zoomBehaviorRef.current) {
-                zoomToContinent(
+              if (svgElementRef.current && zoomBehaviorRef.current && projectionRef.current && geoData) {
+                zoomToContinentAuto(
                   continent,
+                  geoData,
+                  projectionRef.current,
                   svgElementRef.current,
                   zoomBehaviorRef.current,
                 );
@@ -691,7 +731,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
               svgElementRef.current.call(zoomBehaviorRef.current.scaleBy, 1.5);
             }
           }}
-          className="rounded-lg p-2 text-white shadow-lg transition-all duration-200 hover:scale-105"
+          className="p-2 text-white shadow-lg transition-all duration-200 hover:scale-105"
           style={{ backgroundColor: "#1a1a1a" }}
           onMouseEnter={(e) =>
             (e.currentTarget.style.backgroundColor = "#2a2a2a")
@@ -712,7 +752,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
               svgElementRef.current.call(zoomBehaviorRef.current.scaleBy, 0.75);
             }
           }}
-          className="rounded-lg p-2 text-white shadow-lg transition-all duration-200 hover:scale-105"
+          className="p-2 text-white shadow-lg transition-all duration-200 hover:scale-105"
           style={{ backgroundColor: "#1a1a1a" }}
           onMouseEnter={(e) =>
             (e.currentTarget.style.backgroundColor = "#2a2a2a")
@@ -751,7 +791,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
               }, 750);
             }, 100);
           }}
-          className="rounded-lg p-2 text-white shadow-lg transition-all duration-200 hover:scale-105"
+          className="p-2 text-white shadow-lg transition-all duration-200 hover:scale-105"
           style={{ backgroundColor: "#1a1a1a" }}
           onMouseEnter={(e) =>
             (e.currentTarget.style.backgroundColor = "#2a2a2a")

@@ -21,7 +21,7 @@ const ANIMATION_CONFIG = {
     dividerDelay: 0.2,
   },
   small: {
-    visibilityThreshold: 1, // 1% visibility  
+    visibilityThreshold: 1, // 1% visibility
     baseDelay: 0.3,
     additionalDelay: 0.2,
     spanDelay: 0.4,
@@ -39,31 +39,33 @@ const KeyValuePillars = ({ sectionData, items }: KeyValuePillarsProps) => {
     const checkScreenSize = () => {
       setIsLargeScreen(window.innerWidth >= SCREEN_BREAKPOINT);
     };
-    
+
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   // Get current animation config based on screen size
-  const config = isLargeScreen ? ANIMATION_CONFIG.large : ANIMATION_CONFIG.small;
-  
+  const config = isLargeScreen
+    ? ANIMATION_CONFIG.large
+    : ANIMATION_CONFIG.small;
+
   // Bidirectional viewport detection with responsive margins
   const isInViewFromBottom = useInView(gridRef, {
     once: false,
     margin: isLargeScreen ? "-95% 0px -5% 0px" : "-99% 0px -1% 0px",
   });
-  
+
   const isInViewFromTop = useInView(gridRef, {
     once: false,
     margin: isLargeScreen ? "-5% 0px -95% 0px" : "-1% 0px -99% 0px",
   });
-  
+
   const isCompletelyOutOfView = useInView(gridRef, {
     once: false,
     margin: "0px 0px 0px 0px",
   });
-  
+
   const isInView = isInViewFromBottom || isInViewFromTop;
 
   // Animation state management
@@ -77,23 +79,27 @@ const KeyValuePillars = ({ sectionData, items }: KeyValuePillarsProps) => {
   }, [isInView, isCompletelyOutOfView]);
 
   // Calculate animation delays for cards
-  const getCardDelays = useCallback((index: number) => {
-    const isEven = index % 2 === 1;
-    const cardDelay = config.baseDelay + Math.floor(index / 2) * config.additionalDelay;
-    const spanDelay = cardDelay + config.spanDelay;
-    
-    return { cardDelay, spanDelay, isEven };
-  }, [config]);
+  const getCardDelays = useCallback(
+    (index: number) => {
+      const isEven = index % 2 === 1;
+      const cardDelay =
+        config.baseDelay + Math.floor(index / 2) * config.additionalDelay;
+      const spanDelay = cardDelay + config.spanDelay;
+
+      return { cardDelay, spanDelay, isEven };
+    },
+    [config],
+  );
 
   // Animation variants for better organization
   const cardVariants = {
-    initial: (isEven: boolean) => ({ 
-      opacity: 0, 
-      x: isEven ? -50 : 50 
+    initial: (isEven: boolean) => ({
+      opacity: 0,
+      x: isEven ? -50 : 50,
     }),
     animate: (isEven: boolean) => ({
       opacity: hasAnimated ? 1 : 0,
-      x: hasAnimated ? 0 : (isEven ? -50 : 50),
+      x: hasAnimated ? 0 : isEven ? -50 : 50,
     }),
   };
 
@@ -124,15 +130,15 @@ const KeyValuePillars = ({ sectionData, items }: KeyValuePillarsProps) => {
         } w-[calc(100%-64px)] bg-[#262626] px-4 py-2 ${
           isEven ? "pl-16 text-left" : "pr-16 text-right"
         } [box-shadow:inset_0_0px_3px_2px_rgba(0,0,0,.25)] [clip-path:polygon(0%_0%,20px_0%,calc(100%-20px)_0%,100%_20px,100%_100%,calc(100%-20px)_100%,20px_100%,0%_calc(100%-20px))] before:absolute before:bottom-[-8px] before:left-[-8px] before:size-5 before:rotate-45 before:bg-[#262626] before:[box-shadow:0_0px_3px_3px_rgba(0,0,0,.25)] before:content-[''] after:absolute after:top-[-8px] after:right-[-8px] after:size-5 after:rotate-45 after:bg-[#262626] after:[box-shadow:0_0px_3px_3px_rgba(0,0,0,.25)] after:content-[''] ${
-          index >= 2 ? "xl:scale-90" : ""
-        } lg:px-10 xl:w-auto ${
+          index >= 2 ? "lg:scale-90" : ""
+        } lg:w-auto lg:px-10 ${
           isEven
             ? index >= 2
-              ? "xl:pl-22"
-              : "xl:pl-20"
+              ? "lg:pl-22"
+              : "lg:pl-20"
             : index >= 2
-              ? "xl:pr-22"
-              : "xl:pr-20"
+              ? "lg:pr-22"
+              : "lg:pr-20"
         }`}
         variants={cardVariants}
         initial="initial"
@@ -188,11 +194,11 @@ const KeyValuePillars = ({ sectionData, items }: KeyValuePillarsProps) => {
         </p>
         <div
           ref={gridRef}
-          className="relative mx-auto grid max-w-5xl gap-x-16 gap-y-8 overflow-hidden xl:grid-cols-2"
+          className="relative mx-auto grid max-w-5xl gap-x-16 gap-y-8 overflow-hidden lg:grid-cols-2"
         >
           {/* Animated divider line */}
           <motion.div
-            className="bg-brand-orange-500 absolute top-0 left-1/2 hidden w-[1px] xl:inline-block"
+            className="bg-brand-orange-500 absolute top-0 left-1/2 hidden w-[1px] lg:inline-block"
             variants={dividerVariants}
             initial="initial"
             animate="animate"
