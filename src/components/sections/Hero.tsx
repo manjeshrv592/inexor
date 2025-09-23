@@ -18,7 +18,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
     heroData?.backgroundImage?.asset?.url || "/hero-bg.jpg";
 
   return (
-    <Section className="relative h-screen">
+    <Section className="xxl:p-0 relative h-screen p-0 sm:p-0 md:p-0 lg:p-0 xl:p-0">
       <span className="fixed top-16 right-2 z-[40] xl:top-4 xl:right-4 xl:z-[200]">
         <ContactUsButton className="font-michroma text-[10px] tracking-[1px]" />
       </span>
@@ -57,22 +57,26 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
         ></div> */}
       </div>
       <Container className="h-full">
-        <div className="relative z-10 flex h-full flex-col items-center justify-center pt-40 text-center">
-          <h1 className="font-michroma xxl:text-4xl mt-12 xl:text-3xl">
-            {title}
-          </h1>
-          <p className="xxl:text-base xxl:max-w-2xl mt-2 mb-48 max-w-xl text-sm">
-            {description}
-          </p>
-          <a
-            href="https://calendar.app.google/it8hbPUuhXvCG4YE8"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button className="font-michroma text-xs tracking-[1px]">
-              Schedule a Call
-            </Button>
-          </a>
+        <div className="relative z-10 flex size-full flex-col items-center text-center">
+          <div className="xxxl:mt-[42vh] mt-[36vh] bg-black/10 p-4 backdrop-blur-sm">
+            <h1 className="font-michroma xxl:text-4xl xxxl:text-5xl mb-4 xl:text-3xl">
+              {title}
+            </h1>
+            <p className="xxl:text-base xxl:max-w-2xl xxxl:text-lg xxxl:max-w-3xl mx-auto max-w-xl text-sm">
+              {description}
+            </p>
+          </div>
+          <div className="xxl:mt-[26vh] mt-[27vh]">
+            <a
+              href="https://calendar.app.google/it8hbPUuhXvCG4YE8"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button className="font-michroma text-xs tracking-[1px]">
+                Schedule a Call
+              </Button>
+            </a>
+          </div>
         </div>
       </Container>
     </Section>
