@@ -48,7 +48,7 @@ const AboutContent: React.FC<AboutContentProps> = ({
   const items = aboutItems.length > 0 ? aboutItems : defaultItems;
 
   return (
-    <div className="grid h-full w-[calc(100%-40px)] max-w-[1000px] grid-rows-[max-content_max-content] content-center gap-6 py-8 lg:mx-8 lg:w-[calc(100%-128px)] lg:px-20 lg:py-0 xl:w-[calc(75%-128px)]">
+    <div className="grid h-full w-[calc(100%-40px)] max-w-[1000px] grid-rows-[max-content_max-content] content-center gap-6 lg:w-[calc(100%-128px)] xl:max-w-[644px]">
       <div className="px-6 text-center">
         <div className="mb-4 flex flex-col items-center justify-center">
           <div className="text-center">
