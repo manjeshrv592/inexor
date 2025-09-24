@@ -46,7 +46,7 @@ const Why: React.FC<WhyProps> = ({ whyData, whyItems }) => {
 
   const items = whyItems.length > 0 ? whyItems : defaultItems;
   return (
-    <Section className="xxl:pl-20 lg:pl-20">
+    <Section className="">
       <Container className="text-center">
         <div className="text-center">
           <SectionTitle className="mb-2">{title}</SectionTitle>

@@ -5,12 +5,14 @@ import { useRouter, usePathname } from "next/navigation";
 import MobileToggle from "./MobileToggle";
 import Logo from "./Logo";
 import Navigation from "./Navigation";
+import { useModal } from "@/contexts/ModalContext";
 
 const Header = () => {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [activePagePath, setActivePagePath] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const { closeModal } = useModal();
 
   const toggleMobileNav = () => {
     setIsMobileNavOpen(!isMobileNavOpen);
@@ -20,9 +22,9 @@ const Header = () => {
     const isCurrentlyActive = activePagePath === href;
 
     if (isCurrentlyActive) {
-      // If clicking on active page, close it
+      // If clicking on active page, close it with animation
       setActivePagePath(null);
-      router.push("/");
+      closeModal();
     } else {
       // If clicking on different page, open it
       setActivePagePath(href);

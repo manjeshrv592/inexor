@@ -4,27 +4,22 @@ import { Button } from "@/components/ui/button";
 import { DynamicShape } from "@/components/ui/DynamicShape";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
 import {
   getBlogPosts,
+  getBlogPostBySlug,
   type BlogPost,
 } from "@/lib/sanity/blog";
 import { getResourcesPage, type ResourcesPage } from "@/lib/sanity";
 import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
+import BlogContent from "@/components/blog/BlogContent";
 
-interface ResourcesLayoutProps {
-  children: React.ReactNode;
-}
-
-const ResourcesLayout: React.FC<ResourcesLayoutProps> = ({ children }) => {
+const ResourcesLayout: React.FC = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [selectedBlogPost, setSelectedBlogPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
+  const [blogContentLoading, setBlogContentLoading] = useState(false);
   const [resourcesPageData, setResourcesPageData] = useState<ResourcesPage | null>(null);
-  const router = useRouter();
-  const pathname = usePathname();
-
-  // Get current slug from pathname
-  const currentSlug = pathname.split('/').pop();
+  const [selectedBlogIndex, setSelectedBlogIndex] = useState(0);
 
   // Fetch initial data
   useEffect(() => {
@@ -40,10 +35,23 @@ const ResourcesLayout: React.FC<ResourcesLayoutProps> = ({ children }) => {
 
         setBlogPosts(posts);
         setResourcesPageData(pageData);
-
-        // If we're on the base resources page and have posts, redirect to first post
-        if (pathname === '/resources' && posts.length > 0) {
-          router.replace(`/resources/${posts[0].slug.current}`);
+        
+        // Set first blog as selected by default and fetch its full content
+        if (posts.length > 0) {
+          setSelectedBlogIndex(0);
+          
+          // Fetch full content for the first blog post
+          try {
+            const fullBlogPost = await getBlogPostBySlug(posts[0].slug.current);
+            if (fullBlogPost) {
+              setSelectedBlogPost(fullBlogPost);
+            } else {
+              setSelectedBlogPost(posts[0]); // Fallback to basic post data
+            }
+          } catch (error) {
+            console.error("Error fetching first blog post content:", error);
+            setSelectedBlogPost(posts[0]); // Fallback to basic post data
+          }
         }
       } catch (error) {
         console.error("Error fetching blog data:", error);
@@ -53,16 +61,55 @@ const ResourcesLayout: React.FC<ResourcesLayoutProps> = ({ children }) => {
     };
 
     fetchData();
-  }, [pathname, router]);
+  }, []);
 
-  // Handle blog post click with transition
-  const handleBlogPostClick = (post: BlogPost) => {
-    // Add a small delay to show any exit animation
-    router.push(`/resources/${post.slug.current}`);
+  // Handle blog post click - now uses state instead of URL
+  const handleBlogPostClick = async (post: BlogPost, index: number) => {
+    setSelectedBlogIndex(index);
+    setBlogContentLoading(true);
+    
+    // Fetch full blog post content if not already loaded
+    try {
+      const fullBlogPost = await getBlogPostBySlug(post.slug.current);
+      if (fullBlogPost) {
+        setSelectedBlogPost(fullBlogPost);
+      } else {
+        setSelectedBlogPost(post); // Fallback to basic post data
+      }
+    } catch (error) {
+      console.error("Error fetching full blog post:", error);
+      setSelectedBlogPost(post); // Fallback to basic post data
+    } finally {
+      setBlogContentLoading(false);
+    }
   };
 
-  // Get active index based on current slug
-  const activeIndex = blogPosts.findIndex(post => post.slug.current === currentSlug);
+  // Handle navigation from blog content component
+  const handleNavigate = async (index: number) => {
+    if (index >= 0 && index < blogPosts.length) {
+      const post = blogPosts[index];
+      setSelectedBlogIndex(index);
+      setBlogContentLoading(true);
+      
+      // Fetch full blog post content
+      try {
+        const fullBlogPost = await getBlogPostBySlug(post.slug.current);
+        if (fullBlogPost) {
+          setSelectedBlogPost(fullBlogPost);
+        } else {
+          setSelectedBlogPost(post); // Fallback to basic post data
+        }
+      } catch (error) {
+        console.error("Error fetching full blog post:", error);
+        setSelectedBlogPost(post); // Fallback to basic post data
+      } finally {
+        setBlogContentLoading(false);
+      }
+    }
+  };
+
+  // Get active index based on selected state
+  const activeIndex = selectedBlogIndex;
 
   if (loading) {
     return (
@@ -128,7 +175,7 @@ const ResourcesLayout: React.FC<ResourcesLayoutProps> = ({ children }) => {
               >
                 <div
                   className="font-michroma cursor-pointer px-4 py-2 text-[10px] tracking-[1px]"
-                  onClick={() => handleBlogPostClick(post)}
+                  onClick={() => handleBlogPostClick(post, index)}
                 >
                   {post.title}
                 </div>
@@ -163,7 +210,7 @@ const ResourcesLayout: React.FC<ResourcesLayoutProps> = ({ children }) => {
                   >
                     <div
                       className="flex cursor-pointer font-medium text-white transition-opacity hover:opacity-90"
-                      onClick={() => handleBlogPostClick(post)}
+                      onClick={() => handleBlogPostClick(post, index)}
                     >
                       <Image
                         src={
@@ -208,9 +255,24 @@ const ResourcesLayout: React.FC<ResourcesLayoutProps> = ({ children }) => {
         </DynamicShape>
       </div>
 
-      {/* Right Panel - Blog Content (children) */}
+      {/* Right Panel - Blog Content */}
       <div className="xxl:h-[calc(100vh-128px)] h-[calc(100vh-80px)] bg-neutral-900 py-4 pr-0 pb-64 pl-2 lg:h-[calc(100vh-112px)] lg:pb-0">
-        {children}
+        {blogContentLoading ? (
+          <div className="flex h-full items-center justify-center">
+            <div className="text-white">Loading blog content...</div>
+          </div>
+        ) : selectedBlogPost ? (
+          <BlogContent
+            blogPost={selectedBlogPost}
+            allBlogPosts={blogPosts}
+            currentIndex={selectedBlogIndex}
+            onNavigate={handleNavigate}
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <div className="text-gray-400">Select a blog post to read</div>
+          </div>
+        )}
       </div>
     </div>
   );

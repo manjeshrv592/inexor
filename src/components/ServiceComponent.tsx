@@ -38,7 +38,7 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
       <div
         className="absolute z-10 size-full bg-cover bg-center grayscale filter"
         style={{
-          backgroundImage: `linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('${backgroundImageUrl}')`,
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('${backgroundImageUrl}')`,
         }}
       ></div>
       <div className="relative z-20 size-full flex-col items-center justify-center p-4 xl:flex xl:px-8 xl:py-16">

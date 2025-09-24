@@ -3,7 +3,10 @@ import Section from "../layout/Section";
 import Container from "../layout/Container";
 import SectionTitle from "../ui/SectionTitle";
 import WhoWeServeItem from "../ui/WhoWeServeItem";
-import { WhoWeServeItem as WhoWeServeItemType, WhoWeServeSection } from "../../lib/sanity";
+import {
+  WhoWeServeItem as WhoWeServeItemType,
+  WhoWeServeSection,
+} from "../../lib/sanity";
 
 interface WhoWeServeProps {
   items: WhoWeServeItemType[];
@@ -17,7 +20,7 @@ const WhoWeServe: React.FC<WhoWeServeProps> = ({ items, sectionData }) => {
   const description = sectionData?.description;
 
   return (
-    <Section className="xxl:pl-20 lg:pl-20">
+    <Section className="">
       <Container>
         <div className="text-center">
           <SectionTitle>{title}</SectionTitle>

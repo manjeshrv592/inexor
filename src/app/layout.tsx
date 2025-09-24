@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/header";
 import AuthProvider from "@/components/providers/AuthProvider";
 import LogoutButton from "@/components/auth/LogoutButton";
+import { ModalProvider } from "@/contexts/ModalContext";
 
 const michroma = Michroma({
   subsets: ["latin"],
@@ -33,9 +34,11 @@ export default function RootLayout({
         className={`${michroma.variable} ${raleway.variable} bg-[#050505] text-white antialiased`}
       >
         <AuthProvider>
-          <Header />
-          {children}
-          <LogoutButton />
+          <ModalProvider>
+            <Header />
+            {children}
+            <LogoutButton />
+          </ModalProvider>
         </AuthProvider>
       </body>
     </html>

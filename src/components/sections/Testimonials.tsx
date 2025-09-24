@@ -23,7 +23,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsData }) => {
   }
 
   return (
-    <Section className="xxl:pl-20 lg:pl-20">
+    <Section className="">
       <Container>
         <div className="text-center">
           <SectionTitle>{title}</SectionTitle>

@@ -2,13 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { ChevronLeftIcon } from "lucide-react";
 import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
+import { useModal } from "@/contexts/ModalContext";
 
 interface PagePanelProps {
   children: React.ReactNode;
@@ -16,9 +17,8 @@ interface PagePanelProps {
 
 const PagePanel = ({ children }: PagePanelProps) => {
   const [currentBreakpoint, setCurrentBreakpoint] = useState<string>("xl");
-  const [isClosing, setIsClosing] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
+  const { isModalClosing, closeModal } = useModal();
 
   // Determine slide direction based on route and screen size
   const getSlideDirection = () => {
@@ -102,11 +102,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
   };
 
   const handleClose = () => {
-    setIsClosing(true);
-    // Wait for animation to complete before navigating
-    setTimeout(() => {
-      router.back();
-    }, 500);
+    closeModal();
   };
 
   return (
@@ -141,7 +137,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
       }}
       variants={slideVariants}
       initial="hidden"
-      animate={isClosing ? "exit" : "visible"}
+      animate={isModalClosing ? "exit" : "visible"}
     >
       {children}
       <Tooltip delayDuration={300}>

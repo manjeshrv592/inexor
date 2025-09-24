@@ -146,7 +146,7 @@ const ServicesPage = () => {
                   {/* Featured Image */}
                   <div className="relative mb-6 h-[300px]">
                     <div className="absolute top-0 left-0 size-full">
-                      <div className="absolute inset-0 z-10 bg-black/80"></div>
+                      <div className="absolute inset-0 z-10 bg-black/60"></div>
                       <Image
                         src={
                           activeService.featuredImage?.asset.url ||

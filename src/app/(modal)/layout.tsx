@@ -1,20 +1,20 @@
 "use client";
 
 import React, { useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
 import PagePanelBg from "@/components/ui/PagePanelBg";
 import PagePanel from "@/components/ui/PagePanel";
+import { useModal } from "@/contexts/ModalContext";
 
 interface ModalLayoutProps {
   children: React.ReactNode;
 }
 
 const ModalLayout = ({ children }: ModalLayoutProps) => {
-  const router = useRouter();
+  const { closeModal } = useModal();
 
   const handleClose = useCallback(() => {
-    router.push('/'); // Go directly to home page
-  }, [router]);
+    closeModal();
+  }, [closeModal]);
 
   const handleBackgroundClick = () => {
     handleClose();
@@ -34,17 +34,12 @@ const ModalLayout = ({ children }: ModalLayoutProps) => {
 
   return (
     <>
-      <PagePanelBg />
-      <div
-        onClick={handleBackgroundClick}
-        className="fixed inset-0 z-[60] cursor-pointer"
-      >
-        <div onClick={(e) => e.stopPropagation()} className="relative">
-          <PagePanel>
-            {/* <CloseButton onClose={handleClose} /> */}
-            {children}
-          </PagePanel>
-        </div>
+      <PagePanelBg onClick={handleBackgroundClick} />
+      <div className="relative">
+        <PagePanel>
+          {/* <CloseButton onClose={handleClose} /> */}
+          {children}
+        </PagePanel>
       </div>
     </>
   );

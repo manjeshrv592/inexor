@@ -32,7 +32,7 @@ const Maps = () => {
   }, []);
 
   return (
-    <Section className="xxl:pl-20 lg:pl-20">
+    <Section className="">
       <Container>
         <div className="relative z-10">
           <div className="mb-4">

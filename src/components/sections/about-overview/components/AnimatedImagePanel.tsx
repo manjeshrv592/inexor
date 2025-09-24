@@ -30,13 +30,11 @@ const AnimatedImagePanel: React.FC<AnimatedImagePanelProps> = ({
       style={{ backgroundImage: `url('${imageSrc}')` }}
       initial={{ width: "50%" }}
       animate={{
-        width: shouldAnimate ? (isXlScreen ? "12.5%" : "0%") : "50%",
+        width: shouldAnimate ? (isXlScreen ? "17%" : "0%") : "50%",
       }}
       transition={{
-        type: "spring",
-        stiffness: 100,
-        damping: 16,
-        mass: 1,
+        duration: 1,
+        ease: "easeInOut",
         delay: 0.1,
       }}
     >
