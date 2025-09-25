@@ -17,7 +17,6 @@ const NavItem: React.FC<NavItemProps> = ({
   children,
   hasDropdown = false,
   isActive = false,
-  onNavItemClick,
 }) => {
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -31,13 +30,6 @@ const NavItem: React.FC<NavItemProps> = ({
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (onNavItemClick) {
-      onNavItemClick(href);
-    }
-  };
-
   // Calculate chevron rotation based on active state and screen size
   const getChevronRotation = () => {
     if (isActive) {
@@ -50,7 +42,6 @@ const NavItem: React.FC<NavItemProps> = ({
     <li>
       <Link
         href={href}
-        onClick={handleClick}
         className={`font-michroma hover:text-brand-orange-500 xxl:text-sm flex cursor-pointer items-center gap-0 border-none bg-transparent text-[10px] tracking-[1px] duration-300 lg:rotate-180 lg:[writing-mode:vertical-rl] ${
           isActive ? "text-brand-orange-500" : "text-white"
         }`}

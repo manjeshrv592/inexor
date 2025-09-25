@@ -51,33 +51,19 @@ const ContactPage = () => {
   useEffect(() => {
     const fetchContactInfo = async () => {
       try {
-        const sanityContactInfo = await getContactInfo();
-        if (sanityContactInfo) {
-          setContactInfo(sanityContactInfo);
+        const info = await getContactInfo();
+        if (info) {
+          setContactInfo(info);
         }
       } catch (error) {
-        console.error("Failed to fetch contact info from Sanity:", error);
-        // Keep using fallback data
+        console.error("Error fetching contact info:", error);
       }
     };
 
     fetchContactInfo();
   }, []);
 
-  // Auto-scroll to submit button when message is shown
-  useEffect(() => {
-    if (submitMessage && submitButtonRef.current) {
-      // Add a small delay to ensure the message is rendered
-      setTimeout(() => {
-        submitButtonRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "end",
-          inline: "nearest",
-        });
-      }, 100);
-    }
-  }, [submitMessage]);
-
+  // Initialize form
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
@@ -85,52 +71,30 @@ const ContactPage = () => {
       email: "",
       countryCode: "US",
       phone: "",
-      company: "",
       service: "",
       message: "",
     },
   });
 
-  const onSubmit = async (data: ContactFormData) => {
-    console.log("🎯 Form onSubmit called with data:", data);
-
+  // Handle form submission
+  const onSubmit = async (_data: ContactFormData) => {
     setIsSubmitting(true);
     setSubmitMessage(null);
 
     try {
-      console.log("📡 Making direct API call to /api/contact...");
-
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      console.log("📡 API Response status:", response.status);
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to send message");
-      }
-
-      const result = await response.json();
-      console.log("📡 API Response:", result);
+      // Here you would typically send the data to your backend
+      // For now, we'll simulate a successful submission
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       setSubmitMessage({
         type: "success",
-        text: result.message || "Message sent successfully!",
+        text: "Thank you for your message! We'll get back to you soon.",
       });
-      form.reset(); // Reset form on success
-    } catch (error) {
-      console.error("❌ Form submission error:", error);
+      form.reset();
+    } catch (_error) {
       setSubmitMessage({
         type: "error",
-        text:
-          error instanceof Error
-            ? error.message
-            : "Something went wrong. Please try again.",
+        text: "There was an error sending your message. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -358,26 +322,6 @@ const ContactPage = () => {
                       </div>
                     )}
                   </div>
-
-                  {/* Company Field */}
-                  <FormField
-                    control={form.control}
-                    name="company"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-white">
-                          Company Name
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="Enter your company name"
-                          />
-                        </FormControl>
-                        <FormMessage className="text-red-400" />
-                      </FormItem>
-                    )}
-                  />
 
                   {/* Service Selection */}
                   <FormField

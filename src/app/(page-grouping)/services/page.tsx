@@ -6,7 +6,6 @@ import UseCasesSection from "@/components/ui/UseCasesSection";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { useSearchParams } from "next/navigation";
 import {
   getServices,
   getServiceByCode,
@@ -15,7 +14,6 @@ import {
 import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
 
 const ServicesPage = () => {
-  const searchParams = useSearchParams();
   const [services, setServices] = useState<Service[]>([]);
   const [activeService, setActiveService] = useState<Service | null>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -30,33 +28,13 @@ const ServicesPage = () => {
         const servicesData = await getServices();
         setServices(servicesData);
 
-        // Check if there's a service parameter in URL
-        const serviceParam = searchParams.get("service");
-        let targetService = null;
-        let targetIndex = 0;
-
-        if (serviceParam && servicesData.length > 0) {
-          // Find service by code from URL parameter
-          const serviceIndex = servicesData.findIndex(
-            (s) => s.code.toLowerCase() === serviceParam.toLowerCase(),
-          );
-          if (serviceIndex !== -1) {
-            targetService = await getServiceByCode(
-              servicesData[serviceIndex].code,
-            );
-            targetIndex = serviceIndex;
+        // Set first service as active by default
+        if (servicesData.length > 0) {
+          const targetService = await getServiceByCode(servicesData[0].code);
+          if (targetService) {
+            setActiveService(targetService);
+            setActiveIndex(0);
           }
-        }
-
-        // Fallback to first service if no URL param or service not found
-        if (!targetService && servicesData.length > 0) {
-          targetService = await getServiceByCode(servicesData[0].code);
-          targetIndex = 0;
-        }
-
-        if (targetService) {
-          setActiveService(targetService);
-          setActiveIndex(targetIndex);
         }
       } catch (error) {
         console.error("Error fetching services data:", error);
@@ -66,7 +44,7 @@ const ServicesPage = () => {
     };
 
     fetchData();
-  }, [searchParams]);
+  }, []);
 
   // Handle service click
   const handleServiceClick = async (service: Service, index: number) => {
@@ -200,12 +178,13 @@ const ServicesPage = () => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="flex h-full items-center justify-center"
+                  className="flex h-full flex-col items-center justify-center text-center"
                 >
-                  <p className="text-center text-gray-400">
-                    {services.length === 0
-                      ? "No services available."
-                      : "Select a service to read."}
+                  <h2 className="font-michroma mb-4 text-2xl text-brand-orange-500">
+                    Services
+                  </h2>
+                  <p className="text-gray-400">
+                    Select a service from the left panel to learn more about our offerings.
                   </p>
                 </motion.div>
               )}

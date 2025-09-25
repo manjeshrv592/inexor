@@ -37,7 +37,7 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className }) => {
       <Button
         variant={hasScrolledPastHero ? "default" : "outline"}
         size={hasScrolledPastHero ? "sm" : undefined}
-        className={`font-michroma text-xs tracking-[1px] ${className}`}
+        className={`font-michroma text-xs tracking-[1px] ${className}` }
       >
         Contact Us
       </Button>

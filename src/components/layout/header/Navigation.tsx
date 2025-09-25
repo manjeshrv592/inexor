@@ -11,11 +11,7 @@ interface NavigationProps {
   onNavItemClick?: (href: string) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({
-  isOpen,
-  activePagePath,
-  onNavItemClick,
-}) => {
+const Navigation: React.FC<NavigationProps> = ({ isOpen, activePagePath }) => {
   const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
 
   useEffect(() => {
@@ -101,7 +97,6 @@ const Navigation: React.FC<NavigationProps> = ({
               href={item.href}
               hasDropdown={item.hasDropdown}
               isActive={activePagePath === item.href}
-              onNavItemClick={onNavItemClick}
             >
               {item.label}
             </NavItem>

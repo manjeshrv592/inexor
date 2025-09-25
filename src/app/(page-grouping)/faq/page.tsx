@@ -210,7 +210,6 @@ const FAQPage = () => {
                   onQuestionClick={handleQuestionClick}
                 />
               ))}
-
               {faqItems.length === 0 && !loading && (
                 <div className="text-center text-gray-400">
                   No questions found for this category.
