@@ -77,13 +77,14 @@ const ContactPage = () => {
   });
 
   // Handle form submission
-  const onSubmit = async (_data: ContactFormData) => {
+  const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     setSubmitMessage(null);
 
     try {
       // Here you would typically send the data to your backend
       // For now, we'll simulate a successful submission
+      console.log('Form data to be submitted:', data);
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       setSubmitMessage({
@@ -91,7 +92,8 @@ const ContactPage = () => {
         text: "Thank you for your message! We'll get back to you soon.",
       });
       form.reset();
-    } catch (_error) {
+    } catch (error) {
+      console.error('Error submitting form:', error);
       setSubmitMessage({
         type: "error",
         text: "There was an error sending your message. Please try again.",
