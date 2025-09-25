@@ -104,8 +104,8 @@ const KeyValuePillars = ({ sectionData, items }: KeyValuePillarsProps) => {
   };
 
   const spanVariants = {
-    initial: { width: "calc(100% - 2px)" },
-    animate: { width: hasAnimated ? "52px" : "calc(100% - 2px)" },
+    initial: { width: "52px" },
+    animate: { width: "52px" },
   };
 
   const dividerVariants = {
@@ -120,7 +120,7 @@ const KeyValuePillars = ({ sectionData, items }: KeyValuePillarsProps) => {
 
   // Render individual pillar card
   const renderPillarCard = (item: KeyValuePillarItem, index: number) => {
-    const { cardDelay, spanDelay, isEven } = getCardDelays(index);
+    const { isEven } = getCardDelays(index);
 
     return (
       <motion.article
@@ -140,7 +140,7 @@ const KeyValuePillars = ({ sectionData, items }: KeyValuePillarsProps) => {
           type: "spring",
           damping: 25,
           stiffness: 120,
-          delay: isInView ? cardDelay : index >= 2 ? 0.5 : 0.9,
+          delay: 0,
         }}
       >
         <motion.span
@@ -160,7 +160,7 @@ const KeyValuePillars = ({ sectionData, items }: KeyValuePillarsProps) => {
             type: "spring",
             damping: 25,
             stiffness: 120,
-            delay: isInView ? spanDelay : 0,
+            delay: 0,
           }}
         >
           <Image
@@ -201,7 +201,7 @@ const KeyValuePillars = ({ sectionData, items }: KeyValuePillarsProps) => {
               damping: 20,
               stiffness: 100,
               mass: 0.8,
-              delay: isInView ? config.dividerDelay : 1.3,
+              delay: 0,
             }}
           />
           {/* Dynamic pillar cards */}

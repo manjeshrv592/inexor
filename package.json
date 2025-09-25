@@ -76,11 +76,5 @@
     "tsx": "^4.20.5",
     "tw-animate-css": "^1.3.7",
     "typescript": "^5"
-  },
-  "overrides": {
-    "next-view-transitions": {
-      "react": "$react",
-      "react-dom": "$react-dom"
-    }
   }
 }
