@@ -17,17 +17,8 @@ const Navigation: React.FC<NavigationProps> = ({ isOpen, activePagePath }) => {
   useEffect(() => {
     const fetchNavigationData = async () => {
       try {
-        console.log("🔄 Fetching navigation configuration from Sanity...");
         const { items } = await getNavigationData();
-        console.log("✅ Navigation configuration received:", { items });
-        console.log(
-          "📋 Items details:",
-          items.map((item) => ({
-            label: item.label,
-            href: item.href,
-            hasDropdown: item.hasDropdown,
-          })),
-        );
+
         setNavigationItems(items);
       } catch (error) {
         console.error("❌ Failed to fetch navigation configuration:", error);
@@ -40,14 +31,8 @@ const Navigation: React.FC<NavigationProps> = ({ isOpen, activePagePath }) => {
 
   const displayItems = navigationItems;
 
-  console.log("🎯 Navigation render state:", {
-    itemsCount: displayItems.length,
-    items: displayItems,
-  });
-
   // Don't render navigation if no items are available
   if (displayItems.length === 0) {
-    console.log("⚠️ No navigation configuration found - returning null");
     return null;
   }
 
@@ -96,7 +81,11 @@ const Navigation: React.FC<NavigationProps> = ({ isOpen, activePagePath }) => {
             <NavItem
               href={item.href}
               hasDropdown={item.hasDropdown}
-              isActive={activePagePath === item.href}
+              isActive={
+                item.href === '/resources' 
+                  ? activePagePath?.startsWith('/resources') || false
+                  : activePagePath === item.href
+              }
             >
               {item.label}
             </NavItem>

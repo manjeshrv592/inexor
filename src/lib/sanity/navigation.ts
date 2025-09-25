@@ -46,7 +46,7 @@ export async function getNavigationItems(): Promise<NavigationItem[]> {
   return client.fetch(
     navigationItemsQuery,
     {},
-    { next: { tags: ["navigation", "navigationItems"] } }
+    { next: { tags: ["navigation", "navigationItems"] } },
   );
 }
 
@@ -54,7 +54,7 @@ export async function getNavigationSettings(): Promise<NavigationSettings | null
   return client.fetch(
     navigationSettingsQuery,
     {},
-    { next: { tags: ["navigation", "navigationSettings"] } }
+    { next: { tags: ["navigation", "navigationSettings"] } },
   );
 }
 
@@ -62,19 +62,18 @@ export async function getActiveNavigationItems(): Promise<NavigationItem[]> {
   return client.fetch(
     activeNavigationItemsQuery,
     {},
-    { next: { tags: ["navigation", "navigationItems"] } }
+    { next: { tags: ["navigation", "navigationItems"] } },
   );
 }
 
 export async function getNavigationConfig(): Promise<NavigationConfig | null> {
   try {
-    console.log("🔍 Fetching navigation config with query:", navigationConfigQuery);
     const result = await client.fetch(
       navigationConfigQuery,
       {},
-      { next: { tags: ["navigation", "navigationConfig"] } }
+      { next: { tags: ["navigation", "navigationConfig"] } },
     );
-    console.log("📄 Navigation config result:", result);
+
     return result;
   } catch (error) {
     console.error("❌ Error fetching navigation config:", error);
@@ -85,7 +84,7 @@ export async function getNavigationConfig(): Promise<NavigationConfig | null> {
 // Convert NavigationConfig to NavigationItem array
 function convertConfigToItems(config: NavigationConfig): NavigationItem[] {
   if (!config) return [];
-  
+
   return [
     { _id: "resources", ...config.resources, order: 1 },
     { _id: "services", ...config.services, order: 2 },

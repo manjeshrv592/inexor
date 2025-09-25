@@ -2,13 +2,17 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "./button";
-import Link from "next/link";
+import { useTransitionRouter } from "next-view-transitions";
+import { usePathname } from "next/navigation";
 
 interface ContactUsButtonProps {
   className?: string;
 }
 
 const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className }) => {
+  const router = useTransitionRouter();
+  const pathname = usePathname();
+  
   // State to track if user has scrolled past the hero section
   const [hasScrolledPastHero, setHasScrolledPastHero] = useState(false);
 
@@ -32,16 +36,36 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className }) => {
     };
   }, []);
 
+  const handleContactClick = () => {
+    console.log("📞 Contact Us button clicked from", pathname);
+    if (typeof window !== 'undefined') {
+      // If user is already on contact page, navigate to home instead
+      const targetHref = pathname === '/contact' ? '/' : '/contact';
+      console.log("🎯 Contact target href:", targetHref, "(current:", pathname, ")");
+      
+      // Store the current path before navigation
+      sessionStorage.setItem('lastPath', pathname);
+      // Set navigation source for animation direction
+      sessionStorage.setItem('navigationSource', 'contact-button');
+      
+      // Always use transition router to prevent page reload
+      // Animations will only show when transitioning from/to root due to PageTransition component logic
+      console.log("✨ Using transition router for contact navigation");
+      requestAnimationFrame(() => {
+        router.push(targetHref);
+      });
+    }
+  };
+
   return (
-    <Link href="/contact">
-      <Button
-        variant={hasScrolledPastHero ? "default" : "outline"}
-        size={hasScrolledPastHero ? "sm" : undefined}
-        className={`font-michroma text-xs tracking-[1px] ${className}` }
-      >
-        Contact Us
-      </Button>
-    </Link>
+    <Button
+      onClick={handleContactClick}
+      variant={hasScrolledPastHero ? "default" : "outline"}
+      size={hasScrolledPastHero ? "sm" : undefined}
+      className={`font-michroma text-xs tracking-[1px] ${className}` }
+    >
+      Contact Us
+    </Button>
   );
 };
 

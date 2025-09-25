@@ -1,14 +1,16 @@
-import PagePanel from "@/components/ui/PagePanel";
-import PagePanelBg from "@/components/ui/PagePanelBg";
 import React from "react";
+import PageTransition from "@/components/ui/PageTransition";
 
-const layout = ({ children }: { children: React.ReactNode }) => {
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+const Layout = ({ children }: LayoutProps) => {
   return (
-    <>
-      <PagePanelBg />
-      <PagePanel>{children}</PagePanel>
-    </>
+    <PageTransition>
+      {children}
+    </PageTransition>
   );
 };
 
-export default layout;
+export default Layout;

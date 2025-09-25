@@ -99,9 +99,13 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
         const processedFeatures = [];
 
         for (const feature of countries.features) {
-          const countryName = feature.properties?.name || feature.properties?.NAME || '';
+          const countryName =
+            feature.properties?.name || feature.properties?.NAME || "";
 
-          if (countryName === 'France' && feature.geometry.type === 'MultiPolygon') {
+          if (
+            countryName === "France" &&
+            feature.geometry.type === "MultiPolygon"
+          ) {
             // Split France MultiPolygon into separate features
             const coordinates = feature.geometry.coordinates;
 
@@ -111,9 +115,9 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
                 const newFeature = {
                   ...feature,
                   geometry: {
-                    type: 'Polygon',
-                    coordinates: polygon
-                  }
+                    type: "Polygon",
+                    coordinates: polygon,
+                  },
                 };
 
                 // Determine if this polygon is in South America (French Guiana)
@@ -121,22 +125,25 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
                   // This is French Guiana or Caribbean territories
                   newFeature.properties = {
                     ...feature.properties,
-                    NAME: 'French Guiana',
-                    name: 'French Guiana'
+                    NAME: "French Guiana",
+                    name: "French Guiana",
                   };
                 } else {
                   // This is mainland France or European territories
                   newFeature.properties = {
                     ...feature.properties,
-                    NAME: 'France',
-                    name: 'France'
+                    NAME: "France",
+                    name: "France",
                   };
                 }
 
                 processedFeatures.push(newFeature);
               }
             });
-          } else if (countryName === 'Russia' && feature.geometry.type === 'MultiPolygon') {
+          } else if (
+            countryName === "Russia" &&
+            feature.geometry.type === "MultiPolygon"
+          ) {
             // Split Russia MultiPolygon to separate Kaliningrad (Europe) from main Russia (Asia)
             const coordinates = feature.geometry.coordinates;
 
@@ -146,9 +153,9 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
                 const newFeature = {
                   ...feature,
                   geometry: {
-                    type: 'Polygon',
-                    coordinates: polygon
-                  }
+                    type: "Polygon",
+                    coordinates: polygon,
+                  },
                 };
 
                 // Kaliningrad Oblast is around 20°E, 54°N (longitude < 30°E and longitude > 10°E)
@@ -157,15 +164,15 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
                   // This is Kaliningrad Oblast - belongs to Europe
                   newFeature.properties = {
                     ...feature.properties,
-                    NAME: 'Kaliningrad',
-                    name: 'Kaliningrad'
+                    NAME: "Kaliningrad",
+                    name: "Kaliningrad",
                   };
                 } else {
                   // This is main Russia - belongs to Asia
                   newFeature.properties = {
                     ...feature.properties,
-                    NAME: 'Russia',
-                    name: 'Russia'
+                    NAME: "Russia",
+                    name: "Russia",
                   };
                 }
 
@@ -180,14 +187,8 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
 
         const processedCountries = {
           ...countries,
-          features: processedFeatures
+          features: processedFeatures,
         };
-
-        console.log('🗺️ GeoJSON loaded and processed:', {
-          originalFeatureCount: countries.features.length,
-          processedFeatureCount: processedFeatures.length,
-          dataUrl: SVG_MAP_CONFIG.dataUrl
-        });
 
         setGeoData(processedCountries);
       } catch (err) {
@@ -575,7 +576,12 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
 
             // Zoom to the continent using auto-calculated center
             setTimeout(() => {
-              if (svgElementRef.current && zoomBehaviorRef.current && projectionRef.current && geoData) {
+              if (
+                svgElementRef.current &&
+                zoomBehaviorRef.current &&
+                projectionRef.current &&
+                geoData
+              ) {
                 zoomToContinentAuto(
                   continent,
                   geoData,
@@ -586,20 +592,20 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
                 // End transition after zoom completes
                 setTimeout(() => {
                   isTransitioningRef.current = false;
-                  
+
                   // Fix: Force re-evaluation of hover state after transition
                   // This solves the tooltip issue when cursor is already over a country
                   if (svgElementRef.current) {
-                    const allPaths = svgElementRef.current.selectAll('path');
-                    allPaths.each(function() {
+                    const allPaths = svgElementRef.current.selectAll("path");
+                    allPaths.each(function () {
                       const element = this as SVGPathElement;
                       // Check if this element is currently being hovered
-                      if (element.matches(':hover')) {
+                      if (element.matches(":hover")) {
                         // Trigger mouseenter event manually using the captured cursor position
-                        const enterEvent = new MouseEvent('mouseenter', {
+                        const enterEvent = new MouseEvent("mouseenter", {
                           clientX: currentCursorX,
                           clientY: currentCursorY,
-                          bubbles: true
+                          bubbles: true,
                         });
                         element.dispatchEvent(enterEvent);
                       }
@@ -620,7 +626,12 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
 
             // Zoom to the new continent using auto-calculated center
             setTimeout(() => {
-              if (svgElementRef.current && zoomBehaviorRef.current && projectionRef.current && geoData) {
+              if (
+                svgElementRef.current &&
+                zoomBehaviorRef.current &&
+                projectionRef.current &&
+                geoData
+              ) {
                 zoomToContinentAuto(
                   continent,
                   geoData,

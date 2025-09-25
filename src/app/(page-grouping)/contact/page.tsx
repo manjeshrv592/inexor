@@ -190,7 +190,7 @@ const ContactPage = () => {
         </div>
 
         {/* Right Panel - Contact Form */}
-        <div className="xxl:h-[calc(100vh-128px)] h-[calc(100vh-118.14px)] bg-neutral-800 pb-[80%] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] md:pb-[30%] xl:h-[calc(100vh-112px)]">
+        <div className="xxl:h-[calc(100vh-128px)] h-[calc(100vh-118.14px)] bg-neutral-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:h-[calc(100vh-112px)]">
           <AutoScrollContainer>
             <div className="pb-4">
               <h3 className="font-michroma py-5 text-center">

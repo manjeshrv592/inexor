@@ -165,7 +165,7 @@
 
 /* width */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 3px;
 }
 
 /* Track */
@@ -202,4 +202,243 @@
 /* Handle on hover */
 .custom-scroll::-webkit-scrollbar-thumb:hover {
   background: var(--color-brand-orange-600);
+}
+
+/* View Transitions for page transitions */
+/* Page Panel Background - Fade In Animation - All Directions */
+::view-transition-old(page-panel-bg-left),
+::view-transition-old(page-panel-bg-top),
+::view-transition-old(page-panel-bg-bottom) {
+  animation: fade-out 0.4s ease-out forwards;
+}
+
+::view-transition-new(page-panel-bg-left),
+::view-transition-new(page-panel-bg-top),
+::view-transition-new(page-panel-bg-bottom) {
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+/* Page Panel - Slide In Animation - LEFT (Header Navigation) */
+::view-transition-old(page-panel-left) {
+  animation: slide-out-right 0.5s ease-in-out forwards;
+  z-index: 1;
+}
+
+::view-transition-new(page-panel-left) {
+  animation: slide-in-right 0.5s ease-in-out forwards;
+  z-index: 2;
+}
+
+/* Page Panel - Slide In Animation - TOP (Contact Button) */
+::view-transition-old(page-panel-top) {
+  animation: slide-out-top 0.5s ease-in-out forwards;
+  z-index: 1;
+}
+
+::view-transition-new(page-panel-top) {
+  animation: slide-in-top 0.5s ease-in-out forwards;
+  z-index: 2;
+}
+
+/* Page Panel - Slide In Animation - BOTTOM (Footer Links) */
+::view-transition-old(page-panel-bottom) {
+  animation: slide-out-bottom 0.5s ease-in-out forwards;
+  z-index: 1;
+}
+
+::view-transition-new(page-panel-bottom) {
+  animation: slide-in-bottom 0.5s ease-in-out forwards;
+  z-index: 2;
+}
+
+/* Page Content - Additional slide animations */
+::view-transition-old(page-content-left) {
+  animation: slide-out-left 0.4s ease-in-out forwards;
+}
+
+::view-transition-new(page-content-left) {
+  animation: slide-in-left 0.4s ease-in-out forwards;
+}
+
+::view-transition-old(page-content-top) {
+  animation: slide-out-top 0.4s ease-in-out forwards;
+}
+
+::view-transition-new(page-content-top) {
+  animation: slide-in-top 0.4s ease-in-out forwards;
+}
+
+::view-transition-old(page-content-bottom) {
+  animation: slide-out-bottom 0.4s ease-in-out forwards;
+}
+
+::view-transition-new(page-content-bottom) {
+  animation: slide-in-bottom 0.4s ease-in-out forwards;
+}
+
+/* Dynamic view transition names for different pages */
+::view-transition-old(page-panel-bg-about),
+::view-transition-old(page-panel-bg-contact),
+::view-transition-old(page-panel-bg-faq),
+::view-transition-old(page-panel-bg-services),
+::view-transition-old(page-panel-bg-resources),
+::view-transition-old(page-panel-bg-privacy-policy),
+::view-transition-old(page-panel-bg-terms-conditions) {
+  animation: fade-out 0.4s ease-out forwards;
+}
+
+::view-transition-new(page-panel-bg-about),
+::view-transition-new(page-panel-bg-contact),
+::view-transition-new(page-panel-bg-faq),
+::view-transition-new(page-panel-bg-services),
+::view-transition-new(page-panel-bg-resources),
+::view-transition-new(page-panel-bg-privacy-policy),
+::view-transition-new(page-panel-bg-terms-conditions) {
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+::view-transition-old(page-panel-about),
+::view-transition-old(page-panel-contact),
+::view-transition-old(page-panel-faq),
+::view-transition-old(page-panel-services),
+::view-transition-old(page-panel-resources),
+::view-transition-old(page-panel-privacy-policy),
+::view-transition-old(page-panel-terms-conditions) {
+  animation: slide-out-right 0.5s ease-in-out forwards;
+  z-index: 1;
+}
+
+::view-transition-new(page-panel-about),
+::view-transition-new(page-panel-contact),
+::view-transition-new(page-panel-faq),
+::view-transition-new(page-panel-services),
+::view-transition-new(page-panel-resources),
+::view-transition-new(page-panel-privacy-policy),
+::view-transition-new(page-panel-terms-conditions) {
+  animation: slide-in-right 0.5s ease-in-out forwards;
+  z-index: 2;
+}
+
+/* Keyframe animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-right {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-left {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in-top {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-top {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in-bottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-bottom {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+/* Fallback animations for browsers that don't support view transitions */
+.page-panel-bg-enter {
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+.page-panel-bg-exit {
+  animation: fade-out 0.4s ease-out forwards;
+}
+
+.page-panel-enter {
+  animation: slide-in-right 0.5s ease-in-out forwards;
+}
+
+.page-panel-exit {
+  animation: slide-out-right 0.5s ease-in-out forwards;
 }

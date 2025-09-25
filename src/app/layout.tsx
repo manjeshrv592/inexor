@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Michroma, Raleway } from "next/font/google";
+import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
-import Header from "@/components/layout/header";
+import Header from "@/components/layout/header/Header";
 import AuthProvider from "@/components/providers/AuthProvider";
 import LogoutButton from "@/components/auth/LogoutButton";
 import Footer from "@/components/layout/Footer";
@@ -83,38 +84,40 @@ export default async function RootLayout({
   ]);
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${michroma.variable} ${raleway.variable} bg-[#050505] text-white antialiased`}
-      >
-        <AuthProvider>
-          <Header />
-          <main>
-            <Hero heroData={heroData} />
-            <KeyValuePillars
-              sectionData={keyValuePillarsSection}
-              items={keyValuePillarItems}
-            />
-            <AboutOverview aboutData={aboutData} aboutItems={aboutItems} />
-            <WhoWeServe
-              items={whoWeServeItems}
-              sectionData={whoWeServeSection}
-            />
+    <ViewTransitions>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${michroma.variable} ${raleway.variable} bg-[#050505] text-white antialiased`}
+        >
+          <AuthProvider>
+            <Header />
+            <main>
+              <Hero heroData={heroData} />
+              <KeyValuePillars
+                sectionData={keyValuePillarsSection}
+                items={keyValuePillarItems}
+              />
+              <AboutOverview aboutData={aboutData} aboutItems={aboutItems} />
+              <WhoWeServe
+                items={whoWeServeItems}
+                sectionData={whoWeServeSection}
+              />
 
-            <OurServices
-              servicesSection={servicesSection}
-              serviceItems={serviceItems}
-            />
-            <Maps />
-            <Why whyData={whyData} whyItems={whyItems} />
-            <Clients />
-            <Testimonials testimonialsData={testimonialsData} />
-            <Footer footerData={footerData} />
-          </main>
-          {children}
-          <LogoutButton />
-        </AuthProvider>
-      </body>
-    </html>
+              <OurServices
+                servicesSection={servicesSection}
+                serviceItems={serviceItems}
+              />
+              <Maps />
+              <Why whyData={whyData} whyItems={whyItems} />
+              <Clients />
+              <Testimonials testimonialsData={testimonialsData} />
+              <Footer footerData={footerData} />
+            </main>
+            {children}
+            <LogoutButton />
+          </AuthProvider>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

@@ -3,6 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTransitionRouter } from "next-view-transitions";
+import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 import {
   FaFacebookF,
@@ -21,6 +23,30 @@ interface FooterProps {
 }
 
 const Footer = ({ footerData }: FooterProps) => {
+  const router = useTransitionRouter();
+  const pathname = usePathname();
+
+  const handleNavigation = (href: string) => {
+    console.log("🔗 Footer navigation triggered from", pathname, "to", href);
+    if (typeof window !== 'undefined') {
+      // If user clicks on the same route they're already on, navigate to home instead
+      const targetHref = pathname === href ? '/' : href;
+      console.log("🎯 Footer target href:", targetHref, "(original:", href, ", current:", pathname, ")");
+      
+      // Store the current path before navigation
+      sessionStorage.setItem('lastPath', pathname);
+      // Set navigation source for animation direction
+      sessionStorage.setItem('navigationSource', 'footer');
+      
+      // Always use transition router to prevent page reload
+      // Animations will only show when transitioning from/to root due to PageTransition component logic
+      console.log("✨ Using transition router for footer navigation");
+      requestAnimationFrame(() => {
+        router.push(targetHref);
+      });
+    }
+  };
+
   // Helper function to get the appropriate icon for each platform
   const getSocialIcon = (platform: string) => {
     switch (platform) {
@@ -139,19 +165,19 @@ const Footer = ({ footerData }: FooterProps) => {
                     />
                   </div>
                   <div className="mx-auto flex w-[220px] justify-between text-xs">
-                    <Link
-                      href="/privacy-policy"
+                    <button
+                      onClick={() => handleNavigation("/privacy-policy")}
                       className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
                     >
                       Privacy Policy
-                    </Link>
+                    </button>
                     <span> | </span>
-                    <Link
-                      href="/terms-conditions"
+                    <button
+                      onClick={() => handleNavigation("/terms-conditions")}
                       className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
                     >
                       Terms & Conditions
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </motion.div>
@@ -218,19 +244,19 @@ const Footer = ({ footerData }: FooterProps) => {
                     />
                   </div>
                   <div className="flex min-w-0 items-center justify-center gap-2 text-xs">
-                    <Link
-                      href="/privacy-policy"
+                    <button
+                      onClick={() => handleNavigation("/privacy-policy")}
                       className="hover:text-brand-orange-500 flex-shrink-0 cursor-pointer whitespace-nowrap duration-300"
                     >
                       Privacy Policy
-                    </Link>
+                    </button>
                     <span className="flex-shrink-0"> | </span>
-                    <Link
-                      href="/terms-conditions"
+                    <button
+                      onClick={() => handleNavigation("/terms-conditions")}
                       className="hover:text-brand-orange-500 flex-shrink-0 cursor-pointer whitespace-nowrap duration-300"
                     >
                       Terms & Conditions
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </motion.div>
