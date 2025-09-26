@@ -554,11 +554,9 @@ const ContactPage = () => {
                   {/* Submit Button */}
                   <div className="text-center" ref={submitButtonRef}>
                     <Button
-                      className="font-michroma text-[10px] tracking-[1px]"
+                      className="font-michroma text-xs tracking-[1px]"
                       type="submit"
-                      size="sm"
                       disabled={isSubmitting}
-                      variant="outline"
                       onClick={() => {
                         console.log("🔘 Submit button clicked!");
                         console.log("🔘 Form state:", {

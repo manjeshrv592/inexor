@@ -25,7 +25,7 @@ const ProcessSteps: React.FC<ProcessStepsProps> = ({
       <div>
         <h4 className="font-michroma">{title}</h4>
         {description && <p className="my-4 text-sm">{description}</p>}
-        <ContactUsButton className="font-michroma text-[10px] tracking-[1px]" />
+        <ContactUsButton className="font-michroma text-xs tracking-[1px]" />
       </div>
       <div className="after:border-brand-orange-500 relative grid gap-4 after:absolute after:top-0 after:left-[21px] after:h-[calc(100%-25px)] after:w-0.5 after:border-l-2 after:border-dashed after:content-['']">
         {steps.map((step) => (
