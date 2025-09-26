@@ -180,11 +180,12 @@ const ServicesPage = () => {
                   transition={{ duration: 0.2 }}
                   className="flex h-full flex-col items-center justify-center text-center"
                 >
-                  <h2 className="font-michroma mb-4 text-2xl text-brand-orange-500">
+                  <h2 className="font-michroma text-brand-orange-500 mb-4 text-2xl">
                     Services
                   </h2>
                   <p className="text-gray-400">
-                    Select a service from the left panel to learn more about our offerings.
+                    Select a service from the left panel to learn more about our
+                    offerings.
                   </p>
                 </motion.div>
               )}

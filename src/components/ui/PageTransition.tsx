@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import PagePanelBg from './PagePanelBg';
-import PagePanel from './PagePanel';
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import PagePanelBg from "./PagePanelBg";
+import PagePanel from "./PagePanel";
 
 interface PageTransitionProps {
   children: React.ReactNode;
@@ -12,31 +12,27 @@ interface PageTransitionProps {
 export default function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(true);
-  const [animationDirection, setAnimationDirection] = useState<'left' | 'top' | 'bottom'>('left');
+  const [animationDirection, setAnimationDirection] = useState<
+    "left" | "top" | "bottom"
+  >("left");
 
   useEffect(() => {
-    console.log("🎬 PageTransition effect triggered for:", pathname);
-    
     // Determine animation direction based on navigation source
-    const navigationSource = sessionStorage.getItem('navigationSource');
-    console.log("🎯 Navigation source:", navigationSource, "for path:", pathname);
-    
-    if (navigationSource === 'contact-button' && pathname === '/contact') {
-      setAnimationDirection('top');
-      console.log("⬇️ Using TOP animation for contact from hero");
-    } else if (navigationSource === 'footer') {
-      setAnimationDirection('bottom');
-      console.log("⬆️ Using BOTTOM animation for footer navigation");
+    const navigationSource = sessionStorage.getItem("navigationSource");
+
+    if (navigationSource === "contact-button" && pathname === "/contact") {
+      setAnimationDirection("top");
+    } else if (navigationSource === "footer") {
+      setAnimationDirection("bottom");
     } else {
-      setAnimationDirection('left');
-      console.log("⬅️ Using LEFT animation for header navigation");
+      setAnimationDirection("left");
     }
-    
+
     // Reset visibility when pathname changes
     setIsVisible(true);
-    
+
     // If navigating to root, hide after a delay to prevent flicker
-    if (pathname === '/') {
+    if (pathname === "/") {
       const timer = setTimeout(() => {
         setIsVisible(false);
       }, 50);
@@ -46,49 +42,46 @@ export default function PageTransition({ children }: PageTransitionProps) {
 
   // Prevent page scrolling when PagePanel is open
   useEffect(() => {
-    if (pathname !== '/' && isVisible) {
+    if (pathname !== "/" && isVisible) {
       // Disable scrolling
-      document.body.style.overflow = 'hidden';
-      console.log("🔒 Page scrolling disabled");
+      document.body.style.overflow = "hidden";
     } else {
       // Re-enable scrolling
-      document.body.style.overflow = 'unset';
-      console.log("🔓 Page scrolling enabled");
+      document.body.style.overflow = "unset";
     }
 
     // Cleanup function to ensure scrolling is re-enabled
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [pathname, isVisible]);
 
   // Don't render for root pages or when not visible
-  if (pathname === '/' || !isVisible) {
-    console.log("🚫 PageTransition not rendering for:", pathname, "isVisible:", isVisible);
+  if (pathname === "/" || !isVisible) {
     return null;
   }
 
-  console.log("✅ PageTransition rendering for:", pathname);
-
   return (
     <>
-      <div 
-        className="fixed inset-0 bg-black/80 z-[70]"
+      <div
+        className="fixed inset-0 z-[70] bg-black/80"
         style={{
-          viewTransitionName: `page-panel-bg-${animationDirection}`
+          viewTransitionName: `page-panel-bg-${animationDirection}`,
         }}
       >
         <PagePanelBg />
       </div>
-      
-      <div 
+
+      <div
         className="fixed inset-0 z-[110]"
         style={{
-          viewTransitionName: `page-panel-${animationDirection}`
+          viewTransitionName: `page-panel-${animationDirection}`,
         }}
       >
         <PagePanel>
-          <div style={{ viewTransitionName: `page-content-${animationDirection}` }}>
+          <div
+            style={{ viewTransitionName: `page-content-${animationDirection}` }}
+          >
             {children}
           </div>
         </PagePanel>

@@ -26,6 +26,9 @@ const Maps = () => {
   const description =
     mapsSection?.description ||
     "Reach Over 120 Markets With Zero Compliance Issues";
+  const instructionText =
+    mapsSection?.instructionText ||
+    "Click to interact with the map and select a continent to view service availability for your country";
 
   const handleMapInteraction = useCallback(() => {
     setHasInteracted(true);
@@ -39,7 +42,7 @@ const Maps = () => {
             <div className="text-center">
               <SectionTitle className="mb-2">{title}</SectionTitle>
             </div>
-            <h3 className="text-center text-lg">{description}</h3>
+            <h3 className="text-center text-sm lg:text-lg">{description}</h3>
           </div>
 
           <div className="relative">
@@ -64,10 +67,7 @@ const Maps = () => {
                         Interactive Map
                       </span>
                     </div>
-                    <p className="text-xs text-gray-300">
-                      Click to interact with the map and select a continent to
-                      view service availability for your country
-                    </p>
+                    <p className="text-xs text-gray-300">{instructionText}</p>
                   </div>
                   {/* Tooltip arrow */}
                   <div className="absolute top-full left-1/2 -translate-x-1/2 transform">

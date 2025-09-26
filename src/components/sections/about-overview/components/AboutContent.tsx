@@ -54,7 +54,7 @@ const AboutContent: React.FC<AboutContentProps> = ({
           <div className="text-center">
             <SectionTitle className="mb-2">{title}</SectionTitle>
           </div>
-          <h3 className="mb-4 text-lg">{subtitle}</h3>
+          <h3 className="mb-4 text-sm lg:text-lg">{subtitle}</h3>
         </div>
         <p className="text-sm">{description}</p>
       </div>

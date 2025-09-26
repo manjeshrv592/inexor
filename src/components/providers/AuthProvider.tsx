@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import InactivityTracker from "@/components/auth/InactivityTracker";
 import { isAuthenticated } from "@/app/actions/auth";
@@ -17,42 +17,48 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   const pathname = usePathname();
   const router = useRouter();
 
-  const checkAuth = useCallback(async () => {
-    if (!isClient) return;
-
-    // Don't check auth for auth page
-    if (pathname === "/auth") {
-      setIsLoading(false);
-      return;
-    }
-
-    // If web access is not enabled, no need to check auth
-    if (process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED !== "true") {
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      const isAuth = await isAuthenticated();
-      if (!isAuth) {
-        setUserAuthenticated(false);
-        router.push("/auth");
-      } else {
-        setUserAuthenticated(true);
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.error("Auth check failed:", error);
-      setUserAuthenticated(false);
-      setIsLoading(false);
-    }
-  }, [isClient, pathname, router]);
-
   // Check if we're on the client and authentication is enabled
   useEffect(() => {
     setIsClient(true);
-    checkAuth();
-  }, [checkAuth]);
+  }, []);
+
+  // Run auth check when client is ready or pathname changes
+  useEffect(() => {
+    const checkAuth = async () => {
+      if (!isClient) return;
+
+      // Don't check auth for auth page
+      if (pathname === "/auth") {
+        setIsLoading(false);
+        return;
+      }
+
+      // If web access is not enabled, no need to check auth
+      if (process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED !== "true") {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const isAuth = await isAuthenticated();
+        if (!isAuth) {
+          setUserAuthenticated(false);
+          router.push("/auth");
+        } else {
+          setUserAuthenticated(true);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        setUserAuthenticated(false);
+        setIsLoading(false);
+      }
+    };
+
+    if (isClient) {
+      checkAuth();
+    }
+  }, [isClient, pathname, router]);
 
   // Show loading state while checking auth
   if (!isClient || isLoading) {

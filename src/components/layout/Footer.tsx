@@ -28,16 +28,24 @@ const Footer = ({ footerData }: FooterProps) => {
 
   const handleNavigation = (href: string) => {
     console.log("🔗 Footer navigation triggered from", pathname, "to", href);
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // If user clicks on the same route they're already on, navigate to home instead
-      const targetHref = pathname === href ? '/' : href;
-      console.log("🎯 Footer target href:", targetHref, "(original:", href, ", current:", pathname, ")");
-      
+      const targetHref = pathname === href ? "/" : href;
+      console.log(
+        "🎯 Footer target href:",
+        targetHref,
+        "(original:",
+        href,
+        ", current:",
+        pathname,
+        ")",
+      );
+
       // Store the current path before navigation
-      sessionStorage.setItem('lastPath', pathname);
+      sessionStorage.setItem("lastPath", pathname);
       // Set navigation source for animation direction
-      sessionStorage.setItem('navigationSource', 'footer');
-      
+      sessionStorage.setItem("navigationSource", "footer");
+
       // Always use transition router to prevent page reload
       // Animations will only show when transitioning from/to root due to PageTransition component logic
       console.log("✨ Using transition router for footer navigation");
@@ -128,7 +136,7 @@ const Footer = ({ footerData }: FooterProps) => {
       <Container>
         <div className="xxl:grid-cols-[3fr_2fr] grid items-center gap-8 lg:grid-cols-2 lg:items-stretch lg:gap-12">
           <div className="px-5 pt-8 text-center lg:pt-14 lg:pb-3">
-            <h4 className="font-michroma mb-4 bg-gradient-to-r from-white to-neutral-500 bg-clip-text text-transparent md:text-lg lg:mb-10 xl:text-2xl">
+            <h4 className="font-michroma mb-4 md:text-lg lg:mb-10 xl:text-2xl">
               {footerData?.heading ||
                 "Ready to Witness Global Shipping Become Seamless?"}
             </h4>

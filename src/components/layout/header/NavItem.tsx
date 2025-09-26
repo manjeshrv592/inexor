@@ -34,38 +34,32 @@ const NavItem: React.FC<NavItemProps> = ({
   }, []);
 
   const handleNavigation = (href: string) => {
-    console.log("🔄 Navigation triggered from", pathname, "to", href);
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // Special handling for resources route
-      const isResourcesRoute = href === '/resources';
-      const isCurrentlyOnResources = pathname.startsWith('/resources');
-      
+      const isResourcesRoute = href === "/resources";
+      const isCurrentlyOnResources = pathname.startsWith("/resources");
+
       // If user clicks on the same route they're already on, navigate to home instead
       let targetHref;
       if (isResourcesRoute && isCurrentlyOnResources) {
         // User is on /resources/slug and clicks Resources -> go home
-        targetHref = '/';
-        console.log("🔄 Resources route: User on resources page, going home");
+        targetHref = "/";
       } else if (pathname === href) {
         // Normal same route logic
-        targetHref = '/';
-        console.log("🔄 Same route: Going home");
+        targetHref = "/";
       } else {
         // Different route
         targetHref = href;
-        console.log("🔄 Different route: Going to", href);
       }
-      
-      console.log("🎯 Target href:", targetHref, "(original:", href, ", current:", pathname, ")");
-      
+
       // Store the current path before navigation
-      sessionStorage.setItem('lastPath', pathname);
+      sessionStorage.setItem("lastPath", pathname);
       // Set navigation source for animation direction
-      sessionStorage.setItem('navigationSource', 'header');
-      
+      sessionStorage.setItem("navigationSource", "header");
+
       // Always use transition router to prevent page reload
       // Animations will only show when transitioning from/to root due to PageTransition component logic
-      console.log("✨ Using transition router for navigation");
+
       requestAnimationFrame(() => {
         router.push(targetHref);
       });

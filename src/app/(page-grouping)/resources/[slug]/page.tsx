@@ -3,7 +3,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { DynamicShape } from "@/components/ui/DynamicShape";
 import Image from "next/image";
-import { getBlogPostBySlug, getBlogPosts, type BlogPost } from "@/lib/sanity/blog";
+import {
+  getBlogPostBySlug,
+  getBlogPosts,
+  type BlogPost,
+} from "@/lib/sanity/blog";
 import { getResourcesPage } from "@/lib/sanity";
 import { RichTextRenderer } from "@/components/blog";
 import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
@@ -28,7 +32,9 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
   }
 
   // Find current index for navigation
-  const currentIndex = allBlogPosts.findIndex(post => post.slug.current === slug);
+  const currentIndex = allBlogPosts.findIndex(
+    (post) => post.slug.current === slug,
+  );
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < allBlogPosts.length - 1;
   const prevPost = hasPrev ? allBlogPosts[currentIndex - 1] : null;
@@ -90,7 +96,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
               >
                 <Link
                   href={`/resources/${post.slug.current}`}
-                  className={`font-michroma block px-4 py-2 text-[10px] tracking-[1px] hover:text-brand-orange-500 ${
+                  className={`font-michroma hover:text-brand-orange-500 block px-4 py-2 text-[10px] tracking-[1px] ${
                     index === currentIndex ? "text-brand-orange-500" : ""
                   }`}
                 >
@@ -151,7 +157,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
                             month: "short",
                             day: "numeric",
                             year: "numeric",
-                          }
+                          },
                         )}
                       </div>
                       <div className="font-michroma xxl:text-[10px] line-clamp-2 text-left text-[8px] leading-tight tracking-[1px]">
@@ -177,17 +183,13 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
               </h3>
 
               {/* Featured Image */}
-              <div className="relative h-[200px] mb-6">
+              <div className="relative mb-6 h-[200px]">
                 <div className="absolute top-0 left-0 size-full bg-black">
                   <Image
                     src={
-                      blogPost.featuredImage?.asset.url ||
-                      "/img/left-image.jpg"
+                      blogPost.featuredImage?.asset.url || "/img/left-image.jpg"
                     }
-                    alt={
-                      blogPost.featuredImage?.alt ||
-                      blogPost.title
-                    }
+                    alt={blogPost.featuredImage?.alt || blogPost.title}
                     fill
                     className="object-cover grayscale"
                   />
@@ -202,7 +204,10 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
                       <span className="inline-block size-10 overflow-hidden rounded-full bg-neutral-700">
                         {blogPost.author.image ? (
                           <Image
-                            src={blogPost.author.image.asset.url || "/img/left-image.jpg"}
+                            src={
+                              blogPost.author.image.asset.url ||
+                              "/img/left-image.jpg"
+                            }
                             alt={blogPost.author.name}
                             width={40}
                             height={40}
@@ -222,13 +227,14 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
                 </div>
                 <div className="text-brand-orange-500 flex flex-col items-end gap-2 text-[10px] lg:flex-row lg:items-center lg:gap-4">
                   <span className="font-michroma">
-                    {new Date(
-                      blogPost.publishedAt,
-                    ).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
+                    {new Date(blogPost.publishedAt).toLocaleDateString(
+                      "en-US",
+                      {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      },
+                    )}
                   </span>
                   {blogPost.readingTime && (
                     <span className="font-michroma">

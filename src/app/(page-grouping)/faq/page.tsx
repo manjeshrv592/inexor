@@ -125,7 +125,7 @@ const FAQPage = () => {
             fill
             className="object-cover grayscale"
           />
-          <div className="absolute inset-0 z-10 bg-black/85"></div>
+          <div className="absolute inset-0 z-10 bg-black/60"></div>
         </div>
         <div className="relative z-10 flex h-full flex-col items-center justify-center gap-4 p-8 text-center">
           <p className="hidden text-sm lg:block">

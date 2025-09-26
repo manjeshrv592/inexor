@@ -11,13 +11,14 @@ const AboutPage = async () => {
   return (
     <div className="size-full grid-cols-[2fr_3fr_2fr] bg-[#2f2f2f] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] lg:grid">
       <div className="relative h-44 lg:h-full">
-        <div className="absolute size-full bg-black">
+        <div className="absolute inset-0 hidden size-full lg:block">
           <Image
             src="/img/about-us.jpg"
-            alt="faq bg"
+            alt="Nature image"
             fill
-            className="object-cover opacity-40 grayscale"
+            className="object-cover grayscale"
           />
+          <div className="absolute inset-0 z-10 bg-black/20"></div>
         </div>
       </div>
       <div className="xxl:h-[calc(100vh-128px)] col-span-2 h-[calc(100vh-118.14px)] pb-56 lg:h-[calc(100vh-112px)] lg:pb-0">
@@ -54,7 +55,6 @@ const AboutPage = async () => {
                   processSection?.description ||
                   "With a specialized focus on global trade compliance, we combine deep industry knowledge with a client-first approach to deliver seamless."
                 }
-                buttonText={processSection?.buttonText || "Contact Us"}
                 steps={processSteps}
               />
             )}
@@ -86,7 +86,6 @@ const AboutPage = async () => {
                   <ProcessSteps
                     title="We follow a clear process to help you out."
                     description="With a specialized focus on global trade compliance, we combine deep industry knowledge with a client-first approach to deliver seamless."
-                    buttonText="Contact Us"
                     steps={[
                       {
                         stepNumber: 1,

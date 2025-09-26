@@ -21,8 +21,23 @@ export default defineType({
       name: "description",
       title: "Section Description",
       type: "text",
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 200, fieldType: 'text' }),
+      },
       initialValue: "Reach Over 120 Markets With Zero Compliance Issues",
-      hidden: true,
+      validation: (Rule) => Rule.max(200),
+      description: "Description text displayed below the main title",
+    }),
+    defineField({
+      name: "instructionText",
+      title: "Map Instruction Text",
+      type: "text",
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 300, fieldType: 'text' }),
+      },
+      initialValue: "Click to interact with the map and select a continent to view service availability for your country",
+      validation: (Rule) => Rule.max(300),
+      description: "Instruction text shown in the tooltip before user interacts with the map",
     }),
     defineField({
       name: "isActive",
@@ -76,16 +91,18 @@ export default defineType({
     select: {
       title: "title",
       description: "description",
+      instructionText: "instructionText",
       isActive: "isActive",
       countries: "countries",
     },
     prepare(selection) {
-      const { title, description, isActive, countries } = selection;
+      const { title, description, instructionText, isActive, countries } = selection;
       const countryCount = countries ? countries.length : 0;
+      const hasInstructions = instructionText ? "✓" : "✗";
 
       return {
         title: `${isActive ? "🟢" : "🔴"} ${title}`,
-        subtitle: `${countryCount} countries configured | ${description || "No description"}`,
+        subtitle: `${countryCount} countries | Instructions: ${hasInstructions} | ${description || "No description"}`,
       };
     },
   },

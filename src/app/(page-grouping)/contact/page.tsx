@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -29,6 +29,7 @@ import {
   type ContactFormData,
   countryCodes,
   serviceOptions,
+  getPhoneLengthForCountry,
 } from "@/lib/validations/contact";
 import { Mail, PhoneIcon } from "lucide-react";
 import {
@@ -46,6 +47,20 @@ const ContactPage = () => {
   const [contactInfo, setContactInfo] =
     useState<ContactInfo>(fallbackContactInfo);
   const submitButtonRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to submit button when message is shown
+  useEffect(() => {
+    if (submitMessage && submitButtonRef.current) {
+      // Add a small delay to ensure the message is rendered
+      setTimeout(() => {
+        submitButtonRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+          inline: "nearest",
+        });
+      }, 100);
+    }
+  }, [submitMessage]);
 
   // Fetch contact info from Sanity on component mount
   useEffect(() => {
@@ -71,32 +86,62 @@ const ContactPage = () => {
       email: "",
       countryCode: "US",
       phone: "",
+      company: "",
       service: "",
       message: "",
     },
   });
 
+  // Watch form values efficiently to prevent excessive re-renders
+  const watchedValues = form.watch(["phone", "countryCode"]);
+  const [phoneValue, countryCodeValue] = watchedValues;
+
+  // Memoize phone length calculation
+  const phoneMaxLength = useMemo(() => {
+    return getPhoneLengthForCountry(countryCodeValue || "US");
+  }, [countryCodeValue]);
+
   // Handle form submission
   const onSubmit = async (data: ContactFormData) => {
+    console.log("🎯 Form onSubmit called with data:", data);
+
     setIsSubmitting(true);
     setSubmitMessage(null);
 
     try {
-      // Here you would typically send the data to your backend
-      // For now, we'll simulate a successful submission
-      console.log('Form data to be submitted:', data);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      console.log("📡 Making direct API call to /api/contact...");
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      console.log("📡 API Response status:", response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to send message");
+      }
+
+      const result = await response.json();
+      console.log("📡 API Response:", result);
 
       setSubmitMessage({
         type: "success",
-        text: "Thank you for your message! We'll get back to you soon.",
+        text: result.message || "Message sent successfully!",
       });
-      form.reset();
+      form.reset(); // Reset form on success
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error("❌ Form submission error:", error);
       setSubmitMessage({
         type: "error",
-        text: "There was an error sending your message. Please try again.",
+        text:
+          error instanceof Error
+            ? error.message
+            : "Something went wrong. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -221,6 +266,11 @@ const ContactPage = () => {
                           <Input
                             {...field}
                             placeholder="Enter your full name"
+                            onChange={(e) => {
+                              // Only allow alphabets and spaces
+                              const value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+                              field.onChange(value);
+                            }}
                           />
                         </FormControl>
                         <FormMessage className="text-red-400" />
@@ -252,7 +302,22 @@ const ContactPage = () => {
 
                   {/* Phone Number Fields */}
                   <div className="space-y-2">
-                    <FormLabel className="text-white">Phone Number</FormLabel>
+                    <div className="flex items-center justify-between">
+                      <FormLabel className="text-white">Phone Number</FormLabel>
+                      {phoneValue && (
+                        <span 
+                          className={`text-xs font-mono ${
+                            (phoneValue?.length || 0) >= phoneMaxLength
+                              ? 'text-red-400' 
+                              : (phoneValue?.length || 0) > phoneMaxLength * 0.8
+                                ? 'text-yellow-400' 
+                                : 'text-gray-400'
+                          }`}
+                        >
+                          {phoneValue?.length || 0}/{phoneMaxLength}
+                        </span>
+                      )}
+                    </div>
                     <div className="flex gap-2">
                       <FormField
                         control={form.control}
@@ -261,7 +326,15 @@ const ContactPage = () => {
                           <FormItem className="w-[80px]">
                             <FormControl>
                               <Select
-                                onValueChange={field.onChange}
+                                onValueChange={(value) => {
+                                  field.onChange(value);
+                                  // Clear phone number when country changes to avoid validation issues
+                                  const currentPhone = form.getValues("phone");
+                                  const newMaxLength = getPhoneLengthForCountry(value);
+                                  if (currentPhone && currentPhone.length > newMaxLength) {
+                                    form.setValue("phone", currentPhone.slice(0, newMaxLength));
+                                  }
+                                }}
                                 value={field.value}
                               >
                                 <SelectTrigger className="border-neutral-900 bg-transparent text-white">
@@ -295,17 +368,25 @@ const ContactPage = () => {
                       <FormField
                         control={form.control}
                         name="phone"
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormControl>
-                              <Input
-                                {...field}
-                                type="tel"
-                                placeholder="Enter phone number"
-                              />
-                            </FormControl>
-                          </FormItem>
-                        )}
+                        render={({ field }) => {
+                          return (
+                            <FormItem className="flex-1">
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  type="tel"
+                                  placeholder={`Enter phone number (${phoneMaxLength} digits)`}
+                                  maxLength={phoneMaxLength}
+                                  onChange={(e) => {
+                                    // Only allow numbers and respect country-specific length
+                                    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, phoneMaxLength);
+                                    field.onChange(value);
+                                  }}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          );
+                        }}
                       />
                     </div>
                     {(form.formState.errors.countryCode ||
@@ -324,6 +405,47 @@ const ContactPage = () => {
                       </div>
                     )}
                   </div>
+
+                  {/* Company Field */}
+                  <FormField
+                    control={form.control}
+                    name="company"
+                    render={({ field }) => {
+                      const currentLength = field.value?.length || 0;
+                      const maxLength = 100;
+                      const isNearLimit = currentLength > 80;
+                      const isAtLimit = currentLength >= maxLength;
+                      
+                      return (
+                        <FormItem>
+                          <div className="flex items-center justify-between">
+                            <FormLabel className="text-white">
+                              Company Name
+                            </FormLabel>
+                            <span 
+                              className={`text-xs font-mono ${
+                                isAtLimit 
+                                  ? 'text-red-400' 
+                                  : isNearLimit 
+                                    ? 'text-yellow-400' 
+                                    : 'text-gray-400'
+                              }`}
+                            >
+                              {currentLength}/{maxLength}
+                            </span>
+                          </div>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="Enter your company name"
+                              maxLength={maxLength}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-red-400" />
+                        </FormItem>
+                      );
+                    }}
+                  />
 
                   {/* Service Selection */}
                   <FormField
@@ -366,18 +488,39 @@ const ContactPage = () => {
                   <FormField
                     control={form.control}
                     name="message"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-white">Message</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            {...field}
-                            placeholder="Tell us more about your requirements..."
-                          />
-                        </FormControl>
-                        <FormMessage className="text-red-400" />
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      const currentLength = field.value?.length || 0;
+                      const maxLength = 1000;
+                      const isNearLimit = currentLength > 800;
+                      const isAtLimit = currentLength >= maxLength;
+                      
+                      return (
+                        <FormItem>
+                          <div className="flex items-center justify-between">
+                            <FormLabel className="text-white">Message</FormLabel>
+                            <span 
+                              className={`text-xs font-mono ${
+                                isAtLimit 
+                                  ? 'text-red-400' 
+                                  : isNearLimit 
+                                    ? 'text-yellow-400' 
+                                    : 'text-gray-400'
+                              }`}
+                            >
+                              {currentLength}/{maxLength}
+                            </span>
+                          </div>
+                          <FormControl>
+                            <Textarea
+                              {...field}
+                              placeholder="Tell us more about your requirements..."
+                              maxLength={maxLength}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-red-400" />
+                        </FormItem>
+                      );
+                    }}
                   />
 
                   {/* Submit Button */}

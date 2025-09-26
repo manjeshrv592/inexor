@@ -11,36 +11,39 @@ const Logo = () => {
 
   const handleLogoClick = () => {
     console.log("🏠 Logo clicked - navigating to home from", pathname);
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const currentPath = pathname;
-      const isFromRoot = currentPath === '/';
+      const isFromRoot = currentPath === "/";
       const isToRoot = true; // Always going to root
-      
+
       // Store the current path before navigation
-      sessionStorage.setItem('lastPath', currentPath);
-      
+      sessionStorage.setItem("lastPath", currentPath);
+
       // Use transition router only when navigating from/to root
       if (isFromRoot || isToRoot) {
         console.log("✨ Using transition router for logo navigation");
         requestAnimationFrame(() => {
-          router.push('/');
+          router.push("/");
         });
       } else {
         // Fallback (shouldn't happen since we're always going to root)
-        window.location.href = '/';
+        window.location.href = "/";
       }
     }
   };
 
   return (
-    <div className="border-b border-neutral-800 bg-[#050505] p-3 pb-6 lg:border-none lg:bg-transparent lg:p-1 lg:pt-4">
-      <button onClick={handleLogoClick} className="block cursor-pointer">
+    <div className="border-b border-neutral-800 bg-[#050505] p-3 pb-6 text-center lg:border-none lg:bg-transparent lg:p-1 lg:pt-3">
+      <button
+        onClick={handleLogoClick}
+        className="mx-auto block cursor-pointer"
+      >
         <Image
           src="/logo.svg"
           alt="Inexor logo"
           width={150}
           height={40}
-          className="h-10 w-auto"
+          className="mx-auto h-auto w-20 xl:w-full"
           priority
         />
       </button>

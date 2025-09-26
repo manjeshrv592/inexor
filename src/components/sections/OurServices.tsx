@@ -245,7 +245,7 @@ const OurServices: React.FC<OurServicesProps> = ({
 
         <div className="text-center">
           <motion.h3
-            className="mb-4 text-lg"
+            className="mb-4 text-sm lg:text-lg"
             key={activeEl}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
