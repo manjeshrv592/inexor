@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 interface ServiceComponentProps {
   code: string;
@@ -21,6 +22,7 @@ interface ServiceComponentProps {
     alt?: string;
   };
   serviceCode: string;
+  title?: string;
 }
 
 const ServiceComponent: React.FC<ServiceComponentProps> = ({
@@ -30,6 +32,7 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
   description,
   backgroundImage,
   serviceCode,
+  title,
 }) => {
   const backgroundImageUrl = backgroundImage?.asset?.url;
 
@@ -46,6 +49,20 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
           <span className="text-brand-orange-500 font-michroma absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90 text-xl">
             {code}
           </span>
+        </div>
+        <div className="text-center lg:hidden">
+          <motion.h3
+            className="mb-4 text-sm lg:text-lg"
+            key={title}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 0.5,
+              ease: "easeOut",
+            }}
+          >
+            {title}
+          </motion.h3>
         </div>
         <h4 className="font-michroma mb-4 text-center text-xs uppercase xl:text-sm">
           {heading1}

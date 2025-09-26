@@ -25,8 +25,11 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
     currentIndex,
     currentTestimonial,
     isAnimating,
+    animationDirection,
     nextTestimonial,
     prevTestimonial,
+    pauseAutoplay,
+    resumeAutoplay,
   } = useTestimonialCarousel(testimonials, autoplayDuration, enableAutoplay);
 
   // If no current testimonial, don't render anything
@@ -39,7 +42,11 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
   }
 
   return (
-    <article className="xxl:grid-cols-[400px_1fr] lg:grid lg:h-[360px] lg:grid-cols-[360px_1fr]">
+    <article
+      className="xxl:grid-cols-[400px_1fr] lg:grid lg:h-[360px] lg:grid-cols-[360px_1fr]"
+      onMouseEnter={pauseAutoplay}
+      onMouseLeave={resumeAutoplay}
+    >
       <span className="mb-2 block text-center lg:hidden">
         <Image
           src="/quotes.svg"
@@ -53,12 +60,14 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
       <TestimonialImage
         testimonial={currentTestimonial}
         currentIndex={currentIndex}
+        animationDirection={animationDirection}
       />
 
       <div className="xxl:px-28 flex flex-col py-6 text-center lg:bg-neutral-900 lg:px-16">
         <TestimonialContent
           testimonial={currentTestimonial}
           currentIndex={currentIndex}
+          animationDirection={animationDirection}
         />
 
         <TestimonialControls

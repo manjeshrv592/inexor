@@ -52,7 +52,7 @@ const Navigation: React.FC<NavigationProps> = ({ isOpen, activePagePath }) => {
       }}
     >
       <motion.ul
-        className="xxl:p-0 flex w-[calc(100%-40px)] items-center justify-center bg-[#1f1f1f] px-4 py-6 [box-shadow:inset_0_-4px_4px_0_rgba(0,0,0,0.25),inset_0_4px_4px_0_rgba(0,0,0,0.25)] lg:h-full lg:w-auto lg:flex-col lg:gap-6 lg:bg-transparent lg:px-0 lg:py-8 lg:!opacity-100 lg:[box-shadow:none]"
+        className="xxl:p-0 flex w-[calc(100%-20px)] items-center justify-between bg-[#1f1f1f] px-2 py-6 [box-shadow:inset_0_-4px_4px_0_rgba(0,0,0,0.25),inset_0_4px_4px_0_rgba(0,0,0,0.25)] sm:justify-center sm:gap-6 lg:h-full lg:w-auto lg:flex-col lg:bg-transparent lg:px-0 lg:py-8 lg:!opacity-100 lg:[box-shadow:none]"
         initial={{ opacity: 0 }}
         animate={{
           opacity: isOpen ? 1 : 0,
@@ -82,8 +82,8 @@ const Navigation: React.FC<NavigationProps> = ({ isOpen, activePagePath }) => {
               href={item.href}
               hasDropdown={item.hasDropdown}
               isActive={
-                item.href === '/resources' 
-                  ? activePagePath?.startsWith('/resources') || false
+                item.href === "/resources"
+                  ? activePagePath?.startsWith("/resources") || false
                   : activePagePath === item.href
               }
             >

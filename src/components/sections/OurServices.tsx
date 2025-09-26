@@ -222,6 +222,7 @@ const OurServices: React.FC<OurServicesProps> = ({
         description={activeService.homepagePreview.description}
         backgroundImage={activeService.homepagePreview.backgroundImage}
         serviceCode={activeService.code}
+        title={activeService.title}
       />
     );
   };
@@ -243,7 +244,7 @@ const OurServices: React.FC<OurServicesProps> = ({
           </SectionTitle>
         </div>
 
-        <div className="text-center">
+        <div className="hidden text-center lg:block">
           <motion.h3
             className="mb-4 text-sm lg:text-lg"
             key={activeEl}
@@ -296,10 +297,10 @@ const OurServices: React.FC<OurServicesProps> = ({
                     animation.iconRotated
                       ? isDesktop
                         ? "rotate-180"
-                        : "rotate-90"
+                        : "-rotate-90"
                       : isDesktop
                         ? "rotate-0"
-                        : "-rotate-90"
+                        : "rotate-90"
                   }`}
                   style={{ opacity: getChevronOpacity(itemNumber) }}
                 >

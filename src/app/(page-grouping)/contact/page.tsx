@@ -173,7 +173,7 @@ const ContactPage = () => {
         {/* Center Panel - Info */}
         <div className="items-center shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:flex">
           <div className="xl:flex-1">
-            <h5 className="font-michroma text-brand-orange-500 my-4 hidden text-center text-sm xl:block">
+            <h5 className="font-michroma text-brand-orange-500 my-4 hidden text-center text-lg md:text-2xl xl:block">
               {contactInfo.mainTitle}
             </h5>
             <div className="bg-neutral-900 px-8 py-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-12px_18px_-12px_rgba(0,0,0,0.85),inset_0_12px_18px_-12px_rgba(0,0,0,0.9)] xl:h-[200px] xl:py-1">
@@ -268,7 +268,10 @@ const ContactPage = () => {
                             placeholder="Enter your full name"
                             onChange={(e) => {
                               // Only allow alphabets and spaces
-                              const value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+                              const value = e.target.value.replace(
+                                /[^a-zA-Z\s]/g,
+                                "",
+                              );
                               field.onChange(value);
                             }}
                           />
@@ -305,13 +308,13 @@ const ContactPage = () => {
                     <div className="flex items-center justify-between">
                       <FormLabel className="text-white">Phone Number</FormLabel>
                       {phoneValue && (
-                        <span 
-                          className={`text-xs font-mono ${
+                        <span
+                          className={`font-mono text-xs ${
                             (phoneValue?.length || 0) >= phoneMaxLength
-                              ? 'text-red-400' 
+                              ? "text-red-400"
                               : (phoneValue?.length || 0) > phoneMaxLength * 0.8
-                                ? 'text-yellow-400' 
-                                : 'text-gray-400'
+                                ? "text-yellow-400"
+                                : "text-gray-400"
                           }`}
                         >
                           {phoneValue?.length || 0}/{phoneMaxLength}
@@ -330,14 +333,30 @@ const ContactPage = () => {
                                   field.onChange(value);
                                   // Clear phone number when country changes to avoid validation issues
                                   const currentPhone = form.getValues("phone");
-                                  const newMaxLength = getPhoneLengthForCountry(value);
-                                  if (currentPhone && currentPhone.length > newMaxLength) {
-                                    form.setValue("phone", currentPhone.slice(0, newMaxLength));
+                                  const newMaxLength =
+                                    getPhoneLengthForCountry(value);
+                                  if (
+                                    currentPhone &&
+                                    currentPhone.length > newMaxLength
+                                  ) {
+                                    form.setValue(
+                                      "phone",
+                                      currentPhone.slice(0, newMaxLength),
+                                    );
                                   }
                                 }}
                                 value={field.value}
                               >
-                                <SelectTrigger className="border-neutral-900 bg-transparent text-white">
+                                <SelectTrigger
+                                  className="border-none text-white"
+                                  style={{
+                                    backgroundColor:
+                                      countryCodeValue &&
+                                      countryCodeValue !== "US"
+                                        ? "#f65009"
+                                        : "#4a4a4a",
+                                  }}
+                                >
                                   <SelectValue placeholder="Country" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -351,9 +370,6 @@ const ContactPage = () => {
                                         <div className="flex items-center gap-2">
                                           <span>{country.flag}</span>
                                           <span>{country.code}</span>
-                                          <span className="text-muted-foreground text-sm">
-                                            {country.country}
-                                          </span>
                                         </div>
                                       </SelectItem>
                                     ))}
@@ -379,7 +395,9 @@ const ContactPage = () => {
                                   maxLength={phoneMaxLength}
                                   onChange={(e) => {
                                     // Only allow numbers and respect country-specific length
-                                    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, phoneMaxLength);
+                                    const value = e.target.value
+                                      .replace(/[^0-9]/g, "")
+                                      .slice(0, phoneMaxLength);
                                     field.onChange(value);
                                   }}
                                 />
@@ -415,26 +433,15 @@ const ContactPage = () => {
                       const maxLength = 100;
                       const isNearLimit = currentLength > 80;
                       const isAtLimit = currentLength >= maxLength;
-                      
+
                       return (
                         <FormItem>
                           <div className="flex items-center justify-between">
                             <FormLabel className="text-white">
                               Company Name
                             </FormLabel>
-                            <span 
-                              className={`text-xs font-mono ${
-                                isAtLimit 
-                                  ? 'text-red-400' 
-                                  : isNearLimit 
-                                    ? 'text-yellow-400' 
-                                    : 'text-gray-400'
-                              }`}
-                            >
-                              {currentLength}/{maxLength}
-                            </span>
                           </div>
-                          <FormControl>
+                          <FormControl className="mb-0">
                             <Input
                               {...field}
                               placeholder="Enter your company name"
@@ -442,6 +449,17 @@ const ContactPage = () => {
                             />
                           </FormControl>
                           <FormMessage className="text-red-400" />
+                          <span
+                            className={`block text-right font-mono text-xs ${
+                              isAtLimit
+                                ? "text-red-400"
+                                : isNearLimit
+                                  ? "text-yellow-400"
+                                  : "text-gray-400"
+                            }`}
+                          >
+                            {maxLength - currentLength}
+                          </span>
                         </FormItem>
                       );
                     }}
@@ -461,7 +479,14 @@ const ContactPage = () => {
                             onValueChange={field.onChange}
                             value={field.value}
                           >
-                            <SelectTrigger className="border-neutral-900 bg-transparent text-white">
+                            <SelectTrigger
+                              className="border-none text-white"
+                              style={{
+                                backgroundColor: form.watch("service")
+                                  ? "#f65009"
+                                  : "#4a4a4a",
+                              }}
+                            >
                               <SelectValue placeholder="Choose a service" />
                             </SelectTrigger>
                             <SelectContent>
@@ -493,31 +518,34 @@ const ContactPage = () => {
                       const maxLength = 1000;
                       const isNearLimit = currentLength > 800;
                       const isAtLimit = currentLength >= maxLength;
-                      
+
                       return (
                         <FormItem>
                           <div className="flex items-center justify-between">
-                            <FormLabel className="text-white">Message</FormLabel>
-                            <span 
-                              className={`text-xs font-mono ${
-                                isAtLimit 
-                                  ? 'text-red-400' 
-                                  : isNearLimit 
-                                    ? 'text-yellow-400' 
-                                    : 'text-gray-400'
-                              }`}
-                            >
-                              {currentLength}/{maxLength}
-                            </span>
+                            <FormLabel className="text-white">
+                              Message
+                            </FormLabel>
                           </div>
-                          <FormControl>
+                          <FormControl className="mb-0">
                             <Textarea
                               {...field}
                               placeholder="Tell us more about your requirements..."
                               maxLength={maxLength}
+                              className="rounded-md"
                             />
                           </FormControl>
                           <FormMessage className="text-red-400" />
+                          <span
+                            className={`block text-right font-mono text-xs ${
+                              isAtLimit
+                                ? "text-red-400"
+                                : isNearLimit
+                                  ? "text-yellow-400"
+                                  : "text-gray-400"
+                            }`}
+                          >
+                            {maxLength - currentLength}
+                          </span>
                         </FormItem>
                       );
                     }}

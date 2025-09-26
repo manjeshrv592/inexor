@@ -8,11 +8,13 @@ import { Testimonial } from "../../../../lib/sanity";
 interface TestimonialContentProps {
   testimonial: Testimonial;
   currentIndex: number;
+  animationDirection: 'next' | 'prev';
 }
 
 const TestimonialContent: React.FC<TestimonialContentProps> = ({
   testimonial,
   currentIndex,
+  animationDirection,
 }) => {
   return (
     <>
@@ -30,9 +32,15 @@ const TestimonialContent: React.FC<TestimonialContentProps> = ({
         <motion.div
           className="flex-1"
           key={currentIndex}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ 
+            opacity: 0, 
+            y: animationDirection === 'next' ? 20 : -20
+          }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
+          exit={{ 
+            opacity: 0, 
+            y: animationDirection === 'next' ? -20 : 20
+          }}
           transition={{
             duration: 0.4,
             ease: [0.25, 0.46, 0.45, 0.94],

@@ -8,23 +8,25 @@ import { Testimonial } from "../../../../lib/sanity";
 interface TestimonialImageProps {
   testimonial: Testimonial;
   currentIndex: number;
+  animationDirection: "next" | "prev";
 }
 
 const TestimonialImage: React.FC<TestimonialImageProps> = ({
   testimonial,
   currentIndex,
+  animationDirection,
 }) => {
   // Check if image exists and has asset
   const imageUrl = testimonial.image?.asset?.url;
 
   return (
-    <div className="xxl:max-w-[400px] relative mx-auto w-full max-w-[360px] overflow-hidden">
-      <AnimatePresence>
+    <div className="xxl:max-w-[400px] relative mx-auto h-64 w-full max-w-[360px] overflow-hidden md:h-[360px]">
+      <AnimatePresence initial={false}>
         <motion.div
           key={currentIndex}
-          initial={{ x: "100%" }}
+          initial={{ x: animationDirection === "next" ? "100%" : "-100%" }}
           animate={{ x: 0 }}
-          exit={{ x: "-100%" }}
+          exit={{ x: animationDirection === "next" ? "-100%" : "100%" }}
           transition={{
             duration: 0.5,
             ease: [0.25, 0.46, 0.45, 0.94],
@@ -37,12 +39,12 @@ const TestimonialImage: React.FC<TestimonialImageProps> = ({
               alt={testimonial.name}
               width={400}
               height={400}
-              className="mx-auto size-32 md:size-full md:object-cover"
+              className="mx-auto h-64 w-full object-cover md:h-full"
               priority={currentIndex === 0}
             />
           ) : (
             // Fallback placeholder when no image is available
-            <div className="mx-auto flex size-32 items-center justify-center bg-neutral-800 md:h-full md:w-full">
+            <div className="mx-auto flex h-64 w-full items-center justify-center bg-neutral-800 md:h-full">
               <div className="text-center">
                 <div className="mb-2 text-4xl">👤</div>
                 <div className="text-xs text-neutral-400">No Image</div>

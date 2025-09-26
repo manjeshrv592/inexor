@@ -85,7 +85,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
   // Get button positioning classes based on position state
   const getButtonPositionClasses = () => {
     const baseClasses =
-      "bg-brand-orange-500 absolute flex size-10 cursor-pointer items-center justify-center rounded-full";
+      "bg-brand-orange-500 hover:bg-brand-orange-600 duration-300 absolute flex size-10 cursor-pointer items-center justify-center rounded-full";
 
     switch (buttonPosition) {
       case "top":
