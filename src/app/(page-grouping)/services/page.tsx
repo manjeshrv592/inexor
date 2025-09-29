@@ -139,12 +139,12 @@ const ServicesPage = () => {
                       />
                     </div>
                     <div className="relative z-10 flex size-full flex-col items-center justify-center gap-2 text-center">
-                      <h5 className="font-michroma text-[10px]">
+                      <h2 className="font-michroma text-lg">
                         {activeService.title.toUpperCase()}
-                      </h5>
-                      <h2 className="text-lg">
-                        {activeService.shortDescription}
                       </h2>
+                      <h5 className="max-w-[300px]">
+                        {activeService.shortDescription}
+                      </h5>
                     </div>
                   </div>
 
