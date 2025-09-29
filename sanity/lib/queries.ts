@@ -259,13 +259,12 @@ export const FOOTER_QUERY = groq`*[_type == "footer" && isActive == true][0] {
 export const PRIVACY_POLICY_PAGE_QUERY = groq`*[_type == "privacyPolicyPage" && isActive == true][0] {
   _id,
   seo,
-  pageTitle,
-  pageSubtitle,
   isActive
 }`;
 
 export const PRIVACY_POLICY_CONTENT_QUERY = groq`*[_type == "privacyPolicyContent" && isActive == true][0] {
   _id,
+  pageTitle,
   content,
   lastUpdated,
   isActive
@@ -274,13 +273,12 @@ export const PRIVACY_POLICY_CONTENT_QUERY = groq`*[_type == "privacyPolicyConten
 export const TERMS_CONDITIONS_PAGE_QUERY = groq`*[_type == "termsConditionsPage" && isActive == true][0] {
   _id,
   seo,
-  pageTitle,
-  pageSubtitle,
   isActive
 }`;
 
 export const TERMS_CONDITIONS_CONTENT_QUERY = groq`*[_type == "termsConditionsContent" && isActive == true][0] {
   _id,
+  pageTitle,
   content,
   lastUpdated,
   isActive

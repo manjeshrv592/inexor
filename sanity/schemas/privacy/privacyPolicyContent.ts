@@ -6,6 +6,14 @@ export default defineType({
   type: "document",
   fields: [
     defineField({
+      name: "pageTitle",
+      title: "Page Title",
+      type: "string",
+      description: "Main title displayed on the Privacy Policy page",
+      validation: (Rule) => Rule.required(),
+      initialValue: "Privacy Policy",
+    }),
+    defineField({
       name: "content",
       title: "Privacy Policy Content",
       type: "array",
@@ -69,14 +77,15 @@ export default defineType({
   ],
   preview: {
     select: {
+      pageTitle: "pageTitle",
       isActive: "isActive",
       lastUpdated: "lastUpdated",
     },
     prepare(selection) {
-      const { isActive, lastUpdated } = selection;
+      const { pageTitle, isActive, lastUpdated } = selection;
       const date = lastUpdated ? new Date(lastUpdated).toLocaleDateString() : "";
       return {
-        title: `${isActive ? "🟢" : "🔴"} Privacy Policy Content`,
+        title: `${isActive ? "🟢" : "🔴"} ${pageTitle || "Privacy Policy Content"}`,
         subtitle: `${date ? `Updated: ${date}` : "No update date"}`,
       };
     },

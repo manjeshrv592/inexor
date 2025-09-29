@@ -122,7 +122,7 @@ export const MapInteractionHandler = ({
             ? `<div class="${styles.tooltipDesc}">
                 <div class="${styles.tooltipDescRow}"><span class="${styles.tooltipDescLabel}">Tax:</span> <span class="${styles.tooltipDescValue}">${serviceInfo.serviceData.tax}</span></div>
                 <div class="${styles.tooltipDescRow}"><span class="${styles.tooltipDescLabel}">Duties:</span> <span class="${styles.tooltipDescValue}">${serviceInfo.serviceData.duties}</span></div>
-                <div class="${styles.tooltipDescRow}"><span class="${styles.tooltipDescLabel}">Lead time:</span> <span class="${styles.tooltipDescValue}">${serviceInfo.serviceData.leadTime}</span></div>
+                <div class="${styles.tooltipDescRow}"><span class="${styles.tooltipDescLabel}">ELT:</span> <span class="${styles.tooltipDescValue}">${serviceInfo.serviceData.leadTime}</span></div>
               </div>`
             : `<div class="${styles.mapNa}">Service Not Available</div>`
         }

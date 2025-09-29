@@ -463,13 +463,12 @@ export interface SEO {
 export interface PrivacyPolicyPage {
   _id: string;
   seo: SEO;
-  pageTitle: string;
-  pageSubtitle?: string;
   isActive: boolean;
 }
 
 export interface PrivacyPolicyContent {
   _id: string;
+  pageTitle: string;
   content: PortableTextBlock[];
   lastUpdated: string;
   isActive: boolean;
@@ -478,13 +477,12 @@ export interface PrivacyPolicyContent {
 export interface TermsConditionsPage {
   _id: string;
   seo: SEO;
-  pageTitle: string;
-  pageSubtitle?: string;
   isActive: boolean;
 }
 
 export interface TermsConditionsContent {
   _id: string;
+  pageTitle: string;
   content: PortableTextBlock[];
   lastUpdated: string;
   isActive: boolean;

@@ -6,6 +6,14 @@ export default defineType({
   type: "document",
   fields: [
     defineField({
+      name: "pageTitle",
+      title: "Page Title",
+      type: "string",
+      description: "Main title displayed on the Terms & Conditions page",
+      validation: (Rule) => Rule.required(),
+      initialValue: "Terms & Conditions",
+    }),
+    defineField({
       name: "content",
       title: "Terms & Conditions Content",
       type: "array",
@@ -69,14 +77,15 @@ export default defineType({
   ],
   preview: {
     select: {
+      pageTitle: "pageTitle",
       isActive: "isActive",
       lastUpdated: "lastUpdated",
     },
     prepare(selection) {
-      const { isActive, lastUpdated } = selection;
+      const { pageTitle, isActive, lastUpdated } = selection;
       const date = lastUpdated ? new Date(lastUpdated).toLocaleDateString() : "";
       return {
-        title: `${isActive ? "🟢" : "🔴"} Terms & Conditions Content`,
+        title: `${isActive ? "🟢" : "🔴"} ${pageTitle || "Terms & Conditions Content"}`,
         subtitle: `${date ? `Updated: ${date}` : "No update date"}`,
       };
     },

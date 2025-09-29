@@ -1,13 +1,10 @@
 import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import React from "react";
-import { getPrivacyPolicyPage, getPrivacyPolicyContent } from "@/lib/sanity";
+import { getPrivacyPolicyContent } from "@/lib/sanity";
 
 const PrivacyPolicyPage = async () => {
-  const [privacyPolicyPage, privacyPolicyContent] = await Promise.all([
-    getPrivacyPolicyPage(),
-    getPrivacyPolicyContent(),
-  ]);
+  const privacyPolicyContent = await getPrivacyPolicyContent();
 
   return (
     <div className="size-full bg-[#2f2f2f] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:grid">
@@ -15,13 +12,8 @@ const PrivacyPolicyPage = async () => {
         <AutoScrollContainer>
           <div className="h-full px-8 py-12 xl:px-12">
             <h1 className="font-michroma text-brand-orange-500 mb-4 text-center text-xl">
-              {privacyPolicyPage?.pageTitle || "Privacy Policy"}
+              {privacyPolicyContent?.pageTitle || "Privacy Policy"}
             </h1>
-            {privacyPolicyPage?.pageSubtitle && (
-              <p className="text-lg text-gray-300">
-                {privacyPolicyPage.pageSubtitle}
-              </p>
-            )}
             {privacyPolicyContent?.lastUpdated && (
               <p className="mt-4 text-xs text-gray-400">
                 Last updated:{" "}

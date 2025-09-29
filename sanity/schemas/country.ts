@@ -114,15 +114,40 @@ export default defineType({
     }),
     defineField({
       name: "leadTime",
-      title: "Lead Time",
-      type: "string",
-      description: "Lead time (e.g., 12H, 2-3 days)",
+      title: "ELT (Estimated Lead Time)",
+      type: "object",
+      description: "Estimated lead time with duration and unit",
       hidden: ({ document }) => !document?.isActive,
+      fields: [
+        defineField({
+          name: "duration",
+          title: "Duration",
+          type: "number",
+          description: "Enter the duration number",
+          validation: (Rule) => Rule.required().positive().integer(),
+        }),
+        defineField({
+          name: "unit",
+          title: "Unit",
+          type: "string",
+          description: "Select the time unit",
+          options: {
+            list: [
+              { title: "Hours", value: "hours" },
+              { title: "Days", value: "days" },
+              { title: "Weeks", value: "weeks" },
+            ],
+            layout: "radio",
+          },
+          validation: (Rule) => Rule.required(),
+          initialValue: "days",
+        }),
+      ],
       validation: (Rule) =>
         Rule.custom((value, context) => {
           const isActive = context.document?.isActive;
-          if (isActive && !value) {
-            return "Lead time is required when service is active";
+          if (isActive && (!value || !value.duration || !value.unit)) {
+            return "ELT duration and unit are required when service is active";
           }
           return true;
         }),
@@ -139,12 +164,17 @@ export default defineType({
       leadTime: "leadTime",
     },
     prepare(selection) {
-      const { title, code, flag, isActive, tax, duties, leadTime } = selection;
+      const { title, code, isActive, tax, duties, leadTime } = selection;
+      
+      // Format leadTime display with uppercase unit
+      const leadTimeDisplay = leadTime && leadTime.duration && leadTime.unit
+        ? `${leadTime.duration} ${leadTime.unit.charAt(0).toUpperCase() + leadTime.unit.slice(1)}`
+        : "N/A";
 
       return {
         title: `${isActive ? "🟠" : "⚪"} ${title} (${code})`,
         subtitle: isActive
-          ? `Tax: ${tax || "N/A"} | Duties: ${duties || "N/A"} | Lead: ${leadTime || "N/A"}`
+          ? `Tax: ${tax || "N/A"} | Duties: ${duties || "N/A"} | ELT: ${leadTimeDisplay}`
           : "Service not available",
       };
     },

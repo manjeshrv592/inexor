@@ -8,7 +8,10 @@ export interface SanityCountry {
   isActive: boolean;
   tax?: string;
   duties?: string;
-  leadTime?: string;
+  leadTime?: {
+    duration: number;
+    unit: string;
+  };
   coordinates: {
     lat: number;
     lng: number;
@@ -146,6 +149,11 @@ export async function getAllCountries(): Promise<SanityCountry[]> {
 
 // Convert Sanity country to ServiceLocation format (for backward compatibility)
 export function sanityCountryToServiceLocation(country: SanityCountry) {
+  // Format leadTime from object to string with uppercase unit
+  const leadTimeDisplay = country.leadTime && country.leadTime.duration && country.leadTime.unit
+    ? `${country.leadTime.duration} ${country.leadTime.unit.charAt(0).toUpperCase() + country.leadTime.unit.slice(1)}`
+    : "N/A";
+
   return {
     country: country.name,
     coordinates: [country.coordinates.lat, country.coordinates.lng] as [
@@ -156,7 +164,7 @@ export function sanityCountryToServiceLocation(country: SanityCountry) {
     serviceData: {
       tax: country.tax || "N/A",
       duties: country.duties || "N/A",
-      leadTime: country.leadTime || "N/A",
+      leadTime: leadTimeDisplay,
     },
   };
 }

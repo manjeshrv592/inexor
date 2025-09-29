@@ -12,21 +12,6 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "pageTitle",
-      title: "Page Title",
-      type: "string",
-      description: "Main title displayed on the Terms & Conditions page",
-      validation: (Rule) => Rule.required(),
-      initialValue: "Terms & Conditions",
-    }),
-    defineField({
-      name: "pageSubtitle",
-      title: "Page Subtitle",
-      type: "string",
-      description: "Subtitle displayed below the main title",
-      initialValue: "Please read our terms and conditions carefully",
-    }),
-    defineField({
       name: "isActive",
       title: "Is Active",
       type: "boolean",
@@ -36,15 +21,14 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: "pageTitle",
-      subtitle: "seo.metaTitle",
+      metaTitle: "seo.metaTitle",
       isActive: "isActive",
     },
     prepare(selection) {
-      const { title, subtitle, isActive } = selection;
+      const { metaTitle, isActive } = selection;
       return {
-        title: `${isActive ? "🟢" : "🔴"} ${title || "🔍 SEO Settings"}`,
-        subtitle: subtitle || "SEO settings configuration",
+        title: `${isActive ? "🟢" : "🔴"} Terms & Conditions SEO`,
+        subtitle: metaTitle || "SEO settings configuration",
       };
     },
   },
