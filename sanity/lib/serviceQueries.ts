@@ -165,9 +165,6 @@ export const SERVICES_PAGE_SETTINGS_QUERY = `*[_type == "servicesPageSettings" &
     },
     alt
   },
-  overlayOpacity,
   applyGrayscale,
-  isActive,
-  lastUpdated,
-  notes
+  isActive
 }`;

@@ -142,6 +142,12 @@ export default defineType({
             },
           ],
         },
+        {
+          type: "imageTextBlock",
+        },
+        {
+          type: "processStepsBlock",
+        },
       ],
       validation: (Rule) => Rule.required(),
     }),

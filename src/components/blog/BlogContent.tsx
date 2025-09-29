@@ -1,6 +1,6 @@
 "use client";
 
-import { RichTextRenderer } from "@/components/blog";
+import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
@@ -139,7 +139,7 @@ const BlogContent: React.FC<BlogContentProps> = ({
             {/* Blog Content */}
             <div className="px-12">
               {blogPost.content && (
-                <RichTextRenderer content={blogPost.content} />
+                <PortableTextRenderer content={blogPost.content} />
               )}
             </div>
 

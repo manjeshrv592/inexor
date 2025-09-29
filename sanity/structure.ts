@@ -184,7 +184,6 @@ export const structure = (S: StructureBuilder) =>
                     .title("Services Page Settings")
                     .defaultOrdering([
                       { field: "isActive", direction: "desc" },
-                      { field: "lastUpdated", direction: "desc" },
                     ]),
                 ),
               S.listItem()

@@ -1,18 +1,15 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { DynamicShape } from "@/components/ui/DynamicShape";
 import Image from "next/image";
 import {
   getBlogPostBySlug,
   getBlogPosts,
-  type BlogPost,
 } from "@/lib/sanity/blog";
 import { getResourcesPage } from "@/lib/sanity";
-import { RichTextRenderer } from "@/components/blog";
-import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
+import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { truncateText } from "@/lib/utils/textUtils";
+import { BlogListClient } from "@/components/blog";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -73,107 +70,11 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
         </div>
       </div>
 
-      {/* Middle Panel - Blog List */}
-      <div className="p-5 lg:hidden lg:h-full lg:flex-col lg:p-1 lg:pt-12">
-        <h3 className="font-michroma mb-5 hidden text-center text-xs tracking-[1px] lg:block">
-          {resourcesPageData?.blogSectionTitle || "LATEST BLOGS"}
-        </h3>
-
-        {/* Mobile list */}
-        <div
-          className="flex flex-nowrap gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden"
-          style={{
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-          }}
-        >
-          {allBlogPosts.map((post: BlogPost, index: number) => (
-            <div key={post._id} className="flex-shrink-0">
-              <DynamicShape
-                fill={index === currentIndex ? "#2a2a2a" : "#404040"}
-                stroke="none"
-                strokeWidth={0}
-                className="flex flex-col items-center justify-center"
-              >
-                <Link
-                  href={`/resources/${post.slug.current}`}
-                  className={`font-michroma hover:text-brand-orange-500 block text-[10px] tracking-[1px] ${
-                    index === currentIndex ? "text-brand-orange-500" : ""
-                  }`}
-                >
-                  {truncateText(post.title, 15)}
-                </Link>
-              </DynamicShape>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Middle Panel - Blog List - Desktop */}
-      <div className="hidden lg:flex lg:flex-1 lg:flex-col lg:justify-center lg:p-1">
-        <h3 className="font-michroma mb-5 hidden text-center text-xs tracking-[1px] lg:block">
-          {resourcesPageData?.blogSectionTitle || "LATEST BLOGS"}
-        </h3>
-        <DynamicShape
-          fill="transparent"
-          stroke="#1a1a1a"
-          strokeWidth={1}
-          padding="p-2 pr-1 py-4"
-          className=""
-        >
-          <div className="h-[calc(100vh-230px)] overflow-y-auto pr-1">
-            <div className="space-y-2">
-              {allBlogPosts.map((post: BlogPost, index: number) => (
-                <DynamicShape
-                  key={post._id}
-                  fill={index === currentIndex ? "#2a2a2a" : "#404040"}
-                  stroke="none"
-                  strokeWidth={0}
-                  padding="p-0"
-                >
-                  <Link
-                    href={`/resources/${post.slug.current}`}
-                    className={`flex cursor-pointer font-medium text-white transition-opacity hover:opacity-90 ${
-                      index === currentIndex ? "opacity-100" : "opacity-70"
-                    }`}
-                  >
-                    <div className="xxl:h-[64px] xxl:w-[80px] relative h-[48px] w-[64px] flex-shrink-0">
-                      <Image
-                        src={
-                          post.featuredImage?.asset.url || "/img/left-image.jpg"
-                        }
-                        alt={post.featuredImage?.alt || post.title}
-                        fill
-                        className="object-cover grayscale"
-                        style={{
-                          clipPath:
-                            "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))",
-                        }}
-                        sizes="(min-width: 1536px) 80px, 64px"
-                      />
-                    </div>
-                    <div className="flex w-full flex-col p-2">
-                      <div className="font-michroma xxl:text-[7px] w-full pr-2 text-right text-[5px] tracking-[1px]">
-                        {new Date(post.publishedAt).toLocaleDateString(
-                          "en-US",
-                          {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          },
-                        )}
-                      </div>
-                      <div className="font-michroma xxl:text-[10px] line-clamp-2 text-left text-[8px] leading-tight tracking-[1px]">
-                        {post.title}
-                      </div>
-                    </div>
-                  </Link>
-                </DynamicShape>
-              ))}
-            </div>
-          </div>
-        </DynamicShape>
-      </div>
+      <BlogListClient 
+        allBlogPosts={allBlogPosts}
+        currentSlug={slug}
+        blogSectionTitle={resourcesPageData?.blogSectionTitle || "LATEST BLOGS"}
+      />
 
       {/* Right Panel - Blog Content */}
       <div className="h-[calc(100vh-290px)] overflow-y-auto bg-neutral-900 lg:h-full">
@@ -243,7 +144,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
           {/* Blog Content */}
           <div className="px-2">
             {blogPost.content && (
-              <RichTextRenderer content={blogPost.content} />
+              <PortableTextRenderer content={blogPost.content} />
             )}
           </div>
 

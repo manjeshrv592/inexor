@@ -5,6 +5,7 @@ import {
   SERVICE_BY_SLUG_QUERY,
   SERVICE_BY_CODE_QUERY,
   SERVICE_NAVIGATION_QUERY,
+  SERVICES_PAGE_SETTINGS_QUERY,
 } from "../../../sanity/lib/serviceQueries";
 
 // Types
@@ -74,11 +75,8 @@ export interface ServiceNavigation {
 export interface ServicesPageSettings {
   _id: string;
   leftPanelImage?: ServiceImage;
-  overlayOpacity: number;
   applyGrayscale: boolean;
   isActive: boolean;
-  lastUpdated: string;
-  notes?: string;
 }
 
 // Functions
@@ -109,5 +107,13 @@ export async function getServiceNavigation(
     SERVICE_NAVIGATION_QUERY,
     { currentOrder },
     { next: { tags: ["services"] } },
+  );
+}
+
+export async function getServicesPageSettings(): Promise<ServicesPageSettings | null> {
+  return client.fetch(
+    SERVICES_PAGE_SETTINGS_QUERY,
+    {},
+    { next: { tags: ["servicesPageSettings"] } },
   );
 }

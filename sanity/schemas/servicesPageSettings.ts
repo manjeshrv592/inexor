@@ -24,14 +24,6 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "overlayOpacity",
-      title: "Overlay Opacity",
-      type: "number",
-      description: "Opacity of the dark overlay on the left panel image (0-1)",
-      initialValue: 0.8,
-      validation: (Rule) => Rule.min(0).max(1),
-    }),
-    defineField({
       name: "applyGrayscale",
       title: "Apply Grayscale Filter",
       type: "boolean",
@@ -45,34 +37,19 @@ export default defineType({
       description: "Only one Services Page Settings should be active at a time",
       initialValue: true,
     }),
-    defineField({
-      name: "lastUpdated",
-      title: "Last Updated",
-      type: "datetime",
-      readOnly: true,
-      initialValue: () => new Date().toISOString(),
-    }),
-    defineField({
-      name: "notes",
-      title: "Admin Notes",
-      type: "text",
-      description: "Internal notes for administrators",
-    }),
   ],
   preview: {
     select: {
       title: "leftPanelImage.alt",
       media: "leftPanelImage",
-      isActive: "isActive",
-      overlayOpacity: "overlayOpacity",
       applyGrayscale: "applyGrayscale",
+      isActive: "isActive",
     },
     prepare(selection) {
-      const { title, media, isActive, overlayOpacity, applyGrayscale } = selection;
+      const { title, media, applyGrayscale, isActive } = selection;
       const status = isActive ? "🟢" : "🔴";
       const filters = [];
       if (applyGrayscale) filters.push("Grayscale");
-      if (overlayOpacity > 0) filters.push(`${Math.round(overlayOpacity * 100)}% Overlay`);
       
       return {
         title: `${status} Services Page Settings`,
