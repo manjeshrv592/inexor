@@ -126,7 +126,7 @@ const FAQPage = () => {
             fill
             className="object-cover grayscale"
           />
-          <div className="absolute inset-0 z-10 bg-black/60"></div>
+          {/* <div className="absolute inset-0 z-10 bg-black/60"></div> */}
         </div>
 
         {/* Mobile Categories - Horizontal Scroll */}

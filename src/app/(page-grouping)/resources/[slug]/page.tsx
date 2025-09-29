@@ -2,10 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import {
-  getBlogPostBySlug,
-  getBlogPosts,
-} from "@/lib/sanity/blog";
+import { getBlogPostBySlug, getBlogPosts } from "@/lib/sanity/blog";
 import { getResourcesPage } from "@/lib/sanity";
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -66,11 +63,11 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
             fill
             className="object-cover grayscale"
           />
-          <div className="absolute inset-0 bg-black/80">&nbsp;</div>
+          {/* <div className="absolute inset-0 bg-black/80">&nbsp;</div> */}
         </div>
       </div>
 
-      <BlogListClient 
+      <BlogListClient
         allBlogPosts={allBlogPosts}
         currentSlug={slug}
         blogSectionTitle={resourcesPageData?.blogSectionTitle || "LATEST BLOGS"}

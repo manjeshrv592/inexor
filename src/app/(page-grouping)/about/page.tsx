@@ -18,7 +18,7 @@ const AboutPage = async () => {
               aboutPage?.sidebarImage?.isGrayscale !== false ? "grayscale" : ""
             }`}
           />
-          <div className="absolute inset-0 z-10 bg-black/20"></div>
+          {/* <div className="absolute inset-0 z-10 bg-black/80"></div> */}
         </div>
       </div>
       <div className="xxl:h-[calc(100vh-128px)] col-span-2 h-[calc(100vh-118.14px)] pb-56 lg:h-[calc(100vh-112px)] lg:pb-0">

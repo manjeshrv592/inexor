@@ -100,7 +100,7 @@ const ServicesPage = () => {
               servicesPageSettings?.applyGrayscale !== false ? "grayscale" : ""
             }`}
           />
-          <div className="absolute inset-0 bg-black/80">&nbsp;</div>
+          {/* <div className="absolute inset-0 bg-black/80">&nbsp;</div> */}
         </div>
         {/* Mobile list */}
         <div
@@ -137,7 +137,7 @@ const ServicesPage = () => {
               servicesPageSettings?.applyGrayscale !== false ? "grayscale" : ""
             }`}
           />
-          <div className="absolute inset-0 bg-black/80">&nbsp;</div>
+          {/* <div className="absolute inset-0 bg-black/80">&nbsp;</div> */}
         </div>
         <div className="relative z-10 h-[calc(100vh-230px)] overflow-y-auto pr-1">
           <div className="space-y-4">
