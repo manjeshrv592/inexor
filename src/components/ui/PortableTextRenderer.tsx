@@ -1,16 +1,150 @@
 import React from "react";
 import { PortableText, PortableTextComponents } from "next-sanity";
 import { PortableTextBlock } from "@portabletext/types";
+import Image from "next/image";
+import ProcessSteps from "@/components/ui/ProcessSteps";
+import { urlForImageWithParams } from "../../../sanity/lib/image";
 
 interface PortableTextRendererProps {
   content: PortableTextBlock[];
   className?: string;
 }
 
+// Define interfaces for custom blocks
+interface ProcessStep {
+  stepNumber: number;
+  title: string;
+  description: string;
+}
+
+interface ProcessStepsBlock {
+  _type: "processStepsBlock";
+  title: string;
+  description?: string;
+  steps: ProcessStep[];
+}
+
+interface AboutImage {
+  asset: {
+    _ref: string;
+    metadata?: {
+      dimensions: {
+        width: number;
+        height: number;
+      };
+    };
+  };
+  alt?: string;
+  caption?: string;
+  isGrayscale?: boolean;
+}
+
+interface ImageTextBlock {
+  _type: "imageTextBlock";
+  image: AboutImage;
+  text: PortableTextBlock[];
+  layout: "imageLeft" | "textLeft";
+  verticalAlignment: "top" | "center" | "bottom";
+}
+
 const components: PortableTextComponents = {
+  types: {
+    image: ({ value }: { value: AboutImage }) => {
+      const imageUrl = urlForImageWithParams(value, { width: 800, height: 300, quality: 85, format: 'webp' }).url();
+      const shouldApplyGrayscale = value.isGrayscale !== false;
+      const grayscaleClass = shouldApplyGrayscale ? "grayscale" : "";
+
+      return (
+        <div className="mx-auto my-6 max-w-[800px]">
+          <div className="relative w-full" style={{ aspectRatio: '16/6' }}>
+            <Image
+              src={imageUrl}
+              alt={value.alt || "About image"}
+              fill
+              className={`object-cover ${grayscaleClass}`}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 800px"
+            />
+          </div>
+          {value.caption && (
+            <p className="mt-2 text-center text-sm text-gray-400 italic">
+              {value.caption}
+            </p>
+          )}
+        </div>
+      );
+    },
+    imageTextBlock: ({ value }: { value: ImageTextBlock }) => {
+      const imageUrl = urlForImageWithParams(value.image, { width: 600, height: 400, quality: 85, format: 'webp' }).url();
+      const shouldApplyGrayscale = value.image.isGrayscale !== false;
+      const grayscaleClass = shouldApplyGrayscale ? "grayscale" : "";
+
+      const alignmentClasses = {
+        top: "items-start",
+        center: "items-center",
+        bottom: "items-end",
+      };
+
+      const ImageComponent = (
+        <div className="relative mx-auto max-w-[600px]">
+          <Image
+            src={imageUrl}
+            alt={value.image.alt || "About image"}
+            width={600}
+            height={400}
+            className={`h-auto w-full ${grayscaleClass}`}
+          />
+          {value.image.caption && (
+            <p className="mt-2 text-center text-sm text-gray-400 italic">
+              {value.image.caption}
+            </p>
+          )}
+        </div>
+      );
+
+      const TextComponent = (
+        <div className="max-w-none">
+          <PortableText value={value.text} components={components} />
+        </div>
+      );
+
+      return (
+        <div
+          className={`my-8 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:gap-8 ${alignmentClasses[value.verticalAlignment]}`}
+        >
+          {value.layout === "imageLeft" ? (
+            <>
+              {ImageComponent}
+              {TextComponent}
+            </>
+          ) : (
+            <>
+              {TextComponent}
+              {ImageComponent}
+            </>
+          )}
+        </div>
+      );
+    },
+    processStepsBlock: ({ value }: { value: ProcessStepsBlock }) => {
+      return (
+        <ProcessSteps
+          title={value.title}
+          description={value.description}
+          steps={value.steps}
+          className="my-8"
+        />
+      );
+    },
+  },
   block: {
     normal: ({ children }) => (
       <p className="mb-2 text-sm text-white">{children}</p>
+    ),
+    h1: ({ children }) => (
+      <h1 className="mb-4 text-2xl font-bold text-white">{children}</h1>
+    ),
+    h2: ({ children }) => (
+      <h2 className="mb-4 text-xl font-bold text-white">{children}</h2>
     ),
     h3: ({ children }) => (
       <h3 className="mb-4 text-lg font-semibold text-white">{children}</h3>
@@ -20,6 +154,14 @@ const components: PortableTextComponents = {
     ),
     h5: ({ children }) => (
       <h5 className="mb-2 text-sm font-semibold text-white">{children}</h5>
+    ),
+    h6: ({ children }) => (
+      <h6 className="mb-2 text-sm font-semibold text-white">{children}</h6>
+    ),
+    blockquote: ({ children }) => (
+      <blockquote className="border-brand-orange-500 my-6 border-l-4 pl-4 text-gray-300 italic">
+        {children}
+      </blockquote>
     ),
   },
   list: {
@@ -39,6 +181,21 @@ const components: PortableTextComponents = {
       <strong className="font-semibold">{children}</strong>
     ),
     em: ({ children }) => <em className="italic">{children}</em>,
+    code: ({ children }) => (
+      <code className="rounded bg-gray-800 px-2 py-1 font-mono text-sm">
+        {children}
+      </code>
+    ),
+    link: ({ value, children }) => (
+      <a
+        href={value.href}
+        target={value.blank ? "_blank" : "_self"}
+        rel={value.blank ? "noopener noreferrer" : undefined}
+        className="text-brand-orange-500 hover:underline"
+      >
+        {children}
+      </a>
+    ),
     brandOrange: ({ children }) => (
       <span className="text-brand-orange-500">{children}</span>
     ),

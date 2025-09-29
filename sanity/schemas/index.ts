@@ -15,9 +15,10 @@ import servicesSection from "./servicesSection";
 import service from "./service";
 import faqCategory from "./faqCategory";
 import faqItem from "./faqItem";
-import processStep from "./processStep";
-import processSection from "./processSection";
-import contentSection from "./contentSection";
+// Legacy schemas - removed after consolidation into aboutPage
+// import processStep from "./processStep";
+// import processSection from "./processSection";
+// import contentSection from "./contentSection";
 import keyValuePillarsSection from "./keyValuePillarsSection";
 import keyValuePillarItem from "./keyValuePillarItem";
 import footer from "./footer";
@@ -30,6 +31,7 @@ import seo from "./seo";
 import homeSeo from "./homeSeo";
 import faqPage from "./faqPage";
 import aboutPage from "./aboutPage";
+import aboutPageSeo from "./aboutPageSeo";
 import servicesPage from "./servicesPage";
 import servicesPageSettings from "./servicesPageSettings";
 import resourcesPage from "./resourcesPage";
@@ -38,6 +40,7 @@ import contactPage from "./contactPage";
 import contactInfo from "./contactInfo";
 import blogPost from "./blogPost";
 import imageTextBlock from "./imageTextBlock";
+import processStepsBlock from "./processStepsBlock";
 import { privacySchemas } from "./privacy";
 import { termsSchemas } from "./terms";
 import { navigationSchemas } from "./navigation";
@@ -61,9 +64,10 @@ export const schemaTypes = [
   service,
   faqCategory,
   faqItem,
-  processStep,
-  processSection,
-  contentSection,
+  // Legacy schemas removed - consolidated into aboutPage
+  // processStep,
+  // processSection,
+  // contentSection,
   keyValuePillarsSection,
   keyValuePillarItem,
   footer,
@@ -76,6 +80,7 @@ export const schemaTypes = [
   homeSeo,
   faqPage,
   aboutPage,
+  aboutPageSeo,
   servicesPage,
   servicesPageSettings,
   resourcesPage,
@@ -84,6 +89,7 @@ export const schemaTypes = [
   contactInfo,
   blogPost,
   imageTextBlock,
+  processStepsBlock,
   ...privacySchemas,
   ...termsSchemas,
   ...navigationSchemas,

@@ -14,11 +14,19 @@ const Header = () => {
     setIsMobileNavOpen(!isMobileNavOpen);
   };
 
+  const closeMobileNav = () => {
+    setIsMobileNavOpen(false);
+  };
+
   return (
     <header className="fixed top-0 left-0 z-200 flex w-full flex-col lg:h-screen lg:w-28">
       <MobileToggle isOpen={isMobileNavOpen} onToggle={toggleMobileNav} />
       <Logo />
-      <Navigation isOpen={isMobileNavOpen} activePagePath={pathname} />
+      <Navigation 
+        isOpen={isMobileNavOpen} 
+        activePagePath={pathname} 
+        onNavItemClick={closeMobileNav}
+      />
     </header>
   );
 };

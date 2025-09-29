@@ -22,6 +22,12 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
   const components: PortableTextComponents = {
     types: {
       image: ({ value }: { value: BlogImage }) => {
+        // Safety check: Skip rendering if image asset is missing
+        if (!value?.asset) {
+          console.warn('Image block: Missing image asset, skipping render');
+          return null;
+        }
+
         // Use Sanity image builder with 16:6 aspect ratio (800x300)
         const imageUrl = urlForBlogImage(value, 800, 300).url();
 
@@ -56,6 +62,12 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
         );
       },
       imageTextBlock: ({ value }: { value: ImageTextBlock }) => {
+        // Safety check: Skip rendering if image asset is missing
+        if (!value.image?.asset) {
+          console.warn('ImageTextBlock: Missing image asset, skipping render');
+          return null;
+        }
+
         const imageUrl = urlForBlogImage(value.image, 600, 400).url();
         const dimensions = value.image.asset.metadata?.dimensions || {
           width: 600,

@@ -149,30 +149,17 @@ export const structure = (S: StructureBuilder) =>
             .items([
               S.listItem()
                 .title("🔍 SEO Settings")
-                .child(S.documentTypeList("aboutPage").title("About Us Page")),
+                .child(S.documentTypeList("aboutPageSeo").title("About Us Page SEO")),
               S.divider(),
               S.listItem()
-                .title("Process Section Settings")
+                .title("📄 Page Content")
                 .child(
-                  S.documentTypeList("processSection").title(
-                    "Process Section Settings",
-                  ),
-                ),
-              S.listItem()
-                .title("Process Steps")
-                .child(
-                  S.documentTypeList("processStep")
-                    .title("Process Steps")
+                  S.documentTypeList("aboutPage")
+                    .title("About Us Page")
                     .defaultOrdering([
-                      { field: "stepNumber", direction: "asc" },
-                    ]),
-                ),
-              S.listItem()
-                .title("Content Sections")
-                .child(
-                  S.documentTypeList("contentSection").title(
-                    "Content Sections",
-                  ),
+                      { field: "isActive", direction: "desc" },
+                      { field: "_updatedAt", direction: "desc" },
+                    ])
                 ),
             ]),
         ),

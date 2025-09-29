@@ -1,46 +1,37 @@
 import { client } from "../../../sanity/lib/client";
-import {
-  aboutPageQuery,
-  processSectionQuery,
-  processStepsQuery,
-  contentSectionsQuery,
-} from "../../sanity/queries/aboutPage";
-import { AboutPageData, ProcessStep, ContentSection } from "@/types/aboutPage";
+import { aboutPageQuery } from "../../sanity/queries/aboutPage";
+import { PortableTextBlock } from "@portabletext/types";
 
-export interface ProcessSectionData {
-  title: string;
-  description?: string;
-  buttonText?: string;
+export interface SidebarImage {
+  asset: {
+    url: string;
+  };
+  alt?: string;
+  isGrayscale?: boolean;
+}
+
+export interface AboutPageData {
+  _id: string;
+  pageTitle: string;
+  pageSubtitle?: string;
+  sidebarImage?: SidebarImage;
+  content: PortableTextBlock[];
+  isActive: boolean;
 }
 
 export async function getAboutPageData(): Promise<{
   aboutPage: AboutPageData | null;
-  processSection: ProcessSectionData | null;
-  processSteps: ProcessStep[];
-  contentSections: ContentSection[];
 }> {
   try {
-    const [aboutPage, processSection, processSteps, contentSections] =
-      await Promise.all([
-        client.fetch(aboutPageQuery),
-        client.fetch(processSectionQuery),
-        client.fetch(processStepsQuery),
-        client.fetch(contentSectionsQuery),
-      ]);
+    const aboutPage = await client.fetch(aboutPageQuery);
 
     return {
       aboutPage,
-      processSection,
-      processSteps: processSteps || [],
-      contentSections: contentSections || [],
     };
   } catch (error) {
     console.error("Error fetching About page data:", error);
     return {
       aboutPage: null,
-      processSection: null,
-      processSteps: [],
-      contentSections: [],
     };
   }
 }

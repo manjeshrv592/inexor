@@ -1,22 +1,22 @@
 import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
-import ProcessSteps from "@/components/ui/ProcessSteps";
-import ContentSection from "@/components/ui/ContentSection";
+import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import Image from "next/image";
 import React from "react";
 import { getAboutPageData } from "@/lib/sanity/aboutPage";
 
 const AboutPage = async () => {
-  const { aboutPage, processSection, processSteps, contentSections } =
-    await getAboutPageData();
+  const { aboutPage } = await getAboutPageData();
   return (
     <div className="size-full grid-cols-[2fr_3fr_2fr] bg-[#2f2f2f] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] lg:grid">
       <div className="relative h-44 lg:h-full">
-        <div className="absolute inset-0 hidden size-full lg:block">
+        <div className="absolute inset-0 size-full">
           <Image
-            src="/img/about-us.jpg"
-            alt="Nature image"
+            src={aboutPage?.sidebarImage?.asset?.url || "/img/about-us.jpg"}
+            alt={aboutPage?.sidebarImage?.alt || "About Us"}
             fill
-            className="object-cover grayscale"
+            className={`object-cover ${
+              aboutPage?.sidebarImage?.isGrayscale !== false ? "grayscale" : ""
+            }`}
           />
           <div className="absolute inset-0 z-10 bg-black/20"></div>
         </div>
@@ -34,35 +34,13 @@ const AboutPage = async () => {
               </p>
             )}
 
-            {/* Content Sections */}
-            {contentSections.map((section, index) => (
-              <ContentSection
-                key={index}
-                sectionTitle={section.sectionTitle}
-                titleStyle={section.titleStyle}
-                content={section.content || []}
-              />
-            ))}
-
-            {/* Process Section */}
-            {processSteps.length > 0 && (
-              <ProcessSteps
-                title={
-                  processSection?.title ||
-                  "We follow a clear process to help you out."
-                }
-                description={
-                  processSection?.description ||
-                  "With a specialized focus on global trade compliance, we combine deep industry knowledge with a client-first approach to deliver seamless."
-                }
-                steps={processSteps}
-              />
+            {/* Rich Content */}
+            {aboutPage?.content && (
+              <PortableTextRenderer content={aboutPage.content} />
             )}
 
             {/* Fallback content if no Sanity data */}
-            {!aboutPage &&
-              contentSections.length === 0 &&
-              processSteps.length === 0 && (
+            {!aboutPage && (
                 <div>
                   <p className="text-brand-orange-500 mb-4">Who We Are</p>
                   <p className="mb-2 text-sm text-white">
@@ -83,30 +61,43 @@ const AboutPage = async () => {
                     critical to your success.
                   </p>
 
-                  <ProcessSteps
-                    title="We follow a clear process to help you out."
-                    description="With a specialized focus on global trade compliance, we combine deep industry knowledge with a client-first approach to deliver seamless."
-                    steps={[
-                      {
-                        stepNumber: 1,
-                        title: "Get a Quote",
-                        description:
-                          "Through True Rich Attended does no end it his mother since real had half every.",
-                      },
-                      {
-                        stepNumber: 2,
-                        title: "Book an Appointment",
-                        description:
-                          "Through True Rich Attended does no end it his mother since real had half every.",
-                      },
-                      {
-                        stepNumber: 3,
-                        title: "Get your Service Done",
-                        description:
-                          "Through True Rich Attended does no end it his mother since real had half every.",
-                      },
-                    ]}
-                  />
+                  <div className="mb-6">
+                    <h3 className="text-brand-orange-500 mb-2 text-lg font-semibold">
+                      We follow a clear process to help you out.
+                    </h3>
+                    <p className="mb-4 text-sm text-white">
+                      With a specialized focus on global trade compliance, we combine deep industry knowledge with a client-first approach to deliver seamless.
+                    </p>
+                    <div className="space-y-4">
+                      {[
+                        {
+                          stepNumber: 1,
+                          title: "Get a Quote",
+                          description:
+                            "Through True Rich Attended does no end it his mother since real had half every.",
+                        },
+                        {
+                          stepNumber: 2,
+                          title: "Book an Appointment",
+                          description:
+                            "Through True Rich Attended does no end it his mother since real had half every.",
+                        },
+                        {
+                          stepNumber: 3,
+                          title: "Get your Service Done",
+                          description:
+                            "Through True Rich Attended does no end it his mother since real had half every.",
+                        },
+                      ].map((step) => (
+                        <div key={step.stepNumber} className="border-l-2 border-orange-500 pl-4">
+                          <h4 className="text-white font-semibold">
+                            {step.stepNumber}. {step.title}
+                          </h4>
+                          <p className="text-sm text-gray-300">{step.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
                   <p className="text-brand-orange-500 mt-4 mb-4">What We Do</p>
                   <p className="text-sm text-white">

@@ -5,10 +5,19 @@ export const aboutPageQuery = groq`
     _id,
     pageTitle,
     pageSubtitle,
+    sidebarImage {
+      asset-> {
+        url
+      },
+      alt,
+      isGrayscale
+    },
+    content[],
     isActive
   }
 `;
 
+// Legacy queries - these will be removed after migration
 export const processSectionQuery = groq`
   *[_type == "processSection" && isActive == true][0] {
     title,

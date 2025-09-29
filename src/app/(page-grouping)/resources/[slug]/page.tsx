@@ -12,6 +12,7 @@ import { getResourcesPage } from "@/lib/sanity";
 import { RichTextRenderer } from "@/components/blog";
 import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { truncateText } from "@/lib/utils/textUtils";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -92,15 +93,15 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
                 fill={index === currentIndex ? "#2a2a2a" : "#404040"}
                 stroke="none"
                 strokeWidth={0}
-                className="flex flex-col items-center justify-center p-2"
+                className="flex flex-col items-center justify-center"
               >
                 <Link
                   href={`/resources/${post.slug.current}`}
-                  className={`font-michroma hover:text-brand-orange-500 block px-4 py-2 text-[10px] tracking-[1px] ${
+                  className={`font-michroma hover:text-brand-orange-500 block text-[10px] tracking-[1px] ${
                     index === currentIndex ? "text-brand-orange-500" : ""
                   }`}
                 >
-                  {post.title}
+                  {truncateText(post.title, 15)}
                 </Link>
               </DynamicShape>
             </div>
@@ -109,7 +110,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
       </div>
 
       {/* Middle Panel - Blog List - Desktop */}
-      <div className="xxl:h-[calc(100vh-128px)] hidden lg:flex lg:h-[calc(100vh-112px)] lg:flex-1 lg:flex-col lg:justify-center lg:p-1">
+      <div className="hidden lg:flex lg:flex-1 lg:flex-col lg:justify-center lg:p-1">
         <h3 className="font-michroma mb-5 hidden text-center text-xs tracking-[1px] lg:block">
           {resourcesPageData?.blogSectionTitle || "LATEST BLOGS"}
         </h3>
@@ -120,7 +121,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
           padding="p-2 pr-1 py-4"
           className=""
         >
-          <div className="pr-1">
+          <div className="h-[calc(100vh-230px)] overflow-y-auto pr-1">
             <div className="space-y-2">
               {allBlogPosts.map((post: BlogPost, index: number) => (
                 <DynamicShape
@@ -136,19 +137,21 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
                       index === currentIndex ? "opacity-100" : "opacity-70"
                     }`}
                   >
-                    <Image
-                      src={
-                        post.featuredImage?.asset.url || "/img/left-image.jpg"
-                      }
-                      alt={post.featuredImage?.alt || post.title}
-                      width={200}
-                      height={200}
-                      className="xxl:h-[64px] xxl:w-[80px] h-[48px] w-[64px] object-cover grayscale"
-                      style={{
-                        clipPath:
-                          "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))",
-                      }}
-                    />
+                    <div className="xxl:h-[64px] xxl:w-[80px] relative h-[48px] w-[64px] flex-shrink-0">
+                      <Image
+                        src={
+                          post.featuredImage?.asset.url || "/img/left-image.jpg"
+                        }
+                        alt={post.featuredImage?.alt || post.title}
+                        fill
+                        className="object-cover grayscale"
+                        style={{
+                          clipPath:
+                            "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))",
+                        }}
+                        sizes="(min-width: 1536px) 80px, 64px"
+                      />
+                    </div>
                     <div className="flex w-full flex-col p-2">
                       <div className="font-michroma xxl:text-[7px] w-full pr-2 text-right text-[5px] tracking-[1px]">
                         {new Date(post.publishedAt).toLocaleDateString(
@@ -173,130 +176,121 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
       </div>
 
       {/* Right Panel - Blog Content */}
-      <div className="xxl:h-[calc(100vh-128px)] h-[calc(100vh-80px)] bg-neutral-900 py-4 pr-0 pb-64 pl-2 lg:h-[calc(100vh-112px)] lg:pb-0">
-        <AutoScrollContainer>
-          <div className="pr-2">
-            <div className="text-sm text-neutral-100">
-              {/* Title */}
-              <h3 className="font-michroma mb-4 text-center text-xl text-white">
-                {blogPost.title}
-              </h3>
+      <div className="h-[calc(100vh-290px)] overflow-y-auto bg-neutral-900 lg:h-full">
+        <div className="text-sm text-neutral-100">
+          {/* Title */}
+          <h3 className="font-michroma my-4 text-center text-xl text-white">
+            {blogPost.title}
+          </h3>
 
-              {/* Featured Image */}
-              <div className="relative mb-6 h-[200px]">
-                <div className="absolute top-0 left-0 size-full bg-black">
-                  <Image
-                    src={
-                      blogPost.featuredImage?.asset.url || "/img/left-image.jpg"
-                    }
-                    alt={blogPost.featuredImage?.alt || blogPost.title}
-                    fill
-                    className="object-cover grayscale"
-                  />
-                </div>
-              </div>
-
-              {/* Author and Date */}
-              <div className="mb-12 flex items-center justify-between border-b-2 border-neutral-200 px-6 py-4">
-                <div className="flex items-center gap-2 lg:gap-4">
-                  {blogPost.author && (
-                    <>
-                      <span className="inline-block size-10 overflow-hidden rounded-full bg-neutral-700">
-                        {blogPost.author.image ? (
-                          <Image
-                            src={
-                              blogPost.author.image.asset.url ||
-                              "/img/left-image.jpg"
-                            }
-                            alt={blogPost.author.name}
-                            width={40}
-                            height={40}
-                            className="size-full object-cover"
-                          />
-                        ) : (
-                          <div className="flex size-full items-center justify-center text-sm text-white">
-                            {blogPost.author.name.charAt(0)}
-                          </div>
-                        )}
-                      </span>
-                      <span className="font-michroma text-xs">
-                        {blogPost.author.name.toUpperCase()}
-                      </span>
-                    </>
-                  )}
-                </div>
-                <div className="text-brand-orange-500 flex flex-col items-end gap-2 text-[10px] lg:flex-row lg:items-center lg:gap-4">
-                  <span className="font-michroma">
-                    {new Date(blogPost.publishedAt).toLocaleDateString(
-                      "en-US",
-                      {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      },
-                    )}
-                  </span>
-                  {blogPost.readingTime && (
-                    <span className="font-michroma">
-                      {blogPost.readingTime} min read
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* Blog Content */}
-              <div className="px-12">
-                {blogPost.content && (
-                  <RichTextRenderer content={blogPost.content} />
-                )}
-              </div>
-
-              {/* Navigation Footer */}
-              <footer className="mt-8 flex flex-col justify-between gap-4 border-t-2 border-neutral-300 pt-6 pb-4 md:flex-row">
-                <div>
-                  {hasPrev && prevPost ? (
-                    <>
-                      <Link href={`/resources/${prevPost.slug.current}`}>
-                        <Button
-                          className="font-michroma text-[10px] tracking-[1px]"
-                          variant={"outline"}
-                          size={"sm"}
-                        >
-                          <span className="flex gap-2">
-                            <ArrowLeft size={16} /> Prev Blog
-                          </span>
-                        </Button>
-                      </Link>
-                      <p className="mt-2 text-xs">{prevPost.title}</p>
-                    </>
-                  ) : (
-                    <div></div>
-                  )}
-                </div>
-                <div className="md:flex md:flex-col md:items-end">
-                  {hasNext && nextPost ? (
-                    <>
-                      <Link href={`/resources/${nextPost.slug.current}`}>
-                        <Button
-                          className="font-michroma text-[10px] tracking-[1px]"
-                          variant={"outline"}
-                          size={"sm"}
-                        >
-                          <span className="flex gap-2">
-                            Next Blog <ArrowRight size={16} />
-                          </span>
-                        </Button>
-                      </Link>
-                      <p className="mt-2 text-xs">{nextPost.title}</p>
-                    </>
-                  ) : (
-                    <div></div>
-                  )}
-                </div>
-              </footer>
+          {/* Featured Image */}
+          <div className="relative h-[200px]">
+            <div className="absolute top-0 left-0 size-full bg-black">
+              <Image
+                src={blogPost.featuredImage?.asset.url || "/img/left-image.jpg"}
+                alt={blogPost.featuredImage?.alt || blogPost.title}
+                fill
+                className="object-cover grayscale"
+              />
             </div>
           </div>
-        </AutoScrollContainer>
+
+          {/* Author and Date */}
+          <div className="mb-4 flex items-center justify-between border-b-2 border-neutral-200 px-2 py-4">
+            <div className="flex items-center gap-2 lg:gap-4">
+              {blogPost.author && (
+                <>
+                  <span className="inline-block size-10 overflow-hidden rounded-full bg-neutral-700">
+                    {blogPost.author.image ? (
+                      <Image
+                        src={
+                          blogPost.author.image.asset.url ||
+                          "/img/left-image.jpg"
+                        }
+                        alt={blogPost.author.name}
+                        width={40}
+                        height={40}
+                        className="size-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex size-full items-center justify-center text-sm text-white">
+                        {blogPost.author.name.charAt(0)}
+                      </div>
+                    )}
+                  </span>
+                  <span className="font-michroma text-xs">
+                    {blogPost.author.name.toUpperCase()}
+                  </span>
+                </>
+              )}
+            </div>
+            <div className="text-brand-orange-500 flex flex-col items-end gap-2 text-[10px] lg:flex-row lg:items-center lg:gap-4">
+              <span className="font-michroma">
+                {new Date(blogPost.publishedAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
+              {blogPost.readingTime && (
+                <span className="font-michroma">
+                  {blogPost.readingTime} min read
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Blog Content */}
+          <div className="px-2">
+            {blogPost.content && (
+              <RichTextRenderer content={blogPost.content} />
+            )}
+          </div>
+
+          {/* Navigation Footer */}
+          <footer className="mt-8 flex flex-col justify-between gap-4 border-t-2 border-neutral-300 px-2 pt-6 pb-4 md:flex-row">
+            <div>
+              {hasPrev && prevPost ? (
+                <>
+                  <Link href={`/resources/${prevPost.slug.current}`}>
+                    <Button
+                      className="font-michroma text-[10px] tracking-[1px]"
+                      variant={"outline"}
+                      size={"sm"}
+                    >
+                      <span className="flex gap-2">
+                        <ArrowLeft size={16} /> Prev Blog
+                      </span>
+                    </Button>
+                  </Link>
+                  <p className="mt-2 text-xs">{prevPost.title}</p>
+                </>
+              ) : (
+                <div></div>
+              )}
+            </div>
+            <div className="md:flex md:flex-col md:items-end">
+              {hasNext && nextPost ? (
+                <>
+                  <Link href={`/resources/${nextPost.slug.current}`}>
+                    <Button
+                      className="font-michroma text-[10px] tracking-[1px]"
+                      variant={"outline"}
+                      size={"sm"}
+                    >
+                      <span className="flex gap-2">
+                        Next Blog <ArrowRight size={16} />
+                      </span>
+                    </Button>
+                  </Link>
+                  <p className="mt-2 text-xs">{nextPost.title}</p>
+                </>
+              ) : (
+                <div></div>
+              )}
+            </div>
+          </footer>
+        </div>
       </div>
     </div>
   );

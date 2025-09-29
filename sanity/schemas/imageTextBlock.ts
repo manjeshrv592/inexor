@@ -33,7 +33,15 @@ export default defineType({
           initialValue: true, // Default to grayscale to match your site's style
         },
       ],
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => 
+        Rule.required()
+          .custom((image) => {
+            if (!image?.asset) {
+              return 'Please upload an image before saving this block';
+            }
+            return true;
+          })
+          .error('Image is required for Image & Text blocks'),
     }),
     defineField({
       name: "text",

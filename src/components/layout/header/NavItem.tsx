@@ -18,6 +18,7 @@ const NavItem: React.FC<NavItemProps> = ({
   children,
   hasDropdown = false,
   isActive = false,
+  onNavItemClick,
 }) => {
   const router = useTransitionRouter();
   const pathname = usePathname();
@@ -63,6 +64,11 @@ const NavItem: React.FC<NavItemProps> = ({
       requestAnimationFrame(() => {
         router.push(targetHref);
       });
+
+      // Close mobile menu after navigation
+      if (onNavItemClick) {
+        onNavItemClick(href);
+      }
     }
   };
 

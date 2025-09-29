@@ -8,20 +8,14 @@ export default defineType({
   fields: [
     defineField({
       name: "blogSectionTitle",
-      title: "Blog Section Title",
+      title: "Blog List Title",
       type: "string",
       components: {
         input: (props) => TextWithCounter({ ...props, maxLength: 50, fieldType: 'string' }),
       },
-      description: "Title for the blog section (e.g., 'LATEST BLOGS')",
+      description: "Title for the blog list (e.g., 'LATEST BLOGS')",
       initialValue: "LATEST BLOGS",
       validation: (Rule) => Rule.required().max(50),
-    }),
-    defineField({
-      name: "blogSectionSubtitle",
-      title: "Blog Section Subtitle",
-      type: "string",
-      description: "Subtitle for the blog section",
     }),
     defineField({
       name: "defaultBlogImage",
@@ -62,14 +56,13 @@ export default defineType({
   preview: {
     select: {
       title: "blogSectionTitle",
-      subtitle: "blogSectionSubtitle",
       isActive: "isActive",
     },
     prepare(selection) {
-      const { title, subtitle, isActive } = selection;
+      const { title, isActive } = selection;
       return {
         title: `${isActive ? "🟢" : "🔴"} ${title || "Resources Page Settings"}`,
-        subtitle: subtitle || "Resources page content settings",
+        subtitle: "Resources page content settings",
       };
     },
   },

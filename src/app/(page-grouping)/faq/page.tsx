@@ -2,6 +2,7 @@
 
 import AutoScrollContainer from "@/components/ui/AutoScrollContainer";
 import { CategoryButton, FAQItem } from "@/components/faq";
+import { DynamicShape } from "@/components/ui/DynamicShape";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
@@ -117,7 +118,7 @@ const FAQPage = () => {
       }}
     >
       {/* Left Panel - Category Selection */}
-      <div className="relative h-[55px] lg:h-full">
+      <div className="relative lg:h-full">
         <div className="absolute inset-0 hidden size-full lg:block">
           <Image
             src="/img/faq.jpg"
@@ -127,12 +128,51 @@ const FAQPage = () => {
           />
           <div className="absolute inset-0 z-10 bg-black/60"></div>
         </div>
-        <div className="relative z-10 flex h-full flex-col items-center justify-center gap-4 p-8 text-center">
-          <p className="hidden text-sm lg:block">
+
+        {/* Mobile Categories - Horizontal Scroll */}
+        <div className="relative z-10 flex h-full items-center lg:hidden">
+          <div
+            className="flex flex-nowrap gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            }}
+          >
+            {categories.map((category) => (
+              <div key={category._id} className="flex-shrink-0">
+                <DynamicShape
+                  fill={
+                    activeCategory === category.slug.current
+                      ? "#f65009"
+                      : "#404040"
+                  }
+                  stroke="none"
+                  strokeWidth={0}
+                  className="flex flex-col items-center justify-center"
+                >
+                  <button
+                    onClick={() => handleCategoryChange(category.slug.current)}
+                    className={`font-michroma hover:text-brand-orange-500 block text-[10px] tracking-[1px] ${
+                      activeCategory === category.slug.current
+                        ? "text-white"
+                        : "text-white"
+                    }`}
+                  >
+                    {category.name}
+                  </button>
+                </DynamicShape>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop Categories - Vertical Layout */}
+        <div className="relative z-10 hidden h-full flex-col items-center justify-center gap-4 p-8 text-center lg:flex">
+          <p className="text-sm">
             {faqPageData?.pageDescription ||
               "Our FAQ Section Offers Fast, Clear Answers To Popular Questions, So You Can Find Information Easily."}
           </p>
-          <h5 className="font-michroma hidden lg:block">
+          <h5 className="font-michroma">
             Select <span className="text-brand-orange-500">Category</span>
           </h5>
           <div className="flex flex-wrap justify-center gap-4">

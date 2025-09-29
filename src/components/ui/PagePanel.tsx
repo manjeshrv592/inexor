@@ -36,7 +36,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
     return () => window.removeEventListener("resize", updateBreakpoint);
   }, []);
 
-  // Set button position based on navigation source
+  // Set button position based on navigation source and screen size
   useEffect(() => {
     const navigationSource = sessionStorage.getItem("navigationSource");
     console.log(
@@ -44,7 +44,14 @@ const PagePanel = ({ children }: PagePanelProps) => {
       navigationSource,
     );
 
-    if (navigationSource === "contact-button" && pathname === "/contact") {
+    // Force bottom position on mobile breakpoints
+    if (currentBreakpoint === "sm" || currentBreakpoint === "md") {
+      setButtonPosition("bottom");
+      console.log("📱 Mobile view: Positioning go back button at BOTTOM");
+    } else if (
+      navigationSource === "contact-button" &&
+      pathname === "/contact"
+    ) {
       setButtonPosition("bottom");
       console.log("⬇️ Contact button: Positioning go back button at BOTTOM");
     } else if (navigationSource === "footer") {
@@ -54,7 +61,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
       setButtonPosition("middle");
       console.log("↔️ Header navigation: Positioning go back button at MIDDLE");
     }
-  }, [pathname]);
+  }, [pathname, currentBreakpoint]);
 
   const handleGoBackClick = () => {
     console.log(
@@ -100,7 +107,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
 
   return (
     <div
-      className="fixed z-[100] cursor-default overflow-visible rounded-lg shadow-2xl"
+      className="fixed z-[100] cursor-default overflow-visible shadow-2xl"
       style={{
         backgroundColor: "#1c1b1b",
         top:
@@ -110,7 +117,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
             ? currentBreakpoint === "xxl"
               ? "64px"
               : "56px"
-            : "118.14px",
+            : "78px",
         left:
           currentBreakpoint === "lg" ||
           currentBreakpoint === "xl" ||
@@ -134,7 +141,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
             ? currentBreakpoint === "xxl"
               ? "calc(100vh - 128px)"
               : "calc(100vh - 112px)"
-            : "calc(100vh - 143.14px)",
+            : "calc(100vh - 160px)",
       }}
     >
       {children}
@@ -147,7 +154,10 @@ const PagePanel = ({ children }: PagePanelProps) => {
             <ChevronLeft size={20} />
           </button>
         </TooltipTrigger>
-        <TooltipContent side="right" className="text-brand-orange-500">
+        <TooltipContent 
+          side={buttonPosition === "top" ? "bottom" : buttonPosition === "bottom" ? "top" : "right"} 
+          className="text-brand-orange-500 z-[110]"
+        >
           <p>GO BACK</p>
         </TooltipContent>
       </Tooltip>

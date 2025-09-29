@@ -11,7 +11,7 @@ interface NavigationProps {
   onNavItemClick?: (href: string) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ isOpen, activePagePath }) => {
+const Navigation: React.FC<NavigationProps> = ({ isOpen, activePagePath, onNavItemClick }) => {
   const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
 
   useEffect(() => {
@@ -86,6 +86,7 @@ const Navigation: React.FC<NavigationProps> = ({ isOpen, activePagePath }) => {
                   ? activePagePath?.startsWith("/resources") || false
                   : activePagePath === item.href
               }
+              onNavItemClick={onNavItemClick}
             >
               {item.label}
             </NavItem>
