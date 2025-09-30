@@ -9,7 +9,7 @@ const AboutPage = async () => {
   return (
     <div className="size-full grid-cols-[2fr_3fr_2fr] bg-[#2f2f2f] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] lg:grid">
       <div className="relative h-full">
-        <div className="absolute inset-0 size-full overflow-hidden bg-red-500">
+        <div className="absolute inset-0 size-full overflow-hidden">
           <Image
             src={aboutPage?.sidebarImage?.asset?.url || "/img/about-us.jpg"}
             alt={aboutPage?.sidebarImage?.alt || "About Us"}

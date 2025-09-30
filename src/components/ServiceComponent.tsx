@@ -69,7 +69,7 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
           {heading1}
         </h4>
 
-        <p className="mx-auto flex max-w-[600px] flex-1 items-center bg-neutral-700/30 p-6 text-center text-xs backdrop-blur-sm xl:text-sm">
+        <p className="mx-auto flex max-w-[360px] items-center bg-neutral-700/30 p-6 text-center text-xs backdrop-blur-sm xl:max-w-[600px] xl:text-sm">
           &quot;{description}&quot;
         </p>
         <div className="mt-4 text-center">

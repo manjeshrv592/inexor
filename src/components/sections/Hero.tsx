@@ -19,7 +19,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
 
   return (
     <Section className="xxl:p-0 relative h-screen p-0 sm:p-0 md:p-0 lg:p-0 xl:p-0">
-      <span className="fixed top-16 right-2 z-[40] lg:top-4 lg:right-4 lg:z-[200]">
+      <span className="fixed top-16 right-2 z-[40] xl:top-4 xl:right-4 xl:z-[200]">
         <ContactUsButton className="font-michroma text-[10px] tracking-[1px]" />
       </span>
       <div className="absolute inset-0">

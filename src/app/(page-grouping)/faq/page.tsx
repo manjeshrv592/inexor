@@ -22,7 +22,8 @@ const FAQPage = () => {
   const [activeCategory, setActiveCategory] = useState<string>("");
   const [activeQuestionId, setActiveQuestionId] = useState<string | null>(null);
   const [faqPageData, setFaqPageData] = useState<FAQPageType | null>(null);
-  const [faqPageSettings, setFaqPageSettings] = useState<FAQPageSettings | null>(null);
+  const [faqPageSettings, setFaqPageSettings] =
+    useState<FAQPageSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -138,7 +139,7 @@ const FAQPage = () => {
         </div>
 
         {/* Mobile Categories - Horizontal Scroll */}
-        <div className="relative z-10 flex h-full items-center lg:hidden">
+        <div className="relative z-10 flex h-full items-center p-5 lg:hidden">
           <div
             className="flex flex-nowrap gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden"
             style={{
@@ -243,7 +244,7 @@ const FAQPage = () => {
       </div>
 
       {/* Questions Panel */}
-      <div className="xxl:h-[calc(100vh-128px)] h-full bg-[#2b2b2b] lg:h-[calc(100vh-112px)]">
+      <div className="h-[calc(100vh-238px)] overflow-y-auto bg-[#2b2b2b] lg:h-full">
         <AutoScrollContainer>
           <div className="py-12">
             <div className="flex flex-col gap-6 px-2">

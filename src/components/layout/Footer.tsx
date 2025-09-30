@@ -90,7 +90,7 @@ const Footer = ({ footerData }: FooterProps) => {
               {footerData?.heading ||
                 "Ready to Witness Global Shipping Become Seamless?"}
             </h4>
-            <p className="font-michroma mt-4 text-[10px] text-[#575757]">
+            <p className="font-michroma mt-4 text-[10px] text-neutral-400">
               {footerData?.copyrightText ||
                 "© 2025 INEXOR, All right reserved"}
             </p>
@@ -151,9 +151,7 @@ const Footer = ({ footerData }: FooterProps) => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Button
-                      className="font-michroma text-xs tracking-[1px]"
-                    >
+                    <Button className="font-michroma text-xs tracking-[1px]">
                       {footerData?.ctaButtonText || "Schedule a Call"}
                     </Button>
                   </a>
@@ -232,9 +230,7 @@ const Footer = ({ footerData }: FooterProps) => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <Button
-                        className="font-michroma text-xs tracking-[1px]"
-                      >
+                      <Button className="font-michroma text-xs tracking-[1px]">
                         {footerData?.ctaButtonText || "Schedule a Call"}
                       </Button>
                     </a>

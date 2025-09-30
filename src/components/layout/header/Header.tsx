@@ -19,12 +19,12 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 z-200 flex w-full flex-col lg:h-screen lg:w-28">
+    <header className="fixed top-0 left-0 z-200 flex w-full flex-col xl:h-screen xl:w-28">
       <MobileToggle isOpen={isMobileNavOpen} onToggle={toggleMobileNav} />
       <Logo />
-      <Navigation 
-        isOpen={isMobileNavOpen} 
-        activePagePath={pathname} 
+      <Navigation
+        isOpen={isMobileNavOpen}
+        activePagePath={pathname}
         onNavItemClick={closeMobileNav}
       />
     </header>

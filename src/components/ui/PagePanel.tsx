@@ -48,6 +48,9 @@ const PagePanel = ({ children }: PagePanelProps) => {
     if (currentBreakpoint === "sm" || currentBreakpoint === "md") {
       setButtonPosition("bottom");
       console.log("📱 Mobile view: Positioning go back button at BOTTOM");
+    } else if (pathname === "/contact" && (currentBreakpoint === "lg" || currentBreakpoint === "xl" || currentBreakpoint === "xxl")) {
+      setButtonPosition("middle");
+      console.log("📞 Contact page on lg+ screens: Positioning go back button at MIDDLE (right side)");
     } else if (
       navigationSource === "contact-button" &&
       pathname === "/contact"
@@ -139,7 +142,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
           currentBreakpoint === "xl" ||
           currentBreakpoint === "xxl"
             ? currentBreakpoint === "xxl"
-              ? "calc(100vh - 128px)"
+              ? "calc(100vh - 168px)"
               : "calc(100vh - 132px)"
             : "calc(100vh - 160px)",
       }}
