@@ -33,7 +33,7 @@ const Logo = () => {
   };
 
   return (
-    <div className="border-b border-neutral-800 bg-[#050505] p-3 pb-6 text-center xl:border-none xl:bg-transparent xl:p-1 xl:pt-3">
+    <div className="border-b border-neutral-800 bg-[#050505] p-3 pb-6 text-center xl:border-none xl:bg-transparent xl:p-1 xl:pt-6">
       <button
         onClick={handleLogoClick}
         className="mx-auto block cursor-pointer"

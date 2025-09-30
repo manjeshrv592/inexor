@@ -62,7 +62,9 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className }) => {
       onClick={handleContactClick}
       variant={hasScrolledPastHero ? "default" : "outline"}
       size={hasScrolledPastHero ? "sm" : undefined}
-      className={`font-michroma text-xs tracking-[1px] ${className}` }
+      className={`font-michroma text-xs tracking-[1px] ${
+        !hasScrolledPastHero ? '[&_.bg-svg_path]:!stroke-[#2A2A2A]' : ''
+      } ${className}` }
     >
       Contact Us
     </Button>
