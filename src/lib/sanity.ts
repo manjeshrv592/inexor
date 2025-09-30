@@ -43,8 +43,6 @@ export interface WhoWeServeItem {
 export interface WhoWeServeSection {
   _id: string;
   title: string;
-  subtitle?: string;
-  description?: string;
   isActive: boolean;
 }
 
@@ -286,7 +284,6 @@ export interface ServiceForHomepage {
   title: string;
   homepagePreview: {
     heading1: string;
-    heading2: string;
     description: string;
     backgroundImage: ServiceImage & { alt?: string };
   };

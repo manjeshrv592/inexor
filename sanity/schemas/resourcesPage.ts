@@ -11,7 +11,8 @@ export default defineType({
       title: "Blog List Title",
       type: "string",
       components: {
-        input: (props) => TextWithCounter({ ...props, maxLength: 50, fieldType: 'string' }),
+        input: (props) =>
+          TextWithCounter({ ...props, maxLength: 50, fieldType: "string" }),
       },
       description: "Title for the blog list (e.g., 'LATEST BLOGS')",
       initialValue: "LATEST BLOGS",

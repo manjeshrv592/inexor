@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "aboutItem",
@@ -9,7 +10,13 @@ export default defineType({
       name: "content",
       title: "Service Content",
       type: "string",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 30, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(30)
+          .error('Service content must be 30 characters or less'),
     }),
     defineField({
       name: "slug",

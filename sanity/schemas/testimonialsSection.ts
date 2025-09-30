@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "testimonialsSection",
@@ -11,7 +12,13 @@ export default defineType({
       type: "string",
       description: "Main title for the testimonials section",
       initialValue: "WHAT OUR CLIENTS SAY",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 25, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(25)
+          .error('Title must be 25 characters or less'),
     }),
     defineField({
       name: "subtitle",
@@ -19,7 +26,13 @@ export default defineType({
       type: "string",
       description: "Subtitle/description for the testimonials section",
       initialValue: "Hear From Those Who Trust Us",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 55, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(55)
+          .error('Subtitle must be 55 characters or less'),
     }),
     defineField({
       name: "autoplayDuration",

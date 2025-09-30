@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 interface ServiceComponentProps {
   code: string;
   heading1: string;
-  heading2: string;
   description: string;
   backgroundImage: {
     asset: {
@@ -28,7 +27,6 @@ interface ServiceComponentProps {
 const ServiceComponent: React.FC<ServiceComponentProps> = ({
   code,
   heading1,
-  heading2,
   description,
   backgroundImage,
   serviceCode,
@@ -67,11 +65,8 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
             {title}
           </motion.h3>
         </div>
-        <h4 className="font-michroma mb-4 text-center text-xs uppercase xl:text-sm">
+        <h4 className="font-michroma mb-4 max-w-[510px] text-center text-xs uppercase xl:text-sm">
           {heading1}
-        </h4>
-        <h4 className="font-michroma mb-4 text-center text-xs uppercase xl:text-sm">
-          {heading2}
         </h4>
 
         <p className="mx-auto flex max-w-[600px] flex-1 items-center bg-neutral-700/30 p-6 text-center text-xs backdrop-blur-sm xl:text-sm">

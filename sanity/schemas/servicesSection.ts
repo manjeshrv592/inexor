@@ -11,10 +11,13 @@ export default defineType({
       title: "Section Title",
       type: "string",
       components: {
-        input: (props) => TextWithCounter({ ...props, maxLength: 100, fieldType: 'string' }),
+        input: (props) => TextWithCounter({ ...props, maxLength: 25, fieldType: 'string' }),
       },
       initialValue: "OUR SERVICES",
-      validation: (Rule) => Rule.required().max(100),
+      validation: (Rule) => 
+        Rule.required()
+          .max(25)
+          .error('Section title must be 25 characters or less'),
       description: "Main title displayed at the top of the services section",
     }),
     defineField({

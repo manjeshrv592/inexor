@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "faqCategory",
@@ -11,7 +12,13 @@ export default defineType({
       type: "string",
       description:
         "Display name for the category (e.g., General, EOR/IOR, VAT/DDP)",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 8, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(8)
+          .error('Category name must be 8 characters or less'),
     }),
     defineField({
       name: "slug",

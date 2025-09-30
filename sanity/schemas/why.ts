@@ -11,26 +11,38 @@ export default defineType({
       title: "Main Title",
       type: "string",
       initialValue: "WHY CHOOSE INEXOR",
-      validation: (Rule) => Rule.required().max(100),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 25, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(25)
+          .error('Title must be 25 characters or less'),
       description: "Main section title (e.g., 'WHY CHOOSE INEXOR')",
     }),
     defineField({
       name: "subtitle",
       title: "Subtitle (H3)",
       type: "string",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 55, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(55)
+          .error('Subtitle must be 55 characters or less'),
     }),
     defineField({
       name: "description",
       title: "Description",
       type: "text",
       components: {
-        input: (props) => TextWithCounter({ ...props, maxLength: 1000 }),
+        input: (props) => TextWithCounter({ ...props, maxLength: 450 }),
       },
       validation: (Rule) => 
         Rule.required()
-          .max(1000)
-          .error('Description must be 1000 characters or less'),
+          .max(450)
+          .error('Description must be 450 characters or less'),
     }),
     defineField({
       name: "isActive",

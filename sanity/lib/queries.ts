@@ -11,8 +11,6 @@ export const WHO_WE_SERVE_QUERY = groq`*[_type == "whoWeServeItem"] | order(orde
 export const WHO_WE_SERVE_SECTION_QUERY = groq`*[_type == "whoWeServeSection" && isActive == true][0] {
   _id,
   title,
-  subtitle,
-  description,
   isActive
 }`;
 
@@ -148,7 +146,6 @@ export const SERVICES_FOR_HOMEPAGE_QUERY = groq`*[_type == "service" && isActive
   title,
   homepagePreview {
     heading1,
-    heading2,
     description,
     backgroundImage {
       asset->{

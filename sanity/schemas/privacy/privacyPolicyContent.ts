@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import TextWithCounter from "../../components/TextWithCounter";
 
 export default defineType({
   name: "privacyPolicyContent",
@@ -10,7 +11,13 @@ export default defineType({
       title: "Page Title",
       type: "string",
       description: "Main title displayed on the Privacy Policy page",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 35, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(35)
+          .error('Page title must be 35 characters or less'),
       initialValue: "Privacy Policy",
     }),
     defineField({

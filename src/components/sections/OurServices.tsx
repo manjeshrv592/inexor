@@ -218,7 +218,6 @@ const OurServices: React.FC<OurServicesProps> = ({
         key={activeService._id}
         code={activeService.code}
         heading1={activeService.homepagePreview.heading1}
-        heading2={activeService.homepagePreview.heading2}
         description={activeService.homepagePreview.description}
         backgroundImage={activeService.homepagePreview.backgroundImage}
         serviceCode={activeService.code}
@@ -236,7 +235,7 @@ const OurServices: React.FC<OurServicesProps> = ({
   };
 
   return (
-    <Section className="xxl:pl-20 overflow-hidden lg:pl-20">
+    <Section className="overflow-hidden">
       <Container>
         <div className="text-center">
           <SectionTitle className="mb-2">

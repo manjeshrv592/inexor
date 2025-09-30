@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "testimonial",
@@ -9,19 +10,37 @@ export default defineType({
       name: "name",
       title: "Client Name",
       type: "string",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 22, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(22)
+          .error('Name must be 22 characters or less'),
     }),
     defineField({
       name: "position",
       title: "Position/Title",
       type: "string",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 20, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(20)
+          .error('Position must be 20 characters or less'),
     }),
     defineField({
       name: "company",
       title: "Company Name",
       type: "string",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 25, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(25)
+          .error('Company name must be 25 characters or less'),
     }),
     defineField({
       name: "image",
@@ -37,14 +56,27 @@ export default defineType({
       title: "Testimonial Title",
       type: "string",
       description: "Short title/headline for the testimonial",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 25, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(25)
+          .error('Title must be 25 characters or less'),
     }),
     defineField({
       name: "quote",
       title: "Testimonial Quote",
       type: "text",
       rows: 4,
-      validation: (Rule) => Rule.required().min(50).max(500),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 350 }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .min(50)
+          .max(350)
+          .error('Quote must be between 50 and 350 characters'),
     }),
     defineField({
       name: "order",

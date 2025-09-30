@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "faqItem",
@@ -10,14 +11,26 @@ export default defineType({
       title: "Question",
       type: "string",
       description: "The FAQ question",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 50, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(50)
+          .error('Question must be 50 characters or less'),
     }),
     defineField({
       name: "answer",
       title: "Answer",
       type: "text",
       description: "The answer to the FAQ question",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 250 }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(250)
+          .error('Answer must be 250 characters or less'),
     }),
     defineField({
       name: "category",

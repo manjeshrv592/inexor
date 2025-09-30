@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "whoWeServeSection",
@@ -10,21 +11,14 @@ export default defineType({
       title: "Section Title",
       type: "string",
       initialValue: "WHO WE SERVE",
-      validation: (Rule) => Rule.required().max(100),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 25, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(25)
+          .error('Section title must be 25 characters or less'),
       description: "Main title for the Who We Serve section",
-    }),
-    defineField({
-      name: "subtitle",
-      title: "Section Subtitle",
-      type: "string",
-      description: "Optional subtitle below the main title",
-    }),
-    defineField({
-      name: "description",
-      title: "Section Description",
-      type: "text",
-      description: "Optional description text for the section",
-      rows: 3,
     }),
     defineField({
       name: "isActive",
@@ -44,14 +38,13 @@ export default defineType({
   preview: {
     select: {
       title: "title",
-      subtitle: "subtitle",
       isActive: "isActive",
     },
     prepare(selection) {
-      const { title, subtitle, isActive } = selection;
+      const { title, isActive } = selection;
       return {
         title: title || "Who We Serve Section",
-        subtitle: `${subtitle || "No subtitle"} ${isActive ? "✅" : "❌"}`,
+        subtitle: isActive ? "✅ Active" : "❌ Inactive",
       };
     },
   },

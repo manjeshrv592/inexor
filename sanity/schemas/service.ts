@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "service",
@@ -9,9 +10,14 @@ export default defineType({
       name: "title",
       title: "Service Title",
       type: "string",
-      description:
-        "Main service title displayed (e.g., 'IMPORTER OF RECORDS')",
-      validation: (Rule) => Rule.required(),
+      description: "Main service title displayed (e.g., 'IMPORTER OF RECORDS')",
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 55, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(55)
+          .error('Service title must be 55 characters or less'),
     }),
     defineField({
       name: "shortDescription",
@@ -168,24 +174,29 @@ export default defineType({
       fields: [
         defineField({
           name: "heading1",
-          title: "First Heading Line",
+          title: "Heading",
           type: "string",
-          description: "First line of the service heading for homepage",
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "heading2",
-          title: "Second Heading Line",
-          type: "string",
-          description: "Second line of the service heading for homepage",
-          validation: (Rule) => Rule.required(),
+          description: "Service heading for homepage",
+          components: {
+            input: (props) => TextWithCounter({ ...props, maxLength: 90, fieldType: 'string' }),
+          },
+          validation: (Rule) => 
+            Rule.required()
+              .max(90)
+              .error('Heading must be 90 characters or less'),
         }),
         defineField({
           name: "description",
           title: "Homepage Description",
           type: "text",
           description: "Short description for homepage display",
-          validation: (Rule) => Rule.required(),
+          components: {
+            input: (props) => TextWithCounter({ ...props, maxLength: 310 }),
+          },
+          validation: (Rule) => 
+            Rule.required()
+              .max(310)
+              .error('Homepage description must be 310 characters or less'),
         }),
         defineField({
           name: "backgroundImage",

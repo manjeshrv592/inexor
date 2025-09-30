@@ -11,10 +11,13 @@ export default defineType({
       title: "Section Title",
       type: "string",
       components: {
-        input: (props) => TextWithCounter({ ...props, maxLength: 100, fieldType: 'string' }),
+        input: (props) => TextWithCounter({ ...props, maxLength: 25, fieldType: 'string' }),
       },
       initialValue: "GO GLOBAL. INSTANTLY.",
-      validation: (Rule) => Rule.required().max(100),
+      validation: (Rule) => 
+        Rule.required()
+          .max(25)
+          .error('Section title must be 25 characters or less'),
       description: "Main title displayed at the top of the maps section",
     }),
     defineField({
@@ -22,10 +25,12 @@ export default defineType({
       title: "Section Description",
       type: "text",
       components: {
-        input: (props) => TextWithCounter({ ...props, maxLength: 200, fieldType: 'text' }),
+        input: (props) => TextWithCounter({ ...props, maxLength: 55, fieldType: 'string' }),
       },
       initialValue: "Reach Over 120 Markets With Zero Compliance Issues",
-      validation: (Rule) => Rule.max(200),
+      validation: (Rule) => 
+        Rule.max(55)
+          .error('Description must be 55 characters or less'),
       description: "Description text displayed below the main title",
     }),
     defineField({
@@ -33,10 +38,12 @@ export default defineType({
       title: "Map Instruction Text",
       type: "text",
       components: {
-        input: (props) => TextWithCounter({ ...props, maxLength: 300, fieldType: 'text' }),
+        input: (props) => TextWithCounter({ ...props, maxLength: 135 }),
       },
       initialValue: "Click to interact with the map and select a continent to view service availability for your country",
-      validation: (Rule) => Rule.max(300),
+      validation: (Rule) => 
+        Rule.max(135)
+          .error('Instruction text must be 135 characters or less'),
       description: "Instruction text shown in the tooltip before user interacts with the map",
     }),
     defineField({

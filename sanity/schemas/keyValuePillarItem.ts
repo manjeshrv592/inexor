@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "keyValuePillarItem",
@@ -10,14 +11,26 @@ export default defineType({
       title: "Title",
       type: "string",
       description: "The main heading for this pillar",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 48, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(48)
+          .error('Title must be 48 characters or less'),
     }),
     defineField({
       name: "description",
       title: "Description",
       type: "text",
       description: "Brief description of this value pillar",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 90 }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(90)
+          .error('Description must be 90 characters or less'),
     }),
     defineField({
       name: "icon",

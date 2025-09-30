@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import PercentageInput from "../components/PercentageInput";
 
 export default defineType({
   name: "country",
@@ -84,9 +85,12 @@ export default defineType({
     }),
     defineField({
       name: "tax",
-      title: "Tax",
+      title: "Tax (%)",
       type: "string",
-      description: "Tax percentage (e.g., 5%)",
+      description: "Enter tax percentage (% will be added automatically)",
+      components: {
+        input: PercentageInput,
+      },
       hidden: ({ document }) => !document?.isActive,
       validation: (Rule) =>
         Rule.custom((value, context) => {
@@ -99,9 +103,12 @@ export default defineType({
     }),
     defineField({
       name: "duties",
-      title: "Duties",
+      title: "Duties (%)",
       type: "string",
-      description: "Duties percentage (e.g., 12%)",
+      description: "Enter duties percentage (% will be added automatically)",
+      components: {
+        input: PercentageInput,
+      },
       hidden: ({ document }) => !document?.isActive,
       validation: (Rule) =>
         Rule.custom((value, context) => {
