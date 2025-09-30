@@ -245,11 +245,10 @@ export const FOOTER_QUERY = groq`*[_type == "footer" && isActive == true][0] {
   ctaButtonLink,
   privacyPolicyLink,
   termsConditionsLink,
-  socialLinks[] {
-    platform,
-    url,
-    isActive
-  },
+  facebookLink,
+  twitterLink,
+  linkedinLink,
+  instagramLink,
   isActive
 }`;
 

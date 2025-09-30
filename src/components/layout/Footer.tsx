@@ -11,9 +11,7 @@ import {
   FaSquareXTwitter,
   FaLinkedinIn,
   FaInstagram,
-  FaYoutube,
 } from "react-icons/fa6";
-import { FaTiktok } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import { Footer as FooterType } from "@/lib/sanity";
 import Container from "./Container";
@@ -27,19 +25,9 @@ const Footer = ({ footerData }: FooterProps) => {
   const pathname = usePathname();
 
   const handleNavigation = (href: string) => {
-    console.log("🔗 Footer navigation triggered from", pathname, "to", href);
     if (typeof window !== "undefined") {
       // If user clicks on the same route they're already on, navigate to home instead
       const targetHref = pathname === href ? "/" : href;
-      console.log(
-        "🎯 Footer target href:",
-        targetHref,
-        "(original:",
-        href,
-        ", current:",
-        pathname,
-        ")",
-      );
 
       // Store the current path before navigation
       sessionStorage.setItem("lastPath", pathname);
@@ -48,88 +36,50 @@ const Footer = ({ footerData }: FooterProps) => {
 
       // Always use transition router to prevent page reload
       // Animations will only show when transitioning from/to root due to PageTransition component logic
-      console.log("✨ Using transition router for footer navigation");
       requestAnimationFrame(() => {
         router.push(targetHref);
       });
     }
   };
 
-  // Helper function to get the appropriate icon for each platform
-  const getSocialIcon = (platform: string) => {
-    switch (platform) {
-      case "facebook":
-        return <FaFacebookF />;
-      case "twitter":
-        return <FaSquareXTwitter />;
-      case "linkedin":
-        return <FaLinkedinIn />;
-      case "instagram":
-        return <FaInstagram />;
-      case "youtube":
-        return <FaYoutube />;
-      case "tiktok":
-        return <FaTiktok />;
-      default:
-        return <FaFacebookF />; // Default fallback
-    }
-  };
-
   // Render social links dynamically
   const renderSocialLinks = () => {
-    if (!footerData?.socialLinks) {
-      // Fallback to default social links if no data
-      return (
-        <>
-          <Link
-            href="https://facebook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:bg-brand-orange-500 active:bg-brand-orange-600 inline-block cursor-pointer bg-white px-3 py-1 text-xs text-neutral-700 duration-300 [clip-path:polygon(0%_0%,6px_0%,calc(100%-6px)_0%,100%_6px,100%_100%,calc(100%-6px)_100%,6px_100%,0%_calc(100%-6px))] hover:text-white"
-          >
-            <FaFacebookF />
-          </Link>
-          <Link
-            href="https://twitter.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:bg-brand-orange-500 active:bg-brand-orange-600 inline-block cursor-pointer bg-white px-3 py-1 text-xs text-neutral-700 duration-300 [clip-path:polygon(0%_0%,6px_0%,calc(100%-6px)_0%,100%_6px,100%_100%,calc(100%-6px)_100%,6px_100%,0%_calc(100%-6px))] hover:text-white"
-          >
-            <FaSquareXTwitter />
-          </Link>
-          <Link
-            href="https://linkedin.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:bg-brand-orange-500 active:bg-brand-orange-600 inline-block cursor-pointer bg-white px-3 py-1 text-xs text-neutral-700 duration-300 [clip-path:polygon(0%_0%,6px_0%,calc(100%-6px)_0%,100%_6px,100%_100%,calc(100%-6px)_100%,6px_100%,0%_calc(100%-6px))] hover:text-white"
-          >
-            <FaLinkedinIn />
-          </Link>
-          <Link
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:bg-brand-orange-500 active:bg-brand-orange-600 inline-block cursor-pointer bg-white px-3 py-1 text-xs text-neutral-700 duration-300 [clip-path:polygon(0%_0%,6px_0%,calc(100%-6px)_0%,100%_6px,100%_100%,calc(100%-6px)_100%,6px_100%,0%_calc(100%-6px))] hover:text-white"
-          >
-            <FaInstagram />
-          </Link>
-        </>
-      );
-    }
+    const socialLinks = [
+      {
+        href: footerData?.facebookLink,
+        icon: <FaFacebookF />,
+      },
+      {
+        href: footerData?.twitterLink,
+        icon: <FaSquareXTwitter />,
+      },
+      {
+        href: footerData?.linkedinLink,
+        icon: <FaLinkedinIn />,
+      },
+      {
+        href: footerData?.instagramLink,
+        icon: <FaInstagram />,
+      },
+    ];
 
-    return footerData.socialLinks
-      .filter((link) => link.isActive)
-      .map((link, index) => (
-        <Link
-          key={index}
-          href={link.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:bg-brand-orange-500 active:bg-brand-orange-600 inline-block cursor-pointer bg-white px-3 py-1 text-xs text-neutral-700 duration-300 [clip-path:polygon(0%_0%,6px_0%,calc(100%-6px)_0%,100%_6px,100%_100%,calc(100%-6px)_100%,6px_100%,0%_calc(100%-6px))] hover:text-white"
-        >
-          {getSocialIcon(link.platform)}
-        </Link>
-      ));
+    return (
+      <>
+        {socialLinks
+          .filter((link) => link.href) // Only show links that have a URL
+          .map((link, index) => (
+            <Link
+              key={index}
+              href={link.href!}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:bg-brand-orange-500 active:bg-brand-orange-600 inline-block cursor-pointer bg-white px-3 py-1 text-xs text-neutral-700 duration-300 [clip-path:polygon(0%_0%,6px_0%,calc(100%-6px)_0%,100%_6px,100%_100%,calc(100%-6px)_100%,6px_100%,0%_calc(100%-6px))] hover:text-white"
+            >
+              {link.icon}
+            </Link>
+          ))}
+      </>
+    );
   };
   return (
     <footer className="bg-[#323232] text-white [box-shadow:inset_0_2px_2px_rgba(0,0,0,0.2)]">
@@ -196,25 +146,17 @@ const Footer = ({ footerData }: FooterProps) => {
                   {renderSocialLinks()}
                 </div>
                 <div className="text-center">
-                  {footerData?.ctaButtonLink ? (
-                    <Link href={footerData.ctaButtonLink}>
-                      <Button
-                        variant={"outline"}
-                        size={"sm"}
-                        className="font-michroma text-xs tracking-[1px]"
-                      >
-                        {footerData?.ctaButtonText || "Schedule a Call"}
-                      </Button>
-                    </Link>
-                  ) : (
+                  <a
+                    href="https://calendar.app.google/it8hbPUuhXvCG4YE8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <Button
-                      variant={"outline"}
-                      size={"sm"}
                       className="font-michroma text-xs tracking-[1px]"
                     >
                       {footerData?.ctaButtonText || "Schedule a Call"}
                     </Button>
-                  )}
+                  </a>
                 </div>
               </div>
               <p className="font-michroma mt-4 text-center text-[10px] text-[#575757]">
@@ -285,25 +227,17 @@ const Footer = ({ footerData }: FooterProps) => {
               >
                 <div className="flex h-full flex-col items-center justify-center gap-4">
                   <div className="text-center">
-                    {footerData?.ctaButtonLink ? (
-                      <Link href={footerData.ctaButtonLink}>
-                        <Button
-                          variant={"outline"}
-                          size={"sm"}
-                          className="font-michroma text-xs tracking-[1px]"
-                        >
-                          {footerData?.ctaButtonText || "Schedule a Call"}
-                        </Button>
-                      </Link>
-                    ) : (
+                    <a
+                      href="https://calendar.app.google/it8hbPUuhXvCG4YE8"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <Button
-                        variant={"outline"}
-                        size={"sm"}
                         className="font-michroma text-xs tracking-[1px]"
                       >
                         {footerData?.ctaButtonText || "Schedule a Call"}
                       </Button>
-                    )}
+                    </a>
                   </div>
                   <div className="flex justify-center gap-4">
                     {renderSocialLinks()}

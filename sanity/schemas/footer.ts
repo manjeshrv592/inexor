@@ -62,12 +62,44 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "socialLinks",
-      title: "Social Media Links",
-      type: "array",
-      of: [{ type: "socialLink" }],
-      description: "Social media links and their URLs",
-      validation: (Rule) => Rule.max(6),
+      name: "facebookLink",
+      title: "Facebook Link",
+      type: "url",
+      description: "Full URL to your Facebook profile",
+      validation: (Rule) =>
+        Rule.uri({
+          scheme: ["http", "https"],
+        }),
+    }),
+    defineField({
+      name: "twitterLink",
+      title: "Twitter/X Link",
+      type: "url",
+      description: "Full URL to your Twitter/X profile",
+      validation: (Rule) =>
+        Rule.uri({
+          scheme: ["http", "https"],
+        }),
+    }),
+    defineField({
+      name: "linkedinLink",
+      title: "LinkedIn Link",
+      type: "url",
+      description: "Full URL to your LinkedIn profile",
+      validation: (Rule) =>
+        Rule.uri({
+          scheme: ["http", "https"],
+        }),
+    }),
+    defineField({
+      name: "instagramLink",
+      title: "Instagram Link",
+      type: "url",
+      description: "Full URL to your Instagram profile",
+      validation: (Rule) =>
+        Rule.uri({
+          scheme: ["http", "https"],
+        }),
     }),
     defineField({
       name: "isActive",

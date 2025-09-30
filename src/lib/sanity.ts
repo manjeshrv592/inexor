@@ -437,7 +437,10 @@ export interface Footer {
   ctaButtonLink?: string;
   privacyPolicyLink: string;
   termsConditionsLink: string;
-  socialLinks: SocialLink[];
+  facebookLink?: string;
+  twitterLink?: string;
+  linkedinLink?: string;
+  instagramLink?: string;
   isActive: boolean;
 }
 

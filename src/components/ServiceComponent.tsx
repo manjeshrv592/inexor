@@ -77,7 +77,6 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
             <Button
               className="font-michroma text-[10px] tracking-[1px] xl:text-xs"
               size={"sm"}
-              variant="outline"
             >
               <span className="flex items-center gap-1 xl:py-2">
                 <span>Read More</span>

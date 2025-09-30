@@ -8,27 +8,27 @@ import { cn } from "@/lib/utils";
 
 // Constants for better maintainability
 const BUTTON_COLORS = {
-  primary: "#F65009",
-  primaryHover: "#e04808",
+  primary: "#f65009", // brand-orange-500
+  primaryHover: "#c54007", // brand-orange-600
   stroke: "#4A4A4A",
   white: "#ffffff",
 } as const;
 
 const buttonVariants = cva(
-  "relative inline-flex items-center justify-center whitespace-nowrap font-medium transition-all cursor-pointer disabled:pointer-events-none disabled:opacity-50 min-h-[38px] font-['Poppins'] font-medium hover:transform hover:-translate-y-[1px] active:transform active:translate-y-[1px] w-fit flex-shrink-0",
+  "group relative inline-flex items-center justify-center whitespace-nowrap font-medium transition-all cursor-pointer disabled:pointer-events-none disabled:opacity-50 min-h-[38px] font-['Poppins'] font-medium hover:transform hover:-translate-y-[1px] active:transform active:translate-y-[1px] w-fit flex-shrink-0",
   {
     variants: {
       variant: {
         default:
-          "text-white hover:[&_svg_path]:fill-[#e04808] hover:[&_svg]:drop-shadow-[0px_4px_8px_rgba(0,0,0,0.25)]",
+          "text-white hover:[&_svg_path]:fill-[#943005] hover:[&_svg]:drop-shadow-[0px_4px_8px_rgba(0,0,0,0.25)]",
         destructive:
-          "text-white hover:[&_svg_path]:fill-[#e04808] hover:[&_svg]:drop-shadow-[0px_4px_8px_rgba(0,0,0,0.25)]",
+          "text-white hover:[&_svg_path]:fill-[#943005] hover:[&_svg]:drop-shadow-[0px_4px_8px_rgba(0,0,0,0.25)]",
         outline:
           "text-white hover:[&_.bg-svg_path]:fill-[#f65009] hover:[&_.bg-svg_path]:stroke-[#f65009] hover:[&_svg]:drop-shadow-[0px_4px_8px_rgba(0,0,0,0.25)] hover:text-white [&_.icon-svg]:text-white hover:[&_.icon-svg]:text-white",
         secondary:
-          "text-white hover:[&_svg_path]:fill-[#e04808] hover:[&_svg]:drop-shadow-[0px_4px_8px_rgba(0,0,0,0.25)]",
+          "text-white hover:[&_svg_path]:fill-[#943005] hover:[&_svg]:drop-shadow-[0px_4px_8px_rgba(0,0,0,0.25)]",
         ghost:
-          "text-white hover:[&_svg_path]:fill-[#e04808] hover:[&_svg]:drop-shadow-[0px_4px_8px_rgba(0,0,0,0.25)]",
+          "text-white hover:[&_svg_path]:fill-[#943005] hover:[&_svg]:drop-shadow-[0px_4px_8px_rgba(0,0,0,0.25)]",
         simple:
           "bg-white text-gray-600 border-2 border-gray-300 hover:border-gray-400 hover:scale-105",
         link: "text-[#f65009] underline-offset-4 hover:underline",
@@ -155,7 +155,11 @@ function Button({
               strokeWidth={SVG_CONFIG.strokeWidth}
               strokeLinejoin="round"
               strokeLinecap="round"
-              className="transition-all duration-200 ease-in-out"
+              className={`transition-all duration-200 ease-in-out ${
+                variant === "outline" 
+                  ? "group-hover:!fill-[#f65009]" 
+                  : "group-hover:!fill-[#c54007]"
+              }`}
             />
           </svg>
         </span>
