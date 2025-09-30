@@ -165,7 +165,6 @@ export const FAQ_CATEGORIES_QUERY = groq`*[_type == "faqCategory" && isActive ==
   _id,
   name,
   slug,
-  description,
   order,
   isActive
 }`;

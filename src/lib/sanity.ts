@@ -311,7 +311,6 @@ export interface FAQCategory {
   slug: {
     current: string;
   };
-  description?: string;
   order: number;
   isActive: boolean;
 }

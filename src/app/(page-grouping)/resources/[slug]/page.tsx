@@ -82,7 +82,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
           </h3>
 
           {/* Featured Image */}
-          <div className="relative h-[200px]">
+          <div className="xxl:h-[300px] relative h-[200px]">
             <div className="absolute top-0 left-0 size-full bg-black">
               <Image
                 src={blogPost.featuredImage?.asset.url || "/img/left-image.jpg"}
@@ -94,7 +94,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
           </div>
 
           {/* Author and Date */}
-          <div className="mb-4 flex items-center justify-between border-b-2 border-neutral-200 px-2 py-4">
+          <div className="mb-4 flex items-center justify-between border-b-2 border-neutral-200 px-2 py-2">
             <div className="flex items-center gap-2 lg:gap-4">
               {blogPost.author && (
                 <>

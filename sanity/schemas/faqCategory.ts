@@ -31,12 +31,6 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "description",
-      title: "Description",
-      type: "text",
-      description: "Brief description of what this category covers",
-    }),
-    defineField({
       name: "order",
       title: "Display Order",
       type: "number",
@@ -66,15 +60,14 @@ export default defineType({
   preview: {
     select: {
       title: "name",
-      subtitle: "description",
       order: "order",
       isActive: "isActive",
     },
     prepare(selection) {
-      const { title, subtitle, order, isActive } = selection;
+      const { title, order, isActive } = selection;
       return {
         title: `${order}. ${title}`,
-        subtitle: `${isActive ? "🟢" : "🔴"} ${subtitle || "No description"}`,
+        subtitle: `${isActive ? "🟢 Active" : "🔴 Inactive"}`,
       };
     },
   },

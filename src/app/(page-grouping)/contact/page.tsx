@@ -230,7 +230,7 @@ const ContactPage = () => {
                 </div>
               </div>
             </div>
-            <div className="mx-auto mt-4 max-w-[300px] px-2 text-center text-sm">
+            <div className="xxl:mt-[10%] mx-auto mt-4 max-w-[300px] px-2 text-center text-sm">
               {contactInfo.address}
             </div>
           </div>
@@ -348,7 +348,7 @@ const ContactPage = () => {
                                 value={field.value}
                               >
                                 <SelectTrigger
-                                  className="border-none text-white"
+                                  className="cursor-pointer border-none text-white"
                                   style={{
                                     backgroundColor:
                                       countryCodeValue &&
@@ -480,7 +480,7 @@ const ContactPage = () => {
                             value={field.value}
                           >
                             <SelectTrigger
-                              className="border-none text-white"
+                              className="cursor-pointer border-none text-white"
                               style={{
                                 backgroundColor: form.watch("service")
                                   ? "#f65009"

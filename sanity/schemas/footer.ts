@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "footer",
@@ -10,7 +11,13 @@ export default defineType({
       title: "Main Heading",
       type: "string",
       description: "The main call-to-action heading in the footer",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 50, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(50)
+          .error('Main heading must be 50 characters or less'),
     }),
     defineField({
       name: "copyrightText",
@@ -18,7 +25,13 @@ export default defineType({
       type: "string",
       description:
         "Copyright notice text (e.g., '© 2025 INEXOR, All right reserved')",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 70, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(70)
+          .error('Copyright text must be 70 characters or less'),
     }),
     defineField({
       name: "logo",
@@ -36,7 +49,13 @@ export default defineType({
       type: "string",
       description: "Text for the call-to-action button",
       initialValue: "Schedule a Call",
-      validation: (Rule) => Rule.required(),
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 15, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(15)
+          .error('CTA button text must be 15 characters or less'),
     }),
     defineField({
       name: "ctaButtonLink",
