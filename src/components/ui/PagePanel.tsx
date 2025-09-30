@@ -116,7 +116,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
           currentBreakpoint === "xxl"
             ? currentBreakpoint === "xxl"
               ? "64px"
-              : "56px"
+              : "76px"
             : "78px",
         left:
           currentBreakpoint === "lg" ||
@@ -140,7 +140,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
           currentBreakpoint === "xxl"
             ? currentBreakpoint === "xxl"
               ? "calc(100vh - 128px)"
-              : "calc(100vh - 112px)"
+              : "calc(100vh - 132px)"
             : "calc(100vh - 160px)",
       }}
     >
@@ -154,8 +154,14 @@ const PagePanel = ({ children }: PagePanelProps) => {
             <ChevronLeft size={20} />
           </button>
         </TooltipTrigger>
-        <TooltipContent 
-          side={buttonPosition === "top" ? "bottom" : buttonPosition === "bottom" ? "top" : "right"} 
+        <TooltipContent
+          side={
+            buttonPosition === "top"
+              ? "bottom"
+              : buttonPosition === "bottom"
+                ? "top"
+                : "right"
+          }
           className="text-brand-orange-500 z-[110]"
         >
           <p>GO BACK</p>

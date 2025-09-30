@@ -94,7 +94,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
           </div>
 
           {/* Author and Date */}
-          <div className="mb-4 flex items-center justify-between border-b-2 border-neutral-200 px-2 py-2">
+          <div className="mb-4 flex items-center justify-between border-b-2 border-neutral-200 px-12 py-2">
             <div className="flex items-center gap-2 lg:gap-4">
               {blogPost.author && (
                 <>

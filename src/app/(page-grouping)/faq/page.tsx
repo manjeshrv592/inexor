@@ -14,6 +14,7 @@ import {
   type FAQItem as FAQItemType,
   type FAQPage as FAQPageType,
 } from "@/lib/sanity";
+import { getFAQPageSettings, type FAQPageSettings } from "@/lib/sanity/faq";
 
 const FAQPage = () => {
   const [categories, setCategories] = useState<FAQCategory[]>([]);
@@ -21,6 +22,7 @@ const FAQPage = () => {
   const [activeCategory, setActiveCategory] = useState<string>("");
   const [activeQuestionId, setActiveQuestionId] = useState<string | null>(null);
   const [faqPageData, setFaqPageData] = useState<FAQPageType | null>(null);
+  const [faqPageSettings, setFaqPageSettings] = useState<FAQPageSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -41,13 +43,15 @@ const FAQPage = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [categoriesData, faqPageInfo] = await Promise.all([
+        const [categoriesData, faqPageInfo, faqSettings] = await Promise.all([
           getFAQCategories(),
           getFAQPage(),
+          getFAQPageSettings(),
         ]);
 
         setCategories(categoriesData);
         setFaqPageData(faqPageInfo);
+        setFaqPageSettings(faqSettings);
 
         // Set first category as active by default
         if (categoriesData.length > 0) {
@@ -93,9 +97,13 @@ const FAQPage = () => {
     }
   };
 
-  // Handle question click
+  // Handle question click - always keep one question open
   const handleQuestionClick = (questionId: string) => {
-    setActiveQuestionId(activeQuestionId === questionId ? null : questionId);
+    // Only change if clicking on a different question
+    // Clicking on the currently open question does nothing (keeps it open)
+    if (activeQuestionId !== questionId) {
+      setActiveQuestionId(questionId);
+    }
   };
 
   // Get current active question's answer for desktop display
@@ -121,10 +129,10 @@ const FAQPage = () => {
       <div className="relative lg:h-full">
         <div className="absolute inset-0 hidden size-full lg:block">
           <Image
-            src="/img/faq.jpg"
-            alt="Nature image"
+            src={faqPageSettings?.sidebarImage?.asset?.url || "/img/faq.jpg"}
+            alt={faqPageSettings?.sidebarImage?.alt || "FAQ sidebar image"}
             fill
-            className="object-cover grayscale"
+            className={`object-cover ${faqPageSettings?.sidebarImage?.isGrayscale !== false ? "grayscale" : ""}`}
           />
           {/* <div className="absolute inset-0 z-10 bg-black/60"></div> */}
         </div>

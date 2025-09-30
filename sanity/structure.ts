@@ -116,6 +116,9 @@ export const structure = (S: StructureBuilder) =>
               S.listItem()
                 .title("🔍 SEO Settings")
                 .child(S.documentTypeList("faqPage").title("FAQ Page SEO")),
+              S.listItem()
+                .title("⚙️ FAQ Page Settings")
+                .child(S.documentTypeList("faqPageSettings").title("FAQ Page Settings")),
               S.divider(),
               S.listItem()
                 .title("FAQ Categories")

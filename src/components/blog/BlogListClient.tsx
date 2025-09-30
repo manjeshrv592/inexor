@@ -105,9 +105,7 @@ const BlogListClient: React.FC<BlogListClientProps> = ({
           >
             <div className="xxl:h-[64px] xxl:w-[80px] relative h-[48px] w-[64px] flex-shrink-0">
               <Image
-                src={
-                  post.featuredImage?.asset.url || "/img/left-image.jpg"
-                }
+                src={post.featuredImage?.asset.url || "/img/left-image.jpg"}
                 alt={post.featuredImage?.alt || post.title}
                 fill
                 className="relative z-20 object-cover grayscale"
@@ -192,7 +190,7 @@ const BlogListClient: React.FC<BlogListClientProps> = ({
           padding="p-2 pr-1 py-4"
           className=""
         >
-          <div className="h-[calc(100vh-230px)] overflow-y-auto pr-1">
+          <div className="h-[calc(100vh-230px)] max-h-[400px] overflow-y-auto pr-1">
             <div className="space-y-2">
               {allBlogPosts.map((post: BlogPost, index: number) => (
                 <BlogCard key={post._id} post={post} index={index} />

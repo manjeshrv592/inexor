@@ -25,6 +25,30 @@ export default defineType({
       description: "Description text displayed below the page title",
     }),
     defineField({
+      name: "sidebarImage",
+      title: "Sidebar Image",
+      type: "image",
+      description: "Image displayed in the left sidebar on desktop",
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: "alt",
+          title: "Alt Text",
+          type: "string",
+          description: "Alternative text for accessibility",
+        },
+        {
+          name: "isGrayscale",
+          title: "Apply Grayscale Filter",
+          type: "boolean",
+          description: "Apply grayscale filter to the image",
+          initialValue: true,
+        },
+      ],
+    }),
+    defineField({
       name: "isActive",
       title: "Is Active",
       type: "boolean",

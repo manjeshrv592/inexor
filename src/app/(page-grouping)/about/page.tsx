@@ -8,20 +8,21 @@ const AboutPage = async () => {
   const { aboutPage } = await getAboutPageData();
   return (
     <div className="size-full grid-cols-[2fr_3fr_2fr] bg-[#2f2f2f] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] lg:grid">
-      <div className="relative h-44 lg:h-full">
-        <div className="absolute inset-0 size-full">
+      <div className="relative h-full">
+        <div className="absolute inset-0 size-full overflow-hidden bg-red-500">
           <Image
             src={aboutPage?.sidebarImage?.asset?.url || "/img/about-us.jpg"}
             alt={aboutPage?.sidebarImage?.alt || "About Us"}
-            fill
-            className={`object-cover ${
+            width={600}
+            height={1000}
+            className={`size-full scale-[102%] object-cover ${
               aboutPage?.sidebarImage?.isGrayscale !== false ? "grayscale" : ""
             }`}
           />
           {/* <div className="absolute inset-0 z-10 bg-black/80"></div> */}
         </div>
       </div>
-      <div className="xxl:h-[calc(100vh-128px)] col-span-2 h-[calc(100vh-118.14px)] pb-56 lg:h-[calc(100vh-112px)] lg:pb-0">
+      <div className="col-span-2 h-[calc(100vh-238px)] overflow-y-auto lg:h-full">
         <AutoScrollContainer>
           <div className="p-5 lg:px-12">
             {/* Page Header */}

@@ -140,7 +140,7 @@ const ServicesPage = () => {
           {/* <div className="absolute inset-0 bg-black/80">&nbsp;</div> */}
         </div>
         <div className="relative z-10 h-[calc(100vh-230px)] overflow-y-auto pr-1">
-          <div className="space-y-4">
+          <div className="flex h-full flex-col justify-center gap-4">
             {services.map((service, index) => (
               <Button
                 key={service._id}
@@ -213,13 +213,15 @@ const ServicesPage = () => {
                       className="object-cover grayscale"
                     />
                   </div>
-                  <div className="relative z-10 flex size-full flex-col items-center justify-center gap-2 text-center">
-                    <h2 className="font-michroma text-lg">
-                      {activeService.title.toUpperCase()}
-                    </h2>
-                    <h5 className="max-w-[300px]">
-                      {activeService.shortDescription}
-                    </h5>
+                  <div className="relative z-10 flex size-full items-center justify-center">
+                    <div className="flex flex-col items-center justify-center gap-2 bg-black/5 p-4 text-center backdrop-blur-[5px]">
+                      <h2 className="font-michroma text-lg">
+                        {activeService.title.toUpperCase()}
+                      </h2>
+                      <h5 className="max-w-[300px]">
+                        {activeService.shortDescription}
+                      </h5>
+                    </div>
                   </div>
                 </div>
 

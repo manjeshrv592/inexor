@@ -15,6 +15,7 @@ import servicesSection from "./servicesSection";
 import service from "./service";
 import faqCategory from "./faqCategory";
 import faqItem from "./faqItem";
+import faqPageSettings from "./faqPageSettings";
 // Legacy schemas - removed after consolidation into aboutPage
 // import processStep from "./processStep";
 // import processSection from "./processSection";
@@ -64,6 +65,7 @@ export const schemaTypes = [
   service,
   faqCategory,
   faqItem,
+  faqPageSettings,
   // Legacy schemas removed - consolidated into aboutPage
   // processStep,
   // processSection,
