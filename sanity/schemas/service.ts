@@ -178,12 +178,12 @@ export default defineType({
           type: "string",
           description: "Service heading for homepage",
           components: {
-            input: (props) => TextWithCounter({ ...props, maxLength: 90, fieldType: 'string' }),
+            input: (props) => TextWithCounter({ ...props, maxLength: 55, fieldType: 'string' }),
           },
           validation: (Rule) => 
             Rule.required()
-              .max(90)
-              .error('Heading must be 90 characters or less'),
+              .max(55)
+              .error('Heading must be 55 characters or less'),
         }),
         defineField({
           name: "description",
