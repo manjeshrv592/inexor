@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import TextWithCounter from "../components/TextWithCounter";
+import { createImageField, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
 
 export default defineType({
   name: "keyValuePillarItem",
@@ -32,15 +33,15 @@ export default defineType({
           .max(90)
           .error('Description must be 90 characters or less'),
     }),
-    defineField({
+    createImageField({
       name: "icon",
       title: "Icon",
-      type: "image",
-      description: "SVG icon for this pillar (preferably 28x28px)",
-      options: {
-        hotspot: true,
-      },
-      validation: (Rule) => Rule.required(),
+      description: `SVG icon for this pillar (preferably 28x28px). ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: true,
+      hotspot: true,
+      includeAlt: true,
+      includeCaption: false,
+      includeGrayscale: false,
     }),
     defineField({
       name: "slug",

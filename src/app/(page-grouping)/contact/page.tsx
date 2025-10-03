@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
 import {
   Form,
   FormControl,
@@ -39,27 +40,9 @@ import {
 
 const ContactPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState<{
-    type: "success" | "error";
-    text: string;
-  } | null>(null);
   const [contactInfo, setContactInfo] =
     useState<ContactInfo>(fallbackContactInfo);
-  const submitButtonRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to submit button when message is shown
-  useEffect(() => {
-    if (submitMessage && submitButtonRef.current) {
-      // Add a small delay to ensure the message is rendered
-      setTimeout(() => {
-        submitButtonRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "end",
-          inline: "nearest",
-        });
-      }, 100);
-    }
-  }, [submitMessage]);
 
   // Fetch contact info from Sanity on component mount
   useEffect(() => {
@@ -105,7 +88,6 @@ const ContactPage = () => {
     console.log("🎯 Form onSubmit called with data:", data);
 
     setIsSubmitting(true);
-    setSubmitMessage(null);
 
     try {
       console.log("📡 Making direct API call to /api/contact...");
@@ -128,20 +110,18 @@ const ContactPage = () => {
       const result = await response.json();
       console.log("📡 API Response:", result);
 
-      setSubmitMessage({
-        type: "success",
-        text: result.message || "Message sent successfully!",
+      toast.success(contactInfo.successMessage || result.message || "Message sent successfully!", {
+        duration: 5000,
       });
       form.reset(); // Reset form on success
     } catch (error) {
       console.error("❌ Form submission error:", error);
-      setSubmitMessage({
-        type: "error",
-        text:
-          error instanceof Error
-            ? error.message
-            : "Something went wrong. Please try again.",
-      });
+      toast.error(
+        contactInfo.failureMessage || "Something went wrong. Please try again.",
+        {
+          duration: 6000,
+        }
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -228,14 +208,14 @@ const ContactPage = () => {
               </div>
             </div>
           </div>
-          <div className="xxl:mt-[10%] mx-auto mt-4 hidden max-w-[300px] px-2 text-center text-sm xl:block">
+          <div className="xxl:mt-[10%] mx-auto mt-4 hidden max-w-[300px] px-2 text-center text-sm lg:block">
             {contactInfo.address}
           </div>
         </div>
       </div>
 
       {/* Right Panel - Contact Form */}
-      <div className="h-[calc(100vh-333px)] overflow-y-auto bg-neutral-800 xl:h-full">
+      <div className="h-[calc(100vh-333px)] overflow-y-auto bg-neutral-800 lg:h-full">
         <div className="pb-4">
           <h3 className="font-michroma py-5 text-center">
             Contact <span className="text-brand-orange-500">Information</span>
@@ -290,6 +270,17 @@ const ContactPage = () => {
                         {...field}
                         type="email"
                         placeholder="Enter your email address"
+                        onKeyDown={(e) => {
+                          // Prevent space bar from creating spaces
+                          if (e.key === " " || e.code === "Space") {
+                            e.preventDefault();
+                          }
+                        }}
+                        onChange={(e) => {
+                          // Remove spaces from email input (for paste operations)
+                          const value = e.target.value.replace(/\s/g, "");
+                          field.onChange(value);
+                        }}
                       />
                     </FormControl>
                     <FormMessage className="text-red-400" />
@@ -543,7 +534,7 @@ const ContactPage = () => {
               />
 
               {/* Submit Button */}
-              <div className="text-center" ref={submitButtonRef}>
+              <div className="text-center">
                 <Button
                   className="font-michroma text-xs tracking-[1px]"
                   type="submit"
@@ -560,19 +551,6 @@ const ContactPage = () => {
                   {isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
               </div>
-
-              {/* Submit Message */}
-              {submitMessage && (
-                <div
-                  className={`rounded-lg p-4 text-center text-xs ${
-                    submitMessage.type === "success"
-                      ? "border border-green-700 bg-green-900/30 text-green-400"
-                      : "border border-red-700 bg-red-900/30 text-red-400"
-                  }`}
-                >
-                  {submitMessage.text}
-                </div>
-              )}
             </form>
           </Form>
         </div>

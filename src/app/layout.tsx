@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Michroma, Raleway } from "next/font/google";
 import { ViewTransitions } from "next-view-transitions";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Header from "@/components/layout/header/Header";
 import AuthProvider from "@/components/providers/AuthProvider";
@@ -105,7 +106,7 @@ export default async function RootLayout({
 
               <OurServices
                 servicesSection={servicesSection}
-                serviceItems={serviceItems}
+                serviceItems={[...serviceItems].reverse()}
               />
               <Maps />
               <Why whyData={whyData} whyItems={whyItems} />
@@ -115,6 +116,38 @@ export default async function RootLayout({
             </main>
             {children}
             <LogoutButton />
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  background: '#171717', // neutral-900
+                  color: '#f9fafb',
+                  border: '1px solid #262626', // neutral-800
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                },
+                success: {
+                  iconTheme: {
+                    primary: '#10b981',
+                    secondary: '#f9fafb',
+                  },
+                  style: {
+                    border: '1px solid #262626', // neutral-800
+                  },
+                },
+                error: {
+                  iconTheme: {
+                    primary: '#ef4444',
+                    secondary: '#f9fafb',
+                  },
+                  style: {
+                    border: '1px solid #262626', // neutral-800
+                  },
+                },
+              }}
+            />
           </AuthProvider>
         </body>
       </html>

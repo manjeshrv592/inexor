@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { createImageField, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
 
 export default defineType({
   name: "seo",
@@ -51,14 +52,15 @@ export default defineType({
       description:
         "Description for social media sharing (falls back to Meta Description if not set)",
     }),
-    defineField({
+    createImageField({
       name: "openGraphImage",
       title: "Open Graph Image",
-      type: "image",
-      description: "Image for social media sharing (1200x630px recommended)",
-      options: {
-        hotspot: true,
-      },
+      description: `Image for social media sharing (1200x630px recommended). ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: false,
+      hotspot: true,
+      includeAlt: true,
+      includeCaption: false,
+      includeGrayscale: false,
     }),
     defineField({
       name: "canonicalUrl",

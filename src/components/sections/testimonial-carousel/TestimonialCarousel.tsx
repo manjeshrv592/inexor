@@ -3,7 +3,7 @@
 import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay, EffectFade, Controller } from "swiper/modules";
+import { Navigation, Autoplay } from "swiper/modules";
 import { Swiper as SwiperType } from "swiper";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "../../ui/button";
@@ -14,7 +14,6 @@ import { Testimonial } from "@/lib/sanity";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/autoplay";
-import "swiper/css/effect-fade";
 
 // Custom styles to prevent overflow
 const swiperStyles = {
@@ -26,34 +25,27 @@ const swiperStyles = {
 
 interface TestimonialCarouselProps {
   testimonials: Testimonial[];
-  autoplayDuration: number;
-  enableAutoplay: boolean;
+  autoplayDuration?: number;
+  enableAutoplay?: boolean;
 }
 
 const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
   testimonials,
-  autoplayDuration,
-  enableAutoplay,
+  autoplayDuration = 5,
+  enableAutoplay = true,
 }) => {
-  const imageSwiperRef = useRef<SwiperType | null>(null);
-  const contentSwiperRef = useRef<SwiperType | null>(null);
+  const swiperRef = useRef<SwiperType | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
 
   const handleMouseEnter = () => {
-    if (imageSwiperRef.current?.autoplay) {
-      imageSwiperRef.current.autoplay.stop();
-    }
-    if (contentSwiperRef.current?.autoplay) {
-      contentSwiperRef.current.autoplay.stop();
+    if (swiperRef.current?.autoplay) {
+      swiperRef.current.autoplay.stop();
     }
   };
 
   const handleMouseLeave = () => {
-    if (imageSwiperRef.current?.autoplay && enableAutoplay) {
-      imageSwiperRef.current.autoplay.start();
-    }
-    if (contentSwiperRef.current?.autoplay && enableAutoplay) {
-      contentSwiperRef.current.autoplay.start();
+    if (swiperRef.current?.autoplay && enableAutoplay) {
+      swiperRef.current.autoplay.start();
     }
   };
 
@@ -67,14 +59,14 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
   }
 
   const handlePrev = () => {
-    if (imageSwiperRef.current && !isAnimating) {
-      imageSwiperRef.current.slidePrev();
+    if (swiperRef.current && !isAnimating) {
+      swiperRef.current.slidePrev();
     }
   };
 
   const handleNext = () => {
-    if (imageSwiperRef.current && !isAnimating) {
-      imageSwiperRef.current.slideNext();
+    if (swiperRef.current && !isAnimating) {
+      swiperRef.current.slideNext();
     }
   };
 
@@ -85,99 +77,40 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
   };
 
   return (
-    <article 
-      className="xxl:grid-cols-[400px_1fr] lg:grid lg:h-[360px] lg:grid-cols-[360px_1fr] w-full max-w-full overflow-hidden"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <span className="mb-2 block text-center lg:hidden">
-        <Image
-          src="/quotes.svg"
-          alt="quotes icon"
-          height={17}
-          width={12}
-          className="mx-auto"
-        />
-      </span>
+    <>
+      <div className="flex items-center justify-center gap-6">
+        {/* Left button container */}
+        {/* <div className="hidden justify-center gap-4 text-white md:flex">
+          <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handlePrev}
+              disabled={isAnimating}
+            >
+              <ArrowLeft size={16} />
+            </Button>
+          </motion.span>
+        </div> */}
 
-      {/* Image Section */}
-      <div className="xxl:max-w-[400px] relative mx-auto h-64 w-full max-w-[360px] overflow-hidden md:h-[360px] min-w-0">
-        <Swiper
-          modules={[Navigation, Autoplay, Controller]}
-          spaceBetween={0}
-          slidesPerView={1}
-          loop={testimonials.length > 1}
-          autoplay={
-            enableAutoplay && testimonials.length > 1
-              ? {
-                  delay: autoplayDuration * 1000,
-                  disableOnInteraction: false,
-                }
-              : false
-          }
-          speed={500}
-          onSwiper={(swiper) => {
-            imageSwiperRef.current = swiper;
-          }}
-          onSlideChange={handleSlideChange}
-          className="!h-full !w-full"
-          style={swiperStyles}
+        {/* Main testimonial slider */}
+        <div
+          className="w-full max-w-full overflow-hidden"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
-          {testimonials.map((testimonial, index) => (
-            <SwiperSlide key={index} className="!w-full">
-              <div className="relative h-full w-full max-w-full overflow-hidden">
-                {testimonial.image?.asset?.url ? (
-                  <Image
-                    src={testimonial.image.asset.url}
-                    alt={testimonial.name}
-                    width={400}
-                    height={400}
-                    className="mx-auto h-64 w-full object-cover md:h-full"
-                    priority={index === 0}
-                  />
-                ) : (
-                  <div className="mx-auto flex h-64 w-full items-center justify-center bg-neutral-800 md:h-full">
-                    <div className="text-center">
-                      <div className="mb-2 text-4xl">👤</div>
-                      <div className="text-xs text-neutral-400">No Image</div>
-                    </div>
-                  </div>
-                )}
-                <motion.div
-                  className="absolute bottom-1 left-0 flex w-full flex-col items-center gap-1 bg-black/30 px-4 py-2 backdrop-blur-3xl md:bottom-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.3 }}
-                >
-                  <span className="font-michroma text-brand-orange-500 text-[10px] md:text-base">
-                    {testimonial.name}
-                  </span>
-                  <span className="text-[10px] tracking-widest text-white">
-                    {testimonial.position}, {testimonial.company}
-                  </span>
-                </motion.div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+          <span className="mb-2 block text-center lg:hidden">
+            <Image
+              src="/quotes.svg"
+              alt="quotes icon"
+              height={17}
+              width={12}
+              className="mx-auto"
+            />
+          </span>
 
-      {/* Content Section */}
-      <div className="xxl:px-28 flex flex-col py-6 text-center lg:bg-neutral-900 lg:px-16 w-full max-w-full min-w-0 overflow-hidden">
-        <span className="mb-4 hidden text-center lg:block">
-          <Image
-            src="/quotes.svg"
-            alt="quotes icon"
-            height={27}
-            width={22}
-            className="mx-auto"
-          />
-        </span>
-
-        {/* Content Swiper */}
-        <div className="w-full flex-1 max-w-full min-w-0 overflow-hidden">
           <Swiper
-            modules={[Navigation, Autoplay, EffectFade, Controller]}
+            modules={[Navigation, Autoplay]}
             spaceBetween={0}
             slidesPerView={1}
             loop={testimonials.length > 1}
@@ -189,61 +122,80 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
                   }
                 : false
             }
-            speed={400}
-            effect="fade"
-            fadeEffect={{
-              crossFade: true,
-            }}
+            speed={500}
             onSwiper={(swiper) => {
-              contentSwiperRef.current = swiper;
-              // Sync with image swiper
-              if (imageSwiperRef.current) {
-                swiper.controller.control = imageSwiperRef.current;
-                imageSwiperRef.current.controller.control = swiper;
-              }
+              swiperRef.current = swiper;
             }}
+            onSlideChange={handleSlideChange}
             className="!h-full !w-full"
             style={swiperStyles}
           >
             {testimonials.map((testimonial, index) => (
               <SwiperSlide key={index} className="!w-full">
-                <motion.div
-                  className="flex h-full w-full max-w-full flex-col overflow-hidden"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.4,
-                    ease: [0.25, 0.46, 0.45, 0.94],
-                  }}
-                >
-                  <div className="mb-4 w-full max-w-full bg-neutral-950 p-8">
-                    <h4 className="text-brand-orange-500 font-michroma xxl:text-xl text-sm md:text-base break-words">
-                      &quot;{testimonial.title}&quot;
-                    </h4>
+                <article className="xxl:grid-cols-[400px_1fr] w-full max-w-full overflow-hidden lg:grid lg:h-[360px] lg:grid-cols-[360px_1fr]">
+                  {/* Image Section */}
+                  <div className="xxl:max-w-[400px] relative mx-auto h-64 w-full max-w-[360px] min-w-0 overflow-hidden md:h-[360px]">
+                    {testimonial.image?.asset?.url ? (
+                      <Image
+                        src={testimonial.image.asset.url}
+                        alt={testimonial.name}
+                        width={400}
+                        height={400}
+                        className="mx-auto h-64 w-full object-cover md:h-full"
+                        priority={index === 0}
+                      />
+                    ) : (
+                      <div className="mx-auto flex h-64 w-full items-center justify-center bg-neutral-800 md:h-full">
+                        <div className="text-center">
+                          <div className="mb-2 text-4xl">👤</div>
+                          <div className="text-xs text-neutral-400">
+                            No Image
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    <div className="absolute bottom-1 left-0 flex w-full flex-col items-center gap-1 bg-black/30 px-4 py-2 backdrop-blur-3xl md:bottom-4">
+                      <span className="font-michroma text-brand-orange-500 text-[10px] md:text-base">
+                        {testimonial.name}
+                      </span>
+                      <span className="text-[10px] tracking-widest text-white">
+                        {testimonial.position}, {testimonial.company}
+                      </span>
+                    </div>
                   </div>
 
-                  <p className="xxl:mb-16 flex-1 w-full max-w-full text-center text-sm text-neutral-300 md:text-base break-words">
-                    &quot;{testimonial.quote}&quot;
-                  </p>
-                </motion.div>
+                  {/* Content Section */}
+                  <div className="xxl:px-28 flex w-full max-w-full min-w-0 flex-col overflow-hidden py-6 text-center lg:bg-neutral-900 lg:px-16">
+                    <span className="mb-4 hidden text-center lg:block">
+                      <Image
+                        src="/quotes.svg"
+                        alt="quotes icon"
+                        height={27}
+                        width={22}
+                        className="mx-auto"
+                      />
+                    </span>
+
+                    <div className="flex h-full w-full max-w-full flex-col overflow-hidden">
+                      <div className="mb-4 w-full max-w-full bg-neutral-950 p-8">
+                        <h4 className="text-brand-orange-500 font-michroma xxl:text-xl text-sm break-words md:text-base">
+                          &quot;{testimonial.title}&quot;
+                        </h4>
+                      </div>
+
+                      <p className="xxl:mb-16 w-full max-w-full flex-1 text-center text-sm break-words text-neutral-300 md:text-base">
+                        &quot;{testimonial.quote}&quot;
+                      </p>
+                    </div>
+                  </div>
+                </article>
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
 
-        {/* Controls */}
-        <div className="flex justify-center gap-4 text-white">
-          <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={handlePrev}
-              disabled={isAnimating}
-            >
-              <ArrowLeft size={16} />
-            </Button>
-          </motion.span>
-
+        {/* Right button container */}
+        {/* <div className="hidden justify-center gap-4 text-white md:flex ">
           <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               size="sm"
@@ -254,9 +206,35 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
               <ArrowRight size={16} />
             </Button>
           </motion.span>
-        </div>
+        </div> */}
       </div>
-    </article>
+      {/* Down arrows */}
+      <div className="mt-6 flex justify-center gap-4 text-white">
+        <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Button
+            className="px-6"
+            size="sm"
+            variant="outline"
+            onClick={handlePrev}
+            disabled={isAnimating}
+          >
+            <ArrowLeft size={16} />
+          </Button>
+        </motion.span>
+
+        <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Button
+            className="px-6"
+            size="sm"
+            variant="outline"
+            onClick={handleNext}
+            disabled={isAnimating}
+          >
+            <ArrowRight size={16} />
+          </Button>
+        </motion.span>
+      </div>
+    </>
   );
 };
 

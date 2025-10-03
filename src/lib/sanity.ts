@@ -282,6 +282,9 @@ export interface ServiceForHomepage {
   _id: string;
   code: string;
   title: string;
+  slug: {
+    current: string;
+  };
   homepagePreview: {
     heading1: string;
     description: string;

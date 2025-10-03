@@ -36,14 +36,19 @@ const NavItem: React.FC<NavItemProps> = ({
 
   const handleNavigation = (href: string) => {
     if (typeof window !== "undefined") {
-      // Special handling for resources route
+      // Special handling for resources and FAQ routes
       const isResourcesRoute = href === "/resources";
       const isCurrentlyOnResources = pathname.startsWith("/resources");
+      const isFAQRoute = href === "/faq";
+      const isCurrentlyOnFAQ = pathname.startsWith("/faq");
 
       // If user clicks on the same route they're already on, navigate to home instead
       let targetHref;
       if (isResourcesRoute && isCurrentlyOnResources) {
         // User is on /resources/slug and clicks Resources -> go home
+        targetHref = "/";
+      } else if (isFAQRoute && isCurrentlyOnFAQ) {
+        // User is on /faq/category/question and clicks FAQ -> go home
         targetHref = "/";
       } else if (pathname === href) {
         // Normal same route logic

@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import TextWithCounter from "../components/TextWithCounter";
+import { createImageField, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
 
 export default defineType({
   name: "hero",
@@ -30,14 +31,15 @@ export default defineType({
           .max(250)
           .error('Description must be 250 characters or less'),
     }),
-    defineField({
+    createImageField({
       name: "backgroundImage",
       title: "Background Image",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
-      validation: (Rule) => Rule.required(),
+      description: `Hero section background image. ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: true,
+      hotspot: true,
+      includeAlt: false,
+      includeCaption: false,
+      includeGrayscale: false,
     }),
     defineField({
       name: "isActive",

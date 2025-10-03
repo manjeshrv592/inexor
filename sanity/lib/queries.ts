@@ -144,6 +144,7 @@ export const SERVICES_FOR_HOMEPAGE_QUERY = groq`*[_type == "service" && isActive
   _id,
   code,
   title,
+  slug,
   homepagePreview {
     heading1,
     description,

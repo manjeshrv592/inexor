@@ -1,47 +1,21 @@
 import { defineField, defineType } from "sanity";
+import { createImageField, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
 
 export default defineType({
   name: "imageTextBlock",
   title: "Image & Text Side by Side",
   type: "object",
   fields: [
-    defineField({
+    createImageField({
       name: "image",
       title: "Image",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        {
-          name: "alt",
-          type: "string",
-          title: "Alternative Text",
-          description: "Important for SEO and accessibility",
-        },
-        {
-          name: "caption",
-          type: "string",
-          title: "Caption",
-          description: "Optional caption for the image",
-        },
-        {
-          name: "isGrayscale",
-          type: "boolean",
-          title: "Grayscale",
-          description: "Apply grayscale filter to this image",
-          initialValue: true, // Default to grayscale to match your site's style
-        },
-      ],
-      validation: (Rule) => 
-        Rule.required()
-          .custom((image) => {
-            if (!image?.asset) {
-              return 'Please upload an image before saving this block';
-            }
-            return true;
-          })
-          .error('Image is required for Image & Text blocks'),
+      description: `Image for side-by-side layout. ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: true,
+      hotspot: true,
+      includeAlt: true,
+      includeCaption: true,
+      includeGrayscale: true,
+      grayscaleDefault: true,
     }),
     defineField({
       name: "text",

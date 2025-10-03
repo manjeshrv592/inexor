@@ -1,7 +1,7 @@
 "use client";
 import { useTransitionRouter } from "next-view-transitions";
 import { usePathname } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ChevronUp } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import {
   Tooltip,
@@ -48,15 +48,10 @@ const PagePanel = ({ children }: PagePanelProps) => {
     if (currentBreakpoint === "sm" || currentBreakpoint === "md") {
       setButtonPosition("bottom");
       console.log("📱 Mobile view: Positioning go back button at BOTTOM");
-    } else if (pathname === "/contact" && (currentBreakpoint === "lg" || currentBreakpoint === "xl" || currentBreakpoint === "xxl")) {
-      setButtonPosition("middle");
-      console.log("📞 Contact page on lg+ screens: Positioning go back button at MIDDLE (right side)");
-    } else if (
-      navigationSource === "contact-button" &&
-      pathname === "/contact"
-    ) {
+    } else if (pathname === "/contact") {
+      // Always position at bottom for contact page with upward arrow
       setButtonPosition("bottom");
-      console.log("⬇️ Contact button: Positioning go back button at BOTTOM");
+      console.log("📞 Contact page: Positioning go back button at BOTTOM with upward arrow");
     } else if (navigationSource === "footer") {
       setButtonPosition("top");
       console.log("⬆️ Footer navigation: Positioning go back button at TOP");
@@ -101,6 +96,10 @@ const PagePanel = ({ children }: PagePanelProps) => {
       case "top":
         return `${baseClasses} top-0 left-1/2 -translate-y-1/2 -translate-x-1/2 -rotate-90`;
       case "bottom":
+        // For contact page, don't rotate since we're using ChevronUp icon
+        if (pathname === "/contact") {
+          return `${baseClasses} bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2`;
+        }
         return `${baseClasses} bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 rotate-90`;
       case "middle":
       default:
@@ -154,7 +153,11 @@ const PagePanel = ({ children }: PagePanelProps) => {
             onClick={handleGoBackClick}
             className={getButtonPositionClasses()}
           >
-            <ChevronLeft size={20} />
+            {pathname === "/contact" && buttonPosition === "bottom" ? (
+              <ChevronUp size={20} />
+            ) : (
+              <ChevronLeft size={20} />
+            )}
           </button>
         </TooltipTrigger>
         <TooltipContent

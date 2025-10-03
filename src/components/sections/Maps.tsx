@@ -26,9 +26,9 @@ const Maps = () => {
   const description =
     mapsSection?.description ||
     "Reach Over 120 Markets With Zero Compliance Issues";
-  const instructionText =
-    mapsSection?.instructionText ||
-    "Click to interact with the map and select a continent to view service availability for your country";
+  // const instructionText =
+  //   mapsSection?.instructionText ||
+  //   "Click to interact with the map and select a continent to view service availability for your country";
 
   const handleMapInteraction = useCallback(() => {
     setHasInteracted(true);
@@ -47,7 +47,8 @@ const Maps = () => {
 
           <div className="relative">
             {/* Map instruction tooltip - positioned absolutely to prevent layout shift */}
-            {!hasInteracted && (
+            {/* Center double line tooltip */}
+            {/* {!hasInteracted && (
               <div className="absolute -top-3 left-1/2 z-20 -translate-x-1/2 transform">
                 <div className="relative inline-block">
                   <div className="max-w-md rounded-lg bg-[#1a1a1a]/80 px-6 py-3 text-center text-white shadow-lg backdrop-blur-sm">
@@ -69,7 +70,39 @@ const Maps = () => {
                     </div>
                     <p className="text-xs text-gray-300">{instructionText}</p>
                   </div>
-                  {/* Tooltip arrow */}
+
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 transform">
+                    <div
+                      className="h-0 w-0 border-t-8 border-r-8 border-l-8 border-r-transparent border-l-transparent"
+                      style={{ borderTopColor: "#1a1a1a" }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            )} */}
+            {/* Center single line tooltip */}
+            {!hasInteracted && (
+              <div className="absolute -top-3 left-1/2 z-20 -translate-x-1/2 transform">
+                <div className="relative inline-block">
+                  <div className="max-w-md rounded-lg bg-[#1a1a1a]/80 px-6 py-3 text-center text-white shadow-lg backdrop-blur-sm">
+                    <div className="mb-1 flex items-center justify-center">
+                      <svg
+                        className="mr-2 h-4 w-4 text-orange-500"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <span className="text-sm font-medium">
+                        Click To Interact
+                      </span>
+                    </div>
+                  </div>
+
                   <div className="absolute top-full left-1/2 -translate-x-1/2 transform">
                     <div
                       className="h-0 w-0 border-t-8 border-r-8 border-l-8 border-r-transparent border-l-transparent"

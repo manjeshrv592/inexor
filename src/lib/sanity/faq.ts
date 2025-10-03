@@ -19,7 +19,17 @@ export interface FAQPageSettings {
 
 export async function getFAQPageSettings(): Promise<FAQPageSettings> {
   try {
-    const data = await client.fetch(faqPageSettingsQuery);
+    const data = await client.fetch(
+      faqPageSettingsQuery,
+      {},
+      {
+        cache: 'force-cache',
+        next: { 
+          revalidate: 3600, // Revalidate every hour
+          tags: ['faq-settings']
+        }
+      }
+    );
     return data || {};
   } catch (error) {
     console.error("Error fetching FAQ page settings:", error);

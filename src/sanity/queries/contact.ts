@@ -10,6 +10,8 @@ export const contactInfoQuery = groq`
     subTitle,
     description,
     address,
+    successMessage,
+    failureMessage,
     isActive,
     lastUpdated
   }

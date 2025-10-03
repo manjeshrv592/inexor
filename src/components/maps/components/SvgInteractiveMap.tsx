@@ -68,6 +68,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
   );
   // Removed unused state variables: currentZoomLevel and currentTransform
   const isTransitioningRef = useRef(false);
+  const [showInfoTooltip, setShowInfoTooltip] = useState(false);
 
   const svgElementRef = useRef<Selection<
     SVGSVGElement,
@@ -83,6 +84,15 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
 
   // Map dimensions from config
   const { width, height } = SVG_MAP_CONFIG;
+
+  // Simple hover handlers for tooltip
+  const handleMouseEnter = () => {
+    setShowInfoTooltip(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowInfoTooltip(false);
+  };
 
   useEffect(() => {
     // Load GeoJSON data
@@ -731,6 +741,47 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
       {/* Debugging tooltip removed - country names are shown in main tooltip */}
 
       {/* View mode indicator and back button - commented out continent view text and button - can be uncommented when needed in future */}
+
+      {/* Info icon tooltip in right corner */}
+      <div className="absolute top-2 right-2 z-20">
+        <div className="relative">
+          <div
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-orange-500/20 backdrop-blur-sm transition-all duration-200 hover:bg-orange-500/30"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <svg
+              className="h-5 w-5 text-orange-500"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+
+          {/* Tooltip */}
+          {showInfoTooltip && (
+            <div className="absolute top-1/2 right-full mr-2 -translate-y-1/2 transform transition-all duration-300">
+              <div className="relative">
+                <div className="rounded-lg bg-[#1a1a1a]/90 px-3 py-2 text-sm whitespace-nowrap text-white shadow-lg backdrop-blur-sm">
+                  Interactive map
+                </div>
+                {/* Arrow pointing right */}
+                <div className="absolute top-1/2 left-full -translate-y-1/2 transform">
+                  <div
+                    className="h-0 w-0 border-t-4 border-b-4 border-l-4 border-t-transparent border-b-transparent"
+                    style={{ borderLeftColor: "#1a1a1a" }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Zoom Controls with Lucide Icons */}
       <div className="absolute right-4 bottom-4 flex flex-col gap-2">

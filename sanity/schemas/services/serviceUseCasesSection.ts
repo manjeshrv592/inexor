@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { createImageField, IMAGE_UPLOAD_HELP_TEXT } from "../../lib/imageConfig";
 
 export default defineType({
   name: "serviceUseCasesSection",
@@ -12,18 +13,15 @@ export default defineType({
       initialValue: "Use cases",
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
+    createImageField({
       name: "image",
       title: "Side Image",
-      type: "image",
-      options: { hotspot: true },
-      fields: [
-        {
-          name: "alt",
-          type: "string",
-          title: "Alternative Text",
-        },
-      ],
+      description: `Image displayed alongside use cases. ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: false,
+      hotspot: true,
+      includeAlt: true,
+      includeCaption: false,
+      includeGrayscale: false,
     }),
     defineField({
       name: "steps",

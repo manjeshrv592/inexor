@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import TextWithCounter from "../components/TextWithCounter";
+import { createImageField, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
 
 export default defineType({
   name: "footer",
@@ -33,15 +34,15 @@ export default defineType({
           .max(70)
           .error('Copyright text must be 70 characters or less'),
     }),
-    defineField({
+    createImageField({
       name: "logo",
       title: "Footer Logo",
-      type: "image",
-      description: "Company logo for the footer",
-      options: {
-        hotspot: true,
-      },
-      validation: (Rule) => Rule.required(),
+      description: `Company logo for the footer. ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: true,
+      hotspot: true,
+      includeAlt: true,
+      includeCaption: false,
+      includeGrayscale: false,
     }),
     defineField({
       name: "ctaButtonText",

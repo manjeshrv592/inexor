@@ -1,26 +1,28 @@
-export default {
+import { defineType } from "sanity";
+import { createImageField, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
+
+const clientLogoSchema = defineType({
   name: "clientLogo",
   title: "Client Logo",
   type: "object",
   fields: [
-    {
+    createImageField({
       name: "logo",
       title: "Logo",
-      type: "image",
-      description:
-        "Recommended size: 240x120px (2x for retina). SVG format preferred for best quality.",
-      validation: (Rule: any) => Rule.required(),
-      options: {
-        accept: "image/svg+xml,image/*",
-      },
-    },
+      description: `Client logo image. Recommended size: 240x120px (2x for retina). ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: true,
+      hotspot: false,
+      includeAlt: false,
+      includeCaption: false,
+      includeGrayscale: false,
+    }),
     {
       name: "alt",
       title: "Alt Text",
       type: "string",
       description:
         'Brief description of the logo for accessibility (e.g., "IBM Logo")',
-      validation: (Rule: any) => Rule.required(),
+      validation: (Rule) => Rule.required(),
     },
   ],
   preview: {
@@ -29,4 +31,6 @@ export default {
       media: "logo",
     },
   },
-};
+});
+
+export default clientLogoSchema;

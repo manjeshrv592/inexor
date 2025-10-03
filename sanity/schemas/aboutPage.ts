@@ -1,4 +1,7 @@
 import { defineField, defineType } from "sanity";
+import { StringInputProps } from "sanity";
+import { createImageField, createInlineImageBlock, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "aboutPage",
@@ -10,39 +13,38 @@ export default defineType({
       title: "Page Title",
       type: "string",
       description:
-        "Main title displayed on the About Us page (e.g., 'About Inexor')",
-      validation: (Rule) => Rule.required(),
+        "Main title displayed on the About Us page (25 characters max)",
+      components: {
+        input: (props: StringInputProps) => TextWithCounter({ ...props, maxLength: 25, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(25)
+          .error('Page title must be 25 characters or less'),
     }),
     defineField({
       name: "pageSubtitle",
       title: "Page Subtitle",
       type: "string",
       description:
-        "Subtitle displayed below the main title (e.g., 'Your Global Trade Compliance Partner')",
+        "Subtitle displayed below the main title (55 characters max)",
+      components: {
+        input: (props: StringInputProps) => TextWithCounter({ ...props, maxLength: 55, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.max(55)
+          .error('Page subtitle must be 55 characters or less'),
     }),
-    defineField({
+    createImageField({
       name: "sidebarImage",
       title: "Sidebar Image",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        {
-          name: "alt",
-          type: "string",
-          title: "Alternative Text",
-          description: "Important for SEO and accessibility",
-        },
-        {
-          name: "isGrayscale",
-          type: "boolean",
-          title: "Grayscale",
-          description: "Apply grayscale filter to this image",
-          initialValue: true, // Default to grayscale to match your site's style
-        },
-      ],
-      description: "Image displayed in the sidebar of the About Us page",
+      description: `Image displayed in the sidebar of the About Us page. ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: false,
+      hotspot: true,
+      includeAlt: true,
+      includeCaption: false,
+      includeGrayscale: true,
+      grayscaleDefault: true,
     }),
     defineField({
       name: "content",
@@ -106,31 +108,12 @@ export default defineType({
             ],
           },
         },
-        {
-          type: "image",
-          options: {
-            hotspot: true,
-          },
-          fields: [
-            {
-              name: "alt",
-              type: "string",
-              title: "Alternative Text",
-            },
-            {
-              name: "caption",
-              type: "string",
-              title: "Caption",
-            },
-            {
-              name: "isGrayscale",
-              type: "boolean",
-              title: "Grayscale",
-              description: "Apply grayscale filter to this image",
-              initialValue: true, // Default to grayscale to match your site's style
-            },
-          ],
-        },
+        createInlineImageBlock({
+          includeAlt: true,
+          includeCaption: true,
+          includeGrayscale: true,
+          grayscaleDefault: true,
+        }),
         {
           type: "imageTextBlock",
         },

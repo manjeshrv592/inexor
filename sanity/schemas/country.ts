@@ -1,5 +1,7 @@
 import { defineField, defineType } from "sanity";
+import { StringInputProps } from "sanity";
 import PercentageInput from "../components/PercentageInput";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "country",
@@ -87,9 +89,9 @@ export default defineType({
       name: "tax",
       title: "Tax (%)",
       type: "string",
-      description: "Enter tax percentage (% will be added automatically)",
+      description: "Enter tax percentage (3 characters max, % will be added automatically)",
       components: {
-        input: PercentageInput,
+        input: (props) => PercentageInput({ ...props, maxLength: 3 }),
       },
       hidden: ({ document }) => !document?.isActive,
       validation: (Rule) =>
@@ -98,6 +100,11 @@ export default defineType({
           if (isActive && !value) {
             return "Tax is required when service is active";
           }
+          // Remove % sign for length validation
+          const numericValue = value ? value.replace('%', '') : '';
+          if (numericValue.length > 3) {
+            return "Tax must be 3 characters or less";
+          }
           return true;
         }),
     }),
@@ -105,9 +112,9 @@ export default defineType({
       name: "duties",
       title: "Duties (%)",
       type: "string",
-      description: "Enter duties percentage (% will be added automatically)",
+      description: "Enter duties percentage (3 characters max, % will be added automatically)",
       components: {
-        input: PercentageInput,
+        input: (props) => PercentageInput({ ...props, maxLength: 3 }),
       },
       hidden: ({ document }) => !document?.isActive,
       validation: (Rule) =>
@@ -115,6 +122,11 @@ export default defineType({
           const isActive = context.document?.isActive;
           if (isActive && !value) {
             return "Duties is required when service is active";
+          }
+          // Remove % sign for length validation
+          const numericValue = value ? value.replace('%', '') : '';
+          if (numericValue.length > 3) {
+            return "Duties must be 3 characters or less";
           }
           return true;
         }),
@@ -129,9 +141,24 @@ export default defineType({
         defineField({
           name: "duration",
           title: "Duration",
-          type: "number",
-          description: "Enter the duration number",
-          validation: (Rule) => Rule.required().positive().integer(),
+          type: "string",
+          description: "Enter the duration number (5 characters max)",
+          components: {
+            input: (props: StringInputProps) => TextWithCounter({ ...props, maxLength: 5, fieldType: 'string' }),
+          },
+          validation: (Rule) => 
+            Rule.required()
+              .max(5)
+              .error('Duration must be 5 characters or less')
+              .custom((value) => {
+                // Check if it's a valid positive number
+                if (!value) return "Duration is required";
+                const num = parseFloat(value);
+                if (isNaN(num) || num <= 0) {
+                  return "Duration must be a positive number";
+                }
+                return true;
+              }),
         }),
         defineField({
           name: "unit",

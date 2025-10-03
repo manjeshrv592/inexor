@@ -20,7 +20,7 @@ interface ServiceComponentProps {
     };
     alt?: string;
   };
-  serviceCode: string;
+  slug: string;
   title?: string;
 }
 
@@ -29,7 +29,7 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
   heading1,
   description,
   backgroundImage,
-  serviceCode,
+  slug,
   title,
 }) => {
   const backgroundImageUrl = backgroundImage?.asset?.url;
@@ -73,7 +73,7 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
           &quot;{description}&quot;
         </p>
         <div className="mt-4 text-center">
-          <Link href={`/services?service=${serviceCode}`}>
+          <Link href={`/services/${slug}`}>
             <Button
               className="font-michroma text-[10px] tracking-[1px] xl:text-xs"
               size={"sm"}

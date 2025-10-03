@@ -2,8 +2,12 @@ import React, { useCallback } from 'react';
 import { TextInput, Box, Flex, useTheme } from '@sanity/ui';
 import { StringInputProps, set, unset } from 'sanity';
 
-const PercentageInput: React.FC<StringInputProps> = (props) => {
-  const { value, onChange, elementProps } = props;
+interface PercentageInputProps extends StringInputProps {
+  maxLength?: number;
+}
+
+const PercentageInput: React.FC<PercentageInputProps> = (props) => {
+  const { value, onChange, elementProps, maxLength = 10 } = props;
   const theme = useTheme();
   
   // Get colors from Sanity's theme for light/dark mode support
@@ -29,29 +33,54 @@ const PercentageInput: React.FC<StringInputProps> = (props) => {
       // Remove any existing % signs and non-numeric characters except decimal point
       const numericValue = inputValue.replace(/[^0-9.]/g, '');
       
+      // Apply character limit (excluding the % sign)
+      const limitedValue = numericValue.slice(0, maxLength);
+      
       // Update the value - store just the number, % will be appended on display
-      onChange(numericValue ? set(numericValue + '%') : unset());
+      onChange(limitedValue ? set(limitedValue + '%') : unset());
     },
-    [onChange]
+    [onChange, maxLength]
   );
 
   // Display value without % for editing
   const displayValue = value ? value.replace('%', '') : '';
+  const currentLength = displayValue.length;
+  const isOverLimit = currentLength > maxLength;
 
   return (
-    <Flex align="stretch">
-      <Box flex={1}>
-        <TextInput
-          {...elementProps}
-          value={displayValue}
-          onChange={handleChange}
-          placeholder="Enter percentage"
-        />
-      </Box>
-      <Box style={addonStyles}>
-        %
-      </Box>
-    </Flex>
+    <div>
+      <Flex align="stretch">
+        <Box flex={1}>
+          <TextInput
+            {...elementProps}
+            value={displayValue}
+            onChange={handleChange}
+            placeholder="Enter percentage"
+            style={{
+              borderColor: isOverLimit ? '#f03e2f' : undefined,
+            }}
+          />
+        </Box>
+        <Box style={addonStyles}>
+          %
+        </Box>
+      </Flex>
+      <div
+        style={{
+          marginTop: '8px',
+          fontSize: '14px',
+          color: isOverLimit ? '#f03e2f' : '#6e7683',
+          textAlign: 'right',
+        }}
+      >
+        {currentLength}/{maxLength} characters
+        {isOverLimit && (
+          <div style={{ color: '#f03e2f', fontSize: '12px' }}>
+            Exceeds maximum length by {currentLength - maxLength} characters
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

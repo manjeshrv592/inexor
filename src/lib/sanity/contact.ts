@@ -10,6 +10,8 @@ export interface ContactInfo {
   subTitle?: string;
   description?: string;
   address?: string;
+  successMessage?: string;
+  failureMessage?: string;
   isActive: boolean;
   lastUpdated: string;
 }
@@ -69,6 +71,8 @@ export const fallbackContactInfo: ContactInfo = {
   subTitle: "Get a Quote/Contact Us",
   description: "Our experts simplify global trade compliance and deliver tailored solutions. Driven by integrity, expertise, and client focus—let's make global shipping seamless together.",
   address: "Gopalan Signature Mall, Old Madras Rd, Rahat Bagh, Nagavarapalya, Bennigana Halli, Bengaluru, Karnataka 560093",
+  successMessage: "Message sent successfully! We'll get back to you soon.",
+  failureMessage: "Something went wrong. Please try again.",
   isActive: true,
   lastUpdated: new Date().toISOString(),
 };

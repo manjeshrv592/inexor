@@ -1,4 +1,7 @@
 import { defineField, defineType } from "sanity";
+import { StringInputProps } from "sanity";
+import { createImageField, createInlineImageBlock, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
+import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
   name: "blogPost",
@@ -9,7 +12,14 @@ export default defineType({
       name: "title",
       title: "Title",
       type: "string",
-      validation: (Rule) => Rule.required(),
+      description: "Blog post title (35 characters max)",
+      components: {
+        input: (props: StringInputProps) => TextWithCounter({ ...props, maxLength: 35, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(35)
+          .error('Blog title must be 35 characters or less'),
     }),
     defineField({
       name: "slug",
@@ -28,21 +38,15 @@ export default defineType({
       description: "Short description for blog listing",
       rows: 3,
     }),
-    defineField({
+    createImageField({
       name: "featuredImage",
       title: "Featured Image",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        {
-          name: "alt",
-          type: "string",
-          title: "Alternative Text",
-          description: "Important for SEO and accessibility",
-        },
-      ],
+      description: `Blog post featured image. ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: false,
+      hotspot: true,
+      includeAlt: true,
+      includeCaption: false,
+      includeGrayscale: false,
     }),
     defineField({
       name: "author",
@@ -53,16 +57,25 @@ export default defineType({
           name: "name",
           title: "Author Name",
           type: "string",
-          validation: (Rule) => Rule.required(),
+          description: "Author's full name (22 characters max)",
+          components: {
+            input: (props: StringInputProps) => TextWithCounter({ ...props, maxLength: 22, fieldType: 'string' }),
+          },
+          validation: (Rule) => 
+            Rule.required()
+              .max(22)
+              .error('Author name must be 22 characters or less'),
         },
-        {
+        createImageField({
           name: "image",
           title: "Author Image",
-          type: "image",
-          options: {
-            hotspot: true,
-          },
-        },
+          description: `Author profile picture. ${IMAGE_UPLOAD_HELP_TEXT}`,
+          required: false,
+          hotspot: true,
+          includeAlt: false,
+          includeCaption: false,
+          includeGrayscale: false,
+        }),
       ],
       validation: (Rule) => Rule.required(),
     }),
@@ -133,31 +146,12 @@ export default defineType({
             ],
           },
         },
-        {
-          type: "image",
-          options: {
-            hotspot: true,
-          },
-          fields: [
-            {
-              name: "alt",
-              type: "string",
-              title: "Alternative Text",
-            },
-            {
-              name: "caption",
-              type: "string",
-              title: "Caption",
-            },
-            {
-              name: "isGrayscale",
-              type: "boolean",
-              title: "Grayscale",
-              description: "Apply grayscale filter to this image",
-              initialValue: true, // Default to grayscale to match your site's style
-            },
-          ],
-        },
+        createInlineImageBlock({
+          includeAlt: true,
+          includeCaption: true,
+          includeGrayscale: true,
+          grayscaleDefault: true,
+        }),
         {
           type: "imageTextBlock",
         },

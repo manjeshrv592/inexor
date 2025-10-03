@@ -6,7 +6,10 @@ export const contactFormSchema = z.object({
     .min(2, "Name must be at least 2 characters")
     .max(50, "Name must be less than 50 characters")
     .regex(/^[a-zA-Z\s]+$/, "Name can only contain letters and spaces"),
-  email: z.string().email("Please enter a valid email address"),
+  email: z
+    .string()
+    .email("Please enter a valid email address")
+    .regex(/^\S+$/, "Email address cannot contain spaces"),
   countryCode: z.string().optional(),
   phone: z
     .string()

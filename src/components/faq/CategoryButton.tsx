@@ -18,6 +18,7 @@ const CategoryButton = ({
       className="font-michroma text-[10px] tracking-[1px]"
       variant={isActive ? "default" : "outline"}
       onClick={onClick}
+      size={"sm"}
     >
       {children}
     </Button>

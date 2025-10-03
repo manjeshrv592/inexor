@@ -12,11 +12,14 @@ export default defineType({
       type: "string",
       components: {
         input: (props) =>
-          TextWithCounter({ ...props, maxLength: 50, fieldType: "string" }),
+          TextWithCounter({ ...props, maxLength: 20, fieldType: "string" }),
       },
-      description: "Title for the blog list (e.g., 'LATEST BLOGS')",
+      description: "Title for the blog list (20 characters max)",
       initialValue: "LATEST BLOGS",
-      validation: (Rule) => Rule.required().max(50),
+      validation: (Rule) => 
+        Rule.required()
+          .max(20)
+          .error('Blog list title must be 20 characters or less'),
     }),
     defineField({
       name: "defaultBlogImage",

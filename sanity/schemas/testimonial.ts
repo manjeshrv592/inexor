@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import TextWithCounter from "../components/TextWithCounter";
+import { createImageField, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
 
 export default defineType({
   name: "testimonial",
@@ -42,14 +43,15 @@ export default defineType({
           .max(25)
           .error('Company name must be 25 characters or less'),
     }),
-    defineField({
+    createImageField({
       name: "image",
       title: "Client Photo",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
-      validation: (Rule) => Rule.required(),
+      description: `Professional headshot of the client. ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: true,
+      hotspot: true,
+      includeAlt: false,
+      includeCaption: false,
+      includeGrayscale: false,
     }),
     defineField({
       name: "title",

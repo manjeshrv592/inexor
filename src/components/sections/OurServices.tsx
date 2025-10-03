@@ -220,7 +220,7 @@ const OurServices: React.FC<OurServicesProps> = ({
         heading1={activeService.homepagePreview.heading1}
         description={activeService.homepagePreview.description}
         backgroundImage={activeService.homepagePreview.backgroundImage}
-        serviceCode={activeService.code}
+        slug={activeService.slug.current}
         title={activeService.title}
       />
     );

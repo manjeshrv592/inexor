@@ -61,6 +61,32 @@ export default defineType({
       rows: 3,
     }),
     defineField({
+      name: "successMessage",
+      title: "Success Message",
+      type: "string",
+      description: "Message displayed when contact form is submitted successfully",
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 150, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.max(150)
+          .error('Success message must be 150 characters or less'),
+      initialValue: "Message sent successfully! We'll get back to you soon.",
+    }),
+    defineField({
+      name: "failureMessage",
+      title: "Failure Message",
+      type: "string",
+      description: "Message displayed when contact form submission fails",
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 150, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.max(150)
+          .error('Failure message must be 150 characters or less'),
+      initialValue: "Something went wrong. Please try again.",
+    }),
+    defineField({
       name: "isActive",
       title: "Is Active",
       type: "boolean",

@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import TextWithCounter from "../components/TextWithCounter";
+import { createImageField, createInlineImageBlock, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
 
 export default defineType({
   name: "service",
@@ -51,23 +52,15 @@ export default defineType({
       description: "Short description for service listing",
       rows: 3,
     }),
-    defineField({
+    createImageField({
       name: "featuredImage",
       title: "Featured Image",
-      type: "image",
-      description:
-        "Main image for the service (fallback will be /img/left-image.jpg)",
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        {
-          name: "alt",
-          type: "string",
-          title: "Alternative Text",
-          description: "Important for SEO and accessibility",
-        },
-      ],
+      description: `Main image for the service (fallback will be /img/left-image.jpg). ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: false,
+      hotspot: true,
+      includeAlt: true,
+      includeCaption: false,
+      includeGrayscale: false,
     }),
     defineField({
       name: "content",
@@ -130,24 +123,12 @@ export default defineType({
             ],
           },
         },
-        {
-          type: "image",
-          options: {
-            hotspot: true,
-          },
-          fields: [
-            {
-              name: "alt",
-              type: "string",
-              title: "Alternative Text",
-            },
-            {
-              name: "caption",
-              type: "string",
-              title: "Caption",
-            },
-          ],
-        },
+        createInlineImageBlock({
+          includeAlt: true,
+          includeCaption: true,
+          includeGrayscale: false,
+          grayscaleDefault: false,
+        }),
         {
           type: "imageTextBlock",
         },
@@ -198,23 +179,15 @@ export default defineType({
               .max(310)
               .error('Homepage description must be 310 characters or less'),
         }),
-        defineField({
+        createImageField({
           name: "backgroundImage",
           title: "Homepage Background Image",
-          type: "image",
-          description: "Background image for homepage service card",
-          options: {
-            hotspot: true,
-          },
-          fields: [
-            {
-              name: "alt",
-              type: "string",
-              title: "Alternative Text",
-              description: "Important for SEO and accessibility",
-            },
-          ],
-          validation: (Rule) => Rule.required(),
+          description: `Background image for homepage service card. ${IMAGE_UPLOAD_HELP_TEXT}`,
+          required: true,
+          hotspot: true,
+          includeAlt: true,
+          includeCaption: false,
+          includeGrayscale: false,
         }),
       ],
       validation: (Rule) => Rule.required(),

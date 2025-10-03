@@ -50,9 +50,21 @@ interface ImageTextBlock {
 const components: PortableTextComponents = {
   types: {
     image: ({ value }: { value: AboutImage }) => {
+      // Check if image exists and has asset
+      if (!value || !value.asset || !value.asset._ref) {
+        console.warn('Image block found but no image asset available');
+        return null;
+      }
+
       const imageUrl = urlForImageWithParams(value, { width: 800, height: 300, quality: 85, format: 'webp' }).url();
       const shouldApplyGrayscale = value.isGrayscale !== false;
       const grayscaleClass = shouldApplyGrayscale ? "grayscale" : "";
+
+      // Apply the unique clip-path shape (same as buttons/cards)
+      const clipPathStyle = {
+        clipPath:
+          "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))",
+      };
 
       return (
         <div className="mx-auto my-6 max-w-[800px]">
@@ -62,6 +74,7 @@ const components: PortableTextComponents = {
               alt={value.alt || "About image"}
               fill
               className={`object-cover ${grayscaleClass}`}
+              style={clipPathStyle}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 800px"
             />
           </div>
@@ -74,9 +87,25 @@ const components: PortableTextComponents = {
       );
     },
     imageTextBlock: ({ value }: { value: ImageTextBlock }) => {
+      // Check if image exists and has asset
+      if (!value?.image || !value.image.asset || !value.image.asset._ref) {
+        console.warn('ImageTextBlock found but no image asset available');
+        return (
+          <div className="my-8">
+            <PortableText value={value.text} components={components} />
+          </div>
+        );
+      }
+
       const imageUrl = urlForImageWithParams(value.image, { width: 600, height: 400, quality: 85, format: 'webp' }).url();
       const shouldApplyGrayscale = value.image.isGrayscale !== false;
       const grayscaleClass = shouldApplyGrayscale ? "grayscale" : "";
+
+      // Apply the unique clip-path shape
+      const clipPathStyle = {
+        clipPath:
+          "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))",
+      };
 
       const alignmentClasses = {
         top: "items-start",
@@ -92,6 +121,7 @@ const components: PortableTextComponents = {
             width={600}
             height={400}
             className={`h-auto w-full ${grayscaleClass}`}
+            style={clipPathStyle}
           />
           {value.image.caption && (
             <p className="mt-2 text-center text-sm text-gray-400 italic">

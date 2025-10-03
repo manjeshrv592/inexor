@@ -1,4 +1,6 @@
 import { defineField, defineType } from "sanity";
+import { StringInputProps } from "sanity";
+import TextWithCounter from "../../components/TextWithCounter";
 
 export default defineType({
   name: "navigationConfig",
@@ -24,8 +26,14 @@ export default defineType({
           title: "Label",
           type: "string",
           initialValue: "Resources",
-          validation: (Rule) => Rule.required().max(50),
-          description: "Display text for Resources navigation item",
+          components: {
+            input: (props: StringInputProps) => TextWithCounter({ ...props, maxLength: 12, fieldType: 'string' }),
+          },
+          validation: (Rule) => 
+            Rule.required()
+              .max(12)
+              .error('Resources label must be 12 characters or less'),
+          description: "Display text for Resources navigation item (12 characters max)",
         }),
         defineField({
           name: "hasDropdown",
@@ -54,8 +62,14 @@ export default defineType({
           title: "Label",
           type: "string",
           initialValue: "Services",
-          validation: (Rule) => Rule.required().max(50),
-          description: "Display text for Services navigation item",
+          components: {
+            input: (props: StringInputProps) => TextWithCounter({ ...props, maxLength: 12, fieldType: 'string' }),
+          },
+          validation: (Rule) => 
+            Rule.required()
+              .max(12)
+              .error('Services label must be 12 characters or less'),
+          description: "Display text for Services navigation item (12 characters max)",
         }),
         defineField({
           name: "hasDropdown",
@@ -84,8 +98,14 @@ export default defineType({
           title: "Label",
           type: "string",
           initialValue: "About Us",
-          validation: (Rule) => Rule.required().max(50),
-          description: "Display text for About Us navigation item",
+          components: {
+            input: (props: StringInputProps) => TextWithCounter({ ...props, maxLength: 12, fieldType: 'string' }),
+          },
+          validation: (Rule) => 
+            Rule.required()
+              .max(12)
+              .error('About Us label must be 12 characters or less'),
+          description: "Display text for About Us navigation item (12 characters max)",
         }),
         defineField({
           name: "hasDropdown",
@@ -114,8 +134,14 @@ export default defineType({
           title: "Label",
           type: "string",
           initialValue: "FAQ's",
-          validation: (Rule) => Rule.required().max(50),
-          description: "Display text for FAQ's navigation item",
+          components: {
+            input: (props: StringInputProps) => TextWithCounter({ ...props, maxLength: 12, fieldType: 'string' }),
+          },
+          validation: (Rule) => 
+            Rule.required()
+              .max(12)
+              .error('FAQ label must be 12 characters or less'),
+          description: "Display text for FAQ's navigation item (12 characters max)",
         }),
         defineField({
           name: "hasDropdown",
