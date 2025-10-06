@@ -1,11 +1,11 @@
 import { client } from "../../../sanity/lib/client";
 
 // Simple in-memory cache for Sanity queries
-const queryCache = new Map<string, { data: any; timestamp: number }>();
+const queryCache = new Map<string, { data: unknown; timestamp: number }>();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
-export async function cachedQuery<T>(query: string, params?: any): Promise<T> {
-  const cacheKey = `${query}-${JSON.stringify(params || {})}`;
+export async function cachedQuery<T>(query: string): Promise<T> {
+  const cacheKey = query;
   const cached = queryCache.get(cacheKey);
   
   // Return cached data if it's still fresh
@@ -14,7 +14,7 @@ export async function cachedQuery<T>(query: string, params?: any): Promise<T> {
   }
   
   try {
-    const data = await client.fetch<T>(query, params);
+    const data = await client.fetch<T>(query);
     
     // Cache the result
     queryCache.set(cacheKey, {
