@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
-import { Button } from "./button";
-import Link from "next/link";
+import ContactUsButton from "./ContactUsButton";
 
 interface ProcessStep {
   stepNumber: number;
@@ -15,6 +14,7 @@ interface ProcessStepsProps {
   description?: string;
   steps: ProcessStep[];
   className?: string;
+  ctaButtonText?: string;
 }
 
 const ProcessSteps: React.FC<ProcessStepsProps> = ({
@@ -22,6 +22,7 @@ const ProcessSteps: React.FC<ProcessStepsProps> = ({
   description,
   steps,
   className = "",
+  ctaButtonText,
 }) => {
   const lastStepRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -63,14 +64,9 @@ const ProcessSteps: React.FC<ProcessStepsProps> = ({
       <div>
         <h4 className="font-michroma">{title}</h4>
         {description && <p className="my-4 text-sm">{description}</p>}
-        <Link href="/contact">
-          <Button 
-            variant="default" 
-            className="font-michroma text-xs tracking-[1px]"
-          >
-            Contact Us
-          </Button>
-        </Link>
+        <ContactUsButton className="font-michroma text-xs tracking-[1px]">
+          {ctaButtonText}
+        </ContactUsButton>
       </div>
       <div 
         ref={containerRef}

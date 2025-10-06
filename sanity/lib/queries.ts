@@ -18,6 +18,8 @@ export const HERO_QUERY = groq`*[_type == "hero" && isActive == true][0] {
   _id,
   title,
   description,
+  scheduleCallButtonText,
+  contactButtonText,
   backgroundImage {
     asset->{
       url,

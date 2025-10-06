@@ -36,6 +36,20 @@ export default defineType({
           .error('Section description must be 200 characters or less'),
     }),
     defineField({
+      name: "ctaButtonText",
+      title: "CTA Button Text",
+      type: "string",
+      description: "Text for the call-to-action button (30 characters max)",
+      initialValue: "Contact Us",
+      components: {
+        input: (props: StringInputProps) => TextWithCounter({ ...props, maxLength: 30, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(30)
+          .error('CTA button text must be 30 characters or less'),
+    }),
+    defineField({
       name: "steps",
       title: "Process Steps",
       type: "array",

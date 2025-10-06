@@ -31,6 +31,32 @@ export default defineType({
           .max(250)
           .error('Description must be 250 characters or less'),
     }),
+    defineField({
+      name: "scheduleCallButtonText",
+      title: "Schedule Call Button Text",
+      type: "string",
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 30, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(30)
+          .error('Schedule call button text must be 30 characters or less'),
+      initialValue: "Schedule a Call",
+    }),
+    defineField({
+      name: "contactButtonText",
+      title: "Contact Button Text",
+      type: "string",
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 30, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.required()
+          .max(30)
+          .error('Contact button text must be 30 characters or less'),
+      initialValue: "Contact Us",
+    }),
     createImageField({
       name: "backgroundImage",
       title: "Background Image",

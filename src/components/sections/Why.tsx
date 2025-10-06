@@ -52,8 +52,10 @@ const Why: React.FC<WhyProps> = ({ whyData, whyItems }) => {
           <SectionTitle className="mb-2">{title}</SectionTitle>
         </div>
         <h3 className="mb-4 text-sm lg:text-lg">{subtitle}</h3>
-        <p className="mx-auto mb-8 max-w-4xl text-sm">{description}</p>
-        <div className="grid gap-8 text-center text-xs md:grid-cols-2 xl:grid-cols-4">
+        <p className="mx-auto mb-8 max-w-4xl text-xs lg:text-sm">
+          {description}
+        </p>
+        <div className="grid gap-8 text-center text-xs md:grid-cols-2 lg:text-sm xl:grid-cols-4">
           {items.map((item) => (
             <WhyItem key={item._id} content={item.content} />
           ))}

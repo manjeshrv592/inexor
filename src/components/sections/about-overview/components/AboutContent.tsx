@@ -56,7 +56,7 @@ const AboutContent: React.FC<AboutContentProps> = ({
           </div>
           <h3 className="mb-4 text-sm lg:text-lg">{subtitle}</h3>
         </div>
-        <p className="text-sm">{description}</p>
+        <p className="text-xs lg:text-sm">{description}</p>
       </div>
       <div className="grid grid-cols-2 gap-4 text-xs lg:grid-cols-2 xl:grid-cols-4 xl:gap-6">
         {items.map((item) => (

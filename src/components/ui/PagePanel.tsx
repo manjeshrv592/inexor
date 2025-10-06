@@ -51,7 +51,9 @@ const PagePanel = ({ children }: PagePanelProps) => {
     } else if (pathname === "/contact") {
       // Always position at bottom for contact page with upward arrow
       setButtonPosition("bottom");
-      console.log("📞 Contact page: Positioning go back button at BOTTOM with upward arrow");
+      console.log(
+        "📞 Contact page: Positioning go back button at BOTTOM with upward arrow",
+      );
     } else if (navigationSource === "footer") {
       setButtonPosition("top");
       console.log("⬆️ Footer navigation: Positioning go back button at TOP");
@@ -73,6 +75,9 @@ const PagePanel = ({ children }: PagePanelProps) => {
 
       // Store the current path before navigation
       sessionStorage.setItem("lastPath", currentPath);
+
+      // Preserve the navigation source so the close animation matches the open animation
+      // Don't change navigationSource - let it stay as it was set when opening the page
 
       // Use transition router only when navigating from/to root
       if (isFromRoot || isToRoot) {
@@ -119,7 +124,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
             ? currentBreakpoint === "xxl"
               ? "64px"
               : "76px"
-            : "78px",
+            : "53px",
         left:
           currentBreakpoint === "lg" ||
           currentBreakpoint === "xl" ||
@@ -143,7 +148,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
             ? currentBreakpoint === "xxl"
               ? "calc(100vh - 168px)"
               : "calc(100vh - 132px)"
-            : "calc(100vh - 160px)",
+            : "calc(100dvh - 80px)",
       }}
     >
       {children}

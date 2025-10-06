@@ -338,9 +338,21 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
     // Create main group for zoom/pan
     const g = svg.append("g");
 
-    // Set up zoom behavior
+    // Set up zoom behavior with scroll wheel disabled
     const zoomBehavior = zoom<SVGSVGElement, unknown>()
       .scaleExtent(SVG_MAP_CONFIG.zoomExtent)
+      .filter((event) => {
+        // Allow trackpad pinch gestures (they have ctrlKey modifier)
+        if (event.type === 'wheel' && event.ctrlKey) {
+          return true;
+        }
+        // Block regular scroll wheel events to allow page scrolling
+        if (event.type === 'wheel') {
+          return false;
+        }
+        // Allow other zoom events (programmatic zoom from buttons, touch gestures)
+        return true;
+      })
       .on("zoom", (event) => {
         g.attr("transform", event.transform);
 

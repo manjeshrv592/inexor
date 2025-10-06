@@ -60,8 +60,11 @@ const NavItem: React.FC<NavItemProps> = ({
 
       // Store the current path before navigation
       sessionStorage.setItem("lastPath", pathname);
-      // Set navigation source for animation direction
-      sessionStorage.setItem("navigationSource", "header");
+      // Set navigation source for animation direction (only if not already set by contact button)
+      const currentNavigationSource = sessionStorage.getItem("navigationSource");
+      if (currentNavigationSource !== "contact-button") {
+        sessionStorage.setItem("navigationSource", "header");
+      }
 
       // Always use transition router to prevent page reload
       // Animations will only show when transitioning from/to root due to PageTransition component logic

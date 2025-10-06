@@ -37,7 +37,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
 
   return (
     <div
-      className="h-full bg-[#2f2f2f] lg:grid lg:h-full lg:grid-cols-[150px_250px_1fr]"
+      className="h-full lg:grid lg:h-full lg:grid-cols-[150px_250px_1fr]"
       style={{
         boxShadow:
           "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
@@ -74,7 +74,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
       />
 
       {/* Right Panel - Blog Content */}
-      <div className="h-[calc(100vh-290px)] overflow-y-auto bg-neutral-900 lg:h-full">
+      <div className="h-[calc(100dvh-214px)] overflow-y-auto bg-neutral-900 lg:h-full">
         <div className="text-sm text-neutral-100">
           {/* Title */}
           <h3 className="font-michroma my-4 text-center text-xl text-white">

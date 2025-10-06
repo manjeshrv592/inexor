@@ -28,7 +28,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsData }) => {
         <div className="text-center">
           <SectionTitle>{title}</SectionTitle>
         </div>
-        <h3 className="mb-4 text-center text-lg">{subtitle}</h3>
+        <h3 className="mb-4 text-center text-sm">{subtitle}</h3>
         <TestimonialCarousel
           testimonials={testimonials}
           autoplayDuration={autoplayDuration}

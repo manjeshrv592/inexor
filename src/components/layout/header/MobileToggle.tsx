@@ -12,7 +12,7 @@ const MobileToggle: React.FC<MobileToggleProps> = ({ isOpen, onToggle }) => {
   return (
     <motion.button
       onClick={onToggle}
-      className="absolute bottom-0 left-1/2 z-50 flex size-8 -translate-x-1/2 translate-y-1/2 flex-col items-center justify-center rounded-full bg-neutral-800 xl:hidden"
+      className="absolute bottom-0 left-1/2 z-50 flex size-10 -translate-x-1/2 translate-y-1/2 flex-col items-center justify-center rounded-full bg-neutral-800 xl:hidden"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       transition={{
@@ -28,8 +28,8 @@ const MobileToggle: React.FC<MobileToggleProps> = ({ isOpen, onToggle }) => {
           ease: [0.68, -0.55, 0.27, 1.55],
         }}
       >
-        <ChevronDown size={16} />
-        <ChevronDown size={16} className="-mt-[8px]" />
+        <ChevronDown size={18} />
+        <ChevronDown size={18} className="-mt-[10px]" />
       </motion.div>
     </motion.button>
   );

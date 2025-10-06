@@ -22,6 +22,7 @@ interface ProcessStepsBlock {
   title: string;
   description?: string;
   steps: ProcessStep[];
+  ctaButtonText?: string;
 }
 
 interface AboutImage {
@@ -161,6 +162,7 @@ const components: PortableTextComponents = {
           title={value.title}
           description={value.description}
           steps={value.steps}
+          ctaButtonText={value.ctaButtonText}
           className="my-8"
         />
       );

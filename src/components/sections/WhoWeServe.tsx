@@ -23,7 +23,7 @@ const WhoWeServe: React.FC<WhoWeServeProps> = ({ items, sectionData }) => {
         <div className="text-center">
           <SectionTitle>{title}</SectionTitle>
         </div>
-        <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
           {items.map((item) => (
             <WhoWeServeItem
               key={item._id}

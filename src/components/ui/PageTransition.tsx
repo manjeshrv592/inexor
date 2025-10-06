@@ -20,11 +20,20 @@ export default function PageTransition({ children }: PageTransitionProps) {
     // Determine animation direction based on navigation source
     const navigationSource = sessionStorage.getItem("navigationSource");
 
+    // Check if we're opening contact page from contact button
     if (navigationSource === "contact-button" && pathname === "/contact") {
       setAnimationDirection("top");
-    } else if (navigationSource === "footer") {
+    } 
+    // Check if we're closing any page that was opened from contact button
+    else if (navigationSource === "contact-button" && pathname !== "/contact") {
+      setAnimationDirection("top");
+    }
+    // Check if navigation is from footer
+    else if (navigationSource === "footer") {
       setAnimationDirection("bottom");
-    } else {
+    } 
+    // Default to left animation
+    else {
       setAnimationDirection("left");
     }
 

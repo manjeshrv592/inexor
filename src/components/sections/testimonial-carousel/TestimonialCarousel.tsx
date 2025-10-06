@@ -158,7 +158,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
                       <span className="font-michroma text-brand-orange-500 text-[10px] md:text-base">
                         {testimonial.name}
                       </span>
-                      <span className="text-[10px] tracking-widest text-white">
+                      <span className="text-center text-[10px] tracking-widest text-white">
                         {testimonial.position}, {testimonial.company}
                       </span>
                     </div>
@@ -183,7 +183,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
                         </h4>
                       </div>
 
-                      <p className="xxl:mb-16 w-full max-w-full flex-1 text-center text-sm break-words text-neutral-300 md:text-base">
+                      <p className="xxl:mb-16 w-full max-w-full flex-1 text-center text-xs break-words text-neutral-300 md:text-base lg:text-sm">
                         &quot;{testimonial.quote}&quot;
                       </p>
                     </div>

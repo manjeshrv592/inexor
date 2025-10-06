@@ -163,9 +163,14 @@
   }
 }
 
-/* width */
+/* Default scrollbar width for all elements */
 ::-webkit-scrollbar {
   width: 3px;
+}
+
+/* Body scrollbar width - wider for main page scroll */
+body::-webkit-scrollbar {
+  width: 8px;
 }
 
 /* Track */

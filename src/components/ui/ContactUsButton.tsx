@@ -7,9 +7,10 @@ import { usePathname } from "next/navigation";
 
 interface ContactUsButtonProps {
   className?: string;
+  children?: React.ReactNode;
 }
 
-const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className }) => {
+const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className, children }) => {
   const router = useTransitionRouter();
   const pathname = usePathname();
   
@@ -66,7 +67,7 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className }) => {
         !hasScrolledPastHero ? '[&_.bg-svg_path]:!stroke-[#2A2A2A]' : ''
       } ${className}` }
     >
-      Contact Us
+      {children || "Contact Us"}
     </Button>
   );
 };

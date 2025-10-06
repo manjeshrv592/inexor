@@ -307,8 +307,8 @@ const FAQLayout = () => {
           </div>
 
           {/* Questions Panel */}
-          <div className="h-[calc(100vh-238px)] overflow-y-auto bg-[#2b2b2b] lg:h-full">
-            <div className="flex flex-col gap-6 px-2 py-12">
+          <div className="h-[calc(100vh-238px)] overflow-y-auto lg:h-full">
+            <div className="flex flex-col justify-center gap-6 px-2 py-12">
               {faqItems.map((item) => (
                 <FAQItem
                   key={item._id}
