@@ -1,6 +1,10 @@
 import { getHomeSeo } from "@/lib/sanity";
 import React from "react";
 import { Metadata } from "next";
+import HomePage from "@/components/pages/HomePage";
+
+// Revalidate every 5 minutes for better performance
+export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
   const homeSeoData = await getHomeSeo();
@@ -19,8 +23,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const HomePage = async () => {
-  return <div className="hidden"></div>;
+const RootPage = async () => {
+  return <HomePage />;
 };
 
-export default HomePage;
+export default RootPage;

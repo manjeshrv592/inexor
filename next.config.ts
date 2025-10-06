@@ -14,6 +14,22 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Enable static generation for better performance
+  output: 'standalone',
+  // Add caching headers
+  async headers() {
+    return [
+      {
+        source: '/api/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=300, s-maxage=300',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
