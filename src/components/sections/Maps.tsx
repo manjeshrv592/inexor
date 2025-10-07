@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import dynamic from "next/dynamic";
 import Container from "../layout/Container";
 import { useSanityMapsData } from "../maps/hooks/useSanityMapsData";
@@ -19,7 +19,7 @@ const MapComponent = dynamic(() => import("./MapComponent"), {
 
 const Maps = () => {
   const { mapsSection } = useSanityMapsData();
-  const [hasInteracted, setHasInteracted] = useState(false);
+  // const [hasInteracted, setHasInteracted] = useState(false);
 
   // Fallback content if no Sanity data is available
   const title = mapsSection?.title || "GO GLOBAL. INSTANTLY.";
@@ -31,7 +31,7 @@ const Maps = () => {
   //   "Click to interact with the map and select a continent to view service availability for your country";
 
   const handleMapInteraction = useCallback(() => {
-    setHasInteracted(true);
+    // setHasInteracted(true);
   }, []);
 
   return (
