@@ -274,7 +274,7 @@ const ContactPage = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        type="email"
+                        type="text"
                         placeholder="Enter your email address"
                         onKeyDown={(e) => {
                           // Prevent space bar from creating spaces

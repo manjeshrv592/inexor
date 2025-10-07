@@ -24,7 +24,7 @@ export async function Clients() {
                 name: logo.alt,
                 src: logo.logo.asset.url,
               }))}
-              direction="right"
+              direction="left"
               speed="slow"
             />
           )}

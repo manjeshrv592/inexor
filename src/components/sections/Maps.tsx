@@ -81,7 +81,7 @@ const Maps = () => {
               </div>
             )} */}
             {/* Center single line tooltip */}
-            {!hasInteracted && (
+            {/* {!hasInteracted && (
               <div className="absolute -top-3 left-1/2 z-20 -translate-x-1/2 transform">
                 <div className="relative inline-block">
                   <div className="max-w-md rounded-lg bg-[#1a1a1a]/80 px-6 py-3 text-center text-white shadow-lg backdrop-blur-sm">
@@ -111,7 +111,7 @@ const Maps = () => {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
 
             <MapComponent onInteraction={handleMapInteraction} />
           </div>
