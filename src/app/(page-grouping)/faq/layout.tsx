@@ -1,9 +1,7 @@
 "use client";
-
 import PagePanel from "@/components/ui/PagePanel";
 import PagePanelBg from "@/components/ui/PagePanelBg";
 import { CategoryButton, FAQItem } from "@/components/faq";
-import { DynamicShape } from "@/components/ui/DynamicShape";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -17,6 +15,7 @@ import {
   type FAQPage as FAQPageType,
 } from "@/lib/sanity";
 import { getFAQPageSettings, type FAQPageSettings } from "@/lib/sanity/faq";
+import { Button } from "@/components/ui/button";
 
 const FAQLayout = () => {
   const [categories, setCategories] = useState<FAQCategory[]>([]);
@@ -39,7 +38,7 @@ const FAQLayout = () => {
   // Check if mobile on mount and resize
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 992); // lg breakpoint
+      setIsMobile(window.innerWidth < 1200); // lg breakpoint
     };
 
     checkMobile();
@@ -180,15 +179,15 @@ const FAQLayout = () => {
       <PagePanelBg />
       <PagePanel>
         <div
-          className="h-full bg-[#2f2f2f] lg:grid lg:grid-cols-[2fr_3fr_2fr]"
+          className="h-full bg-[#2f2f2f] xl:grid xl:grid-cols-[2fr_3fr_2fr]"
           style={{
             boxShadow:
               "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
           }}
         >
           {/* Left Panel - Category Selection */}
-          <div className="relative lg:h-full">
-            <div className="absolute inset-0 hidden size-full lg:block">
+          <div className="relative xl:h-full">
+            <div className="absolute inset-0 size-full">
               <Image
                 src={
                   faqPageSettings?.sidebarImage?.asset?.url || "/img/faq.jpg"
@@ -204,7 +203,7 @@ const FAQLayout = () => {
             </div>
 
             {/* Mobile Categories - Horizontal Scroll */}
-            <div className="relative z-10 flex h-full items-center p-5 lg:hidden">
+            <div className="relative z-10 flex h-full items-center p-5 py-7 xl:hidden">
               <div
                 className="flex flex-nowrap gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden"
                 style={{
@@ -214,32 +213,23 @@ const FAQLayout = () => {
               >
                 {categories.map((category, index) => (
                   <div key={category._id} className="flex-shrink-0">
-                    <DynamicShape
-                      fill={
-                        selectedCategoryIndex === index ? "#f65009" : "#404040"
+                    <Button
+                      onClick={() => handleCategoryChange(index)}
+                      variant={
+                        selectedCategoryIndex === index ? "default" : "outline"
                       }
-                      stroke="none"
-                      strokeWidth={0}
-                      className="flex flex-col items-center justify-center"
+                      size={"sm"}
+                      className="font-michroma text-[10px] tracking-[1px]"
                     >
-                      <button
-                        onClick={() => handleCategoryChange(index)}
-                        className={`font-michroma hover:text-brand-orange-500 block text-[10px] tracking-[1px] ${
-                          selectedCategoryIndex === index
-                            ? "text-white"
-                            : "text-white"
-                        }`}
-                      >
-                        {category.name}
-                      </button>
-                    </DynamicShape>
+                      {category.name}
+                    </Button>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Desktop Categories - Vertical Layout */}
-            <div className="relative z-10 hidden h-full flex-col items-center justify-center gap-4 p-8 text-center lg:flex">
+            <div className="relative z-10 hidden h-full flex-col items-center justify-center gap-4 p-8 text-center xl:flex">
               <p className="text-sm">
                 {faqPageData?.pageDescription ||
                   "Our FAQ Section Offers Fast, Clear Answers To Popular Questions, So You Can Find Information Easily."}
@@ -262,7 +252,7 @@ const FAQLayout = () => {
           </div>
 
           {/* Desktop Answer Panel */}
-          <div className="hidden h-full lg:grid lg:grid-rows-3">
+          <div className="hidden h-full xl:grid xl:grid-rows-3">
             <div className="flex items-end justify-center pb-8">
               <h4 className="font-michroma text-brand-orange-500 text-center">
                 {faqPageData?.pageTitle || "FAQ's"}
@@ -307,8 +297,8 @@ const FAQLayout = () => {
           </div>
 
           {/* Questions Panel */}
-          <div className="h-[calc(100vh-238px)] overflow-y-auto lg:h-full">
-            <div className="flex flex-col justify-center gap-6 px-2 py-12">
+          <div className="h-[calc(100dvh-158px)] overflow-y-auto xl:h-full">
+            <div className="flex flex-col justify-center gap-6 px-2 py-6">
               {faqItems.map((item) => (
                 <FAQItem
                   key={item._id}

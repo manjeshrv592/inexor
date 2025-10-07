@@ -135,7 +135,7 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
       },
     },
     block: {
-      normal: ({ children }) => <p className="mb-4">{children}</p>,
+      normal: ({ children }) => <p className="mb-4 text-[12px] text-justify lg:text-[14px]">{children}</p>,
       h2: ({ children }) => (
         <h2 className="mt-8 mb-4 text-2xl font-bold text-white">{children}</h2>
       ),
@@ -156,10 +156,10 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
     },
     list: {
       bullet: ({ children }) => (
-        <ul className="mb-4 list-inside list-disc space-y-2">{children}</ul>
+        <ul className="mb-4 list-inside list-disc space-y-2 text-[12px] text-justify lg:text-[14px]">{children}</ul>
       ),
       number: ({ children }) => (
-        <ol className="mb-4 list-inside list-decimal space-y-2">{children}</ol>
+        <ol className="mb-4 list-inside list-decimal space-y-2 text-[12px] text-justify lg:text-[14px]">{children}</ol>
       ),
     },
     listItem: {

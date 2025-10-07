@@ -129,7 +129,7 @@ const DynamicShapeQuestion = ({
       {/* Question Text */}
       <div
         ref={shapeRef}
-        className="relative z-10 flex items-center gap-4 overflow-hidden p-5 lg:p-2"
+        className="relative z-10 flex items-center gap-4 overflow-hidden p-2 lg:p-2"
         style={{
           clipPath: clipPath || undefined,
         }}
@@ -159,8 +159,8 @@ const DynamicShapeQuestion = ({
         >
           &nbsp;
         </motion.span>
-        <Button className="hidden xl:inline-flex" size={"sm"}>
-          {isActive ? <MinusIcon size={16} /> : <PlusIcon size={16} />}
+        <Button className="inline-flex p-2" size={"sm"}>
+          {isActive ? <MinusIcon size={10} /> : <PlusIcon size={10} />}
         </Button>
         <p className="text-xs font-medium text-white">{children}</p>
       </div>

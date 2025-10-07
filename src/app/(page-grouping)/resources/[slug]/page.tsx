@@ -7,6 +7,7 @@ import { getResourcesPage } from "@/lib/sanity";
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { BlogListClient } from "@/components/blog";
+import { truncateText } from "@/lib/utils/textUtils";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -37,17 +38,26 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
 
   return (
     <div
-      className="h-full lg:grid lg:h-full lg:grid-cols-[150px_250px_1fr]"
+      className="h-full xl:grid xl:h-full xl:grid-cols-[150px_250px_1fr]"
       style={{
         boxShadow:
           "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
       }}
     >
       {/* Left Panel */}
-      <div className="relative h-[55px] lg:h-full">
-        <div className="relative z-10 flex size-full flex-col items-center justify-center gap-5 px-2">
+      <div className="relative xl:h-full">
+        <div className="relative z-10 flex size-full flex-col items-center justify-center gap-5 px-5 py-7">
+          {/* Mobile button */}
           <Button
-            className="font-michroma text-[10px] tracking-[1px] lg:w-full"
+            size={"sm"}
+            className="font-michroma w-20 text-[10px] tracking-[1px] xl:hidden xl:w-full"
+            variant={"default"}
+          >
+            Blogs
+          </Button>
+          {/* Desktop button */}
+          <Button
+            className="font-michroma hidden w-20 text-[10px] tracking-[1px] lg:w-full xl:block"
             variant={"default"}
           >
             Blogs
@@ -74,7 +84,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
       />
 
       {/* Right Panel - Blog Content */}
-      <div className="h-[calc(100dvh-214px)] overflow-y-auto bg-neutral-900 lg:h-full">
+      <div className="h-[calc(100dvh-237px)] overflow-y-auto bg-neutral-900 xl:h-full">
         <div className="text-sm text-neutral-100">
           {/* Title */}
           <h3 className="font-michroma my-4 text-center text-xl text-white">
@@ -94,7 +104,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
           </div>
 
           {/* Author and Date */}
-          <div className="mb-4 flex items-center justify-between border-b-2 border-neutral-200 px-12 py-2">
+          <div className="mb-4 flex items-center justify-between border-b-2 border-neutral-200 p-2 xl:px-12">
             <div className="flex items-center gap-2 lg:gap-4">
               {blogPost.author && (
                 <>
@@ -122,11 +132,18 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
                 </>
               )}
             </div>
-            <div className="text-brand-orange-500 flex flex-col items-end gap-2 text-[10px] lg:flex-row lg:items-center lg:gap-4">
-              <span className="font-michroma">
+            <div className="flex flex-col items-end gap-2 text-[10px] text-neutral-400 lg:flex-row lg:items-center lg:gap-4">
+              <span className="font-michroma hidden lg:block">
                 {new Date(blogPost.publishedAt).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
+                  day: "numeric",
+                })}
+              </span>
+              <span className="font-michroma lg:hidden">
+                {new Date(blogPost.publishedAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
                   day: "numeric",
                 })}
               </span>
@@ -146,8 +163,8 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
           </div>
 
           {/* Navigation Footer */}
-          <footer className="mt-8 flex flex-col justify-between gap-4 border-t-2 border-neutral-300 px-2 pt-6 pb-4 md:flex-row">
-            <div>
+          <footer className="mt-8 flex justify-between gap-4 border-t-2 border-neutral-300 px-2 pt-6 pb-4 md:flex-row">
+            <div className="flex flex-col">
               {hasPrev && prevPost ? (
                 <>
                   <Link href={`/resources/${prevPost.slug.current}`}>
@@ -161,13 +178,18 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
                       </span>
                     </Button>
                   </Link>
-                  <p className="mt-2 text-xs">{prevPost.title}</p>
+                  <p className="mt-2 text-xs xl:hidden">
+                    {truncateText(prevPost.title, 25)}
+                  </p>
+                  <p className="mt-2 hidden text-xs xl:block">
+                    {truncateText(prevPost.title, 50)}
+                  </p>
                 </>
               ) : (
                 <div></div>
               )}
             </div>
-            <div className="md:flex md:flex-col md:items-end">
+            <div className="flex flex-col items-end">
               {hasNext && nextPost ? (
                 <>
                   <Link href={`/resources/${nextPost.slug.current}`}>
@@ -181,7 +203,12 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
                       </span>
                     </Button>
                   </Link>
-                  <p className="mt-2 text-xs">{nextPost.title}</p>
+                  <p className="mt-2 text-xs xl:hidden">
+                    {truncateText(nextPost.title, 25)}
+                  </p>
+                  <p className="mt-2 hidden text-xs xl:block">
+                    {truncateText(nextPost.title, 50)}
+                  </p>
                 </>
               ) : (
                 <div></div>

@@ -11,7 +11,7 @@ const ServicesRedirectPage = () => {
     const redirectToFirstService = async () => {
       try {
         const services = await getServices();
-        
+
         if (services && services.length > 0) {
           // Redirect to the first service
           const firstService = services[0];

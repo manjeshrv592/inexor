@@ -12,6 +12,7 @@ import {
   type Service,
   type ServicesPageSettings,
 } from "@/lib/sanity/service";
+import { truncateText } from "@/lib/utils/textUtils";
 
 const ServiceLayout = ({ children }: { children: React.ReactNode }) => {
   const [services, setServices] = useState<Service[]>([]);
@@ -21,7 +22,7 @@ const ServiceLayout = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
-  const currentSlug = pathname.split('/').pop() || '';
+  const currentSlug = pathname.split("/").pop() || "";
 
   // Fetch initial data
   useEffect(() => {
@@ -38,7 +39,7 @@ const ServiceLayout = ({ children }: { children: React.ReactNode }) => {
 
         // Set active index based on current slug
         const currentIndex = servicesData.findIndex(
-          (service) => service.slug.current === currentSlug
+          (service) => service.slug.current === currentSlug,
         );
         if (currentIndex !== -1) {
           setActiveIndex(currentIndex);
@@ -77,14 +78,14 @@ const ServiceLayout = ({ children }: { children: React.ReactNode }) => {
       <PagePanelBg />
       <PagePanel>
         <div
-          className="h-full bg-[#2f2f2f] lg:grid lg:h-full lg:grid-cols-[150px_1fr]"
+          className="h-full bg-[#2f2f2f] xl:grid xl:h-full xl:grid-cols-[150px_1fr]"
           style={{
             boxShadow:
               "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
           }}
         >
           {/* Left Panel - Service List - Mobile */}
-          <div className="relative p-5 lg:hidden">
+          <div className="relative px-5 py-7 xl:hidden">
             <div className="absolute top-0 left-0 size-full">
               <Image
                 src={
@@ -94,7 +95,9 @@ const ServiceLayout = ({ children }: { children: React.ReactNode }) => {
                 alt={servicesPageSettings?.leftPanelImage?.alt || "services bg"}
                 fill
                 className={`object-cover ${
-                  servicesPageSettings?.applyGrayscale !== false ? "grayscale" : ""
+                  servicesPageSettings?.applyGrayscale !== false
+                    ? "grayscale"
+                    : ""
                 }`}
               />
             </div>
@@ -109,18 +112,19 @@ const ServiceLayout = ({ children }: { children: React.ReactNode }) => {
               {services.map((service, index) => (
                 <Button
                   key={service._id}
-                  className="font-michroma text-[10px] tracking-[1px] lg:w-full"
+                  className="font-michroma w-20 text-[10px] tracking-[1px] xl:w-full"
+                  size={"sm"}
                   variant={activeIndex === index ? "default" : "outline"}
                   onClick={() => handleServiceClick(service, index)}
                 >
-                  {service.code}
+                  {truncateText(service.code, 3)}
                 </Button>
               ))}
             </div>
           </div>
 
           {/* Left Panel - Service List - Desktop */}
-          <div className="relative hidden lg:flex lg:flex-1 lg:flex-col lg:justify-center lg:p-1">
+          <div className="relative hidden xl:flex xl:flex-1 xl:flex-col xl:justify-center xl:p-1">
             <div className="absolute top-0 left-0 size-full">
               <Image
                 src={
@@ -130,7 +134,9 @@ const ServiceLayout = ({ children }: { children: React.ReactNode }) => {
                 alt={servicesPageSettings?.leftPanelImage?.alt || "services bg"}
                 fill
                 className={`object-cover ${
-                  servicesPageSettings?.applyGrayscale !== false ? "grayscale" : ""
+                  servicesPageSettings?.applyGrayscale !== false
+                    ? "grayscale"
+                    : ""
                 }`}
               />
             </div>
@@ -139,7 +145,7 @@ const ServiceLayout = ({ children }: { children: React.ReactNode }) => {
                 {services.map((service, index) => (
                   <Button
                     key={service._id}
-                    className="font-michroma text-[10px] tracking-[1px] lg:w-full"
+                    className="font-michroma text-[10px] tracking-[1px] xl:w-full"
                     variant={activeIndex === index ? "default" : "outline"}
                     onClick={() => handleServiceClick(service, index)}
                   >

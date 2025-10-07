@@ -80,18 +80,18 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
     <>
       <div className="flex items-center justify-center gap-6">
         {/* Left button container */}
-        {/* <div className="hidden justify-center gap-4 text-white md:flex">
+        <div className="hidden justify-center gap-4 text-white md:flex">
           <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               size="sm"
               variant="outline"
-              onClick={handlePrev}
-              disabled={isAnimating}
+              onClick={isAnimating ? undefined : handlePrev}
+              className="disabled:opacity-100 disabled:cursor-default"
             >
               <ArrowLeft size={16} />
             </Button>
           </motion.span>
-        </div> */}
+        </div>
 
         {/* Main testimonial slider */}
         <div
@@ -195,28 +195,27 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
         </div>
 
         {/* Right button container */}
-        {/* <div className="hidden justify-center gap-4 text-white md:flex ">
+        <div className="hidden justify-center gap-4 text-white md:flex">
           <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               size="sm"
               variant="outline"
-              onClick={handleNext}
-              disabled={isAnimating}
+              onClick={isAnimating ? undefined : handleNext}
+              className="disabled:opacity-100 disabled:cursor-default"
             >
               <ArrowRight size={16} />
             </Button>
           </motion.span>
-        </div> */}
+        </div>
       </div>
       {/* Down arrows */}
       <div className="mt-6 flex justify-center gap-4 text-white">
         <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Button
-            className="px-6"
+            className="px-6 disabled:opacity-100 disabled:cursor-default"
             size="sm"
             variant="outline"
-            onClick={handlePrev}
-            disabled={isAnimating}
+            onClick={isAnimating ? undefined : handlePrev}
           >
             <ArrowLeft size={16} />
           </Button>
@@ -224,11 +223,10 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
 
         <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Button
-            className="px-6"
+            className="px-6 disabled:opacity-100 disabled:cursor-default"
             size="sm"
             variant="outline"
-            onClick={handleNext}
-            disabled={isAnimating}
+            onClick={isAnimating ? undefined : handleNext}
           >
             <ArrowRight size={16} />
           </Button>

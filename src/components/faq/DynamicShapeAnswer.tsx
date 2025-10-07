@@ -144,7 +144,7 @@ const DynamicShapeAnswer = ({
             >
               <path
                 d={svgPath}
-                fill="#323232"
+                fill="#292929"
                 className="transition-all duration-200 ease-in-out"
               />
             </svg>

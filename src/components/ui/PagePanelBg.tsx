@@ -34,7 +34,8 @@ const PagePanelBg = () => {
   return (
     <div
       onClick={handleBgClick}
-      className="fixed inset-0 z-[60] cursor-pointer bg-black"
+      className="fixed inset-0 z-[60] cursor-pointer"
+      // className="fixed inset-0 z-[60] cursor-pointer bg-black"
     ></div>
   );
 };

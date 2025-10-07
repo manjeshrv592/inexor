@@ -44,10 +44,32 @@ const PagePanel = ({ children }: PagePanelProps) => {
       navigationSource,
     );
 
-    // Force bottom position on mobile breakpoints
-    if (currentBreakpoint === "sm" || currentBreakpoint === "md") {
-      setButtonPosition("bottom");
-      console.log("📱 Mobile view: Positioning go back button at BOTTOM");
+    // For screens smaller than 1200px (xl breakpoint)
+    if (
+      currentBreakpoint === "sm" ||
+      currentBreakpoint === "md" ||
+      currentBreakpoint === "lg"
+    ) {
+      // Special case: privacy-policy and terms-conditions should have bottom button on mobile
+      if (
+        navigationSource === "footer" &&
+        (pathname === "/privacy-policy" || pathname === "/terms-conditions")
+      ) {
+        setButtonPosition("bottom");
+        console.log(
+          "📱 Mobile/Tablet view + Footer navigation (privacy/terms): Positioning go back button at BOTTOM (like header links)",
+        );
+      } else if (navigationSource === "footer") {
+        setButtonPosition("top");
+        console.log(
+          "📱 Mobile/Tablet view + Footer navigation: Positioning go back button at TOP (same as desktop)",
+        );
+      } else {
+        setButtonPosition("bottom");
+        console.log(
+          "📱 Mobile/Tablet view: Positioning go back button at BOTTOM",
+        );
+      }
     } else if (pathname === "/contact") {
       // Always position at bottom for contact page with upward arrow
       setButtonPosition("bottom");
@@ -95,21 +117,35 @@ const PagePanel = ({ children }: PagePanelProps) => {
   // Get button positioning classes based on position state
   const getButtonPositionClasses = () => {
     const baseClasses =
-      "bg-brand-orange-500 hover:bg-brand-orange-600 duration-300 absolute flex size-10 cursor-pointer items-center justify-center rounded-full";
+      "bg-brand-orange-500 hover:bg-brand-orange-600 duration-300 absolute flex size-10 cursor-pointer items-center justify-center rounded-full z-[120]";
 
+    let positionClasses;
     switch (buttonPosition) {
       case "top":
-        return `${baseClasses} top-0 left-1/2 -translate-y-1/2 -translate-x-1/2 -rotate-90`;
+        positionClasses = `${baseClasses} top-0 left-1/2 -translate-y-1/2 -translate-x-1/2 -rotate-90`;
+        break;
       case "bottom":
         // For contact page, don't rotate since we're using ChevronUp icon
         if (pathname === "/contact") {
-          return `${baseClasses} bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2`;
+          positionClasses = `${baseClasses} bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2`;
+        } else {
+          positionClasses = `${baseClasses} bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 rotate-90`;
         }
-        return `${baseClasses} bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 rotate-90`;
+        break;
       case "middle":
       default:
-        return `${baseClasses} top-1/2 right-0 translate-x-1/2 -translate-y-1/2`;
+        positionClasses = `${baseClasses} top-1/2 right-0 translate-x-1/2 -translate-y-1/2`;
+        break;
     }
+
+    console.log("🔘 Button position debug:", {
+      buttonPosition,
+      pathname,
+      currentBreakpoint,
+      positionClasses,
+    });
+
+    return positionClasses;
   };
 
   return (
@@ -118,37 +154,33 @@ const PagePanel = ({ children }: PagePanelProps) => {
       style={{
         backgroundColor: "#1c1b1b",
         top:
-          currentBreakpoint === "lg" ||
-          currentBreakpoint === "xl" ||
-          currentBreakpoint === "xxl"
+          currentBreakpoint === "xl" || currentBreakpoint === "xxl"
             ? currentBreakpoint === "xxl"
               ? "64px"
               : "76px"
             : "53px",
         left:
-          currentBreakpoint === "lg" ||
-          currentBreakpoint === "xl" ||
-          currentBreakpoint === "xxl"
+          currentBreakpoint === "xl" || currentBreakpoint === "xxl"
             ? currentBreakpoint === "xxl"
               ? "96px"
               : "80px"
-            : "10px",
+            : currentBreakpoint === "lg"
+              ? "calc(50% - 350px)"
+              : "10px",
         width:
-          currentBreakpoint === "lg" ||
-          currentBreakpoint === "xl" ||
-          currentBreakpoint === "xxl"
+          currentBreakpoint === "xl" || currentBreakpoint === "xxl"
             ? currentBreakpoint === "xxl"
               ? "calc(100% - 192px)"
               : "calc(100% - 160px)"
-            : "calc(100% - 20px)",
+            : currentBreakpoint === "lg"
+              ? "700px"
+              : "calc(100% - 20px)",
         height:
-          currentBreakpoint === "lg" ||
-          currentBreakpoint === "xl" ||
-          currentBreakpoint === "xxl"
+          currentBreakpoint === "xl" || currentBreakpoint === "xxl"
             ? currentBreakpoint === "xxl"
               ? "calc(100vh - 168px)"
               : "calc(100vh - 132px)"
-            : "calc(100dvh - 80px)",
+            : "calc(100dvh - 74px)",
       }}
     >
       {children}

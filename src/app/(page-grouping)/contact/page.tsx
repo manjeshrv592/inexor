@@ -43,7 +43,6 @@ const ContactPage = () => {
   const [contactInfo, setContactInfo] =
     useState<ContactInfo>(fallbackContactInfo);
 
-
   // Fetch contact info from Sanity on component mount
   useEffect(() => {
     const fetchContactInfo = async () => {
@@ -110,9 +109,14 @@ const ContactPage = () => {
       const result = await response.json();
       console.log("📡 API Response:", result);
 
-      toast.success(contactInfo.successMessage || result.message || "Message sent successfully!", {
-        duration: 5000,
-      });
+      toast.success(
+        contactInfo.successMessage ||
+          result.message ||
+          "Message sent successfully!",
+        {
+          duration: 5000,
+        },
+      );
       form.reset(); // Reset form on success
     } catch (error) {
       console.error("❌ Form submission error:", error);
@@ -120,7 +124,7 @@ const ContactPage = () => {
         contactInfo.failureMessage || "Something went wrong. Please try again.",
         {
           duration: 6000,
-        }
+        },
       );
     } finally {
       setIsSubmitting(false);
@@ -129,11 +133,11 @@ const ContactPage = () => {
 
   return (
     <div
-      className="h-full bg-[#222] text-white lg:grid lg:grid-cols-[2fr_3fr_2fr]"
+      className="h-full bg-[#222] text-white xl:grid xl:grid-cols-[2fr_3fr_2fr]"
       style={{ backgroundColor: "#1c1b1b" }}
     >
       {/* Left Panel - Map */}
-      <div className="hidden items-center justify-center bg-neutral-800 lg:flex">
+      <div className="hidden items-center justify-center bg-neutral-800 xl:flex">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2504814.687516064!2d2.6398022221693846!3d52.186907870458654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c609c3db87e4bb%3A0x3a175ceffbd0a9f!2sNetherlands!5e0!3m2!1sen!2sin!4v1756459162658!5m2!1sen!2sin&theme=dark"
           className="h-full min-h-[300px] w-full"
@@ -149,16 +153,18 @@ const ContactPage = () => {
       </div>
 
       {/* Center Panel - Info */}
-      <div className="items-center shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] lg:flex">
-        <div className="lg:flex-1">
-          <h5 className="font-michroma text-brand-orange-500 my-4 hidden text-center text-lg md:text-2xl lg:block">
+      <div className="items-center pb-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:flex">
+        <div className="xl:flex-1">
+          <h5 className="font-michroma text-brand-orange-500 my-4 hidden text-center text-lg md:text-2xl xl:block">
             {contactInfo.mainTitle}
           </h5>
-          <div className="bg-neutral-900 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-12px_18px_-12px_rgba(0,0,0,0.85),inset_0_12px_18px_-12px_rgba(0,0,0,0.9)] lg:h-[200px] lg:p-8 lg:py-1">
-            <h5 className="font-michroma text-brand-orange-500 my-4 hidden text-center text-sm lg:block">
+          <div className="bg-neutral-900 p-5 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-12px_18px_-12px_rgba(0,0,0,0.85),inset_0_12px_18px_-12px_rgba(0,0,0,0.9)] lg:p-8 xl:h-[200px]">
+            <h5 className="font-michroma text-brand-orange-500 my-4 hidden text-center text-sm xl:block">
               {contactInfo.subTitle}
             </h5>
-            <p className="text-center text-sm">{contactInfo.description}</p>
+            <p className="text-center text-xs lg:text-sm">
+              {contactInfo.description}
+            </p>
           </div>
           {/* Special shape for div */}
           <div className="relative flex justify-center pt-5 after:absolute after:top-0 after:left-1/2 after:hidden after:h-full after:w-[3px] after:translate-x-1/2 after:bg-[#212121] after:content-['']">
@@ -208,14 +214,14 @@ const ContactPage = () => {
               </div>
             </div>
           </div>
-          <div className="xxl:mt-[10%] mx-auto mt-4 hidden max-w-[300px] px-2 text-center text-sm lg:block">
+          <div className="xxl:mt-[10%] mx-auto mt-4 hidden max-w-[300px] px-2 text-center text-sm xl:block">
             {contactInfo.address}
           </div>
         </div>
       </div>
 
       {/* Right Panel - Contact Form */}
-      <div className="h-[calc(100vh-333px)] overflow-y-auto bg-neutral-800 lg:h-full">
+      <div className="h-[calc(100dvh-290px)] overflow-y-auto xl:h-full">
         <div className="pb-4">
           <h3 className="font-michroma py-5 text-center">
             Contact <span className="text-brand-orange-500">Information</span>

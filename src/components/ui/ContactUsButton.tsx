@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "./button";
 import { useTransitionRouter } from "next-view-transitions";
 import { usePathname } from "next/navigation";
+import { Phone } from "lucide-react";
 
 interface ContactUsButtonProps {
   className?: string;
@@ -58,6 +59,9 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className, children }
     }
   };
 
+  // Determine what to show based on screen size and scroll state
+  const shouldShowPhoneIcon = hasScrolledPastHero;
+
   return (
     <Button
       onClick={handleContactClick}
@@ -67,7 +71,19 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className, children }
         !hasScrolledPastHero ? '[&_.bg-svg_path]:!stroke-[#2A2A2A]' : ''
       } ${className}` }
     >
-      {children || "Contact Us"}
+      {shouldShowPhoneIcon ? (
+        <>
+          {/* Show phone icon on screens < 1200px, text on larger screens */}
+          <span className="xl:hidden">
+            <Phone size={16} />
+          </span>
+          <span className="hidden xl:inline">
+            {children || "Contact Us"}
+          </span>
+        </>
+      ) : (
+        children || "Contact Us"
+      )}
     </Button>
   );
 };

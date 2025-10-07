@@ -143,8 +143,8 @@ const BlogListClient: React.FC<BlogListClientProps> = ({
   return (
     <>
       {/* Middle Panel - Blog List - Mobile */}
-      <div className="p-5 lg:hidden lg:h-full lg:flex-col lg:p-1 lg:pt-12">
-        <h3 className="font-michroma mb-5 hidden text-center text-xs tracking-[1px] lg:block">
+      <div className="p-5 xl:hidden xl:h-full xl:flex-col xl:p-1 xl:pt-12">
+        <h3 className="font-michroma mb-5 hidden text-center text-xs tracking-[1px] xl:block">
           {blogSectionTitle}
         </h3>
 
@@ -166,11 +166,11 @@ const BlogListClient: React.FC<BlogListClientProps> = ({
               >
                 <Link
                   href={`/resources/${post.slug.current}`}
-                  className={`font-michroma hover:text-brand-orange-500 block text-[10px] tracking-[1px] ${
+                  className={`font-michroma hover:text-brand-orange-500 block w-[100px] text-[10px] tracking-[1px] ${
                     index === currentIndex ? "text-brand-orange-500" : ""
                   }`}
                 >
-                  {truncateText(post.title, 15)}
+                  {truncateText(post.title, 10)}
                 </Link>
               </DynamicShape>
             </div>
@@ -179,8 +179,8 @@ const BlogListClient: React.FC<BlogListClientProps> = ({
       </div>
 
       {/* Middle Panel - Blog List - Desktop */}
-      <div className="hidden lg:flex lg:flex-1 lg:flex-col lg:justify-center lg:p-1">
-        <h3 className="font-michroma mb-5 hidden text-center text-xs tracking-[1px] lg:block">
+      <div className="hidden lg:flex-1 xl:flex xl:flex-col xl:justify-center xl:p-1">
+        <h3 className="font-michroma mb-5 hidden text-center text-xs tracking-[1px] xl:block">
           {blogSectionTitle}
         </h3>
         <DynamicShape

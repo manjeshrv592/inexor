@@ -170,7 +170,7 @@ const components: PortableTextComponents = {
   },
   block: {
     normal: ({ children }) => (
-      <p className="mb-2 text-sm text-white">{children}</p>
+      <p className="mb-2 text-[12px] text-justify text-white lg:text-[14px]">{children}</p>
     ),
     h1: ({ children }) => (
       <h1 className="mb-4 text-2xl font-bold text-white">{children}</h1>
@@ -198,10 +198,10 @@ const components: PortableTextComponents = {
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="my-2 list-disc pl-6 text-sm text-white">{children}</ul>
+      <ul className="my-2 list-disc pl-6 text-[12px] text-justify text-white lg:text-[14px]">{children}</ul>
     ),
     number: ({ children }) => (
-      <ol className="my-2 list-decimal pl-6 text-sm text-white">{children}</ol>
+      <ol className="my-2 list-decimal pl-6 text-[12px] text-justify text-white lg:text-[14px]">{children}</ol>
     ),
   },
   listItem: {

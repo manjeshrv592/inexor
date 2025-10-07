@@ -3,64 +3,17 @@
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import UseCasesSection from "@/components/ui/UseCasesSection";
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion } from "motion/react";
-import { getServiceBySlug, type Service } from "@/lib/sanity/service";
-import { notFound } from "next/navigation";
+import { type Service } from "@/lib/sanity/service";
 
-interface ServicePageProps {
-  params: Promise<{
-    slug: string;
-  }>;
+interface ServiceContentProps {
+  service: Service;
 }
 
-const ServicePage = ({ params }: ServicePageProps) => {
-  const [service, setService] = useState<Service | null>(null);
-  const [loading, setLoading] = useState(true);
-  const rightPanelRef = React.useRef<HTMLDivElement>(null);
-  const resolvedParams = React.use(params);
-
-  // Fetch service data
-  useEffect(() => {
-    const fetchService = async () => {
-      try {
-        setLoading(true);
-        const serviceData = await getServiceBySlug(resolvedParams.slug);
-
-        if (!serviceData) {
-          notFound();
-          return;
-        }
-
-        setService(serviceData);
-      } catch (error) {
-        console.error("Error fetching service:", error);
-        notFound();
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchService();
-  }, [resolvedParams.slug]);
-
-  if (loading) {
-    return (
-      <div className="flex h-full items-center justify-center bg-[#2f2f2f]">
-        <div className="text-white">Loading...</div>
-      </div>
-    );
-  }
-
-  if (!service) {
-    return null;
-  }
-
+const ServiceContent = ({ service }: ServiceContentProps) => {
   return (
-    <div
-      ref={rightPanelRef}
-      className="h-[calc(100dvh-158px)] overflow-y-auto bg-neutral-900 xl:h-full"
-    >
+    <div className="h-[calc(100dvh-158px)] overflow-y-auto bg-neutral-900 xl:h-full">
       <div className="pb-4">
         <motion.div
           key={service._id}
@@ -72,7 +25,6 @@ const ServicePage = ({ params }: ServicePageProps) => {
           {/* Featured Image */}
           <div className="relative mb-6 h-[300px]">
             <div className="absolute top-0 left-0 size-full">
-              {/* <div className="absolute inset-0 z-10 bg-black/60"></div> */}
               <Image
                 src={service.featuredImage?.asset.url || "/img/left-image.jpg"}
                 alt={service.featuredImage?.alt || service.title}
@@ -113,4 +65,4 @@ const ServicePage = ({ params }: ServicePageProps) => {
   );
 };
 
-export default ServicePage;
+export default ServiceContent;

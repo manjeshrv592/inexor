@@ -36,9 +36,11 @@ const NavItem: React.FC<NavItemProps> = ({
 
   const handleNavigation = (href: string) => {
     if (typeof window !== "undefined") {
-      // Special handling for resources and FAQ routes
+      // Special handling for resources, services, and FAQ routes
       const isResourcesRoute = href === "/resources";
       const isCurrentlyOnResources = pathname.startsWith("/resources");
+      const isServicesRoute = href === "/services";
+      const isCurrentlyOnServices = pathname.startsWith("/services");
       const isFAQRoute = href === "/faq";
       const isCurrentlyOnFAQ = pathname.startsWith("/faq");
 
@@ -46,6 +48,9 @@ const NavItem: React.FC<NavItemProps> = ({
       let targetHref;
       if (isResourcesRoute && isCurrentlyOnResources) {
         // User is on /resources/slug and clicks Resources -> go home
+        targetHref = "/";
+      } else if (isServicesRoute && isCurrentlyOnServices) {
+        // User is on /services/slug and clicks Services -> go home
         targetHref = "/";
       } else if (isFAQRoute && isCurrentlyOnFAQ) {
         // User is on /faq/category/question and clicks FAQ -> go home
@@ -60,11 +65,8 @@ const NavItem: React.FC<NavItemProps> = ({
 
       // Store the current path before navigation
       sessionStorage.setItem("lastPath", pathname);
-      // Set navigation source for animation direction (only if not already set by contact button)
-      const currentNavigationSource = sessionStorage.getItem("navigationSource");
-      if (currentNavigationSource !== "contact-button") {
-        sessionStorage.setItem("navigationSource", "header");
-      }
+      // Set navigation source for animation direction
+      sessionStorage.setItem("navigationSource", "header");
 
       // Always use transition router to prevent page reload
       // Animations will only show when transitioning from/to root due to PageTransition component logic
