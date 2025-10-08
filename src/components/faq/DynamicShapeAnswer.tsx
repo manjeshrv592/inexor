@@ -20,8 +20,8 @@ const DynamicShapeAnswer = ({
   // SVG path generation constants - smaller cuts for longer content
   const SVG_CONFIG = React.useMemo(
     () => ({
-      rightCutRatio: 4 / 46, // Even smaller ratio for taller content
-      leftCutRatio: 4 / 46, // Even smaller ratio for taller content
+      rightCutRatio: 7 / 46, // Even smaller ratio for taller content
+      leftCutRatio: 7 / 46, // Even smaller ratio for taller content
       strokeWidth: 0, // No stroke
     }),
     [],

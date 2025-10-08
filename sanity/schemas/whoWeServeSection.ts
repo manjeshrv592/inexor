@@ -21,6 +21,19 @@ export default defineType({
       description: "Main title for the Who We Serve section",
     }),
     defineField({
+      name: "subtitle",
+      title: "Section Subtitle",
+      type: "string",
+      initialValue: "Sub Title",
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 55, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.max(55)
+          .error('Section subtitle must be 55 characters or less'),
+      description: "Subtitle for the Who We Serve section",
+    }),
+    defineField({
       name: "isActive",
       title: "Is Active",
       type: "boolean",

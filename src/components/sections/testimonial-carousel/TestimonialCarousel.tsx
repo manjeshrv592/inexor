@@ -80,7 +80,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
     <>
       <div className="flex items-center justify-center gap-6">
         {/* Left button container */}
-        <div className="hidden justify-center gap-4 text-white md:flex">
+        {/* <div className="hidden justify-center gap-4 text-white md:flex">
           <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               size="sm"
@@ -91,7 +91,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
               <ArrowLeft size={16} />
             </Button>
           </motion.span>
-        </div>
+        </div> */}
 
         {/* Main testimonial slider */}
         <div
@@ -195,7 +195,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
         </div>
 
         {/* Right button container */}
-        <div className="hidden justify-center gap-4 text-white md:flex">
+        {/* <div className="hidden justify-center gap-4 text-white md:flex">
           <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               size="sm"
@@ -206,13 +206,13 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
               <ArrowRight size={16} />
             </Button>
           </motion.span>
-        </div>
+        </div> */}
       </div>
       {/* Down arrows */}
       <div className="mt-6 flex justify-center gap-4 text-white">
         <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Button
-            className="px-6 disabled:opacity-100 disabled:cursor-default"
+            className="px-6 disabled:cursor-default disabled:opacity-100"
             size="sm"
             variant="outline"
             onClick={isAnimating ? undefined : handlePrev}
@@ -223,7 +223,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
 
         <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Button
-            className="px-6 disabled:opacity-100 disabled:cursor-default"
+            className="px-6 disabled:cursor-default disabled:opacity-100"
             size="sm"
             variant="outline"
             onClick={isAnimating ? undefined : handleNext}

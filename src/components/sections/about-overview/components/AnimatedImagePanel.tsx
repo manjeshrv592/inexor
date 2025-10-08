@@ -6,6 +6,8 @@ interface AnimatedImagePanelProps {
   position: "left" | "right";
   shouldAnimate: boolean;
   isXlScreen: boolean;
+  isGrayscale?: boolean;
+  alt?: string;
 }
 
 const AnimatedImagePanel: React.FC<AnimatedImagePanelProps> = ({
@@ -13,6 +15,8 @@ const AnimatedImagePanel: React.FC<AnimatedImagePanelProps> = ({
   position,
   shouldAnimate,
   isXlScreen,
+  isGrayscale = true,
+  alt,
 }) => {
   const positionClasses = {
     left: "absolute top-0 left-0 z-30 h-full origin-left",
@@ -24,9 +28,12 @@ const AnimatedImagePanel: React.FC<AnimatedImagePanelProps> = ({
     return null;
   }
 
+  // Dynamic grayscale class based on isGrayscale prop
+  const grayscaleClass = isGrayscale ? "grayscale" : "";
+
   return (
     <motion.div
-      className={`${positionClasses[position]} transform bg-cover bg-center grayscale filter`}
+      className={`${positionClasses[position]} transform bg-cover bg-center ${grayscaleClass} filter`}
       style={{ backgroundImage: `url('${imageSrc}')` }}
       initial={{ width: "50%" }}
       animate={{
@@ -37,6 +44,8 @@ const AnimatedImagePanel: React.FC<AnimatedImagePanelProps> = ({
         ease: "easeInOut",
         delay: 0.1,
       }}
+      role="img"
+      aria-label={alt || `${position} panel image`}
     >
       {/* Gradient overlay for left positioned images */}
       {position === "left" && (

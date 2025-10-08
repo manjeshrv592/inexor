@@ -11,6 +11,7 @@ export const WHO_WE_SERVE_QUERY = groq`*[_type == "whoWeServeItem"] | order(orde
 export const WHO_WE_SERVE_SECTION_QUERY = groq`*[_type == "whoWeServeSection" && isActive == true][0] {
   _id,
   title,
+  subtitle,
   isActive
 }`;
 
@@ -49,6 +50,7 @@ export const WHY_ITEMS_QUERY = groq`*[_type == "whyItem"] | order(order asc) {
 export const CLIENTS_QUERY = groq`*[_type == "clientsSection"][0] {
   _id,
   title,
+  subtitle,
   logos[] {
     logo {
       asset->{
@@ -116,7 +118,9 @@ export const ABOUT_SECTION_QUERY = groq`*[_type == "aboutSection" && isActive ==
       metadata {
         dimensions
       }
-    }
+    },
+    alt,
+    isGrayscale
   },
   rightImage {
     asset->{
@@ -124,7 +128,9 @@ export const ABOUT_SECTION_QUERY = groq`*[_type == "aboutSection" && isActive ==
       metadata {
         dimensions
       }
-    }
+    },
+    alt,
+    isGrayscale
   },
   isActive
 }`;

@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import TextWithCounter from "../components/TextWithCounter";
+import { createImageField, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
 
 export default defineType({
   name: "aboutSection",
@@ -42,23 +43,27 @@ export default defineType({
           .max(350)
           .error('Description must be 350 characters or less'),
     }),
-    defineField({
+    createImageField({
       name: "leftImage",
       title: "Left Image",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
-      validation: (Rule) => Rule.required(),
+      description: `Left animated panel image for About section. ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: true,
+      hotspot: true,
+      includeAlt: true,
+      includeCaption: false,
+      includeGrayscale: true,
+      grayscaleDefault: true,
     }),
-    defineField({
+    createImageField({
       name: "rightImage",
-      title: "Right Image",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
-      validation: (Rule) => Rule.required(),
+      title: "Right Image", 
+      description: `Right animated panel image for About section. ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: true,
+      hotspot: true,
+      includeAlt: true,
+      includeCaption: false,
+      includeGrayscale: true,
+      grayscaleDefault: true,
     }),
     defineField({
       name: "isActive",

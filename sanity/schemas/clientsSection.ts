@@ -21,6 +21,19 @@ export default defineType({
       description: "Main title displayed above the client logos",
     }),
     defineField({
+      name: "subtitle",
+      title: "Section Subtitle",
+      type: "string",
+      initialValue: "Sub Title",
+      components: {
+        input: (props) => TextWithCounter({ ...props, maxLength: 55, fieldType: 'string' }),
+      },
+      validation: (Rule) => 
+        Rule.max(55)
+          .error('Section subtitle must be 55 characters or less'),
+      description: "Subtitle for the Clients section",
+    }),
+    defineField({
       name: "logos",
       title: "Client Logos",
       type: "array",

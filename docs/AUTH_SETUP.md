@@ -39,20 +39,20 @@ OTP_EXPIRY_MINUTES=10
 Before setting the `WEB_ACCESS_PASSWORD`, you need to hash your password. You can use the following Node.js script to generate a hashed password:
 
 ```javascript
-import { hash } from 'bcryptjs';
+import { hash } from "bcryptjs";
 
 async function generateHash(password) {
   const hashed = await hash(password, 12);
-  console.log('Hashed password:', hashed);
   return hashed;
 }
 
-generateHash('your_plain_text_password');
+generateHash("your_plain_text_password");
 ```
 
 ## Email Configuration
 
 For local development, you can use services like:
+
 - [Mailtrap](https://mailtrap.io/) for testing
 - [Ethereal Email](https://ethereal.email/) for a fake SMTP server
 

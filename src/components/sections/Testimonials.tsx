@@ -24,11 +24,11 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsData }) => {
 
   return (
     <Section className="">
-      <Container>
+      <Container className="text-center">
         <div className="text-center">
           <SectionTitle>{title}</SectionTitle>
         </div>
-        <h3 className="mb-4 text-center text-sm">{subtitle}</h3>
+        <h3 className="mb-4 text-sm lg:text-lg">{subtitle}</h3>
         <TestimonialCarousel
           testimonials={testimonials}
           autoplayDuration={autoplayDuration}

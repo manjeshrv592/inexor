@@ -17,11 +17,19 @@ const AboutOverview: React.FC<AboutOverviewProps> = ({
 }) => {
   const { ref, shouldAnimate, isXlScreen } = useResponsiveAnimation();
 
-  // Fallback image URLs
+  // Fallback image URLs and grayscale settings
   const leftImageSrc =
     aboutData?.leftImage?.asset?.url || "/img/about-left.jpg";
   const rightImageSrc =
     aboutData?.rightImage?.asset?.url || "/img/about-right.jpg";
+  
+  // Get grayscale settings from Sanity data (default to true for fallback)
+  const leftImageGrayscale = aboutData?.leftImage?.isGrayscale ?? true;
+  const rightImageGrayscale = aboutData?.rightImage?.isGrayscale ?? true;
+  
+  // Get alt text from Sanity data
+  const leftImageAlt = aboutData?.leftImage?.alt;
+  const rightImageAlt = aboutData?.rightImage?.alt;
 
   return (
     <section className="py-12 text-neutral-200 lg:h-[calc(100vh-64px)] lg:max-h-[600px]">
@@ -35,12 +43,16 @@ const AboutOverview: React.FC<AboutOverviewProps> = ({
           position="left"
           shouldAnimate={shouldAnimate}
           isXlScreen={isXlScreen}
+          isGrayscale={leftImageGrayscale}
+          alt={leftImageAlt}
         />
         <AnimatedImagePanel
           imageSrc={rightImageSrc}
           position="right"
           shouldAnimate={shouldAnimate}
           isXlScreen={isXlScreen}
+          isGrayscale={rightImageGrayscale}
+          alt={rightImageAlt}
         />
       </div>
     </section>

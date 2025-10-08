@@ -16,13 +16,15 @@ interface WhoWeServeProps {
 const WhoWeServe: React.FC<WhoWeServeProps> = ({ items, sectionData }) => {
   // Use section data from Sanity or fallback to default
   const title = sectionData?.title || "WHO WE SERVE";
+  const subtitle = sectionData?.subtitle || "Sub Title";
 
   return (
     <Section className="">
-      <Container>
+      <Container className="text-center">
         <div className="text-center">
-          <SectionTitle>{title}</SectionTitle>
+          <SectionTitle className="mb-2">{title}</SectionTitle>
         </div>
+        <h3 className="mb-4 text-sm lg:text-lg">{subtitle}</h3>
         <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
           {items.map((item) => (
             <WhoWeServeItem

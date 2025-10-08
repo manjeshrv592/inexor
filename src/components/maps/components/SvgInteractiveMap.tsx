@@ -69,6 +69,11 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
   // Removed unused state variables: currentZoomLevel and currentTransform
   const isTransitioningRef = useRef(false);
   const [showInfoTooltip, setShowInfoTooltip] = useState(false);
+  
+  // Touch device interaction states
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isMapEnabled, setIsMapEnabled] = useState(true);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
 
   const svgElementRef = useRef<Selection<
     SVGSVGElement,
@@ -81,9 +86,133 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
     null,
   );
   const tooltipRef = useRef<HTMLDivElement | null>(null);
+  
+  // SVG path generation for button styling (matching design system)
+  const generateButtonSVGPath = (width: number, height: number) => {
+    const rightCutRatio = 8 / 32; // Increased cut size
+    const leftCutRatio = 8 / 32;  // Increased cut size
+    const strokeWidth = 1;
+    
+    const rightCutAngle = rightCutRatio * height;
+    const leftCutAngle = leftCutRatio * height;
+    const halfStroke = strokeWidth / 2;
+    
+    return [
+      `M${halfStroke} ${halfStroke}`,
+      `L${width - rightCutAngle} ${halfStroke}`,
+      `L${width - halfStroke} ${rightCutAngle}`,
+      `L${width - halfStroke} ${height - halfStroke}`,
+      `L${leftCutAngle} ${height - halfStroke}`,
+      `L${halfStroke} ${height - leftCutAngle}`,
+      `L${halfStroke} ${halfStroke}Z`,
+    ].join("");
+  };
 
   // Map dimensions from config
   const { width, height } = SVG_MAP_CONFIG;
+
+  // Touch device detection and viewport intersection logic
+  useEffect(() => {
+    console.log('🔍 Touch device detection useEffect running');
+    
+    // Detect if device supports touch
+    const checkTouchDevice = () => {
+      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      console.log('📱 Touch detection:', {
+        ontouchstart: 'ontouchstart' in window,
+        maxTouchPoints: navigator.maxTouchPoints,
+        hasTouch
+      });
+      
+      setIsTouchDevice(hasTouch);
+      
+      // On touch devices, start with map disabled
+      if (hasTouch) {
+        console.log('🚫 Setting map disabled on touch device');
+        setIsMapEnabled(false);
+      } else {
+        console.log('✅ Setting map enabled on non-touch device');
+        setIsMapEnabled(true);
+      }
+    };
+
+    checkTouchDevice();
+
+  }, []);
+
+  // Separate useEffect for IntersectionObserver with delay
+  useEffect(() => {
+    console.log('👀 IntersectionObserver useEffect running', {
+      isTouchDevice,
+      mapContainerRef: !!mapContainerRef.current
+    });
+    
+    // Only set up observer on touch devices
+    if (!isTouchDevice) {
+      console.log('⏭️ Skipping observer setup - not a touch device');
+      return;
+    }
+
+    // Add a delay to ensure DOM is ready
+    const setupObserver = (): IntersectionObserver | null => {
+      if (!mapContainerRef.current) {
+        console.log('⏭️ Still no map container ref, retrying...');
+        return null;
+      }
+
+      console.log('🎯 Setting up IntersectionObserver');
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const [entry] = entries;
+          console.log('📊 Map intersection update:', {
+            intersectionRatio: entry.intersectionRatio,
+            isIntersecting: entry.isIntersecting,
+            boundingClientRect: entry.boundingClientRect,
+            rootBounds: entry.rootBounds
+          });
+          
+          // If map is completely out of viewport, disable it and reset to continent mode
+          if (entry.intersectionRatio === 0 && !entry.isIntersecting) {
+            console.log('🚫 Map completely out of viewport - disabling and resetting to continent mode');
+            setIsMapEnabled(false);
+            setViewMode("continents");
+            setSelectedContinent(null);
+          }
+        },
+        {
+          threshold: [0, 0.1], // Trigger when completely out and when 10% visible
+          rootMargin: '0px', // No margin
+        }
+      );
+
+      observer.observe(mapContainerRef.current);
+      console.log('✅ IntersectionObserver set up and observing element:', mapContainerRef.current);
+      return observer;
+    };
+
+    // Try immediately first
+    let observer: IntersectionObserver | null = setupObserver() || null;
+    
+    // If failed, retry with delays
+    let timeoutId: NodeJS.Timeout | undefined;
+    if (!observer) {
+      timeoutId = setTimeout(() => {
+        observer = setupObserver() || null;
+        if (!observer) {
+          // Try one more time after longer delay
+          setTimeout(() => {
+            observer = setupObserver() || null;
+          }, 1000);
+        }
+      }, 500);
+    }
+
+    return () => {
+      console.log('🧹 Cleaning up IntersectionObserver');
+      if (timeoutId) clearTimeout(timeoutId);
+      if (observer) observer.disconnect();
+    };
+  }, [isTouchDevice]);
 
   // Simple hover handlers for tooltip
   const handleMouseEnter = () => {
@@ -342,16 +471,36 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
     const zoomBehavior = zoom<SVGSVGElement, unknown>()
       .scaleExtent(SVG_MAP_CONFIG.zoomExtent)
       .filter((event) => {
+        console.log('🎮 Zoom behavior filter:', {
+          eventType: event.type,
+          isTouchDevice,
+          isMapEnabled,
+          ctrlKey: event.ctrlKey
+        });
+        
+        // On touch devices, disable all zoom/pan when map is disabled
+        if (isTouchDevice && !isMapEnabled) {
+          console.log('🚫 Blocking zoom/pan - map disabled on touch device');
+          return false;
+        }
+        
         // Allow trackpad pinch gestures (they have ctrlKey modifier)
-        if (event.type === 'wheel' && event.ctrlKey) {
+        if (event.type === "wheel" && event.ctrlKey) {
+          console.log('✅ Allowing trackpad pinch gesture');
           return true;
         }
         // Block regular scroll wheel events to allow page scrolling
-        if (event.type === 'wheel') {
+        if (event.type === "wheel") {
+          console.log('🚫 Blocking regular scroll wheel');
           return false;
         }
         // Allow other zoom events (programmatic zoom from buttons, touch gestures)
+        console.log('✅ Allowing other zoom event');
         return true;
+      })
+      .on("start", () => {
+        // Hide tooltip when user starts dragging/panning the map
+        hideTooltip();
       })
       .on("zoom", (event) => {
         g.attr("transform", event.transform);
@@ -588,6 +737,19 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
         onInteraction?.();
 
         if (continent) {
+          console.log('🗺️ Continent clicked:', {
+            continent,
+            countryName,
+            isTouchDevice,
+            isMapEnabled
+          });
+          
+          // On touch devices, enable map interaction when continent is clicked
+          if (isTouchDevice && !isMapEnabled) {
+            console.log('✅ Enabling map interaction after continent click');
+            setIsMapEnabled(true);
+          }
+          
           if (viewMode === "continents") {
             // Switch to country view for the clicked continent
             setSelectedContinent(continent);
@@ -711,6 +873,8 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
     showTooltip,
     showContinentTooltip,
     onInteraction,
+    isTouchDevice,
+    isMapEnabled,
   ]);
 
   if (loading) {
@@ -737,6 +901,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
 
   return (
     <div
+      ref={mapContainerRef}
       className="relative h-full w-full"
       style={{ backgroundColor: "#050505" }}
     >
@@ -750,6 +915,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
         preserveAspectRatio="xMidYMid meet"
       />
 
+
       {/* Debugging tooltip removed - country names are shown in main tooltip */}
 
       {/* View mode indicator and back button - commented out continent view text and button - can be uncommented when needed in future */}
@@ -758,12 +924,12 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
       <div className="absolute top-2 right-2 z-20">
         <div className="relative">
           <div
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-orange-500/20 backdrop-blur-sm transition-all duration-200 hover:bg-orange-500/30"
+            className="group flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-all duration-300 hover:bg-orange-500/20"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
             <svg
-              className="h-5 w-5 text-orange-500"
+              className="h-5 w-5 text-white duration-300 group-hover:text-orange-500"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -795,59 +961,98 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
         </div>
       </div>
 
-      {/* Zoom Controls with Lucide Icons */}
+      {/* Zoom Controls with SVG Cut Shape */}
       <div className="absolute right-4 bottom-4 flex flex-col gap-2">
+        {/* Zoom In Button */}
         <button
           onClick={() => {
             onInteraction?.();
             if (svgElementRef.current && zoomBehaviorRef.current) {
-              // Use zoom behavior directly without transition for now
               svgElementRef.current.call(zoomBehaviorRef.current.scaleBy, 1.5);
             }
           }}
-          className="p-2 text-white shadow-lg transition-all duration-200 hover:scale-105"
-          style={{ backgroundColor: "#1a1a1a" }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#2a2a2a")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "#1a1a1a")
-          }
+          className="relative p-1.5 text-white shadow-lg transition-all duration-200 hover:scale-105 hover:-translate-y-[1px] active:translate-y-[1px] cursor-pointer border-0 min-h-[36px] min-w-[36px] flex items-center justify-center"
           title="Zoom In"
         >
-          <ZoomIn size={20} />
+          {/* SVG Background with Cut Shape */}
+          <span className="pointer-events-none absolute inset-0 z-[1]">
+            <svg
+              width="100%"
+              height="100%"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="transition-all duration-200 ease-in-out"
+            >
+              <path
+                d={generateButtonSVGPath(36, 36)}
+                fill="#1a1a1a"
+                stroke="#4A4A4A"
+                strokeWidth={1}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                className="transition-all duration-200 ease-in-out group-hover:fill-[#2a2a2a]"
+              />
+            </svg>
+          </span>
+          <span className="relative z-[2]">
+            <ZoomIn size={20} strokeWidth={1.5} />
+          </span>
         </button>
 
+        {/* Zoom Out Button */}
         <button
           onClick={() => {
             onInteraction?.();
             if (svgElementRef.current && zoomBehaviorRef.current) {
-              // Use zoom behavior directly without transition for now
               svgElementRef.current.call(zoomBehaviorRef.current.scaleBy, 0.75);
             }
           }}
-          className="p-2 text-white shadow-lg transition-all duration-200 hover:scale-105"
-          style={{ backgroundColor: "#1a1a1a" }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#2a2a2a")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "#1a1a1a")
-          }
+          className="relative p-1.5 text-white shadow-lg transition-all duration-200 hover:scale-105 hover:-translate-y-[1px] active:translate-y-[1px] cursor-pointer border-0 min-h-[36px] min-w-[36px] flex items-center justify-center"
           title="Zoom Out"
         >
-          <ZoomOut size={20} />
+          {/* SVG Background with Cut Shape */}
+          <span className="pointer-events-none absolute inset-0 z-[1]">
+            <svg
+              width="100%"
+              height="100%"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="transition-all duration-200 ease-in-out"
+            >
+              <path
+                d={generateButtonSVGPath(36, 36)}
+                fill="#1a1a1a"
+                stroke="#4A4A4A"
+                strokeWidth={1}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                className="transition-all duration-200 ease-in-out group-hover:fill-[#2a2a2a]"
+              />
+            </svg>
+          </span>
+          <span className="relative z-[2]">
+            <ZoomOut size={20} strokeWidth={1.5} />
+          </span>
         </button>
 
+        {/* Reset Button */}
         <button
           onClick={() => {
+            console.log('🔄 Reset button clicked:', {
+              isTouchDevice,
+              isMapEnabled
+            });
+            
             onInteraction?.();
-            // Hide tooltip and set transition state immediately
             hideTooltip();
-            // Removed setHoveredItem - no longer needed
             isTransitioningRef.current = true;
 
-            // Start zoom transition immediately
+            // On touch devices, disable map interaction when reset is clicked
+            if (isTouchDevice) {
+              console.log('🚫 Disabling map interaction after reset click');
+              setIsMapEnabled(false);
+            }
+
             if (svgElementRef.current && zoomBehaviorRef.current) {
               resetToInitialView(
                 svgElementRef.current,
@@ -855,27 +1060,40 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
               );
             }
 
-            // Delay state changes to avoid re-render during transition
             setTimeout(() => {
               setViewMode("continents");
               setSelectedContinent(null);
-              // End transition after zoom completes
               setTimeout(() => {
                 isTransitioningRef.current = false;
               }, 750);
             }, 100);
           }}
-          className="p-2 text-white shadow-lg transition-all duration-200 hover:scale-105"
-          style={{ backgroundColor: "#1a1a1a" }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#2a2a2a")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "#1a1a1a")
-          }
+          className="relative p-1.5 text-white shadow-lg transition-all duration-200 hover:scale-105 hover:-translate-y-[1px] active:translate-y-[1px] cursor-pointer border-0 min-h-[36px] min-w-[36px] flex items-center justify-center"
           title="Return to Continent View"
         >
-          <Home size={20} />
+          {/* SVG Background with Cut Shape */}
+          <span className="pointer-events-none absolute inset-0 z-[1]">
+            <svg
+              width="100%"
+              height="100%"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="transition-all duration-200 ease-in-out"
+            >
+              <path
+                d={generateButtonSVGPath(36, 36)}
+                fill="#1a1a1a"
+                stroke="#4A4A4A"
+                strokeWidth={1}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                className="transition-all duration-200 ease-in-out group-hover:fill-[#2a2a2a]"
+              />
+            </svg>
+          </span>
+          <span className="relative z-[2]">
+            <Home size={20} strokeWidth={1.5} />
+          </span>
         </button>
       </div>
 

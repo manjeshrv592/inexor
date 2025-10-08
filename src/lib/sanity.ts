@@ -43,6 +43,7 @@ export interface WhoWeServeItem {
 export interface WhoWeServeSection {
   _id: string;
   title: string;
+  subtitle: string;
   isActive: boolean;
 }
 
@@ -93,6 +94,8 @@ export interface AboutImage {
       };
     };
   };
+  alt?: string;
+  isGrayscale?: boolean;
 }
 
 export interface AboutSection {
@@ -172,6 +175,7 @@ export interface ClientLogo {
 export interface ClientsSection {
   _id: string;
   title: string;
+  subtitle: string;
   logos: ClientLogo[];
 }
 

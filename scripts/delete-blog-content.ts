@@ -10,11 +10,7 @@ const client = createClient({
 });
 
 async function deleteBlogContent() {
-  console.log("🗑️ Starting to delete all blog content from Sanity...");
-
   try {
-    // Delete all blog posts
-    console.log("📝 Deleting blog posts...");
     const blogPosts = await client.fetch(`*[_type == "blogPost"] { _id }`);
     for (const post of blogPosts) {
       await client.delete(post._id);
