@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   experimental: {
     viewTransition: true,
   },
+  // Enable static generation
+  output: 'standalone', // For VPS deployment
+  
   images: {
     remotePatterns: [
       {
@@ -13,6 +16,16 @@ const nextConfig: NextConfig = {
         pathname: "/images/**",
       },
     ],
+  },
+  
+  // ISR configuration
+  async rewrites() {
+    return [
+      {
+        source: '/api/revalidate/:path*',
+        destination: '/api/revalidate/:path*',
+      },
+    ];
   },
 };
 

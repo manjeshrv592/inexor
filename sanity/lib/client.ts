@@ -1,11 +1,14 @@
 import { createClient } from "next-sanity";
 
-import { apiVersion, dataset, projectId, token } from "../env";
+import { apiVersion, dataset, projectId } from "../env";
 
 export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: process.env.NODE_ENV === "development", // Use CDN only in development for real-time updates in production
+  useCdn: true, // Always use CDN for better performance
   perspective: "published", // Use published perspective
+  stega: {
+    enabled: false, // Disable stega for better performance
+  },
 });

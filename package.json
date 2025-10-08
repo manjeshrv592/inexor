@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
+    "build:static": "cross-env NEXT_PHASE=phase-production-build next build --turbopack",
     "start": "next start",
     "lint": "eslint",
     "sanity": "sanity dev",
@@ -16,7 +17,8 @@
     "populate-about": "tsx scripts/populate-about-page.ts",
     "populate-process-section": "tsx scripts/populate-process-section.ts",
     "populate-services-page": "tsx scripts/populate-services-page.ts",
-    "delete-services-content": "tsx scripts/delete-services-content.ts"
+    "delete-services-content": "tsx scripts/delete-services-content.ts",
+    "verify-build": "node scripts/verify-static-build.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
@@ -71,6 +73,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
+    "cross-env": "^10.1.0",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
     "sanity": "^4.6.1",

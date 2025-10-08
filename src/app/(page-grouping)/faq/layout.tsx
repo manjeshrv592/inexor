@@ -7,14 +7,15 @@ import React, { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  getFAQCategories,
-  getFAQItemsByCategory,
-  getFAQPage,
   type FAQCategory,
   type FAQItem as FAQItemType,
   type FAQPage as FAQPageType,
 } from "@/lib/sanity";
-import { getFAQPageSettings, type FAQPageSettings } from "@/lib/sanity/faq";
+import { type FAQPageSettings } from "@/lib/sanity/faq";
+import {
+  getCachedFAQInitialData,
+  getCachedFAQItemsByCategory,
+} from "@/lib/sanity/faq-cached";
 import { Button } from "@/components/ui/button";
 
 const FAQLayout = () => {
@@ -52,11 +53,7 @@ const FAQLayout = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [categoriesData, faqPageInfo, faqSettings] = await Promise.all([
-          getFAQCategories(),
-          getFAQPage(),
-          getFAQPageSettings(),
-        ]);
+        const { categoriesData, faqPageInfo, faqSettings } = await getCachedFAQInitialData();
 
         setCategories(categoriesData);
         setFaqPageData(faqPageInfo);
@@ -78,7 +75,7 @@ const FAQLayout = () => {
           const targetCategory = categoriesData[targetCategoryIndex];
 
           // Fetch items for the category
-          const items = await getFAQItemsByCategory(
+          const items = await getCachedFAQItemsByCategory(
             targetCategory.slug.current,
           );
           setFaqItems(items);
@@ -129,7 +126,7 @@ const FAQLayout = () => {
       setActiveQuestionId(null);
 
       const category = categories[categoryIndex];
-      const items = await getFAQItemsByCategory(category.slug.current);
+      const items = await getCachedFAQItemsByCategory(category.slug.current);
       setFaqItems(items);
 
       // Auto-select first question and update URL

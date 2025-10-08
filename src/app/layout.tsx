@@ -7,6 +7,7 @@ import Header from "@/components/layout/header/Header";
 import AuthProvider from "@/components/providers/AuthProvider";
 import LogoutButton from "@/components/auth/LogoutButton";
 import Footer from "@/components/layout/Footer";
+import PrefetchProvider from "@/components/providers/PrefetchProvider";
 import AboutOverview from "@/components/sections/about-overview/AboutOverview";
 import Clients from "@/components/sections/Clients";
 import Hero from "@/components/sections/Hero";
@@ -16,21 +17,7 @@ import OurServices from "@/components/sections/OurServices";
 import Testimonials from "@/components/sections/Testimonials";
 import WhoWeServe from "@/components/sections/WhoWeServe";
 import Why from "@/components/sections/Why";
-import {
-  getWhoWeServeItems,
-  getWhoWeServeSection,
-  getHero,
-  getWhy,
-  getWhyItems,
-  getAboutSection,
-  getAboutItems,
-  getTestimonialsSection,
-  getServicesSection,
-  getServicesForHomepage,
-  getKeyValuePillarsSection,
-  getKeyValuePillarItems,
-  getFooter,
-} from "@/lib/sanity";
+import { getStaticHomepageData } from "@/lib/static-generation";
 
 const michroma = Michroma({
   subsets: ["latin"],
@@ -54,7 +41,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [
+  const {
     heroData,
     keyValuePillarsSection,
     keyValuePillarItems,
@@ -68,21 +55,7 @@ export default async function RootLayout({
     serviceItems,
     testimonialsData,
     footerData,
-  ] = await Promise.all([
-    getHero(),
-    getKeyValuePillarsSection(),
-    getKeyValuePillarItems(),
-    getAboutSection(),
-    getAboutItems(),
-    getWhoWeServeItems(),
-    getWhoWeServeSection(),
-    getWhy(),
-    getWhyItems(),
-    getServicesSection(),
-    getServicesForHomepage(),
-    getTestimonialsSection(),
-    getFooter(),
-  ]);
+  } = await getStaticHomepageData();
 
   return (
     <ViewTransitions>
@@ -91,8 +64,9 @@ export default async function RootLayout({
           className={`${michroma.variable} ${raleway.variable} bg-[#050505] text-white antialiased`}
         >
           <AuthProvider>
-            <Header />
-            <main>
+            <PrefetchProvider>
+              <Header />
+              <main>
               <Hero heroData={heroData} />
               <KeyValuePillars
                 sectionData={keyValuePillarsSection}
@@ -116,6 +90,7 @@ export default async function RootLayout({
             </main>
             {children}
             <LogoutButton />
+            </PrefetchProvider>
             <Toaster
               position="top-right"
               toastOptions={{

@@ -62,6 +62,62 @@ export async function POST(request: NextRequest) {
           revalidateTag("maps");
           revalidatedTags.push("countries", "maps");
           break;
+        case "service":
+        case "servicesSection":
+          revalidateTag("services");
+          revalidateTag("services-section");
+          revalidatedTags.push("services", "services-section");
+          // Also revalidate services page
+          revalidatePath("/services");
+          break;
+        case "blogPost":
+          revalidateTag("blog-posts");
+          revalidatedTags.push("blog-posts");
+          // Also revalidate resources page
+          revalidatePath("/resources");
+          break;
+        case "faqCategory":
+        case "faqItem":
+        case "faqPage":
+          revalidateTag("faq-categories");
+          revalidateTag("faq-items");
+          revalidateTag("faq-page");
+          revalidatedTags.push("faq-categories", "faq-items", "faq-page");
+          // Also revalidate FAQ page
+          revalidatePath("/faq");
+          break;
+        case "aboutPage":
+          revalidateTag("about-page");
+          revalidatedTags.push("about-page");
+          // Also revalidate about page
+          revalidatePath("/about");
+          break;
+        case "contactInfo":
+          revalidateTag("contact-info");
+          revalidatedTags.push("contact-info");
+          // Also revalidate contact page
+          revalidatePath("/contact");
+          break;
+        case "privacyPolicy":
+          revalidateTag("privacy-policy");
+          revalidatedTags.push("privacy-policy");
+          revalidatePath("/privacy-policy");
+          break;
+        case "termsConditions":
+          revalidateTag("terms-conditions");
+          revalidatedTags.push("terms-conditions");
+          revalidatePath("/terms-conditions");
+          break;
+        case "keyValuePillarsSection":
+        case "keyValuePillarItem":
+          revalidateTag("key-value-pillars-section");
+          revalidateTag("key-value-pillar-items");
+          revalidatedTags.push("key-value-pillars-section", "key-value-pillar-items");
+          break;
+        case "footer":
+          revalidateTag("footer");
+          revalidatedTags.push("footer");
+          break;
         default:
           // Revalidate all tags for unknown types
           const allTags = [
@@ -71,14 +127,37 @@ export async function POST(request: NextRequest) {
             "why-items",
             "about",
             "about-items",
+            "about-page",
             "clients",
             "testimonials",
             "testimonials-section",
             "countries",
             "maps",
+            "services",
+            "services-section",
+            "blog-posts",
+            "faq-categories",
+            "faq-items",
+            "faq-page",
+            "contact-info",
+            "privacy-policy",
+            "terms-conditions",
+            "key-value-pillars-section",
+            "key-value-pillar-items",
+            "footer",
           ];
           allTags.forEach((tag) => revalidateTag(tag));
           revalidatedTags.push(...allTags);
+          
+          // Revalidate all pages
+          revalidatePath("/");
+          revalidatePath("/about");
+          revalidatePath("/services");
+          revalidatePath("/resources");
+          revalidatePath("/faq");
+          revalidatePath("/contact");
+          revalidatePath("/privacy-policy");
+          revalidatePath("/terms-conditions");
       }
     } else {
       // No document type provided, revalidate everything

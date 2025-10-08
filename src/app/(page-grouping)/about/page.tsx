@@ -1,10 +1,11 @@
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import Image from "next/image";
-import React from "react";
-import { getAboutPageData } from "@/lib/sanity/aboutPage";
+import React, { Suspense } from "react";
+import { getStaticAboutPageData } from "@/lib/static-generation";
+import { AboutPageSkeleton } from "@/components/ui/LoadingSkeleton";
 
-const AboutPage = async () => {
-  const { aboutPage } = await getAboutPageData();
+const AboutPageContent = async () => {
+  const { aboutPage } = await getStaticAboutPageData();
   return (
     <div className="size-full grid-cols-[2fr_3fr_2fr] bg-[#2f2f2f] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:grid">
       <div className="relative h-[100px] xl:h-full">
@@ -113,6 +114,14 @@ const AboutPage = async () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const AboutPage = () => {
+  return (
+    <Suspense fallback={<AboutPageSkeleton />}>
+      <AboutPageContent />
+    </Suspense>
   );
 };
 
