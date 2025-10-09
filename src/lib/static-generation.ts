@@ -16,9 +16,9 @@ import {
   WHY_ITEMS_QUERY,
   SERVICES_SECTION_QUERY,
   SERVICES_FOR_HOMEPAGE_QUERY,
-  TESTIMONIALS_SECTION_QUERY,
   FOOTER_QUERY,
 } from '../../sanity/lib/queries';
+import { getTestimonialsSection } from './sanity';
 import { aboutPageQuery } from '../sanity/queries/aboutPage';
 import { FAQ_CATEGORIES_QUERY, FAQ_PAGE_QUERY } from '../../sanity/lib/queries';
 
@@ -61,11 +61,17 @@ export async function getStaticHomepageData() {
     client.fetch(WHY_ITEMS_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['why-items'] } }),
     client.fetch(SERVICES_SECTION_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['services-section'] } }),
     client.fetch(SERVICES_FOR_HOMEPAGE_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['services'] } }),
-    client.fetch(TESTIMONIALS_SECTION_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['testimonials-section'] } }),
+    getTestimonialsSection(), // Use function with fallback logic instead of direct query
     client.fetch(FOOTER_QUERY, {}, { next: { revalidate: REVALIDATE.STATIC, tags: ['footer'] } }),
   ]);
 
   console.log('✅ Homepage data fetched for static generation');
+  console.log('🔍 Testimonials data:', {
+    hasTestimonialsData: !!testimonialsData,
+    testimonialsCount: testimonialsData?.testimonials?.length || 0,
+    title: testimonialsData?.title,
+    subtitle: testimonialsData?.subtitle
+  });
 
   return {
     heroData,

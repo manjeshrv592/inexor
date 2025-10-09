@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import NavItem from "./NavItem";
 import { NavigationItem, getNavigationData } from "@/lib/sanity/navigation";
-import { usePrefetch } from "@/hooks/usePrefetch";
+// import { usePrefetch } from "@/hooks/usePrefetch";
 
 interface NavigationProps {
   isOpen: boolean;
@@ -18,24 +18,26 @@ const Navigation: React.FC<NavigationProps> = ({
   onNavItemClick,
 }) => {
   const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
-  const { prefetchAboutPage, prefetchFAQPage, prefetchServicesPage, prefetchResourcesPage } = usePrefetch();
+  // Prefetch hooks for future hover implementation
+  // const { prefetchAboutPage, prefetchFAQPage, prefetchServicesPage, prefetchResourcesPage } = usePrefetch();
 
-  const handleNavItemHover = (href: string) => {
-    switch (href) {
-      case '/about':
-        prefetchAboutPage();
-        break;
-      case '/faq':
-        prefetchFAQPage();
-        break;
-      case '/services':
-        prefetchServicesPage();
-        break;
-      case '/resources':
-        prefetchResourcesPage();
-        break;
-    }
-  };
+  // Prefetch functions for future hover implementation
+  // const handleNavItemHover = (href: string) => {
+  //   switch (href) {
+  //     case '/about':
+  //       prefetchAboutPage();
+  //       break;
+  //     case '/faq':
+  //       prefetchFAQPage();
+  //       break;
+  //     case '/services':
+  //       prefetchServicesPage();
+  //       break;
+  //     case '/resources':
+  //       prefetchResourcesPage();
+  //       break;
+  //   }
+  // };
 
   useEffect(() => {
     const fetchNavigationData = async () => {

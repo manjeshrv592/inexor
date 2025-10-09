@@ -1,6 +1,6 @@
 import React from "react";
 import Section from "../layout/Section";
-import Image from "next/image";
+import LazyImage from "../ui/LazyImage";
 import Container from "../layout/Container";
 import { Button } from "../ui/button";
 import ContactUsButton from "../ui/ContactUsButton";
@@ -16,8 +16,8 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
   const description = heroData?.description || "description";
   const scheduleCallButtonText = heroData?.scheduleCallButtonText || "Schedule a Call";
   const contactButtonText = heroData?.contactButtonText || "Contact Us";
-  const backgroundImageUrl =
-    heroData?.backgroundImage?.asset?.url || "/hero-bg.jpg";
+  const backgroundImage = heroData?.backgroundImage || null;
+  const backgroundImageUrl = backgroundImage?.asset?.url || "/hero-bg.jpg";
 
   return (
     <Section className="xxl:p-0 relative h-screen p-0 sm:p-0 md:p-0 lg:p-0 xl:p-0">
@@ -27,11 +27,13 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
         </ContactUsButton>
       </span>
       <div className="absolute inset-0">
-        <Image
-          src={backgroundImageUrl}
+        <LazyImage
+          src={backgroundImage || backgroundImageUrl}
           alt="Hero background image"
           fill
           className="object-cover"
+          priority={true}
+          quality={85}
         />
         {/* Vignette overlay with edge blur */}
         {/* <div

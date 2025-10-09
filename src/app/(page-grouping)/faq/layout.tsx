@@ -1,10 +1,12 @@
 "use client";
 import PagePanel from "@/components/ui/PagePanel";
 import PagePanelBg from "@/components/ui/PagePanelBg";
-import { CategoryButton, FAQItem } from "@/components/faq";
+import { CategoryButton } from "@/components/faq";
+import FAQItemWithLink from "@/components/faq/FAQItemWithLink";
+import Link from "next/link";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import {
   type FAQCategory,
@@ -28,7 +30,6 @@ const FAQLayout = () => {
     useState<FAQPageSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const router = useRouter();
   const pathname = usePathname();
 
   // Parse URL parameters
@@ -53,7 +54,8 @@ const FAQLayout = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const { categoriesData, faqPageInfo, faqSettings } = await getCachedFAQInitialData();
+        const { categoriesData, faqPageInfo, faqSettings } =
+          await getCachedFAQInitialData();
 
         setCategories(categoriesData);
         setFaqPageData(faqPageInfo);
@@ -96,15 +98,7 @@ const FAQLayout = () => {
             setActiveQuestionId(targetQuestionId);
           } else if (items.length > 0) {
             setActiveQuestionId(items[0]._id);
-            // Update URL to reflect the first question
-            if (!currentQuestionSlug) {
-              router.replace(
-                `/faq/${targetCategory.slug.current}/${items[0].slug.current}`,
-              );
-            }
-          } else if (!currentCategorySlug) {
-            // No URL params, redirect to first category
-            router.replace(`/faq/${targetCategory.slug.current}`);
+            // No URL update for smooth UX - purely state-based navigation
           }
         }
       } catch (error) {
@@ -115,45 +109,9 @@ const FAQLayout = () => {
     };
 
     fetchData();
-  }, [currentCategorySlug, currentQuestionSlug, router]);
+  }, [currentCategorySlug, currentQuestionSlug]);
 
-  // Handle category change
-  const handleCategoryChange = async (categoryIndex: number) => {
-    if (categoryIndex === selectedCategoryIndex) return;
-
-    try {
-      setSelectedCategoryIndex(categoryIndex);
-      setActiveQuestionId(null);
-
-      const category = categories[categoryIndex];
-      const items = await getCachedFAQItemsByCategory(category.slug.current);
-      setFaqItems(items);
-
-      // Auto-select first question and update URL
-      if (items.length > 0) {
-        setActiveQuestionId(items[0]._id);
-        router.push(`/faq/${category.slug.current}/${items[0].slug.current}`);
-      } else {
-        router.push(`/faq/${category.slug.current}`);
-      }
-    } catch (error) {
-      console.error("Error fetching FAQ items for category:", error);
-    }
-  };
-
-  // Handle question click
-  const handleQuestionClick = (questionId: string) => {
-    if (activeQuestionId !== questionId) {
-      setActiveQuestionId(questionId);
-
-      // Update URL to reflect selected question
-      const question = faqItems.find((item) => item._id === questionId);
-      const category = categories[selectedCategoryIndex];
-      if (question && category) {
-        router.push(`/faq/${category.slug.current}/${question.slug.current}`);
-      }
-    }
-  };
+  // Note: Category and question navigation now handled by Link components
 
   // Get current active question's answer for desktop display
   const activeQuestion = faqItems.find((item) => item._id === activeQuestionId);
@@ -210,16 +168,17 @@ const FAQLayout = () => {
               >
                 {categories.map((category, index) => (
                   <div key={category._id} className="flex-shrink-0">
-                    <Button
-                      onClick={() => handleCategoryChange(index)}
-                      variant={
-                        selectedCategoryIndex === index ? "default" : "outline"
-                      }
-                      size={"sm"}
-                      className="font-michroma text-[10px] tracking-[1px]"
-                    >
-                      {category.name}
-                    </Button>
+                    <Link href={`/faq/${category.slug.current}`}>
+                      <Button
+                        variant={
+                          selectedCategoryIndex === index ? "default" : "outline"
+                        }
+                        size={"sm"}
+                        className="font-michroma text-[10px] tracking-[1px]"
+                      >
+                        {category.name}
+                      </Button>
+                    </Link>
                   </div>
                 ))}
               </div>
@@ -236,13 +195,14 @@ const FAQLayout = () => {
               </h5>
               <div className="flex flex-wrap justify-center gap-4">
                 {categories.map((category, index) => (
-                  <CategoryButton
-                    key={category._id}
-                    isActive={selectedCategoryIndex === index}
-                    onClick={() => handleCategoryChange(index)}
-                  >
-                    {category.name}
-                  </CategoryButton>
+                  <Link key={category._id} href={`/faq/${category.slug.current}`}>
+                    <CategoryButton
+                      isActive={selectedCategoryIndex === index}
+                      onClick={() => {}}
+                    >
+                      {category.name}
+                    </CategoryButton>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -297,14 +257,15 @@ const FAQLayout = () => {
           <div className="h-[calc(100dvh-158px)] overflow-y-auto xl:h-full">
             <div className="flex flex-col justify-center gap-6 px-2 py-6">
               {faqItems.map((item) => (
-                <FAQItem
+                <FAQItemWithLink
                   key={item._id}
+                  categorySlug={categories[selectedCategoryIndex]?.slug.current || ""}
+                  questionSlug={item.slug.current}
                   questionId={item._id}
                   question={item.question}
                   answer={item.answer}
                   isMobile={isMobile}
                   activeQuestionId={activeQuestionId}
-                  onQuestionClick={handleQuestionClick}
                 />
               ))}
               {faqItems.length === 0 && !loading && (

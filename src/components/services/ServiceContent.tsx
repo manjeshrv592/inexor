@@ -2,7 +2,7 @@
 
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import UseCasesSection from "@/components/ui/UseCasesSection";
-import Image from "next/image";
+import LazyImage from "@/components/ui/LazyImage";
 import React from "react";
 import { motion } from "motion/react";
 import { type Service } from "@/lib/sanity/service";
@@ -25,11 +25,12 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
           {/* Featured Image */}
           <div className="relative mb-6 h-[300px]">
             <div className="absolute top-0 left-0 size-full">
-              <Image
-                src={service.featuredImage?.asset.url || "/img/left-image.jpg"}
+              <LazyImage
+                src={service.featuredImage || "/img/left-image.jpg"}
                 alt={service.featuredImage?.alt || service.title}
                 fill
                 className="object-cover grayscale"
+                quality={85}
               />
             </div>
             <div className="relative z-10 flex size-full items-center justify-center">

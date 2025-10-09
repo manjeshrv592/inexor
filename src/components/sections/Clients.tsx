@@ -25,6 +25,8 @@ export async function Clients() {
               items={clientsData.logos.map((logo) => ({
                 name: logo.alt,
                 src: logo.logo.asset.url,
+                mimeType: logo.logo.asset.mimeType,
+                lqip: logo.logo.asset.metadata.lqip,
               }))}
               direction="right"
               speed="slow"

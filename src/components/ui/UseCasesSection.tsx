@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/image";
+import LazyImage from "./LazyImage";
 
 interface UseCaseStep {
   _key?: string;
@@ -35,11 +35,13 @@ const UseCasesSection: React.FC<UseCasesSectionProps> = ({
     <div className={`my-8 grid gap-4 text-white xl:grid-cols-2 ${className}`}>
       {/* Image on right (desktop), on top (mobile) */}
       <div className="relative order-1 h-52 w-full overflow-hidden [clip-path:polygon(0_0,calc(100%-20px)_0,100%_20px,100%_100%,20px_100%,0_calc(100%-20px))] xl:order-2 xl:h-auto">
-        <Image
+        <LazyImage
           src={imageUrl || fallbackImage}
           alt={imageAlt || "use cases image"}
           fill
           className="object-cover grayscale"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          quality={80}
         />
         <div className="absolute inset-0 bg-black/60" />
       </div>

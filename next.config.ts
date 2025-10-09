@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
         pathname: "/images/**",
       },
     ],
+    // Configure quality values for LazyImage component
+    qualities: [20, 75, 80, 85, 90, 95],
   },
   
   // ISR configuration

@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import LazyImage from "@/components/ui/LazyImage";
 
 interface AnimatedImagePanelProps {
   imageSrc: string | undefined;
@@ -33,8 +34,7 @@ const AnimatedImagePanel: React.FC<AnimatedImagePanelProps> = ({
 
   return (
     <motion.div
-      className={`${positionClasses[position]} transform bg-cover bg-center ${grayscaleClass} filter`}
-      style={{ backgroundImage: `url('${imageSrc}')` }}
+      className={`${positionClasses[position]} transform overflow-hidden`}
       initial={{ width: "50%" }}
       animate={{
         width: shouldAnimate ? (isXlScreen ? "17%" : "0%") : "50%",
@@ -47,10 +47,18 @@ const AnimatedImagePanel: React.FC<AnimatedImagePanelProps> = ({
       role="img"
       aria-label={alt || `${position} panel image`}
     >
+      <LazyImage
+        src={imageSrc}
+        alt={alt || `${position} panel image`}
+        fill
+        className={`object-cover ${grayscaleClass}`}
+        quality={80}
+      />
+      
       {/* Gradient overlay for left positioned images */}
       {position === "left" && (
         <div
-          className="absolute h-full w-full"
+          className="absolute h-full w-full z-10"
           style={{
             background:
               "linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%)",

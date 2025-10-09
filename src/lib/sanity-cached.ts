@@ -40,12 +40,12 @@ const CACHE_TTL = {
   STATIC_DATA: 30 * 60 * 1000,   // 30 minutes for rarely changing data
 };
 
-// Static generation revalidation times (in seconds)
-const REVALIDATE_TIME = {
-  HOMEPAGE_DATA: 3600,    // 1 hour
-  PAGE_DATA: 1800,        // 30 minutes
-  STATIC_DATA: 7200,      // 2 hours
-};
+// Static generation revalidation times (in seconds) - used in static-generation.ts
+// const REVALIDATE_TIME = {
+//   HOMEPAGE_DATA: 3600,    // 1 hour
+//   PAGE_DATA: 1800,        // 30 minutes
+//   STATIC_DATA: 7200,      // 2 hours
+// };
 
 // Cached homepage data functions
 export const getCachedHero = (): Promise<Hero | null> =>

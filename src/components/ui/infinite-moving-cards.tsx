@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import React, { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
+import LazyImage from "./LazyImage";
 
 export const InfiniteMovingCards = ({
   items,
@@ -14,6 +14,8 @@ export const InfiniteMovingCards = ({
   items: {
     src: string;
     name: string;
+    mimeType?: string;
+    lqip?: string;
   }[];
   direction?: "left" | "right";
   speed?: "fast" | "normal" | "slow";
@@ -92,15 +94,15 @@ export const InfiniteMovingCards = ({
             key={item.name}
           >
             <div className="flex h-[60px] w-[120px] items-center justify-center">
-              <Image
+              <LazyImage
                 src={item.src}
                 alt={item.name}
                 width={120}
                 height={60}
-                className="h-auto max-h-full w-auto max-w-full object-contain opacity-80 transition-opacity hover:opacity-100"
-                style={{
-                  mixBlendMode: "multiply",
-                }}
+                className="object-contain"
+                quality={90}
+                mimeType={item.mimeType}
+                lqip={item.lqip}
               />
             </div>
           </li>

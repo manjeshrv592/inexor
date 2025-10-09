@@ -1,41 +1,26 @@
-"use client";
-
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { getServices } from "@/lib/sanity/service";
 
-const ServicesRedirectPage = () => {
-  const router = useRouter();
+const ServicesPage = async () => {
+  const services = await getServices();
 
-  useEffect(() => {
-    const redirectToFirstService = async () => {
-      try {
-        const services = await getServices();
+  // Redirect to the first service if available (like Resources)
+  if (services.length > 0) {
+    const firstService = services[0];
+    redirect(`/services/${firstService.slug.current}`);
+  }
 
-        if (services && services.length > 0) {
-          // Redirect to the first service
-          const firstService = services[0];
-          router.replace(`/services/${firstService.slug.current}`);
-        } else {
-          // Fallback if no services found
-          console.error("No services found");
-          router.replace("/");
-        }
-      } catch (error) {
-        console.error("Error fetching services:", error);
-        router.replace("/");
-      }
-    };
-
-    redirectToFirstService();
-  }, [router]);
-
-  // Show loading while redirecting
+  // If no services exist, show a message or fallback content
   return (
     <div className="flex h-full items-center justify-center bg-[#2f2f2f]">
-      <div className="text-white">Loading services...</div>
+      <div className="text-center">
+        <h2 className="font-michroma mb-4 text-xl text-white">
+          No Services Available
+        </h2>
+        <p className="text-gray-400">Check back later for new services.</p>
+      </div>
     </div>
   );
 };
 
-export default ServicesRedirectPage;
+export default ServicesPage;

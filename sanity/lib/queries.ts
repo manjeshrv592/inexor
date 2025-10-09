@@ -55,8 +55,10 @@ export const CLIENTS_QUERY = groq`*[_type == "clientsSection"][0] {
     logo {
       asset->{
         url,
+        mimeType,
         metadata {
-          dimensions
+          dimensions,
+          lqip
         }
       }
     },
@@ -72,8 +74,10 @@ export const TESTIMONIALS_QUERY = groq`*[_type == "testimonial" && isActive == t
   image {
     asset->{
       url,
+      mimeType,
       metadata {
-        dimensions
+        dimensions,
+        lqip
       }
     }
   },
@@ -96,8 +100,10 @@ export const TESTIMONIALS_SECTION_QUERY = groq`*[_type == "testimonialsSection" 
     image {
       asset->{
         url,
+        mimeType,
         metadata {
-          dimensions
+          dimensions,
+          lqip
         }
       }
     },
@@ -159,8 +165,10 @@ export const SERVICES_FOR_HOMEPAGE_QUERY = groq`*[_type == "service" && isActive
     backgroundImage {
       asset->{
         url,
+        mimeType,
         metadata {
-          dimensions
+          dimensions,
+          lqip
         }
       },
       alt

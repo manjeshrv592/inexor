@@ -9,6 +9,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "../../ui/button";
 import { motion } from "motion/react";
 import { Testimonial } from "@/lib/sanity";
+import LazyImage from "../../ui/LazyImage";
 
 // Import Swiper styles
 import "swiper/css";
@@ -136,13 +137,15 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
                   {/* Image Section */}
                   <div className="xxl:max-w-[400px] relative mx-auto h-64 w-full max-w-[360px] min-w-0 overflow-hidden md:h-[360px]">
                     {testimonial.image?.asset?.url ? (
-                      <Image
-                        src={testimonial.image.asset.url}
+                      <LazyImage
+                        src={testimonial.image}
                         alt={testimonial.name}
                         width={400}
                         height={400}
                         className="mx-auto h-64 w-full object-cover md:h-full"
                         priority={index === 0}
+                        mimeType={testimonial.image.asset.mimeType}
+                        lqip={testimonial.image.asset.metadata.lqip}
                       />
                     ) : (
                       <div className="mx-auto flex h-64 w-full items-center justify-center bg-neutral-800 md:h-full">

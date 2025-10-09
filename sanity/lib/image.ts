@@ -70,6 +70,7 @@ export function urlForImageWithParams(
     quality?: number;
     format?: 'webp' | 'jpg' | 'png' | 'auto';
     fit?: 'crop' | 'fill' | 'fillmax' | 'max' | 'scale' | 'clip' | 'min';
+    blur?: number;
   } = {}
 ) {
   let imageBuilder = builder.image(source);
@@ -98,5 +99,21 @@ export function urlForImageWithParams(
     imageBuilder = imageBuilder.fit(params.fit);
   }
   
+  if (params.blur) {
+    imageBuilder = imageBuilder.blur(params.blur);
+  }
+  
   return imageBuilder;
+}
+
+/**
+ * Generate LQIP (Low Quality Image Placeholder) URL
+ * Creates a tiny, blurred version for progressive loading
+ */
+export function urlForLQIP(source: SanityImageSource) {
+  return builder.image(source)
+    .width(20)
+    .quality(20)
+    .blur(50)
+    .format('webp');
 }

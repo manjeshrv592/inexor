@@ -1,12 +1,10 @@
-"use client";
-
-import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
-import UseCasesSection from "@/components/ui/UseCasesSection";
-import Image from "next/image";
-import React, { useState, useEffect } from "react";
-import { motion } from "motion/react";
-import { getServiceBySlug, type Service } from "@/lib/sanity/service";
+import { getServices, getServiceBySlug, getServicesPageSettings, type Service } from "@/lib/sanity/service";
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { truncateText } from "@/lib/utils/textUtils";
+import ServiceContent from "@/components/services/ServiceContent";
 
 interface ServicePageProps {
   params: Promise<{
@@ -14,101 +12,119 @@ interface ServicePageProps {
   }>;
 }
 
-const ServicePage = ({ params }: ServicePageProps) => {
-  const [service, setService] = useState<Service | null>(null);
-  const [loading, setLoading] = useState(true);
-  const rightPanelRef = React.useRef<HTMLDivElement>(null);
-  const resolvedParams = React.use(params);
-
-  // Fetch service data
-  useEffect(() => {
-    const fetchService = async () => {
-      try {
-        setLoading(true);
-        const serviceData = await getServiceBySlug(resolvedParams.slug);
-
-        if (!serviceData) {
-          notFound();
-          return;
-        }
-
-        setService(serviceData);
-      } catch (error) {
-        console.error("Error fetching service:", error);
-        notFound();
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchService();
-  }, [resolvedParams.slug]);
-
-  if (loading) {
-    return (
-      <div className="flex h-full items-center justify-center bg-[#2f2f2f]">
-        <div className="text-white">Loading...</div>
-      </div>
-    );
+// Generate static params for all services
+export async function generateStaticParams() {
+  try {
+    const services = await getServices();
+    
+    return services.map((service: Service) => ({
+      slug: service.slug.current,
+    }));
+  } catch (error) {
+    console.error('Error generating service static params:', error);
+    return [];
   }
+}
+
+const ServicePage = async ({ params }: ServicePageProps) => {
+  const { slug } = await params;
+  const [service, allServices, servicesPageSettings] = await Promise.all([
+    getServiceBySlug(slug),
+    getServices(),
+    getServicesPageSettings(),
+  ]);
 
   if (!service) {
-    return null;
+    notFound();
   }
+
+  // Find current index for active state
+  const currentIndex = allServices.findIndex(
+    (s) => s.slug.current === slug,
+  );
 
   return (
     <div
-      ref={rightPanelRef}
-      className="h-[calc(100dvh-158px)] overflow-y-auto bg-neutral-900 xl:h-full"
+      className="h-full bg-[#2f2f2f] xl:grid xl:h-full xl:grid-cols-[150px_1fr]"
+      style={{
+        boxShadow:
+          "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
+      }}
     >
-      <div className="pb-4">
-        <motion.div
-          key={service._id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+      {/* Left Panel - Service List - Mobile */}
+      <div className="relative px-5 py-7 xl:hidden">
+        <div className="absolute top-0 left-0 size-full">
+          <Image
+            src={
+              servicesPageSettings?.leftPanelImage?.asset?.url ||
+              "/img/left-image.jpg"
+            }
+            alt={servicesPageSettings?.leftPanelImage?.alt || "services bg"}
+            fill
+            className={`object-cover ${
+              servicesPageSettings?.applyGrayscale !== false
+                ? "grayscale"
+                : ""
+            }`}
+          />
+        </div>
+        {/* Mobile list */}
+        <div
+          className="flex flex-nowrap gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+          style={{
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          }}
         >
-          {/* Featured Image */}
-          <div className="relative mb-6 h-[300px]">
-            <div className="absolute top-0 left-0 size-full">
-              {/* <div className="absolute inset-0 z-10 bg-black/60"></div> */}
-              <Image
-                src={service.featuredImage?.asset.url || "/img/left-image.jpg"}
-                alt={service.featuredImage?.alt || service.title}
-                fill
-                className="object-cover grayscale"
-              />
-            </div>
-            <div className="relative z-10 flex size-full items-center justify-center">
-              <div className="flex flex-col items-center justify-center gap-2 bg-black/5 p-4 text-center backdrop-blur-[5px]">
-                <h2 className="font-michroma text-lg">
-                  {service.title.toUpperCase()}
-                </h2>
-                <h5 className="max-w-[300px]">{service.shortDescription}</h5>
-              </div>
-            </div>
-          </div>
-
-          <div className="mx-auto max-w-3xl px-5 text-justify text-sm text-neutral-100">
-            {/* Service Content */}
-            {service.content && (
-              <PortableTextRenderer content={service.content} />
-            )}
-            {/* Use Cases Section - placed at the end of the blog content */}
-            {service.useCases?.steps && service.useCases.steps.length > 0 && (
-              <UseCasesSection
-                title={service.useCases.title || "Use cases"}
-                steps={service.useCases.steps}
-                imageUrl={
-                  service.useCases.image?.asset?.url || "/img/left-image.jpg"
-                }
-                imageAlt={service.useCases.image?.alt || service.title}
-              />
-            )}
-          </div>
-        </motion.div>
+          {allServices.map((service, index) => (
+            <Link key={service._id} href={`/services/${service.slug.current}`}>
+              <Button
+                className="font-michroma w-20 text-[10px] tracking-[1px] xl:w-full"
+                size={"sm"}
+                variant={currentIndex === index ? "default" : "outline"}
+              >
+                {truncateText(service.code, 3)}
+              </Button>
+            </Link>
+          ))}
+        </div>
       </div>
+
+      {/* Left Panel - Service List - Desktop */}
+      <div className="relative hidden xl:flex xl:flex-1 xl:flex-col xl:justify-center xl:p-1">
+        <div className="absolute top-0 left-0 size-full">
+          <Image
+            src={
+              servicesPageSettings?.leftPanelImage?.asset?.url ||
+              "/img/left-image.jpg"
+            }
+            alt={servicesPageSettings?.leftPanelImage?.alt || "services bg"}
+            fill
+            className={`object-cover ${
+              servicesPageSettings?.applyGrayscale !== false
+                ? "grayscale"
+                : ""
+            }`}
+          />
+        </div>
+        <div className="relative z-10 h-[calc(100vh-230px)] overflow-y-auto pr-1">
+          <div className="flex h-full flex-col justify-center gap-4">
+            {allServices.map((service, index) => (
+              <Link key={service._id} href={`/services/${service.slug.current}`}>
+                <Button
+                  className="font-michroma text-[10px] tracking-[1px] xl:w-full"
+                  variant={currentIndex === index ? "default" : "outline"}
+                >
+                  {service.code}
+                </Button>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Right Panel - Service Content */}
+      <ServiceContent service={service} />
     </div>
   );
 };

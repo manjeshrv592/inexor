@@ -161,11 +161,13 @@ export interface ClientLogo {
   logo: {
     asset: {
       url: string;
+      mimeType: string;
       metadata: {
         dimensions: {
           width: number;
           height: number;
         };
+        lqip?: string;
       };
     };
   };
@@ -216,11 +218,13 @@ export async function getResourcesPage(): Promise<ResourcesPage | null> {
 export interface TestimonialImage {
   asset: {
     url: string;
+    mimeType: string;
     metadata: {
       dimensions: {
         width: number;
         height: number;
       };
+      lqip?: string;
     };
   };
 }
@@ -275,11 +279,13 @@ export async function getTestimonialsSection(): Promise<TestimonialsSection | nu
 export interface ServiceImage {
   asset: {
     url: string;
+    mimeType: string;
     metadata: {
       dimensions: {
         width: number;
         height: number;
       };
+      lqip?: string;
     };
   };
 }

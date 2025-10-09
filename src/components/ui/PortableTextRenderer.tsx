@@ -1,7 +1,7 @@
 import React from "react";
 import { PortableText, PortableTextComponents } from "next-sanity";
 import { PortableTextBlock } from "@portabletext/types";
-import Image from "next/image";
+import LazyImage from "@/components/ui/LazyImage";
 import ProcessSteps from "@/components/ui/ProcessSteps";
 import { urlForImageWithParams } from "../../../sanity/lib/image";
 
@@ -57,7 +57,6 @@ const components: PortableTextComponents = {
         return null;
       }
 
-      const imageUrl = urlForImageWithParams(value, { width: 800, height: 300, quality: 85, format: 'webp' }).url();
       const shouldApplyGrayscale = value.isGrayscale !== false;
       const grayscaleClass = shouldApplyGrayscale ? "grayscale" : "";
 
@@ -69,14 +68,14 @@ const components: PortableTextComponents = {
 
       return (
         <div className="mx-auto my-6 max-w-[800px]">
-          <div className="relative w-full" style={{ aspectRatio: '16/6' }}>
-            <Image
-              src={imageUrl}
+          <div className="relative w-full" style={{ aspectRatio: '16/6', ...clipPathStyle }}>
+            <LazyImage
+              src={value}
               alt={value.alt || "About image"}
               fill
               className={`object-cover ${grayscaleClass}`}
-              style={clipPathStyle}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 800px"
+              sizes="(max-width: 768px) 100vw, 800px"
+              quality={85}
             />
           </div>
           {value.caption && (
@@ -98,7 +97,7 @@ const components: PortableTextComponents = {
         );
       }
 
-      const imageUrl = urlForImageWithParams(value.image, { width: 600, height: 400, quality: 85, format: 'webp' }).url();
+      // Using LazyImage with Sanity image object directly
       const shouldApplyGrayscale = value.image.isGrayscale !== false;
       const grayscaleClass = shouldApplyGrayscale ? "grayscale" : "";
 
@@ -116,13 +115,14 @@ const components: PortableTextComponents = {
 
       const ImageComponent = (
         <div className="relative mx-auto max-w-[600px]">
-          <Image
-            src={imageUrl}
+          <LazyImage
+            src={value.image}
             alt={value.image.alt || "About image"}
             width={600}
             height={400}
             className={`h-auto w-full ${grayscaleClass}`}
             style={clipPathStyle}
+            quality={85}
           />
           {value.image.caption && (
             <p className="mt-2 text-center text-sm text-gray-400 italic">

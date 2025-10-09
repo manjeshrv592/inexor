@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import LazyImage from "./ui/LazyImage";
 
 interface ServiceComponentProps {
   code: string;
@@ -11,11 +12,13 @@ interface ServiceComponentProps {
   backgroundImage: {
     asset: {
       url: string;
+      mimeType: string;
       metadata: {
         dimensions: {
           width: number;
           height: number;
         };
+        lqip?: string;
       };
     };
     alt?: string;
@@ -32,19 +35,21 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
   slug,
   title,
 }) => {
-  const backgroundImageUrl = backgroundImage?.asset?.url;
-
   return (
     <div className="absolute size-full">
-      <div
-        className="absolute z-10 size-full bg-cover bg-center grayscale filter"
-        // style={{
-        //   backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('${backgroundImageUrl}')`,
-        // }}
-        style={{
-          backgroundImage: ` url('${backgroundImageUrl}')`,
-        }}
-      ></div>
+      {/* Background Image with LazyImage */}
+      <div className="absolute z-10 size-full grayscale filter">
+        <LazyImage
+          src={backgroundImage}
+          alt={backgroundImage?.alt || `${title} service background`}
+          fill
+          className="object-cover"
+          priority={false}
+          quality={75}
+          mimeType={backgroundImage?.asset?.mimeType}
+          lqip={backgroundImage?.asset?.metadata?.lqip}
+        />
+      </div>
       <div className="relative z-20 flex size-full flex-col items-center justify-center p-4 xl:px-8 xl:py-16">
         <div className="absolute top-0 left-0 hidden h-full w-20 bg-gradient-to-r from-neutral-700/70 to-neutral-700/0 xl:block">
           <span className="text-brand-orange-500 font-michroma absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90 text-xl">

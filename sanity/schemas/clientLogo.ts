@@ -1,15 +1,15 @@
 import { defineType } from "sanity";
-import { createImageField, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
+import { createClientLogoField, CLIENT_LOGO_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
 
 const clientLogoSchema = defineType({
   name: "clientLogo",
   title: "Client Logo",
   type: "object",
   fields: [
-    createImageField({
+    createClientLogoField({
       name: "logo",
       title: "Logo",
-      description: `Client logo image. Recommended size: 240x120px (2x for retina). ${IMAGE_UPLOAD_HELP_TEXT}`,
+      description: `Client logo image. Recommended size: 240x120px (2x for retina). ${CLIENT_LOGO_UPLOAD_HELP_TEXT}`,
       required: true,
       hotspot: false,
       includeAlt: false,
