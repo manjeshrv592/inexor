@@ -5,6 +5,14 @@ import { PortableTextBlock } from "@portabletext/types";
 export interface SidebarImage {
   asset: {
     url: string;
+    mimeType: string;
+    metadata: {
+      dimensions: {
+        width: number;
+        height: number;
+      };
+      lqip?: string;
+    };
   };
   alt?: string;
   isGrayscale?: boolean;

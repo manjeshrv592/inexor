@@ -3,7 +3,6 @@ import { PortableText, PortableTextComponents } from "next-sanity";
 import { PortableTextBlock } from "@portabletext/types";
 import LazyImage from "@/components/ui/LazyImage";
 import ProcessSteps from "@/components/ui/ProcessSteps";
-import { urlForImageWithParams } from "../../../sanity/lib/image";
 
 interface PortableTextRendererProps {
   content: PortableTextBlock[];

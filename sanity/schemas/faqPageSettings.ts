@@ -1,33 +1,21 @@
-import { defineField, defineType } from "sanity";
+import { defineType } from "sanity";
+import { createImageField, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
 
 export default defineType({
   name: "faqPageSettings",
   title: "FAQ Page Settings",
   type: "document",
   fields: [
-    defineField({
+    createImageField({
       name: "sidebarImage",
       title: "Sidebar Image",
-      type: "image",
-      description: "Image displayed in the left sidebar on desktop",
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        {
-          name: "alt",
-          title: "Alt Text",
-          type: "string",
-          description: "Alternative text for accessibility",
-        },
-        {
-          name: "isGrayscale",
-          title: "Apply Grayscale Filter",
-          type: "boolean",
-          description: "Apply grayscale filter to the image",
-          initialValue: true,
-        },
-      ],
+      description: `Image displayed in the left sidebar on desktop. ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: false,
+      hotspot: true,
+      includeAlt: true,
+      includeCaption: false,
+      includeGrayscale: true,
+      grayscaleDefault: true,
     }),
   ],
   preview: {

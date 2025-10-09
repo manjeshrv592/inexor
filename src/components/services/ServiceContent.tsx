@@ -31,6 +31,9 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
                 fill
                 className="object-cover grayscale"
                 quality={85}
+                priority={true}
+                mimeType={service.featuredImage?.asset?.mimeType}
+                lqip={service.featuredImage?.asset?.metadata?.lqip}
               />
             </div>
             <div className="relative z-10 flex size-full items-center justify-center">

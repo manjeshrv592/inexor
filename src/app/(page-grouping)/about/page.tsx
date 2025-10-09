@@ -1,5 +1,5 @@
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
-import Image from "next/image";
+import LazyImage from "@/components/ui/LazyImage";
 import React, { Suspense } from "react";
 import { getStaticAboutPageData } from "@/lib/static-generation";
 import { AboutPageSkeleton } from "@/components/ui/LoadingSkeleton";
@@ -10,14 +10,17 @@ const AboutPageContent = async () => {
     <div className="size-full grid-cols-[2fr_3fr_2fr] bg-[#2f2f2f] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:grid">
       <div className="relative h-[100px] xl:h-full">
         <div className="absolute inset-0 size-full overflow-hidden">
-          <Image
-            src={aboutPage?.sidebarImage?.asset?.url || "/img/about-us.jpg"}
+          <LazyImage
+            src={aboutPage?.sidebarImage || "/img/about-us.jpg"}
             alt={aboutPage?.sidebarImage?.alt || "About Us"}
             width={600}
             height={1000}
             className={`size-full scale-[102%] object-cover ${
               aboutPage?.sidebarImage?.isGrayscale !== false ? "grayscale" : ""
             }`}
+            priority={true}
+            mimeType={aboutPage?.sidebarImage?.asset?.mimeType}
+            lqip={aboutPage?.sidebarImage?.asset?.metadata?.lqip}
           />
           {/* <div className="absolute inset-0 z-10 bg-black/80"></div> */}
         </div>

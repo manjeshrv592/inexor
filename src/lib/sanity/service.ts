@@ -12,11 +12,13 @@ import {
 export interface ServiceImage {
   asset: {
     url: string;
+    mimeType: string;
     metadata: {
       dimensions: {
         width: number;
         height: number;
       };
+      lqip?: string;
     };
   };
   alt?: string;

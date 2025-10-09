@@ -4,7 +4,7 @@ import PagePanelBg from "@/components/ui/PagePanelBg";
 import { CategoryButton } from "@/components/faq";
 import FAQItemWithLink from "@/components/faq/FAQItemWithLink";
 import Link from "next/link";
-import Image from "next/image";
+import LazyImage from "@/components/ui/LazyImage";
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
@@ -143,9 +143,9 @@ const FAQLayout = () => {
           {/* Left Panel - Category Selection */}
           <div className="relative xl:h-full">
             <div className="absolute inset-0 size-full">
-              <Image
+              <LazyImage
                 src={
-                  faqPageSettings?.sidebarImage?.asset?.url || "/img/faq.jpg"
+                  faqPageSettings?.sidebarImage || "/img/faq.jpg"
                 }
                 alt={faqPageSettings?.sidebarImage?.alt || "FAQ sidebar image"}
                 fill
@@ -154,6 +154,9 @@ const FAQLayout = () => {
                     ? "grayscale"
                     : ""
                 }`}
+                priority={true}
+                mimeType={faqPageSettings?.sidebarImage?.asset?.mimeType}
+                lqip={faqPageSettings?.sidebarImage?.asset?.metadata?.lqip}
               />
             </div>
 

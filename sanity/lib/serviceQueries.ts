@@ -9,11 +9,13 @@ export const SERVICES_QUERY = `*[_type == "service" && isActive == true] | order
   "featuredImage": featuredImage {
     asset->{
       url,
+      mimeType,
       metadata {
         dimensions {
           width,
           height
-        }
+        },
+        lqip
       }
     },
     alt
@@ -44,11 +46,13 @@ export const SERVICE_BY_SLUG_QUERY = `*[_type == "service" && slug.current == $s
   "featuredImage": featuredImage {
     asset->{
       url,
+      mimeType,
       metadata {
         dimensions {
           width,
           height
-        }
+        },
+        lqip
       }
     },
     alt
@@ -94,11 +98,13 @@ export const SERVICE_BY_CODE_QUERY = `*[_type == "service" && code == $code && i
   "featuredImage": featuredImage {
     asset->{
       url,
+      mimeType,
       metadata {
         dimensions {
           width,
           height
-        }
+        },
+        lqip
       }
     },
     alt
@@ -156,11 +162,13 @@ export const SERVICES_PAGE_SETTINGS_QUERY = `*[_type == "servicesPageSettings" &
   "leftPanelImage": leftPanelImage {
     asset->{
       url,
+      mimeType,
       metadata {
         dimensions {
           width,
           height
-        }
+        },
+        lqip
       }
     },
     alt

@@ -7,7 +7,15 @@ export const aboutPageQuery = groq`
     pageSubtitle,
     sidebarImage {
       asset-> {
-        url
+        url,
+        mimeType,
+        metadata {
+          dimensions {
+            width,
+            height
+          },
+          lqip
+        }
       },
       alt,
       isGrayscale

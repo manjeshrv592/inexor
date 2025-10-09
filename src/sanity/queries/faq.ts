@@ -5,8 +5,13 @@ export const faqPageSettingsQuery = groq`
     sidebarImage {
       asset->{
         url,
+        mimeType,
         metadata {
-          dimensions
+          dimensions {
+            width,
+            height
+          },
+          lqip
         }
       },
       alt,
