@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
-import { getBlogPosts } from "@/lib/sanity/blog";
+import { getFirstBlogPostSlug } from "@/lib/sanity/blog";
 
 const ResourcesPage = async () => {
-  const blogPosts = await getBlogPosts();
+  // Use lightweight query to get only the first blog post slug
+  const firstBlogPost = await getFirstBlogPostSlug();
 
   // Redirect to the first blog post if available
-  if (blogPosts.length > 0) {
-    const firstBlogPost = blogPosts[0];
+  if (firstBlogPost) {
     redirect(`/resources/${firstBlogPost.slug.current}`);
   }
 

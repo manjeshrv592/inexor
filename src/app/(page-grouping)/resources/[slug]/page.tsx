@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { getBlogPostBySlug, getBlogPosts } from "@/lib/sanity/blog";
+import { getBlogPostBySlug, getBlogPostsForNavigation, getBlogPosts } from "@/lib/sanity/blog";
 import { getResourcesPage } from "@/lib/sanity";
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -33,7 +33,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
   const { slug } = await params;
   const [blogPost, allBlogPosts, resourcesPageData] = await Promise.all([
     getBlogPostBySlug(slug),
-    getBlogPosts(),
+    getBlogPostsForNavigation(),
     getResourcesPage(),
   ]);
 

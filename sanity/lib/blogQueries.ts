@@ -31,6 +31,11 @@ export const BLOG_POSTS_QUERY = `*[_type == "blogPost" && isActive == true] | or
   order
 }`;
 
+// Lightweight query for redirects - only fetches slug
+export const FIRST_BLOG_POST_SLUG_QUERY = `*[_type == "blogPost" && isActive == true] | order(publishedAt desc) [0] {
+  slug
+}`;
+
 export const BLOG_POST_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current == $slug && isActive == true][0] {
   _id,
   title,
@@ -105,6 +110,28 @@ export const BLOG_POST_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current ==
   tags,
   readingTime,
   isActive
+}`;
+
+// Lightweight query for blog list navigation - only essential fields
+export const BLOG_POSTS_NAVIGATION_QUERY = `*[_type == "blogPost" && isActive == true] | order(publishedAt desc) {
+  _id,
+  title,
+  slug,
+  "featuredImage": featuredImage {
+    asset->{
+      url,
+      mimeType,
+      metadata {
+        dimensions {
+          width,
+          height
+        },
+        lqip
+      }
+    },
+    alt
+  },
+  publishedAt
 }`;
 
 // Get previous and next blog posts

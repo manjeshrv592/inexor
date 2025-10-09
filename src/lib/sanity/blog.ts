@@ -5,6 +5,8 @@ import {
   BLOG_POST_BY_SLUG_QUERY,
   BLOG_POST_NAVIGATION_QUERY,
   RECENT_BLOG_POSTS_QUERY,
+  FIRST_BLOG_POST_SLUG_QUERY,
+  BLOG_POSTS_NAVIGATION_QUERY,
 } from "../../../sanity/lib/blogQueries";
 
 // Types
@@ -115,4 +117,16 @@ export async function getRecentBlogPosts(
     { limit },
     { next: { tags: ["blog-posts", "recent-blogs"] } },
   );
+}
+
+export async function getFirstBlogPostSlug(): Promise<{ slug: { current: string } } | null> {
+  return client.fetch(
+    FIRST_BLOG_POST_SLUG_QUERY,
+    {},
+    { next: { tags: ["blog-posts"] } },
+  );
+}
+
+export async function getBlogPostsForNavigation(): Promise<BlogPost[]> {
+  return client.fetch(BLOG_POSTS_NAVIGATION_QUERY, {}, { next: { tags: ["blog-posts"] } });
 }
