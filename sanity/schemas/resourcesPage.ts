@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import TextWithCounter from "../components/TextWithCounter";
+import { createImageField, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
 
 export default defineType({
   name: "resourcesPage",
@@ -31,23 +32,15 @@ export default defineType({
         hotspot: true,
       },
     }),
-    defineField({
+    createImageField({
       name: "leftPanelBackgroundImage",
       title: "Left Panel Background Image",
-      type: "image",
-      description:
-        "Background image for the left panel with the 'Blogs' button",
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        {
-          name: "alt",
-          type: "string",
-          title: "Alternative Text",
-          description: "Important for SEO and accessibility",
-        },
-      ],
+      description: `Background image for the left panel with the 'Blogs' button. ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: false,
+      hotspot: true,
+      includeAlt: true,
+      includeCaption: false,
+      includeGrayscale: false,
     }),
     defineField({
       name: "isActive",

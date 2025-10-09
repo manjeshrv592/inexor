@@ -14,11 +14,13 @@ export interface BlogImage {
     _ref: string;
     _type: 'reference';
     url?: string; // Keep for backward compatibility
+    mimeType?: string;
     metadata?: {
       dimensions: {
         width: number;
         height: number;
       };
+      lqip?: string;
     };
   };
   crop?: {

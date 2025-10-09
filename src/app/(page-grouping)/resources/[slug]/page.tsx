@@ -1,13 +1,13 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { getBlogPostBySlug, getBlogPosts } from "@/lib/sanity/blog";
 import { getResourcesPage } from "@/lib/sanity";
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { BlogListClient } from "@/components/blog";
 import { truncateText } from "@/lib/utils/textUtils";
+import LazyImage from "@/components/ui/LazyImage";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -78,14 +78,17 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
           </Button>
         </div>
         <div className="absolute top-0 left-0 size-full">
-          <Image
+          <LazyImage
             src={
-              resourcesPageData?.leftPanelBackgroundImage?.asset?.url ||
+              resourcesPageData?.leftPanelBackgroundImage ||
               "/img/left-image.jpg"
             }
             alt={resourcesPageData?.leftPanelBackgroundImage?.alt || "blog bg"}
             fill
             className="object-cover grayscale"
+            priority={true}
+            mimeType={resourcesPageData?.leftPanelBackgroundImage?.asset?.mimeType}
+            lqip={resourcesPageData?.leftPanelBackgroundImage?.asset?.metadata?.lqip}
           />
           {/* <div className="absolute inset-0 bg-black/80">&nbsp;</div> */}
         </div>
@@ -108,11 +111,14 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
           {/* Featured Image */}
           <div className="xxl:h-[300px] relative h-[200px]">
             <div className="absolute top-0 left-0 size-full bg-black">
-              <Image
-                src={blogPost.featuredImage?.asset.url || "/img/left-image.jpg"}
+              <LazyImage
+                src={blogPost.featuredImage || "/img/left-image.jpg"}
                 alt={blogPost.featuredImage?.alt || blogPost.title}
                 fill
                 className="object-cover grayscale"
+                priority={true}
+                mimeType={blogPost.featuredImage?.asset?.mimeType}
+                lqip={blogPost.featuredImage?.asset?.metadata?.lqip}
               />
             </div>
           </div>
@@ -124,15 +130,16 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
                 <>
                   <span className="inline-block size-10 overflow-hidden rounded-full bg-neutral-700">
                     {blogPost.author.image ? (
-                      <Image
-                        src={
-                          blogPost.author.image.asset.url ||
-                          "/img/left-image.jpg"
-                        }
+                      <LazyImage
+                        src={blogPost.author.image}
                         alt={blogPost.author.name}
                         width={40}
                         height={40}
                         className="size-full object-cover"
+                        sizes="40px"
+                        priority={false}
+                        mimeType={blogPost.author.image.asset?.mimeType}
+                        lqip={blogPost.author.image.asset?.metadata?.lqip}
                       />
                     ) : (
                       <div className="flex size-full items-center justify-center text-sm text-white">

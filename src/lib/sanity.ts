@@ -192,6 +192,14 @@ export interface ResourcesPage {
   leftPanelBackgroundImage?: {
     asset: {
       url: string;
+      mimeType: string;
+      metadata: {
+        dimensions: {
+          width: number;
+          height: number;
+        };
+        lqip?: string;
+      };
     };
     alt?: string;
   };
@@ -205,7 +213,12 @@ export async function getResourcesPage(): Promise<ResourcesPage | null> {
     blogSectionSubtitle,
     leftPanelBackgroundImage {
       asset-> {
-        url
+        url,
+        mimeType,
+        metadata {
+          dimensions,
+          lqip
+        }
       },
       alt
     },

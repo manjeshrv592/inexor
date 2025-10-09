@@ -10,11 +10,13 @@ export const BLOG_POSTS_QUERY = `*[_type == "blogPost" && isActive == true] | or
       _ref,
       _type,
       url,
+      mimeType,
       metadata {
         dimensions {
           width,
           height
-        }
+        },
+        lqip
       }
     },
     crop,
@@ -40,11 +42,13 @@ export const BLOG_POST_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current ==
       _ref,
       _type,
       url,
+      mimeType,
       metadata {
         dimensions {
           width,
           height
-        }
+        },
+        lqip
       }
     },
     crop,
@@ -59,11 +63,13 @@ export const BLOG_POST_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current ==
         _ref,
         _type,
         url,
+        mimeType,
         metadata {
           dimensions {
             width,
             height
-          }
+          },
+          lqip
         }
       },
       crop,
@@ -80,11 +86,13 @@ export const BLOG_POST_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current ==
         _ref,
         _type,
         url,
+        mimeType,
         metadata {
           dimensions {
             width,
             height
-          }
+          },
+          lqip
         }
       },
       crop,
@@ -125,11 +133,13 @@ export const RECENT_BLOG_POSTS_QUERY = `*[_type == "blogPost" && isActive == tru
       _ref,
       _type,
       url,
+      mimeType,
       metadata {
         dimensions {
           width,
           height
-        }
+        },
+        lqip
       }
     },
     crop,

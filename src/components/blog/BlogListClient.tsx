@@ -3,9 +3,9 @@
 import React from "react";
 import Link from "next/link";
 import { DynamicShape } from "@/components/ui/DynamicShape";
-import Image from "next/image";
 import { type BlogPost } from "@/lib/sanity/blog";
 import { truncateText } from "@/lib/utils/textUtils";
+import LazyImage from "@/components/ui/LazyImage";
 
 interface BlogListClientProps {
   allBlogPosts: BlogPost[];
@@ -104,8 +104,8 @@ const BlogListClient: React.FC<BlogListClientProps> = ({
             }`}
           >
             <div className="xxl:h-[64px] xxl:w-[80px] relative h-[48px] w-[64px] flex-shrink-0">
-              <Image
-                src={post.featuredImage?.asset.url || "/img/left-image.jpg"}
+              <LazyImage
+                src={post.featuredImage || "/img/left-image.jpg"}
                 alt={post.featuredImage?.alt || post.title}
                 fill
                 className="relative z-20 object-cover grayscale"
@@ -114,6 +114,9 @@ const BlogListClient: React.FC<BlogListClientProps> = ({
                     "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))",
                 }}
                 sizes="(min-width: 1536px) 80px, 64px"
+                priority={index === currentIndex}
+                mimeType={post.featuredImage?.asset?.mimeType}
+                lqip={post.featuredImage?.asset?.metadata?.lqip}
               />
             </div>
             <div className="flex w-full flex-col justify-between p-2">
