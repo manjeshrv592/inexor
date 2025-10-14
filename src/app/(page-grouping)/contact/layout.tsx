@@ -1,14 +1,24 @@
-import PagePanel from "@/components/ui/PagePanel";
-import PagePanelBg from "@/components/ui/PagePanelBg";
 import React from "react";
+import PagePanel from "@/components/ui/PagePanel";
 
-const ContactLayout = ({ children }: { children: React.ReactNode }) => {
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+const Layout = ({ children }: LayoutProps) => {
   return (
-    <>
-      <PagePanelBg />
-      <PagePanel>{children}</PagePanel>
-    </>
+    <PagePanel
+      direction={{
+        sm: 'top',      // Small screens slide from top (contact button/header navigation)
+        md: 'top',      // Medium screens slide from top (contact button/header navigation)
+        lg: 'top',      // Large screens slide from top (contact button/header navigation)
+        xl: 'top',      // Extra large screens slide from top (contact button navigation)
+        xxl: 'top',     // XXL screens slide from top (contact button navigation)
+      }}
+    >
+      {children}
+    </PagePanel>
   );
 };
 
-export default ContactLayout;
+export default Layout;

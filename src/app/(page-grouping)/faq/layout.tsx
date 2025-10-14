@@ -1,6 +1,5 @@
 "use client";
 import PagePanel from "@/components/ui/PagePanel";
-import PagePanelBg from "@/components/ui/PagePanelBg";
 import { CategoryButton } from "@/components/faq";
 import FAQItemWithLink from "@/components/faq/FAQItemWithLink";
 import Link from "next/link";
@@ -118,169 +117,179 @@ const FAQLayout = () => {
 
   if (loading) {
     return (
-      <>
-        <PagePanelBg />
-        <PagePanel>
-          <div className="flex h-full items-center justify-center bg-[#2f2f2f]">
-            <div className="text-white">Loading...</div>
-          </div>
-        </PagePanel>
-      </>
+      <PagePanel
+        direction={{
+          sm: "top", // Small screens slide from top (header navigation)
+          md: "top", // Medium screens slide from top (header navigation)
+          lg: "top", // Large screens slide from top (header navigation)
+          xl: "left", // Extra large screens slide from left (header navigation)
+          xxl: "left", // XXL screens slide from left (header navigation)
+        }}
+      >
+        <div className="flex h-full items-center justify-center bg-[#2f2f2f]">
+          <div className="text-white">Loading...</div>
+        </div>
+      </PagePanel>
     );
   }
 
   return (
-    <>
-      <PagePanelBg />
-      <PagePanel>
-        <div
-          className="h-full bg-[#2f2f2f] xl:grid xl:grid-cols-[2fr_3fr_2fr]"
-          style={{
-            boxShadow:
-              "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
-          }}
-        >
-          {/* Left Panel - Category Selection */}
-          <div className="relative xl:h-full">
-            <div className="absolute inset-0 size-full">
-              <LazyImage
-                src={
-                  faqPageSettings?.sidebarImage || "/img/faq.jpg"
-                }
-                alt={faqPageSettings?.sidebarImage?.alt || "FAQ sidebar image"}
-                fill
-                className={`object-cover ${
-                  faqPageSettings?.sidebarImage?.isGrayscale !== false
-                    ? "grayscale"
-                    : ""
-                }`}
-                priority={true}
-                mimeType={faqPageSettings?.sidebarImage?.asset?.mimeType}
-                lqip={faqPageSettings?.sidebarImage?.asset?.metadata?.lqip}
-              />
-            </div>
-
-            {/* Mobile Categories - Horizontal Scroll */}
-            <div className="relative z-10 flex h-full items-center p-5 py-7 xl:hidden">
-              <div
-                className="flex flex-nowrap gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden"
-                style={{
-                  scrollbarWidth: "none",
-                  msOverflowStyle: "none",
-                }}
-              >
-                {categories.map((category, index) => (
-                  <div key={category._id} className="flex-shrink-0">
-                    <Link href={`/faq/${category.slug.current}`}>
-                      <Button
-                        variant={
-                          selectedCategoryIndex === index ? "default" : "outline"
-                        }
-                        size={"sm"}
-                        className="font-michroma text-[10px] tracking-[1px]"
-                      >
-                        {category.name}
-                      </Button>
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Desktop Categories - Vertical Layout */}
-            <div className="relative z-10 hidden h-full flex-col items-center justify-center gap-4 p-8 text-center xl:flex">
-              <p className="text-sm">
-                {faqPageData?.pageDescription ||
-                  "Our FAQ Section Offers Fast, Clear Answers To Popular Questions, So You Can Find Information Easily."}
-              </p>
-              <h5 className="font-michroma">
-                Select <span className="text-brand-orange-500">Category</span>
-              </h5>
-              <div className="flex flex-wrap justify-center gap-4">
-                {categories.map((category, index) => (
-                  <Link key={category._id} href={`/faq/${category.slug.current}`}>
-                    <CategoryButton
-                      isActive={selectedCategoryIndex === index}
-                      onClick={() => {}}
-                    >
-                      {category.name}
-                    </CategoryButton>
-                  </Link>
-                ))}
-              </div>
-            </div>
+    <PagePanel
+      direction={{
+        sm: "top", // Small screens slide from top (header navigation)
+        md: "top", // Medium screens slide from top (header navigation)
+        lg: "top", // Large screens slide from top (header navigation)
+        xl: "left", // Extra large screens slide from left (header navigation)
+        xxl: "left", // XXL screens slide from left (header navigation)
+      }}
+    >
+      <div
+        className="h-full bg-[#2f2f2f] xl:grid xl:grid-cols-[2fr_3fr_2fr]"
+        style={{
+          boxShadow:
+            "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
+        }}
+      >
+        {/* Left Panel - Category Selection */}
+        <div className="relative xl:h-full">
+          <div className="absolute inset-0 size-full">
+            <LazyImage
+              src={faqPageSettings?.sidebarImage || "/img/faq.jpg"}
+              alt={faqPageSettings?.sidebarImage?.alt || "FAQ sidebar image"}
+              fill
+              className={`object-cover ${
+                faqPageSettings?.sidebarImage?.isGrayscale !== false
+                  ? "grayscale"
+                  : ""
+              }`}
+              priority={true}
+              mimeType={faqPageSettings?.sidebarImage?.asset?.mimeType}
+              lqip={faqPageSettings?.sidebarImage?.asset?.metadata?.lqip}
+            />
           </div>
 
-          {/* Desktop Answer Panel */}
-          <div className="hidden h-full xl:grid xl:grid-rows-3">
-            <div className="flex items-end justify-center pb-8">
-              <h4 className="font-michroma text-brand-orange-500 text-center">
-                {faqPageData?.pageTitle || "FAQ's"}
-              </h4>
-            </div>
+          {/* Mobile Categories - Horizontal Scroll */}
+          <div className="relative z-10 flex h-full items-center p-5 py-7 xl:hidden">
             <div
-              className="flex flex-col items-center justify-center gap-6 bg-[#292929] px-8 text-center"
+              className="flex flex-nowrap gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden"
               style={{
-                boxShadow: "0px 4px 4px 0px #00000040 inset",
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
               }}
             >
-              <AnimatePresence mode="wait">
-                {activeQuestion ? (
-                  <motion.div
-                    key={activeQuestion._id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="flex flex-col items-center justify-center gap-6 text-center"
-                  >
-                    <h5 className="font-michroma text-sm text-orange-500">
-                      {activeQuestion.question}
-                    </h5>
-                    <p className="text-sm">{activeQuestion.answer}</p>
-                  </motion.div>
-                ) : (
-                  <motion.p
-                    key="placeholder"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="text-sm text-gray-400"
-                  >
-                    Select a question to view the answer
-                  </motion.p>
-                )}
-              </AnimatePresence>
+              {categories.map((category, index) => (
+                <div key={category._id} className="flex-shrink-0">
+                  <Link href={`/faq/${category.slug.current}`}>
+                    <Button
+                      variant={
+                        selectedCategoryIndex === index ? "default" : "outline"
+                      }
+                      size={"sm"}
+                      className="font-michroma text-[10px] tracking-[1px]"
+                    >
+                      {category.name}
+                    </Button>
+                  </Link>
+                </div>
+              ))}
             </div>
-            <div>&nbsp;</div>
           </div>
 
-          {/* Questions Panel */}
-          <div className="h-[calc(100dvh-158px)] overflow-y-auto xl:h-full">
-            <div className="flex flex-col justify-center gap-6 px-2 py-6">
-              {faqItems.map((item) => (
-                <FAQItemWithLink
-                  key={item._id}
-                  categorySlug={categories[selectedCategoryIndex]?.slug.current || ""}
-                  questionSlug={item.slug.current}
-                  questionId={item._id}
-                  question={item.question}
-                  answer={item.answer}
-                  isMobile={isMobile}
-                  activeQuestionId={activeQuestionId}
-                />
+          {/* Desktop Categories - Vertical Layout */}
+          <div className="relative z-10 hidden h-full flex-col items-center justify-center gap-4 p-8 text-center xl:flex">
+            <p className="text-sm">
+              {faqPageData?.pageDescription ||
+                "Our FAQ Section Offers Fast, Clear Answers To Popular Questions, So You Can Find Information Easily."}
+            </p>
+            <h5 className="font-michroma">
+              Select <span className="text-brand-orange-500">Category</span>
+            </h5>
+            <div className="flex flex-wrap justify-center gap-4">
+              {categories.map((category, index) => (
+                <Link key={category._id} href={`/faq/${category.slug.current}`}>
+                  <CategoryButton
+                    isActive={selectedCategoryIndex === index}
+                    onClick={() => {}}
+                  >
+                    {category.name}
+                  </CategoryButton>
+                </Link>
               ))}
-              {faqItems.length === 0 && !loading && (
-                <div className="text-center text-gray-400">
-                  No questions found for this category.
-                </div>
-              )}
             </div>
           </div>
         </div>
-      </PagePanel>
-    </>
+
+        {/* Desktop Answer Panel */}
+        <div className="hidden h-full xl:grid xl:grid-rows-3">
+          <div className="flex items-end justify-center pb-8">
+            <h4 className="font-michroma text-brand-orange-500 text-center">
+              {faqPageData?.pageTitle || "FAQ's"}
+            </h4>
+          </div>
+          <div
+            className="flex flex-col items-center justify-center gap-6 bg-[#292929] px-8 text-center"
+            style={{
+              boxShadow: "0px 4px 4px 0px #00000040 inset",
+            }}
+          >
+            <AnimatePresence mode="wait">
+              {activeQuestion ? (
+                <motion.div
+                  key={activeQuestion._id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="flex flex-col items-center justify-center gap-6 text-center"
+                >
+                  <h5 className="font-michroma text-sm text-orange-500">
+                    {activeQuestion.question}
+                  </h5>
+                  <p className="text-sm">{activeQuestion.answer}</p>
+                </motion.div>
+              ) : (
+                <motion.p
+                  key="placeholder"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-sm text-gray-400"
+                >
+                  Select a question to view the answer
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
+          <div>&nbsp;</div>
+        </div>
+
+        {/* Questions Panel */}
+        <div className="h-[calc(100dvh-158px)] overflow-y-auto xl:h-full">
+          <div className="flex flex-col justify-center gap-6 px-2 py-6">
+            {faqItems.map((item) => (
+              <FAQItemWithLink
+                key={item._id}
+                categorySlug={
+                  categories[selectedCategoryIndex]?.slug.current || ""
+                }
+                questionSlug={item.slug.current}
+                questionId={item._id}
+                question={item.question}
+                answer={item.answer}
+                isMobile={isMobile}
+                activeQuestionId={activeQuestionId}
+              />
+            ))}
+            {faqItems.length === 0 && !loading && (
+              <div className="text-center text-gray-400">
+                No questions found for this category.
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </PagePanel>
   );
 };
 

@@ -1,10 +1,7 @@
-"use client";
-
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import UseCasesSection from "@/components/ui/UseCasesSection";
 import LazyImage from "@/components/ui/LazyImage";
 import React from "react";
-import { motion } from "motion/react";
 import { type Service } from "@/lib/sanity/service";
 
 interface ServiceContentProps {
@@ -15,13 +12,7 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
   return (
     <div className="h-[calc(100dvh-158px)] overflow-y-auto bg-neutral-900 xl:h-full">
       <div className="pb-4">
-        <motion.div
-          key={service._id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-        >
+        <div key={service._id}>
           {/* Featured Image */}
           <div className="relative mb-6 h-[300px]">
             <div className="absolute top-0 left-0 size-full">
@@ -63,7 +54,7 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
               />
             )}
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

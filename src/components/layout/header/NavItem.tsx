@@ -34,45 +34,42 @@ const NavItem: React.FC<NavItemProps> = ({
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
+  // Check if a path is active (including nested routes)
+  const isPathActive = (path: string) => {
+    if (path === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(path);
+  };
+
+  // Get href for navigation item (toggle logic)
+  const getNavigationHref = (path: string) => {
+    if (path === '/') {
+      return '/'; // Home always goes to home
+    }
+    
+    // If currently on this path, go to home (close modal)
+    if (isPathActive(path)) {
+      return '/';
+    }
+    
+    // Otherwise, go to the path
+    return path;
+  };
+
   const handleNavigation = (href: string) => {
     if (typeof window !== "undefined") {
-      // Special handling for resources, services, and FAQ routes
-      const isResourcesRoute = href === "/resources";
-      const isCurrentlyOnResources = pathname.startsWith("/resources");
-      const isServicesRoute = href === "/services";
-      const isCurrentlyOnServices = pathname.startsWith("/services");
-      const isFAQRoute = href === "/faq";
-      const isCurrentlyOnFAQ = pathname.startsWith("/faq");
-
-      // If user clicks on the same route they're already on, navigate to home instead
-      let targetHref;
-      if (isResourcesRoute && isCurrentlyOnResources) {
-        // User is on /resources/slug and clicks Resources -> go home
-        targetHref = "/";
-      } else if (isServicesRoute && isCurrentlyOnServices) {
-        // User is on /services/slug and clicks Services -> go home
-        targetHref = "/";
-      } else if (isFAQRoute && isCurrentlyOnFAQ) {
-        // User is on /faq/category/question and clicks FAQ -> go home
-        targetHref = "/";
-      } else if (pathname === href) {
-        // Normal same route logic
-        targetHref = "/";
-      } else {
-        // Different route
-        targetHref = href;
-      }
-
       // Store the current path before navigation
       sessionStorage.setItem("lastPath", pathname);
       // Set navigation source for animation direction
       sessionStorage.setItem("navigationSource", "header");
 
-      // Always use transition router to prevent page reload
-      // Animations will only show when transitioning from/to root due to PageTransition component logic
+      // Get the actual navigation target (with toggle logic)
+      const navigationTarget = getNavigationHref(href);
 
+      // Navigate to the target
       requestAnimationFrame(() => {
-        router.push(targetHref);
+        router.push(navigationTarget);
       });
 
       // Close mobile menu after navigation

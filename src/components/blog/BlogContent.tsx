@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import React, { useRef } from "react";
-import { motion } from "motion/react";
+import { useRouter } from "next/navigation";
 import {
   type BlogPost,
 } from "@/lib/sanity/blog";
@@ -15,43 +15,34 @@ import AutoScrollContainer, {
 import { urlForImage } from "../../../sanity/lib/image";
 
 interface BlogContentProps {
-  blogPost: BlogPost;
-  allBlogPosts: BlogPost[];
-  currentIndex: number;
-  onNavigate: (index: number) => void;
+  post: BlogPost;
+  previousPost: BlogPost | null;
+  nextPost: BlogPost | null;
 }
 
 const BlogContent: React.FC<BlogContentProps> = ({
-  blogPost,
-  allBlogPosts,
-  currentIndex,
-  onNavigate,
+  post,
+  previousPost,
+  nextPost,
 }) => {
   const blogContentScrollRef = useRef<AutoScrollContainerRef>(null);
   const rightPanelRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   // Get navigation info
-  const hasPrev = currentIndex > 0;
-  const hasNext = currentIndex < allBlogPosts.length - 1;
-  const prevPost = hasPrev ? allBlogPosts[currentIndex - 1] : null;
-  const nextPost = hasNext ? allBlogPosts[currentIndex + 1] : null;
+  const hasPrev = !!previousPost;
+  const hasNext = !!nextPost;
 
   // Handle navigation
   const handleNavigation = (direction: "prev" | "next") => {
-    const targetIndex = direction === "prev" ? currentIndex - 1 : currentIndex + 1;
-    if (targetIndex >= 0 && targetIndex < allBlogPosts.length) {
-      onNavigate(targetIndex);
-      // Scroll to top when blog post changes
-      if (rightPanelRef.current) {
-        rightPanelRef.current.scrollTop = 0;
-      }
-      if (blogContentScrollRef.current) {
-        blogContentScrollRef.current.scrollToTop();
-      }
+    const targetPost = direction === "prev" ? previousPost : nextPost;
+    if (targetPost) {
+      // Use Next.js router for client-side navigation
+      router.push(`/resources/${targetPost.slug.current}`);
     }
   };
 
-  if (!blogPost) {
+  if (!post) {
     return (
       <AutoScrollContainer ref={blogContentScrollRef}>
         <div className="flex h-full items-center justify-center">
@@ -64,14 +55,9 @@ const BlogContent: React.FC<BlogContentProps> = ({
   return (
     <AutoScrollContainer ref={blogContentScrollRef}>
       <div ref={rightPanelRef} className="pr-2">
-        <motion.div
-          key={blogPost._id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-        >
+        <div key={post._id}>
           <h3 className="font-michroma mb-4 text-center text-xl text-white">
-            {blogPost.title}
+            {post.title}
           </h3>
 
           {/* Featured Image */}
@@ -79,12 +65,12 @@ const BlogContent: React.FC<BlogContentProps> = ({
             <div className="absolute top-0 left-0 size-full bg-black">
               <Image
                 src={
-                  blogPost.featuredImage?.asset.url ||
+                  post.featuredImage?.asset.url ||
                   "/img/left-image.jpg"
                 }
                 alt={
-                  blogPost.featuredImage?.alt ||
-                  blogPost.title
+                  post.featuredImage?.alt ||
+                  post.title
                 }
                 fill
                 className="object-cover grayscale"
@@ -97,40 +83,40 @@ const BlogContent: React.FC<BlogContentProps> = ({
             <div className="mb-12 flex items-center justify-between border-b-2 border-neutral-200 px-6 py-4">
               <div className="flex items-center gap-2 lg:gap-4">
                 <span className="inline-block size-10 overflow-hidden rounded-full bg-neutral-700">
-                  {blogPost.author.image ? (
+                  {post.author.image ? (
                     <Image
-                      src={urlForImage(blogPost.author.image)
+                      src={urlForImage(post.author.image)
                         .width(80)
                         .height(80)
                         .url()}
-                      alt={blogPost.author.name}
+                      alt={post.author.name}
                       height={80}
                       width={80}
                       className="size-full object-cover"
                     />
                   ) : (
                     <div className="flex size-full items-center justify-center text-sm text-white">
-                      {blogPost.author.name.charAt(0)}
+                      {post.author.name.charAt(0)}
                     </div>
                   )}
                 </span>
                 <span className="font-michroma text-xs">
-                  {blogPost.author.name.toUpperCase()}
+                  {post.author.name.toUpperCase()}
                 </span>
               </div>
               <div className="text-brand-orange-500 flex flex-col items-end gap-2 text-[10px] lg:flex-row lg:items-center lg:gap-4">
                 <span className="font-michroma">
                   {new Date(
-                    blogPost.publishedAt,
+                    post.publishedAt,
                   ).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
                   })}
                 </span>
-                {blogPost.readingTime && (
+                {post.readingTime && (
                   <span className="font-michroma">
-                    {blogPost.readingTime} min read
+                    {post.readingTime} min read
                   </span>
                 )}
               </div>
@@ -138,15 +124,15 @@ const BlogContent: React.FC<BlogContentProps> = ({
 
             {/* Blog Content */}
             <div className="px-12">
-              {blogPost.content && (
-                <PortableTextRenderer content={blogPost.content} />
+              {post.content && (
+                <PortableTextRenderer content={post.content} />
               )}
             </div>
 
             {/* Navigation Footer */}
             <footer className="mt-8 flex flex-col justify-between gap-4 border-t-2 border-neutral-300 pt-6 pb-4 md:flex-row">
               <div>
-                {hasPrev && prevPost ? (
+                {hasPrev && previousPost ? (
                   <>
                     <Button
                       className="font-michroma text-[10px] tracking-[1px]"
@@ -158,7 +144,7 @@ const BlogContent: React.FC<BlogContentProps> = ({
                         <ArrowLeft size={16} /> Prev Blog
                       </span>
                     </Button>
-                    <p className="mt-2 text-xs">{prevPost.title}</p>
+                    <p className="mt-2 text-xs">{previousPost.title}</p>
                   </>
                 ) : (
                   <div></div>
@@ -185,7 +171,7 @@ const BlogContent: React.FC<BlogContentProps> = ({
               </div>
             </footer>
           </div>
-        </motion.div>
+        </div>
       </div>
     </AutoScrollContainer>
   );
