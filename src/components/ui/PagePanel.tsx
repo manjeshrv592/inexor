@@ -47,24 +47,26 @@ interface PagePanelProps {
   };
 }
 
-const PagePanel = ({ 
-  children, 
+const PagePanel = ({
+  children,
   direction = {
     sm: "up",
-    md: "up", 
+    md: "up",
     lg: "left",
     xl: "left",
-    xxl: "left"
+    xxl: "left",
   },
-  buttonPlacement
+  buttonPlacement,
 }: PagePanelProps) => {
   const router = useTransitionRouter();
   const pathname = usePathname();
   const [currentBreakpoint, setCurrentBreakpoint] = useState<Breakpoint>("xl");
-  const [buttonPosition, setButtonPosition] = useState<ButtonPlacement>("middle");
+  const [buttonPosition, setButtonPosition] =
+    useState<ButtonPlacement>("middle");
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  const [currentDirection, setCurrentDirection] = useState<SlideDirection>("left");
+  const [currentDirection, setCurrentDirection] =
+    useState<SlideDirection>("left");
 
   // Responsive breakpoint detection
   const useResponsiveDirection = () => {
@@ -72,15 +74,15 @@ const PagePanel = ({
       const updateBreakpoint = () => {
         const width = window.innerWidth;
         let newBreakpoint: Breakpoint = "sm";
-        
+
         if (width >= BREAKPOINTS.xl) newBreakpoint = "xxl";
         else if (width >= BREAKPOINTS.lg) newBreakpoint = "xl";
         else if (width >= BREAKPOINTS.md) newBreakpoint = "lg";
         else if (width >= BREAKPOINTS.sm) newBreakpoint = "md";
         else newBreakpoint = "sm";
-        
+
         setCurrentBreakpoint(newBreakpoint);
-        
+
         // Update direction based on current breakpoint
         const slideDir = direction[newBreakpoint] || direction.xl || "left";
         setCurrentDirection(slideDir);
@@ -99,7 +101,10 @@ const PagePanel = ({
     // If custom buttonPlacement is provided, use it
     if (buttonPlacement && buttonPlacement[currentBreakpoint]) {
       setButtonPosition(buttonPlacement[currentBreakpoint]!);
-      console.log(`🎯 Using custom button placement for ${currentBreakpoint}:`, buttonPlacement[currentBreakpoint]);
+      console.log(
+        `🎯 Using custom button placement for ${currentBreakpoint}:`,
+        buttonPlacement[currentBreakpoint],
+      );
       return;
     }
 
@@ -157,7 +162,7 @@ const PagePanel = ({
       pathname,
     );
     setIsExiting(true);
-    
+
     // Trigger exit animation before navigation
     setTimeout(() => {
       if (typeof window !== "undefined") {
@@ -185,6 +190,42 @@ const PagePanel = ({
     }, 150); // Small delay for exit animation
   };
 
+  // Scroll prevention effect with position preservation
+  useEffect(() => {
+    // Prevent body scroll when panel is visible
+    if (isVisible && !isExiting) {
+      // Store current scroll position
+      const scrollY = window.scrollY;
+      const scrollX = window.scrollX;
+      
+      // Store original styles
+      const originalOverflow = document.body.style.overflow;
+      const originalPosition = document.body.style.position;
+      const originalTop = document.body.style.top;
+      const originalLeft = document.body.style.left;
+      const originalWidth = document.body.style.width;
+
+      // Prevent scrolling and maintain scroll position
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = `-${scrollX}px`;
+      document.body.style.width = "100%";
+
+      return () => {
+        // Restore original styles
+        document.body.style.overflow = originalOverflow;
+        document.body.style.position = originalPosition;
+        document.body.style.top = originalTop;
+        document.body.style.left = originalLeft;
+        document.body.style.width = originalWidth;
+        
+        // Restore scroll position
+        window.scrollTo(scrollX, scrollY);
+      };
+    }
+  }, [isVisible, isExiting]);
+
   // Animation effects
   useEffect(() => {
     // Entry animation
@@ -204,20 +245,30 @@ const PagePanel = ({
     if (!isVisible && !isExiting) {
       // Entry state - slide in from direction
       switch (currentDirection) {
-        case "left": return "translateX(-100%)";
-        case "right": return "translateX(100%)";
-        case "up": return "translateY(-100%)";
-        case "down": return "translateY(100%)";
-        default: return "translateX(-100%)";
+        case "left":
+          return "translateX(-100%)";
+        case "right":
+          return "translateX(100%)";
+        case "up":
+          return "translateY(-100%)";
+        case "down":
+          return "translateY(100%)";
+        default:
+          return "translateX(-100%)";
       }
     } else if (isExiting) {
       // Exit state - slide out in reverse direction
       switch (currentDirection) {
-        case "left": return "translateX(-100%)";
-        case "right": return "translateX(100%)";
-        case "up": return "translateY(-100%)";
-        case "down": return "translateY(100%)";
-        default: return "translateX(-100%)";
+        case "left":
+          return "translateX(-100%)";
+        case "right":
+          return "translateX(100%)";
+        case "up":
+          return "translateY(-100%)";
+        case "down":
+          return "translateY(100%)";
+        default:
+          return "translateX(-100%)";
       }
     }
     return "translate(0, 0)"; // Visible state

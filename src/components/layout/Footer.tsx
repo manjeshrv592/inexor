@@ -132,19 +132,23 @@ const Footer = ({ footerData }: FooterProps) => {
                   />
                 </div>
                 <div className="mx-auto flex w-[220px] justify-between text-xs">
-                  <button
+                  <Link
+                    href="/privacy-policy"
+                    prefetch={true}
                     onClick={() => handleNavigation("/privacy-policy")}
                     className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
                   >
                     Privacy Policy
-                  </button>
+                  </Link>
                   <span> | </span>
-                  <button
+                  <Link
+                    href="/terms-conditions"
+                    prefetch={true}
                     onClick={() => handleNavigation("/terms-conditions")}
                     className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
                   >
                     Terms & Conditions
-                  </button>
+                  </Link>
                 </div>
               </div>
             </motion.div>
@@ -201,19 +205,23 @@ const Footer = ({ footerData }: FooterProps) => {
                   />
                 </div>
                 <div className="flex min-w-0 items-center justify-center gap-2 text-xs">
-                  <button
+                  <Link
+                    href="/privacy-policy"
+                    prefetch={true}
                     onClick={() => handleNavigation("/privacy-policy")}
                     className="hover:text-brand-orange-500 flex-shrink-0 cursor-pointer whitespace-nowrap duration-300"
                   >
                     Privacy Policy
-                  </button>
+                  </Link>
                   <span className="flex-shrink-0"> | </span>
-                  <button
+                  <Link
+                    href="/terms-conditions"
+                    prefetch={true}
                     onClick={() => handleNavigation("/terms-conditions")}
                     className="hover:text-brand-orange-500 flex-shrink-0 cursor-pointer whitespace-nowrap duration-300"
                   >
                     Terms & Conditions
-                  </button>
+                  </Link>
                 </div>
               </div>
             </motion.div>

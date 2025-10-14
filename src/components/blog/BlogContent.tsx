@@ -7,7 +7,9 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { type BlogPost } from "@/lib/sanity/blog";
-import AutoScrollContainer, { type AutoScrollContainerRef } from "@/components/ui/AutoScrollContainer";
+import AutoScrollContainer, {
+  type AutoScrollContainerRef,
+} from "@/components/ui/AutoScrollContainer";
 import PortableTextRenderer from "@/components/blog/RichTextRenderer";
 import { urlForImage } from "../../../sanity/lib/image";
 
@@ -70,14 +72,8 @@ const BlogContent: React.FC<BlogContentProps> = ({
           <div className="relative h-[200px]">
             <div className="absolute top-0 left-0 size-full bg-black">
               <Image
-                src={
-                  post.featuredImage?.asset.url ||
-                  "/img/left-image.jpg"
-                }
-                alt={
-                  post.featuredImage?.alt ||
-                  post.title
-                }
+                src={post.featuredImage?.asset.url || "/img/left-image.jpg"}
+                alt={post.featuredImage?.alt || post.title}
                 fill
                 className="object-cover grayscale"
               />
@@ -124,9 +120,7 @@ const BlogContent: React.FC<BlogContentProps> = ({
 
             {/* Blog Content */}
             <div className="px-12">
-              {post.content && (
-                <PortableTextRenderer content={post.content} />
-              )}
+              {post.content && <PortableTextRenderer content={post.content} />}
             </div>
 
             {/* Navigation Footer */}
@@ -135,10 +129,10 @@ const BlogContent: React.FC<BlogContentProps> = ({
                 {hasPrev && previousPost ? (
                   <>
                     {/* Hidden Link for prefetching */}
-                    <Link 
-                      href={`/resources/${previousPost.slug.current}`} 
+                    <Link
+                      href={`/resources/${previousPost.slug.current}`}
                       prefetch={true}
-                      style={{ display: 'none' }}
+                      style={{ display: "none" }}
                       aria-hidden="true"
                     />
                     <Button
@@ -161,10 +155,10 @@ const BlogContent: React.FC<BlogContentProps> = ({
                 {hasNext && nextPost ? (
                   <>
                     {/* Hidden Link for prefetching */}
-                    <Link 
-                      href={`/resources/${nextPost.slug.current}`} 
+                    <Link
+                      href={`/resources/${nextPost.slug.current}`}
                       prefetch={true}
-                      style={{ display: 'none' }}
+                      style={{ display: "none" }}
                       aria-hidden="true"
                     />
                     <Button

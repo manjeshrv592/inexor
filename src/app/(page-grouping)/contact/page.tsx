@@ -36,12 +36,21 @@ import {
   getContactInfo,
   fallbackContactInfo,
   type ContactInfo,
+  getOfficeLocations,
+  type OfficeLocation,
 } from "@/lib/sanity/contact";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const ContactPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [contactInfo, setContactInfo] =
     useState<ContactInfo>(fallbackContactInfo);
+  const [officeLocations, setOfficeLocations] = useState<OfficeLocation[]>([]);
 
   // Fetch contact info from Sanity on component mount
   useEffect(() => {
@@ -56,7 +65,19 @@ const ContactPage = () => {
       }
     };
 
+    const fetchOfficeLocations = async () => {
+      try {
+        const locations = await getOfficeLocations();
+        if (locations) {
+          setOfficeLocations(locations);
+        }
+      } catch (error) {
+        console.error("Error fetching office locations:", error);
+      }
+    };
+
     fetchContactInfo();
+    fetchOfficeLocations();
   }, []);
 
   // Initialize form
@@ -81,6 +102,26 @@ const ContactPage = () => {
   const phoneMaxLength = useMemo(() => {
     return getPhoneLengthForCountry(countryCodeValue || "US");
   }, [countryCodeValue]);
+
+  // Group office locations by country
+  const groupedOffices = useMemo(() => {
+    const grouped: Record<string, OfficeLocation[]> = {};
+    officeLocations.forEach((office) => {
+      if (!grouped[office.country]) {
+        grouped[office.country] = [];
+      }
+      grouped[office.country].push(office);
+    });
+
+    // Sort offices within each country by displayOrder
+    Object.keys(grouped).forEach((country) => {
+      grouped[country].sort(
+        (a, b) => (a.displayOrder || 0) - (b.displayOrder || 0),
+      );
+    });
+
+    return grouped;
+  }, [officeLocations]);
 
   // Handle form submission
   const onSubmit = async (data: ContactFormData) => {
@@ -137,7 +178,86 @@ const ContactPage = () => {
       style={{ backgroundColor: "#1c1b1b" }}
     >
       {/* Left Panel - Map */}
-      <div className="hidden items-center justify-center bg-neutral-800 xl:flex">
+      <div className="hidden h-[calc(100dvh-290px)] overflow-y-auto xl:block xl:h-full">
+        <h3 className="font-michroma py-5 text-center">
+          Our <span className="text-brand-orange-500">Locations</span>
+        </h3>
+        <p className="text-center text-sm">We&apos;d like to here from you</p>
+        <div className="px-4 py-6">
+          <Accordion type="single" collapsible className="w-full">
+            {Object.entries(groupedOffices).map(
+              ([country, offices], countryIndex) => (
+                <AccordionItem key={country} value={`item-${countryIndex + 1}`}>
+                  <AccordionTrigger>{country}</AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-4">
+                      {offices.map((office, officeIndex) => (
+                        <div
+                          key={office._id || `${country}-${officeIndex}`}
+                          className="space-y-2"
+                        >
+                          {/* Display all addresses for this office */}
+                          <div className="space-y-3">
+                            {office.addresses?.map((address, addressIndex) => (
+                              <div key={addressIndex} className="space-y-2">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm font-semibold text-white">
+                                    {address.city}
+                                  </span>
+                                </div>
+                                <p className="text-xs text-gray-400">
+                                  {address.address}
+                                </p>
+
+                                {/* Contact information for this address */}
+                                <div className="space-y-1">
+                                  {address.phone && (
+                                    <div>
+                                      <a
+                                        href={`tel:${address.phone}`}
+                                        className="text-xs text-gray-400 duration-300 hover:text-white"
+                                      >
+                                        Phone: {address.phone}
+                                      </a>
+                                    </div>
+                                  )}
+                                  {address.email && (
+                                    <div>
+                                      <a
+                                        href={`mailto:${address.email}`}
+                                        className="text-xs text-gray-400 duration-300 hover:text-white"
+                                      >
+                                        Email: {address.email}
+                                      </a>
+                                    </div>
+                                  )}
+                                  {address.mapsLink && (
+                                    <div>
+                                      <a
+                                        href={address.mapsLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-brand-orange-400 hover:text-brand-orange-300 text-xs duration-300"
+                                      >
+                                        View on Maps
+                                      </a>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ),
+            )}
+          </Accordion>
+        </div>
+      </div>
+      {/* <div className="hidden items-center justify-center bg-neutral-800 xl:flex">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2504814.687516064!2d2.6398022221693846!3d52.186907870458654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c609c3db87e4bb%3A0x3a175ceffbd0a9f!2sNetherlands!5e0!3m2!1sen!2sin!4v1756459162658!5m2!1sen!2sin&theme=dark"
           className="h-full min-h-[300px] w-full"
@@ -150,7 +270,7 @@ const ContactPage = () => {
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
         />
-      </div>
+      </div> */}
 
       {/* Center Panel - Info */}
       <div className="items-center pb-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:flex">
@@ -213,9 +333,6 @@ const ContactPage = () => {
                 </a>
               </div>
             </div>
-          </div>
-          <div className="xxl:mt-[10%] mx-auto mt-4 hidden max-w-[300px] px-2 text-center text-sm xl:block">
-            {contactInfo.address}
           </div>
         </div>
       </div>

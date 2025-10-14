@@ -267,6 +267,15 @@ export const structure = (S: StructureBuilder) =>
                       { field: "lastUpdated", direction: "desc" },
                     ]),
                 ),
+              S.listItem()
+                .title("🏢 Office Locations")
+                .child(
+                  S.documentTypeList("officeLocation")
+                    .title("Office Locations")
+                    .defaultOrdering([
+                      { field: "country", direction: "asc" },
+                    ]),
+                ),
             ]),
         ),
 

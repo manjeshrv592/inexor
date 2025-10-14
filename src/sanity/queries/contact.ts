@@ -17,6 +17,21 @@ export const contactInfoQuery = groq`
   }
 `;
 
+// Query to get office locations grouped by country
+export const officeLocationsQuery = groq`
+  *[_type == "officeLocation"] {
+    _id,
+    country,
+    addresses[] {
+      city,
+      address,
+      email,
+      phone,
+      mapsLink
+    }
+  }
+`;
+
 // Query to get contact page SEO data
 export const contactPageQuery = groq`
   *[_type == "contactPage" && isActive == true][0] {

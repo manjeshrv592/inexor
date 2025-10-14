@@ -1,6 +1,9 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import { getBlogPostBySlug, getBlogPostsForNavigation } from "@/lib/sanity/blog";
+import {
+  getBlogPostBySlug,
+  getBlogPostsForNavigation,
+} from "@/lib/sanity/blog";
 import { BlogContent } from "@/components/blog";
 
 interface BlogPostPageProps {
@@ -22,7 +25,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
 
   // Find current post index for navigation
   const currentIndex = allBlogPosts.findIndex(
-    (post) => post.slug.current === slug
+    (post) => post.slug.current === slug,
   );
   const previousPost = currentIndex > 0 ? allBlogPosts[currentIndex - 1] : null;
   const nextPost =

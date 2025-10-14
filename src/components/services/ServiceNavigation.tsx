@@ -32,7 +32,7 @@ export default function ServiceNavigation({
         }}
       >
         {services.map((service, index) => (
-          <Link key={service._id} href={`/services/${service.slug.current}`}>
+          <Link key={service._id} href={`/services/${service.slug.current}`} prefetch={true}>
             <Button
               className="font-michroma w-20 text-[10px] tracking-[1px] xl:w-full"
               size={"sm"}
@@ -47,7 +47,7 @@ export default function ServiceNavigation({
       {/* Desktop list */}
       <div className="hidden h-full flex-col justify-center gap-4 xl:flex">
         {services.map((service, index) => (
-          <Link key={service._id} href={`/services/${service.slug.current}`}>
+          <Link key={service._id} href={`/services/${service.slug.current}`} prefetch={true}>
             <Button
               className="font-michroma text-[10px] tracking-[1px] xl:w-full"
               variant={currentIndex === index ? "default" : "outline"}

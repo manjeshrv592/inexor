@@ -39,6 +39,7 @@ import resourcesPage from "./resourcesPage";
 import resourcesPageSeo from "./resourcesPageSeo";
 import contactPage from "./contactPage";
 import contactInfo from "./contactInfo";
+import officeLocation from "./officeLocation";
 import blogPost from "./blogPost";
 import imageTextBlock from "./imageTextBlock";
 import processStepsBlock from "./processStepsBlock";
@@ -89,6 +90,7 @@ export const schemaTypes = [
   resourcesPageSeo,
   contactPage,
   contactInfo,
+  officeLocation,
   blogPost,
   imageTextBlock,
   processStepsBlock,

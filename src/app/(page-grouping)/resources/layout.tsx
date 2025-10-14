@@ -6,7 +6,7 @@ import { BlogListServer, BlogLeftPanel } from "@/components/blog";
 import ResourcesLoadingSkeleton from "@/components/ui/ResourcesLoadingSkeleton";
 
 // Force static generation for this layout
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 export const revalidate = 1800; // Revalidate every 30 minutes
 
 interface LayoutProps {
@@ -38,10 +38,10 @@ const Layout = async ({ children, params }: LayoutProps) => {
 };
 
 // Separate component for the actual content that requires data fetching
-const ResourcesContent = async ({ 
-  currentSlug, 
-  children 
-}: { 
+const ResourcesContent = async ({
+  currentSlug,
+  children,
+}: {
   currentSlug?: string;
   children: React.ReactNode;
 }) => {
@@ -66,18 +66,18 @@ const ResourcesContent = async ({
       <BlogListServer
         allBlogPosts={allBlogPosts}
         currentSlug={currentSlug || ""}
-        blogSectionTitle={
-          resourcesPageData?.blogSectionTitle || "LATEST BLOGS"
-        }
+        blogSectionTitle={resourcesPageData?.blogSectionTitle || "LATEST BLOGS"}
       />
 
       {/* Right Panel - Dynamic Content */}
       <div className="h-[calc(100dvh-237px)] overflow-y-auto bg-neutral-900 xl:h-full">
-        <Suspense fallback={
-          <div className="flex items-center justify-center h-full">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-          </div>
-        }>
+        <Suspense
+          fallback={
+            <div className="flex h-full items-center justify-center">
+              <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-white"></div>
+            </div>
+          }
+        >
           {children}
         </Suspense>
       </div>

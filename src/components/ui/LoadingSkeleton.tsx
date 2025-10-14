@@ -97,3 +97,41 @@ export const FAQPageSkeleton: React.FC = () => (
     </div>
   </div>
 );
+
+export const PrivacyPolicyPageSkeleton: React.FC = () => (
+  <div className="size-full bg-[#2f2f2f] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:grid">
+    <div className="h-full overflow-y-auto">
+      <div className="h-full px-8 py-12 xl:px-12">
+        <LoadingSkeleton variant="text" className="mx-auto mb-4 h-6 w-48" />
+        <LoadingSkeleton variant="text" className="mb-4 h-4 w-32" />
+        <div className="mt-8 space-y-6 pb-8">
+          <LoadingSkeleton variant="text" lines={4} />
+          <LoadingSkeleton variant="text" lines={3} />
+          <LoadingSkeleton variant="text" lines={5} />
+          <LoadingSkeleton variant="text" lines={2} />
+          <LoadingSkeleton variant="text" lines={4} />
+          <LoadingSkeleton variant="text" lines={3} />
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+export const TermsConditionsPageSkeleton: React.FC = () => (
+  <div className="size-full bg-[#2f2f2f] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:grid">
+    <div className="h-full overflow-y-auto">
+      <div className="h-full px-8 py-12 xl:px-12">
+        <LoadingSkeleton variant="text" className="mx-auto mb-4 h-6 w-48" />
+        <LoadingSkeleton variant="text" className="mb-4 h-4 w-32" />
+        <div className="mt-8 space-y-6 pb-8">
+          <LoadingSkeleton variant="text" lines={3} />
+          <LoadingSkeleton variant="text" lines={4} />
+          <LoadingSkeleton variant="text" lines={2} />
+          <LoadingSkeleton variant="text" lines={5} />
+          <LoadingSkeleton variant="text" lines={3} />
+          <LoadingSkeleton variant="text" lines={4} />
+        </div>
+      </div>
+    </div>
+  </div>
+);

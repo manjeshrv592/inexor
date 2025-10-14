@@ -120,8 +120,8 @@ const FAQLayout = () => {
       <PagePanel
         direction={{
           sm: "up", // Small screens slide from up (header navigation)
-          md: "up", // Medium screens slide from up (header navigation)
-          lg: "up", // Large screens slide from up (header navigation)
+          md: "left", // Medium screens slide from up (header navigation)
+          lg: "left", // Large screens slide from up (header navigation)
           xl: "left", // Extra large screens slide from left (header navigation)
           xxl: "left", // XXL screens slide from left (header navigation)
         }}

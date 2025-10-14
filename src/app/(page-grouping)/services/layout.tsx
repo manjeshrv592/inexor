@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import PagePanel from "@/components/ui/PagePanel";
 import { getServices, getServicesPageSettings } from "@/lib/sanity/service";
 import LazyImage from "@/components/ui/LazyImage";
 import ServiceNavigation from "@/components/services/ServiceNavigation";
+import ServicesLoadingSkeleton from "@/components/services/ServicesLoadingSkeleton";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -78,7 +79,9 @@ const Layout = async ({ children }: LayoutProps) => {
         </div>
 
         {/* Right Panel - Service Content */}
-        {children}
+        <Suspense fallback={<ServicesLoadingSkeleton />}>
+          {children}
+        </Suspense>
       </div>
     </PagePanel>
   );
