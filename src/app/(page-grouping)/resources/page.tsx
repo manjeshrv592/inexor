@@ -1,12 +1,16 @@
 import { redirect } from "next/navigation";
-import { getBlogPostsForNavigation } from "@/lib/sanity/blog";
+import { getFirstBlogPostSlug } from "@/lib/sanity/blog";
+
+// Force static generation for this page
+export const dynamic = 'force-static';
+export const revalidate = 3600; // Revalidate every hour
 
 const ResourcesPage = async () => {
-  const blogPosts = await getBlogPostsForNavigation();
+  const firstBlogPost = await getFirstBlogPostSlug();
 
-  if (blogPosts.length > 0) {
+  if (firstBlogPost) {
     // Redirect to the first blog post
-    redirect(`/resources/${blogPosts[0].slug.current}`);
+    redirect(`/resources/${firstBlogPost.slug.current}`);
   }
 
   // If no blog posts are available, show a message

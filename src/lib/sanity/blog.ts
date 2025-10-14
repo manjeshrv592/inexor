@@ -121,12 +121,26 @@ export async function getRecentBlogPosts(
 
 export async function getFirstBlogPostSlug(): Promise<{ slug: { current: string } } | null> {
   return client.fetch(
-    FIRST_BLOG_POST_SLUG_QUERY,
-    {},
-    { next: { tags: ["blog-posts"] } },
+    FIRST_BLOG_POST_SLUG_QUERY, 
+    {}, 
+    { 
+      next: { 
+        tags: ["blog-posts"], 
+        revalidate: 3600 // Cache for 1 hour
+      } 
+    }
   );
 }
 
 export async function getBlogPostsForNavigation(): Promise<BlogPost[]> {
-  return client.fetch(BLOG_POSTS_NAVIGATION_QUERY, {}, { next: { tags: ["blog-posts"] } });
+  return client.fetch(
+    BLOG_POSTS_NAVIGATION_QUERY, 
+    {}, 
+    { 
+      next: { 
+        tags: ["blog-posts"], 
+        revalidate: 1800 // Cache for 30 minutes
+      } 
+    }
+  );
 }

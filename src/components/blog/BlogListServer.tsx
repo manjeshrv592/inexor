@@ -44,6 +44,7 @@ const BlogListServer: React.FC<BlogListServerProps> = ({
           )}
           <Link
             href={`/resources/${post.slug.current}`}
+            prefetch={true}
             className={`flex cursor-pointer font-medium text-white transition-opacity hover:opacity-90 ${
               index === currentIndex ? "opacity-100" : "opacity-70"
             }`}
@@ -114,6 +115,7 @@ const BlogListServer: React.FC<BlogListServerProps> = ({
               >
                 <Link
                   href={`/resources/${post.slug.current}`}
+                  prefetch={true}
                   className={`font-michroma hover:text-brand-orange-500 block w-[100px] text-[10px] tracking-[1px] ${
                     index === currentIndex ? "text-brand-orange-500" : ""
                   }`}

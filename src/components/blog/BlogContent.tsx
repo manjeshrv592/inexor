@@ -1,17 +1,14 @@
 "use client";
 
-import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import Image from "next/image";
 import React, { useRef } from "react";
 import { useRouter } from "next/navigation";
-import {
-  type BlogPost,
-} from "@/lib/sanity/blog";
-import AutoScrollContainer, {
-  AutoScrollContainerRef,
-} from "@/components/ui/AutoScrollContainer";
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { type BlogPost } from "@/lib/sanity/blog";
+import AutoScrollContainer, { type AutoScrollContainerRef } from "@/components/ui/AutoScrollContainer";
+import PortableTextRenderer from "@/components/blog/RichTextRenderer";
 import { urlForImage } from "../../../sanity/lib/image";
 
 interface BlogContentProps {
@@ -28,6 +25,15 @@ const BlogContent: React.FC<BlogContentProps> = ({
   const blogContentScrollRef = useRef<AutoScrollContainerRef>(null);
   const rightPanelRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  // Local formatDate function
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   // Get navigation info
   const hasPrev = !!previousPost;
@@ -106,13 +112,7 @@ const BlogContent: React.FC<BlogContentProps> = ({
               </div>
               <div className="text-brand-orange-500 flex flex-col items-end gap-2 text-[10px] lg:flex-row lg:items-center lg:gap-4">
                 <span className="font-michroma">
-                  {new Date(
-                    post.publishedAt,
-                  ).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
+                  {formatDate(post.publishedAt)}
                 </span>
                 {post.readingTime && (
                   <span className="font-michroma">
@@ -134,6 +134,13 @@ const BlogContent: React.FC<BlogContentProps> = ({
               <div>
                 {hasPrev && previousPost ? (
                   <>
+                    {/* Hidden Link for prefetching */}
+                    <Link 
+                      href={`/resources/${previousPost.slug.current}`} 
+                      prefetch={true}
+                      style={{ display: 'none' }}
+                      aria-hidden="true"
+                    />
                     <Button
                       className="font-michroma text-[10px] tracking-[1px]"
                       variant={"outline"}
@@ -153,6 +160,13 @@ const BlogContent: React.FC<BlogContentProps> = ({
               <div className="md:flex md:flex-col md:items-end">
                 {hasNext && nextPost ? (
                   <>
+                    {/* Hidden Link for prefetching */}
+                    <Link 
+                      href={`/resources/${nextPost.slug.current}`} 
+                      prefetch={true}
+                      style={{ display: 'none' }}
+                      aria-hidden="true"
+                    />
                     <Button
                       className="font-michroma text-[10px] tracking-[1px]"
                       variant={"outline"}
