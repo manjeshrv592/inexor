@@ -63,7 +63,7 @@ const BlogContent: React.FC<BlogContentProps> = ({
   return (
     <AutoScrollContainer ref={blogContentScrollRef}>
       <div ref={rightPanelRef} className="pr-2">
-        <div key={post._id}>
+        <div className="pt-4" key={post._id}>
           <h3 className="font-michroma mb-4 text-center text-xl text-white">
             {post.title}
           </h3>
@@ -119,7 +119,7 @@ const BlogContent: React.FC<BlogContentProps> = ({
             </div>
 
             {/* Blog Content */}
-            <div className="px-12">
+            <div className="px-6">
               {post.content && <PortableTextRenderer content={post.content} />}
             </div>
 

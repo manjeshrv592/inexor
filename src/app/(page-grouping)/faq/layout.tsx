@@ -1,8 +1,6 @@
 "use client";
 import PagePanel from "@/components/ui/PagePanel";
-import { CategoryButton } from "@/components/faq";
-import FAQItemWithLink from "@/components/faq/FAQItemWithLink";
-import Link from "next/link";
+import { CategoryButton, FAQItem } from "@/components/faq";
 import LazyImage from "@/components/ui/LazyImage";
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
@@ -48,7 +46,7 @@ const FAQLayout = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Fetch initial data
+  // Fetch initial data (only once on mount)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -97,7 +95,6 @@ const FAQLayout = () => {
             setActiveQuestionId(targetQuestionId);
           } else if (items.length > 0) {
             setActiveQuestionId(items[0]._id);
-            // No URL update for smooth UX - purely state-based navigation
           }
         }
       } catch (error) {
@@ -108,7 +105,35 @@ const FAQLayout = () => {
     };
 
     fetchData();
-  }, [currentCategorySlug, currentQuestionSlug]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Intentionally empty - we only want to fetch data once on mount
+
+  // Handle category selection
+  const handleCategorySelect = async (categoryIndex: number) => {
+    if (categoryIndex === selectedCategoryIndex) return;
+    
+    setSelectedCategoryIndex(categoryIndex);
+    const targetCategory = categories[categoryIndex];
+    
+    try {
+      const items = await getCachedFAQItemsByCategory(targetCategory.slug.current);
+      setFaqItems(items);
+      
+      // Set first question as active when switching categories
+      if (items.length > 0) {
+        setActiveQuestionId(items[0]._id);
+      } else {
+        setActiveQuestionId(null);
+      }
+    } catch (error) {
+      console.error("Error fetching FAQ items:", error);
+    }
+  };
+
+  // Handle question selection
+  const handleQuestionSelect = (questionId: string) => {
+    setActiveQuestionId(questionId);
+  };
 
   // Note: Category and question navigation now handled by Link components
 
@@ -179,17 +204,16 @@ const FAQLayout = () => {
             >
               {categories.map((category, index) => (
                 <div key={category._id} className="flex-shrink-0">
-                  <Link href={`/faq/${category.slug.current}`}>
-                    <Button
-                      variant={
-                        selectedCategoryIndex === index ? "default" : "outline"
-                      }
-                      size={"sm"}
-                      className="font-michroma text-[10px] tracking-[1px]"
-                    >
-                      {category.name}
-                    </Button>
-                  </Link>
+                  <Button
+                    variant={
+                      selectedCategoryIndex === index ? "default" : "outline"
+                    }
+                    size={"sm"}
+                    className="font-michroma text-[10px] tracking-[1px]"
+                    onClick={() => handleCategorySelect(index)}
+                  >
+                    {category.name}
+                  </Button>
                 </div>
               ))}
             </div>
@@ -206,14 +230,13 @@ const FAQLayout = () => {
             </h5>
             <div className="flex flex-wrap justify-center gap-4">
               {categories.map((category, index) => (
-                <Link key={category._id} href={`/faq/${category.slug.current}`}>
-                  <CategoryButton
-                    isActive={selectedCategoryIndex === index}
-                    onClick={() => {}}
-                  >
-                    {category.name}
-                  </CategoryButton>
-                </Link>
+                <CategoryButton
+                  key={category._id}
+                  isActive={selectedCategoryIndex === index}
+                  onClick={() => handleCategorySelect(index)}
+                >
+                  {category.name}
+                </CategoryButton>
               ))}
             </div>
           </div>
@@ -268,17 +291,14 @@ const FAQLayout = () => {
         <div className="h-[calc(100dvh-158px)] overflow-y-auto xl:h-full">
           <div className="flex flex-col justify-center gap-6 px-2 py-6">
             {faqItems.map((item) => (
-              <FAQItemWithLink
+              <FAQItem
                 key={item._id}
-                categorySlug={
-                  categories[selectedCategoryIndex]?.slug.current || ""
-                }
-                questionSlug={item.slug.current}
                 questionId={item._id}
                 question={item.question}
                 answer={item.answer}
                 isMobile={isMobile}
                 activeQuestionId={activeQuestionId}
+                onQuestionClick={handleQuestionSelect}
               />
             ))}
             {faqItems.length === 0 && !loading && (
