@@ -9,11 +9,11 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <PagePanel
       direction={{
-        sm: 'top',      // Small screens slide from top (footer navigation special case)
-        md: 'top',      // Medium screens slide from top (footer navigation special case)
-        lg: 'top',      // Large screens slide from top (footer navigation special case)
-        xl: 'bottom',   // Extra large screens slide from bottom (footer navigation)
-        xxl: 'bottom',  // XXL screens slide from bottom (footer navigation)
+        sm: 'up',       // Small screens slide from up (footer navigation special case)
+        md: 'up',       // Medium screens slide from up (footer navigation special case)
+        lg: 'up',       // Large screens slide from up (footer navigation special case)
+        xl: 'down',     // Extra large screens slide from down (footer navigation)
+        xxl: 'down',    // XXL screens slide from down (footer navigation)
       }}
     >
       {children}

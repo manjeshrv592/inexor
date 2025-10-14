@@ -1,6 +1,6 @@
 import React from "react";
 import PagePanel from "@/components/ui/PagePanel";
-import { getBlogPostsForNavigation, getResourcesPage } from "@/lib/sanity/blog";
+import { getBlogPostsForNavigation } from "@/lib/sanity/blog";
 import { getResourcesPage as getResourcesPageData } from "@/lib/sanity";
 import { BlogListServer, BlogLeftPanel } from "@/components/blog";
 
@@ -22,9 +22,9 @@ const Layout = async ({ children, params }: LayoutProps) => {
   return (
     <PagePanel
       direction={{
-        sm: "top", // Small screens slide from top (header navigation)
-        md: "top", // Medium screens slide from top (header navigation)
-        lg: "top", // Large screens slide from top (header navigation)
+        sm: "up", // Small screens slide from up (header navigation)
+        md: "up", // Medium screens slide from up (header navigation)
+        lg: "up", // Large screens slide from up (header navigation)
         xl: "left", // Extra large screens slide from left (header navigation)
         xxl: "left", // XXL screens slide from left (header navigation)
       }}
