@@ -35,89 +35,86 @@ const LazyImage = ({
   mimeType,
 }: LazyImageProps) => {
   // Check if this is an SVG file (skip LQIP for SVGs)
-  const isSvgFile =
-    mimeType === "image/svg+xml" ||
-    (typeof src === "string" && src.toLowerCase().includes(".svg"));
-
+  const isSvgFile = mimeType === 'image/svg+xml' || 
+                    (typeof src === 'string' && src.toLowerCase().includes('.svg'));
+  
   const [isLoading, setIsLoading] = useState(!isSvgFile); // SVGs don't need loading state
   const [error, setError] = useState(false);
 
   // Generate LQIP and optimized URLs
   const getImageUrls = () => {
     // If it's a string URL (legacy)
-    if (typeof src === "string") {
-      if (!src.includes("sanity")) {
+    if (typeof src === 'string') {
+      if (!src.includes('sanity')) {
         return {
           lqipSrc: src,
-          optimizedSrc: src,
+          optimizedSrc: src
         };
       }
-
+      
       // For SVG files, skip LQIP generation
       if (isSvgFile) {
         return {
           lqipSrc: src,
-          optimizedSrc: src,
+          optimizedSrc: src
         };
       }
-
+      
       // Manual URL manipulation for string URLs
-      const separator = src.includes("?") ? "&" : "?";
+      const separator = src.includes('?') ? '&' : '?';
       const lqipSrc = `${src}${separator}w=20&q=20&blur=50`;
-      const optimizedSrc = `${src}${separator}q=${quality}&fm=webp${width ? `&w=${width}` : ""}`;
-
+      const optimizedSrc = `${src}${separator}q=${quality}&fm=webp${width ? `&w=${width}` : ''}`;
+      
       return { lqipSrc, optimizedSrc };
     }
-
+    
     // If it's a Sanity image object, use proper image builder
     // For SVG files, skip LQIP generation
     if (isSvgFile) {
       const directSrc = urlForImageWithParams(src, {
         width,
         height,
-        quality,
+        quality
       }).url();
       return {
         lqipSrc: directSrc,
-        optimizedSrc: directSrc,
+        optimizedSrc: directSrc
       };
     }
-
+    
     // First try to use Sanity's built-in LQIP metadata if available
-    const sanityLqip = (
-      src as SanityImageSource & {
-        asset?: { metadata?: { lqip?: string } };
-      }
-    )?.asset?.metadata?.lqip;
+    const sanityLqip = (src as SanityImageSource & { 
+      asset?: { metadata?: { lqip?: string } } 
+    })?.asset?.metadata?.lqip;
     const lqipSrc = lqip || sanityLqip || urlForLQIP(src).url();
-
+    
     const optimizedSrc = urlForImageWithParams(src, {
       width,
       height,
       quality,
-      format: "webp",
+      format: 'webp'
     }).url();
-
+    
     return { lqipSrc, optimizedSrc };
   };
 
   const { lqipSrc, optimizedSrc } = getImageUrls();
 
   // Debug logging to check if LQIP is working
-  // if (process.env.NODE_ENV === 'development') {
-  //   console.log('LazyImage Debug:', {
-  //     srcType: typeof src,
-  //     isSvgFile,
-  //     mimeType,
-  //     lqipSrc: lqipSrc.substring(0, 100) + '...',
-  //     optimizedSrc: optimizedSrc.substring(0, 100) + '...',
-  //     hasLqip: lqipSrc !== optimizedSrc,
-  //     isLoading,
-  //     fill,
-  //     className,
-  //     priority
-  //   });
-  // }
+  if (process.env.NODE_ENV === 'development') {
+    console.log('LazyImage Debug:', {
+      srcType: typeof src,
+      isSvgFile,
+      mimeType,
+      lqipSrc: lqipSrc.substring(0, 100) + '...',
+      optimizedSrc: optimizedSrc.substring(0, 100) + '...',
+      hasLqip: lqipSrc !== optimizedSrc,
+      isLoading,
+      fill,
+      className,
+      priority
+    });
+  }
 
   const handleLoad = () => {
     setIsLoading(false);
@@ -130,11 +127,11 @@ const LazyImage = ({
 
   if (error) {
     return (
-      <div
-        className={`flex items-center justify-center bg-gray-200 ${className}`}
+      <div 
+        className={`bg-gray-200 flex items-center justify-center ${className}`}
         style={style}
       >
-        <span className="text-sm text-gray-400">Image failed to load</span>
+        <span className="text-gray-400 text-sm">Image failed to load</span>
       </div>
     );
   }
@@ -150,18 +147,18 @@ const LazyImage = ({
             alt={alt}
             fill
             className={`transition-opacity duration-300 ${className}`}
-            style={{ filter: "blur(10px)", ...style }}
+            style={{ filter: 'blur(10px)', ...style }}
             priority={priority}
           />
         )}
-
+        
         {/* High Quality Image */}
         <Image
           src={optimizedSrc}
           alt={alt}
           fill
           className={`transition-opacity duration-500 ${className} ${
-            isLoading ? "opacity-0" : "opacity-100"
+            isLoading ? 'opacity-0' : 'opacity-100'
           }`}
           style={style}
           sizes={sizes}
@@ -186,12 +183,12 @@ const LazyImage = ({
           fill={fill}
           width={!fill ? width : undefined}
           height={!fill ? height : undefined}
-          className={`transition-opacity duration-300 ${fill ? "object-cover" : ""}`}
-          style={{ filter: "blur(10px)" }}
+          className={`transition-opacity duration-300 ${fill ? 'object-cover' : ''}`}
+          style={{ filter: 'blur(10px)' }}
           priority={priority}
         />
       )}
-
+      
       {/* High Quality Image */}
       <Image
         src={optimizedSrc}
@@ -199,8 +196,8 @@ const LazyImage = ({
         fill={fill}
         width={!fill ? width : undefined}
         height={!fill ? height : undefined}
-        className={`transition-opacity duration-500 ${fill ? "object-cover" : ""} ${
-          isLoading ? "opacity-0" : "opacity-100"
+        className={`transition-opacity duration-500 ${fill ? 'object-cover' : ''} ${
+          isLoading ? 'opacity-0' : 'opacity-100'
         }`}
         sizes={sizes}
         quality={quality}

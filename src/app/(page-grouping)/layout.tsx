@@ -1,5 +1,5 @@
 import React from "react";
-import PagePanelBg from "@/components/ui/PagePanelBg";
+import PageTransition from "@/components/ui/PageTransition";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -7,10 +7,9 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <>
-      <PagePanelBg />
+    <PageTransition>
       {children}
-    </>
+    </PageTransition>
   );
 };
 

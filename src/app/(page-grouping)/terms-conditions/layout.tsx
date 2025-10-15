@@ -1,27 +1,14 @@
-import React, { Suspense } from "react";
 import PagePanel from "@/components/ui/PagePanel";
-import { TermsConditionsPageSkeleton } from "@/components/ui/LoadingSkeleton";
+import PagePanelBg from "@/components/ui/PagePanelBg";
+import React from "react";
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-const Layout = ({ children }: LayoutProps) => {
+const TermsConditionsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <PagePanel
-      direction={{
-        sm: "up", // Small screens slide from up (footer navigation special case)
-        md: "up", // Medium screens slide from up (footer navigation special case)
-        lg: "up", // Large screens slide from up (footer navigation special case)
-        xl: "down", // Extra large screens slide from down (footer navigation)
-        xxl: "down", // XXL screens slide from down (footer navigation)
-      }}
-    >
-      <Suspense fallback={<TermsConditionsPageSkeleton />}>
-        {children}
-      </Suspense>
-    </PagePanel>
+    <>
+      <PagePanelBg />
+      <PagePanel>{children}</PagePanel>
+    </>
   );
 };
 
-export default Layout;
+export default TermsConditionsLayout;

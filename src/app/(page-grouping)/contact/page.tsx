@@ -257,20 +257,6 @@ const ContactPage = () => {
           </Accordion>
         </div>
       </div>
-      {/* <div className="hidden items-center justify-center bg-neutral-800 xl:flex">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2504814.687516064!2d2.6398022221693846!3d52.186907870458654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c609c3db87e4bb%3A0x3a175ceffbd0a9f!2sNetherlands!5e0!3m2!1sen!2sin!4v1756459162658!5m2!1sen!2sin&theme=dark"
-          className="h-full min-h-[300px] w-full"
-          style={{
-            border: 0,
-            filter:
-              "invert(90%) hue-rotate(180deg) brightness(0.8) contrast(1.2)",
-          }}
-          allowFullScreen={true}
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
-      </div> */}
 
       {/* Center Panel - Info */}
       <div className="items-center pb-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:flex">
@@ -333,6 +319,9 @@ const ContactPage = () => {
                 </a>
               </div>
             </div>
+          </div>
+          <div className="xxl:mt-[10%] mx-auto mt-4 hidden max-w-[300px] px-2 text-center text-sm xl:block">
+            {contactInfo.address}
           </div>
         </div>
       </div>
