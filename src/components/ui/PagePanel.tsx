@@ -9,12 +9,11 @@ import {
   TooltipContent,
 } from "@/components/ui/tooltip";
 
-// interface PagePanelProps {
-//   children: React.ReactNode;
-// }
+interface PagePanelProps {
+  children: React.ReactNode;
+}
 
-// const PagePanel = ({ children }: PagePanelProps) => {
-const PagePanel = () => {
+const PagePanel = ({ children }: PagePanelProps) => {
   const router = useTransitionRouter();
   const pathname = usePathname();
   const [currentBreakpoint, setCurrentBreakpoint] = useState<string>("xl");
@@ -184,8 +183,7 @@ const PagePanel = () => {
             : "calc(100dvh - 74px)",
       }}
     >
-      {/* {children} */}
-      pagePanel
+      {children}
       <Tooltip>
         <TooltipTrigger asChild>
           <button
