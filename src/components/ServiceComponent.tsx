@@ -46,8 +46,6 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
           className="object-cover"
           priority={false}
           quality={75}
-          mimeType={backgroundImage?.asset?.mimeType}
-          lqip={backgroundImage?.asset?.metadata?.lqip}
         />
       </div>
       <div className="relative z-20 flex size-full flex-col items-center justify-center p-4 xl:px-8 xl:py-16">

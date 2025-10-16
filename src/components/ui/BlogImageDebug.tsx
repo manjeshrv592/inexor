@@ -18,12 +18,15 @@ declare global {
   }
 }
 
-export default function BlogImageDebug({ blogTitle, prefetchedImageUrl }: BlogImageDebugProps) {
+export default function BlogImageDebug({
+  blogTitle,
+  prefetchedImageUrl,
+}: BlogImageDebugProps) {
   useEffect(() => {
     // Store debug info in window for LazyImage to access
     window.__blogImageDebug = {
       blogTitle,
-      prefetchedImageUrl
+      prefetchedImageUrl,
     };
   }, [blogTitle, prefetchedImageUrl]);
 

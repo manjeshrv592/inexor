@@ -19,8 +19,6 @@ const AboutPageContent = async () => {
               aboutPage?.sidebarImage?.isGrayscale !== false ? "grayscale" : ""
             }`}
             priority={true}
-            mimeType={aboutPage?.sidebarImage?.asset?.mimeType}
-            lqip={aboutPage?.sidebarImage?.asset?.metadata?.lqip}
           />
           {/* <div className="absolute inset-0 z-10 bg-black/80"></div> */}
         </div>

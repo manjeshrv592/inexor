@@ -1,8 +1,9 @@
 import React from "react";
 import { PortableText, PortableTextComponents } from "next-sanity";
 import { PortableTextBlock } from "@portabletext/types";
-import LazyImage from "@/components/ui/LazyImage";
+import Image from "next/image";
 import ProcessSteps from "@/components/ui/ProcessSteps";
+import { urlForImage } from "../../../sanity/lib/image";
 
 interface PortableTextRendererProps {
   content: PortableTextBlock[];
@@ -68,13 +69,12 @@ const components: PortableTextComponents = {
       return (
         <div className="mx-auto my-6 max-w-[800px]">
           <div className="relative w-full" style={{ aspectRatio: '16/6', ...clipPathStyle }}>
-            <LazyImage
-              src={value}
+            <Image
+              src={urlForImage(value).width(800).height(300).url()}
               alt={value.alt || "About image"}
               fill
               className={`object-cover ${grayscaleClass}`}
-              sizes="(max-width: 768px) 100vw, 800px"
-              quality={85}
+              unoptimized
             />
           </div>
           {value.caption && (
@@ -114,14 +114,14 @@ const components: PortableTextComponents = {
 
       const ImageComponent = (
         <div className="relative mx-auto max-w-[600px]">
-          <LazyImage
-            src={value.image}
+          <Image
+            src={urlForImage(value.image).width(600).height(400).url()}
             alt={value.image.alt || "About image"}
             width={600}
             height={400}
             className={`h-auto w-full ${grayscaleClass}`}
             style={clipPathStyle}
-            quality={85}
+            unoptimized
           />
           {value.image.caption && (
             <p className="mt-2 text-center text-sm text-gray-400 italic">

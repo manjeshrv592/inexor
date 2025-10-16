@@ -5,11 +5,12 @@ import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { truncateText } from "@/lib/utils/textUtils";
+import Image from "next/image";
 import LazyImage from "@/components/ui/LazyImage";
 import { Metadata } from "next";
 import BlogImageDebug from "@/components/ui/BlogImageDebug";
 import BlogImagePrefetcher from "@/components/ui/BlogImagePrefetcher";
-import { urlForImageWithParams } from "../../../../../../sanity/lib/image";
+import { urlForImageWithParams, urlForImage } from "../../../../../../sanity/lib/image";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -89,13 +90,9 @@ const page = async ({ params }: BlogPostPageProps) => {
     notFound();
   }
 
-  // Generate preload URL for comparison logging
+  // Generate preload URL for comparison logging using the same function as rendering
   const preloadUrl = blogPost.featuredImage 
-    ? urlForImageWithParams(blogPost.featuredImage, {
-        width: 1200,
-        quality: 75,
-        format: 'webp'
-      }).url()
+    ? urlForImage(blogPost.featuredImage).width(1200).height(600).url()
     : null;
 
   // Find current index for navigation
@@ -132,15 +129,13 @@ const page = async ({ params }: BlogPostPageProps) => {
           {/* Featured Image */}
           <div className="xxl:h-[300px] relative h-[200px]">
             <div className="absolute top-0 left-0 size-full bg-black">
-              <LazyImage
-                src={blogPost.featuredImage || "/img/left-image.jpg"}
+              <Image
+                src={blogPost.featuredImage ? urlForImage(blogPost.featuredImage).width(1200).height(600).url() : "/img/left-image.jpg"}
                 alt={blogPost.featuredImage?.alt || blogPost.title}
                 fill
                 className="object-cover grayscale"
                 priority={true}
-                sizes="(max-width: 768px) 100vw, (max-width: 1536px) 800px, 1200px"
-                mimeType={blogPost.featuredImage?.asset?.mimeType}
-                lqip={blogPost.featuredImage?.asset?.metadata?.lqip}
+                unoptimized
               />
             </div>
           </div>
@@ -152,16 +147,14 @@ const page = async ({ params }: BlogPostPageProps) => {
                 <>
                   <span className="inline-block size-10 overflow-hidden rounded-full bg-neutral-700">
                     {blogPost.author.image ? (
-                      <LazyImage
-                        src={blogPost.author.image}
+                      <Image
+                        src={urlForImage(blogPost.author.image).width(80).height(80).url()}
                         alt={blogPost.author.name}
                         width={40}
                         height={40}
                         className="size-full object-cover"
-                        sizes="40px"
                         priority={false}
-                        mimeType={blogPost.author.image.asset?.mimeType}
-                        lqip={blogPost.author.image.asset?.metadata?.lqip}
+                        unoptimized
                       />
                     ) : (
                       <div className="flex size-full items-center justify-center text-sm text-white">

@@ -101,8 +101,6 @@ export const InfiniteMovingCards = ({
                 height={60}
                 className="object-contain"
                 quality={90}
-                mimeType={item.mimeType}
-                lqip={item.lqip}
               />
             </div>
           </li>

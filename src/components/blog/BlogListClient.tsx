@@ -113,10 +113,7 @@ const BlogListClient: React.FC<BlogListClientProps> = ({
                   clipPath:
                     "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))",
                 }}
-                sizes="(min-width: 1536px) 80px, 64px"
                 priority={index === currentIndex}
-                mimeType={post.featuredImage?.asset?.mimeType}
-                lqip={post.featuredImage?.asset?.metadata?.lqip}
               />
             </div>
             <div className="flex w-full flex-col justify-between p-2">

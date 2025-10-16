@@ -67,8 +67,6 @@ const ServicePage = async ({ params }: ServicePageProps) => {
                 : ""
             }`}
             priority={true}
-            mimeType={servicesPageSettings?.leftPanelImage?.asset?.mimeType}
-            lqip={servicesPageSettings?.leftPanelImage?.asset?.metadata?.lqip}
           />
         </div>
         {/* Mobile list */}
@@ -109,8 +107,6 @@ const ServicePage = async ({ params }: ServicePageProps) => {
                 : ""
             }`}
             priority={true}
-            mimeType={servicesPageSettings?.leftPanelImage?.asset?.mimeType}
-            lqip={servicesPageSettings?.leftPanelImage?.asset?.metadata?.lqip}
           />
         </div>
         <div className="relative z-10 h-[calc(100vh-230px)] overflow-y-auto pr-1">
