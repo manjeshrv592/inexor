@@ -14,17 +14,21 @@ export default function BlogImagePrefetcher({ allBlogPosts, currentSlug }: BlogI
     try {
       if (!blog.featuredImage) return;
 
-      // Generate the same URL that LazyImage will use
-      const imageUrl = urlForImageWithParams(blog.featuredImage, {
+      // Generate the direct Sanity URL first
+      const sanityUrl = urlForImageWithParams(blog.featuredImage, {
         width: 1200,  // Match LazyImage largest size
         quality: 75,  // Match LazyImage default quality
         format: "webp"
       }).url();
 
+      // Generate the Next.js optimized URL that will actually be used
+      // This matches what Next.js Image component generates in production
+      const nextjsOptimizedUrl = `/_next/image?url=${encodeURIComponent(sanityUrl)}&w=1200&q=75`;
+
       // Create a link element for prefetching
       const link = document.createElement('link');
       link.rel = 'prefetch';
-      link.href = imageUrl;
+      link.href = nextjsOptimizedUrl;
       link.as = 'image';
       
       // Add to document head
@@ -37,7 +41,7 @@ export default function BlogImagePrefetcher({ allBlogPosts, currentSlug }: BlogI
         }
       }, 10000); // Remove after 10 seconds
 
-      console.log(`🔄 Prefetched: ${blog.title} - ${imageUrl}`);
+      console.log(`🔄 Prefetched: ${blog.title} - ${nextjsOptimizedUrl}`);
     } catch (error) {
       console.warn(`Failed to prefetch image for blog: ${blog.title}`, error);
     }
