@@ -9,10 +9,8 @@ import { dataCache } from '@/lib/cache';
 export const usePrefetch = () => {
   const prefetchAboutPage = async () => {
     if (!dataCache.has('aboutPageData')) {
-      console.log('🔄 Prefetching About page data...');
       try {
         await getCachedAboutPageData();
-        console.log('✅ About page data prefetched');
       } catch (error) {
         console.error('❌ Failed to prefetch About page data:', error);
       }
@@ -21,10 +19,8 @@ export const usePrefetch = () => {
 
   const prefetchFAQPage = async () => {
     if (!dataCache.has('faqCategories')) {
-      console.log('🔄 Prefetching FAQ page data...');
       try {
         await getCachedFAQInitialData();
-        console.log('✅ FAQ page data prefetched');
       } catch (error) {
         console.error('❌ Failed to prefetch FAQ page data:', error);
       }
@@ -33,12 +29,10 @@ export const usePrefetch = () => {
 
   const prefetchServicesPage = async () => {
     // Services data is already cached from homepage, so no additional prefetch needed
-    console.log('✅ Services data already available from homepage cache');
   };
 
   const prefetchResourcesPage = async () => {
     // Resources would need blog data - can be added when blog caching is implemented
-    console.log('🔄 Resources prefetch not implemented yet');
   };
 
   return {
@@ -58,8 +52,6 @@ export const useAutoPrefetch = () => {
   useEffect(() => {
     // Prefetch modal pages after a short delay to not interfere with initial page load
     const timer = setTimeout(() => {
-      console.log('🚀 Starting auto-prefetch of modal pages...');
-      
       // Prefetch in order of likely user interaction
       prefetchAboutPage();
       

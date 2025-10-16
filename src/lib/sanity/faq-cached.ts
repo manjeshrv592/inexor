@@ -32,18 +32,11 @@ export async function getCachedFAQPageSettings(): Promise<FAQPageSettings | null
  * Batch fetch initial FAQ data with caching
  */
 export async function getCachedFAQInitialData() {
-  console.log('❓ Fetching cached FAQ initial data...');
-  
-  const startTime = Date.now();
-  
   const [categoriesData, faqPageInfo, faqSettings] = await Promise.all([
     getCachedFAQCategories(),
     getCachedFAQPage(),
     getCachedFAQPageSettings(),
   ]);
-
-  const endTime = Date.now();
-  console.log(`❓ FAQ initial data fetched in ${endTime - startTime}ms`);
 
   return {
     categoriesData,

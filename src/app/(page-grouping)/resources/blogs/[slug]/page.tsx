@@ -34,12 +34,38 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       }).url()
     : null;
 
+  // Console log for production debugging
+  if (preloadUrl) {
+    console.log('🔗 PRELOAD URL (generateMetadata):', preloadUrl);
+  }
+
   return {
     title: blogPost.title,
-    description: blogPost.excerpt,
-    other: preloadUrl ? {
-      'link': `<${preloadUrl}>; rel=preload; as=image`
-    } : {}
+    description: blogPost.excerpt || blogPost.title,
+    openGraph: {
+      title: blogPost.title,
+      description: blogPost.excerpt || blogPost.title,
+      images: blogPost.featuredImage
+        ? [
+            {
+              url: urlForImageWithParams(blogPost.featuredImage, {
+                width: 1200,
+                height: 630,
+                quality: 75,
+                format: 'webp'
+              }).url(),
+              width: 1200,
+              height: 630,
+              alt: blogPost.featuredImage.alt || blogPost.title,
+            },
+          ]
+        : [],
+    },
+    other: preloadUrl
+      ? {
+          'link': `<link rel="preload" as="image" href="${preloadUrl}" />`,
+        }
+      : {},
   };
 }
 
