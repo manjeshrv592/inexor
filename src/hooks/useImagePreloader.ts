@@ -131,6 +131,14 @@ export function useImagePreloader(
                 quality: 75,
                 format: 'webp'
               }).url();
+              
+              // Log the preload URL for comparison
+              console.log(`🔄 Preloading image for ${slug}:`, {
+                size: `${size.width}x${size.height}`,
+                preloadUrl: imageUrl,
+                imageId: `${id}-${size.width}x${size.height}`
+              });
+              
               const imageId = `${id}-${size.width}x${size.height}`;
               await preloadImage(imageUrl, imageId);
             } catch (error) {

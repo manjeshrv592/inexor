@@ -105,18 +105,22 @@ const LazyImage = ({
 
   // Debug logging to check if LQIP is working
   if (process.env.NODE_ENV === "development") {
-    // console.log('LazyImage Debug:', {
-    //   srcType: typeof src,
-    //   isSvgFile,
-    //   mimeType,
-    //   lqipSrc: lqipSrc.substring(0, 100) + '...',
-    //   optimizedSrc: optimizedSrc.substring(0, 100) + '...',
-    //   hasLqip: lqipSrc !== optimizedSrc,
-    //   isLoading,
-    //   fill,
-    //   className,
-    //   priority
-    // });
+    console.log('🖼️ LazyImage URL generation:', {
+      srcType: typeof src,
+      isSvgFile,
+      mimeType,
+      width,
+      height,
+      quality,
+      lqipSrc: lqipSrc.substring(0, 100) + '...',
+      optimizedSrc: optimizedSrc.substring(0, 100) + '...',
+      fullOptimizedSrc: optimizedSrc,
+      hasLqip: lqipSrc !== optimizedSrc,
+      isLoading,
+      fill,
+      className,
+      priority
+    });
   }
 
   const handleLoad = () => {

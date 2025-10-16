@@ -70,6 +70,7 @@ const page = async ({ params }: BlogPostPageProps) => {
                 fill
                 className="object-cover grayscale"
                 priority={true}
+                sizes="(max-width: 768px) 100vw, (max-width: 1536px) 800px, 1200px"
                 mimeType={blogPost.featuredImage?.asset?.mimeType}
                 lqip={blogPost.featuredImage?.asset?.metadata?.lqip}
               />
