@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { truncateText } from "@/lib/utils/textUtils";
 import LazyImage from "@/components/ui/LazyImage";
 import { Metadata } from "next";
+import BlogImageDebug from "@/components/ui/BlogImageDebug";
+import BlogImagePrefetcher from "@/components/ui/BlogImagePrefetcher";
 import { urlForImageWithParams } from "../../../../../../sanity/lib/image";
 
 interface BlogPostPageProps {
@@ -15,29 +17,27 @@ interface BlogPostPageProps {
   }>;
 }
 
-// Generate metadata with preload links
-export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
   const blogPost = await getBlogPostBySlug(slug);
-  
+
   if (!blogPost) {
     return {
-      title: 'Blog Post Not Found'
+      title: "Blog Post Not Found",
+      description: "The requested blog post could not be found.",
     };
   }
 
   // Generate preload URL for featured image using the same function as LazyImage
   const preloadUrl = blogPost.featuredImage 
     ? urlForImageWithParams(blogPost.featuredImage, {
-        quality: 75,
+        width: 1200,  // Match the largest size from LazyImage sizes prop
+        quality: 75,  // Match LazyImage default quality
         format: 'webp'
       }).url()
     : null;
-
-  // Console log for production debugging
-  if (preloadUrl) {
-    console.log('🔗 PRELOAD URL (generateMetadata):', preloadUrl);
-  }
 
   return {
     title: blogPost.title,
@@ -48,12 +48,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       images: blogPost.featuredImage
         ? [
             {
-              url: urlForImageWithParams(blogPost.featuredImage, {
-                width: 1200,
-                height: 630,
-                quality: 75,
-                format: 'webp'
-              }).url(),
+              url: preloadUrl || "",
               width: 1200,
               height: 630,
               alt: blogPost.featuredImage.alt || blogPost.title,
@@ -63,7 +58,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     },
     other: preloadUrl
       ? {
-          'link': `<link rel="preload" as="image" href="${preloadUrl}" />`,
+          "preload-image": `<link rel="preload" as="image" href="${preloadUrl}" />`,
         }
       : {},
   };
@@ -94,6 +89,15 @@ const page = async ({ params }: BlogPostPageProps) => {
     notFound();
   }
 
+  // Generate preload URL for comparison logging
+  const preloadUrl = blogPost.featuredImage 
+    ? urlForImageWithParams(blogPost.featuredImage, {
+        width: 1200,
+        quality: 75,
+        format: 'webp'
+      }).url()
+    : null;
+
   // Find current index for navigation
   const currentIndex = allBlogPosts.findIndex(
     (post) => post.slug.current === slug,
@@ -105,6 +109,19 @@ const page = async ({ params }: BlogPostPageProps) => {
 
   return (
     <div className="h-[calc(100dvh-237px)] overflow-y-auto bg-neutral-900 xl:h-full">
+      {/* Debug component to store preload info for logging */}
+      {preloadUrl && (
+        <BlogImageDebug 
+          blogTitle={blogPost.title}
+          prefetchedImageUrl={preloadUrl}
+        />
+      )}
+      
+      {/* Proactive prefetcher for all other blog images */}
+      <BlogImagePrefetcher 
+        allBlogPosts={allBlogPosts}
+        currentSlug={slug}
+      />
       
         <div className="text-sm text-neutral-100">
           {/* Title */}

@@ -103,22 +103,19 @@ const LazyImage = ({
 
   const { lqipSrc, optimizedSrc } = getImageUrls();
 
-  // Console logs for production debugging - Blog image URLs
-  console.log('📸 LazyImage URLs:', {
-    lqipSrc,
-    optimizedSrc,
-    imageType: typeof src === 'string' ? 'string' : 'sanity-object'
-  });
-
   const handleLoad = () => {
     setIsLoading(false);
+    setError(false);
     
-    // Console log for production debugging - Image download completion
-    console.log('✅ Image loaded successfully:', {
-      src: typeof src === 'string' ? src : 'sanity-object',
-      actualLoadedSrc: optimizedSrc,
-      loadTime: Date.now()
-    });
+    // Only log for featured images (priority=true) to avoid multiple logs
+    const debugInfo = window.__blogImageDebug;
+    if (debugInfo && typeof window !== 'undefined' && priority === true) {
+      console.log({
+        blogTitle: debugInfo.blogTitle,
+        actualImageUsedUrl: optimizedSrc, // Use the already computed optimizedSrc
+        prefetchedImageUrl: debugInfo.prefetchedImageUrl
+      });
+    }
   };
 
   const handleError = () => {

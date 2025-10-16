@@ -169,7 +169,7 @@ export function useImagePreloader(
       isPreloading = false;
       isMounted = false;
     };
-  }, [blogPosts, enabled, priority, sizes]); // Removed preloadImage from dependencies
+  }, [blogPosts, enabled, priority, sizes, preloadImage]);
 
   return {
     isPreloading: status.loading.size > 0,
