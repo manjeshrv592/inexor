@@ -25,6 +25,7 @@ const raleway = Raleway({
 export const metadata: Metadata = {
   title: "INEXOR - Web Access",
   description: "Secure web access portal",
+  robots: "noindex, nofollow",
 };
 
 export default async function RootLayout({
