@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
@@ -50,16 +50,6 @@ import {
 const ContactForm = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [filteredCountries, setFilteredCountries] = useState<Country[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
-  const [services, setServices] = useState<Service[]>([]);
-  const [filteredServices, setFilteredServices] = useState<Service[]>([]);
-  const [serviceSearchTerm, setServiceSearchTerm] = useState("");
-  const [isServiceDropdownOpen, setIsServiceDropdownOpen] = useState(false);
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [contactInfo, setContactInfo] =
     useState<ContactInfo>(fallbackContactInfo);
   const [officeLocations, setOfficeLocations] = useState<OfficeLocation[]>([]);
