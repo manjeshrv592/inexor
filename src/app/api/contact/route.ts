@@ -6,6 +6,41 @@ import {
   countryCodes,
 } from "@/lib/validations/contact";
 
+// Function to verify reCAPTCHA token
+async function verifyRecaptcha(token: string): Promise<boolean> {
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+  
+  if (!secretKey) {
+    console.error("❌ RECAPTCHA_SECRET_KEY is not configured");
+    return false;
+  }
+
+  try {
+    const response = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `secret=${secretKey}&response=${token}`,
+    });
+
+    const data = await response.json();
+    console.log("🔐 reCAPTCHA verification result:", {
+      success: data.success,
+      score: data.score,
+      action: data.action,
+      hostname: data.hostname,
+    });
+
+    // For reCAPTCHA v3, check both success and score
+    // Score ranges from 0.0 to 1.0, where 1.0 is very likely a good interaction
+    return data.success && data.score >= 0.5;
+  } catch (error) {
+    console.error("❌ reCAPTCHA verification error:", error);
+    return false;
+  }
+}
+
 export async function POST(request: NextRequest) {
   console.log("🚀 API ROUTE CALLED - /api/contact");
   console.log("🔧 Environment check:");
@@ -15,14 +50,35 @@ export async function POST(request: NextRequest) {
     process.env.GMAIL_APP_PASSWORD || "❌ MISSING",
   );
   console.log("   EMAIL_RECEIVER:", process.env.EMAIL_RECEIVER || "❌ MISSING");
+  console.log("   RECAPTCHA_SECRET_KEY:", process.env.RECAPTCHA_SECRET_KEY ? "✅ PRESENT" : "❌ MISSING");
 
   try {
     const data: ContactFormData = await request.json();
-    console.log("📨 Received data:", data);
+    console.log("📨 Received data:", { ...data, recaptchaToken: data.recaptchaToken ? "[PRESENT]" : "[MISSING]" });
 
     // Validate the data
     const validatedData = contactFormSchema.parse(data);
     console.log("✅ Data validated successfully");
+
+    // Verify reCAPTCHA token
+    if (!validatedData.recaptchaToken) {
+      console.error("❌ reCAPTCHA token is missing");
+      return NextResponse.json(
+        { error: "reCAPTCHA verification is required" },
+        { status: 400 }
+      );
+    }
+
+    const isRecaptchaValid = await verifyRecaptcha(validatedData.recaptchaToken);
+    if (!isRecaptchaValid) {
+      console.error("❌ reCAPTCHA verification failed");
+      return NextResponse.json(
+        { error: "reCAPTCHA verification failed. Please try again." },
+        { status: 400 }
+      );
+    }
+
+    console.log("✅ reCAPTCHA verification successful");
 
     // Get country code from country abbreviation (only if provided)
     const selectedCountry = validatedData.countryCode

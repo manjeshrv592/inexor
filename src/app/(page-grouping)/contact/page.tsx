@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import {
   Form,
   FormControl,
@@ -46,8 +47,19 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-const ContactPage = () => {
+const ContactForm = () => {
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [filteredCountries, setFilteredCountries] = useState<Country[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+  const [services, setServices] = useState<Service[]>([]);
+  const [filteredServices, setFilteredServices] = useState<Service[]>([]);
+  const [serviceSearchTerm, setServiceSearchTerm] = useState("");
+  const [isServiceDropdownOpen, setIsServiceDropdownOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [contactInfo, setContactInfo] =
     useState<ContactInfo>(fallbackContactInfo);
   const [officeLocations, setOfficeLocations] = useState<OfficeLocation[]>([]);
@@ -127,9 +139,23 @@ const ContactPage = () => {
   const onSubmit = async (data: ContactFormData) => {
     console.log("🎯 Form onSubmit called with data:", data);
 
+    if (!executeRecaptcha) {
+      toast.error("reCAPTCHA not available. Please try again.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
+      // Execute reCAPTCHA v3
+      const recaptchaToken = await executeRecaptcha("contact_form");
+      
+      // Add the token to form data
+      const formDataWithToken = {
+        ...data,
+        recaptchaToken,
+      };
+
       console.log("📡 Making direct API call to /api/contact...");
 
       const response = await fetch("/api/contact", {
@@ -137,7 +163,7 @@ const ContactPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(formDataWithToken),
       });
 
       console.log("📡 API Response status:", response.status);
@@ -668,6 +694,14 @@ const ContactPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const ContactPage = () => {
+  return (
+    <GoogleReCaptchaProvider reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}>
+      <ContactForm />
+    </GoogleReCaptchaProvider>
   );
 };
 
