@@ -10,12 +10,9 @@ interface ImagePreloaderProps {
   priority?: boolean;
 }
 
-// Define sizes outside component to prevent recreation on every render
+// Image sizes to preload - using only 1200x300 as requested
 const IMAGE_SIZES = [
-  { width: 1200, height: 300 }, // Featured image size for large screens (xxl)
-  { width: 800, height: 200 },  // Featured image size for medium screens
-  { width: 64, height: 48 },    // Thumbnail size for blog list
-  { width: 80, height: 64 }     // Larger thumbnail for xxl screens
+  { width: 1200, height: 300 }, // Featured image size for all screens
 ];
 
 export function ImagePreloader({ 

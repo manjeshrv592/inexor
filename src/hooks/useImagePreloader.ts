@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { BlogPost } from '@/lib/sanity/blog';
-import { urlForFeaturedImage } from '../../sanity/lib/image';
+import { urlForImageWithParams } from '../../sanity/lib/image';
 
 interface PreloadStatus {
   loaded: Set<string>;
@@ -125,7 +125,12 @@ export function useImagePreloader(
           sizes.map(async (size) => {
             if (!isMounted) return; // Skip if component unmounted
             try {
-              const imageUrl = urlForFeaturedImage(image, size.width, size.height).url();
+              const imageUrl = urlForImageWithParams(image, {
+                width: size.width,
+                height: size.height,
+                quality: 75,
+                format: 'webp'
+              }).url();
               const imageId = `${id}-${size.width}x${size.height}`;
               await preloadImage(imageUrl, imageId);
             } catch (error) {
