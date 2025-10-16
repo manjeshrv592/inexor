@@ -8,12 +8,15 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <ImagePreloader
-        blogPosts={allBlogPosts}
+      <ImagePreloader 
+        blogPosts={allBlogPosts} 
         enabled={true}
         priority={false}
       />
-      <BlogList allBlogPosts={allBlogPosts} blogSectionTitle="LATEST BLOGS" />
+      <BlogList
+        allBlogPosts={allBlogPosts}
+        blogSectionTitle="LATEST BLOGS"
+      />
       {children}
     </>
   );

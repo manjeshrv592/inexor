@@ -1,6 +1,6 @@
-import { useEffect, useState, useCallback } from "react";
-import { BlogPost } from "@/lib/sanity/blog";
-import { urlForFeaturedImage } from "../../sanity/lib/image";
+import { useEffect, useState, useCallback } from 'react';
+import { BlogPost } from '@/lib/sanity/blog';
+import { urlForFeaturedImage } from '../../sanity/lib/image';
 
 interface PreloadStatus {
   loaded: Set<string>;
@@ -18,14 +18,10 @@ interface UseImagePreloaderOptions {
 
 export function useImagePreloader(
   blogPosts: BlogPost[],
-  options: UseImagePreloaderOptions = {},
+  options: UseImagePreloaderOptions = {}
 ) {
-  const {
-    enabled = true,
-    priority = false,
-    sizes = [{ width: 400, height: 300 }],
-  } = options;
-
+  const { enabled = true, priority = false, sizes = [{ width: 400, height: 300 }] } = options;
+  
   const [status, setStatus] = useState<PreloadStatus>({
     loaded: new Set(),
     loading: new Set(),
@@ -34,54 +30,49 @@ export function useImagePreloader(
     loadedCount: 0,
   });
 
-  const preloadImage = useCallback(
-    (url: string, imageId: string): Promise<void> => {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-
-        img.onload = () => {
-          setStatus((prev) => {
-            // Only update if this image isn't already loaded
-            if (prev.loaded.has(imageId)) {
-              return prev;
-            }
-            return {
-              ...prev,
-              loaded: new Set([...prev.loaded, imageId]),
-              loading: new Set(
-                [...prev.loading].filter((id) => id !== imageId),
-              ),
-              loadedCount: prev.loadedCount + 1,
-            };
-          });
-          resolve();
-        };
-
-        img.onerror = () => {
-          setStatus((prev) => ({
-            ...prev,
-            errors: new Set([...prev.errors, imageId]),
-            loading: new Set([...prev.loading].filter((id) => id !== imageId)),
-          }));
-          reject(new Error(`Failed to load image: ${url}`));
-        };
-
-        // Set loading state only if not already loading or loaded
-        setStatus((prev) => {
-          if (prev.loaded.has(imageId) || prev.loading.has(imageId)) {
+  const preloadImage = useCallback((url: string, imageId: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      
+      img.onload = () => {
+        setStatus(prev => {
+          // Only update if this image isn't already loaded
+          if (prev.loaded.has(imageId)) {
             return prev;
           }
           return {
             ...prev,
-            loading: new Set([...prev.loading, imageId]),
+            loaded: new Set([...prev.loaded, imageId]),
+            loading: new Set([...prev.loading].filter(id => id !== imageId)),
+            loadedCount: prev.loadedCount + 1,
           };
         });
-
-        img.src = url;
+        resolve();
+      };
+      
+      img.onerror = () => {
+        setStatus(prev => ({
+          ...prev,
+          errors: new Set([...prev.errors, imageId]),
+          loading: new Set([...prev.loading].filter(id => id !== imageId)),
+        }));
+        reject(new Error(`Failed to load image: ${url}`));
+      };
+      
+      // Set loading state only if not already loading or loaded
+      setStatus(prev => {
+        if (prev.loaded.has(imageId) || prev.loading.has(imageId)) {
+          return prev;
+        }
+        return {
+          ...prev,
+          loading: new Set([...prev.loading, imageId]),
+        };
       });
-    },
-    [],
-  );
+      
+      img.src = url;
+    });
+  }, []);
 
   useEffect(() => {
     if (!enabled || blogPosts.length === 0) return;
@@ -95,8 +86,8 @@ export function useImagePreloader(
       isPreloading = true;
 
       const imagesToPreload = blogPosts
-        .filter((post) => post.featuredImage?.asset)
-        .map((post) => ({
+        .filter(post => post.featuredImage?.asset)
+        .map(post => ({
           id: post._id,
           image: post.featuredImage!,
           slug: post.slug.current,
@@ -109,7 +100,7 @@ export function useImagePreloader(
 
       // Reset status for new preloading session
       if (isMounted) {
-        setStatus((prev) => ({
+        setStatus(prev => ({
           ...prev,
           loaded: new Set(),
           loading: new Set(),
@@ -122,40 +113,33 @@ export function useImagePreloader(
       // Preload images in batches to avoid overwhelming the browser
       const batchSize = 3;
       const batches = [];
-
+      
       for (let i = 0; i < imagesToPreload.length; i += batchSize) {
         batches.push(imagesToPreload.slice(i, i + batchSize));
       }
 
       for (const batch of batches) {
         if (!isMounted) break; // Exit if component unmounted
-
+        
         const promises = batch.flatMap(({ id, image, slug }) =>
           sizes.map(async (size) => {
             if (!isMounted) return; // Skip if component unmounted
             try {
-              const imageUrl = urlForFeaturedImage(
-                image,
-                size.width,
-                size.height,
-              ).url();
+              const imageUrl = urlForFeaturedImage(image, size.width, size.height).url();
               const imageId = `${id}-${size.width}x${size.height}`;
               await preloadImage(imageUrl, imageId);
             } catch (error) {
-              console.warn(
-                `Failed to preload image for blog post ${slug}:`,
-                error,
-              );
+              console.warn(`Failed to preload image for blog post ${slug}:`, error);
             }
-          }),
+          })
         );
 
         // Wait for current batch before starting next
         await Promise.allSettled(promises);
-
+        
         // Small delay between batches to prevent blocking
         if (isMounted) {
-          await new Promise((resolve) => setTimeout(resolve, 100));
+          await new Promise(resolve => setTimeout(resolve, 100));
         }
       }
 
@@ -163,12 +147,9 @@ export function useImagePreloader(
     };
 
     // Start preloading after a short delay to not interfere with initial page load
-    const timeoutId = setTimeout(
-      () => {
-        preloadImages();
-      },
-      priority ? 0 : 1000,
-    );
+    const timeoutId = setTimeout(() => {
+      preloadImages();
+    }, priority ? 0 : 1000);
 
     return () => {
       clearTimeout(timeoutId);
@@ -181,12 +162,9 @@ export function useImagePreloader(
     isPreloading: status.loading.size > 0,
     loadedCount: status.loadedCount,
     totalImages: status.totalImages,
-    progress:
-      status.totalImages > 0
-        ? (status.loadedCount / status.totalImages) * 100
-        : 0,
+    progress: status.totalImages > 0 ? (status.loadedCount / status.totalImages) * 100 : 0,
     errors: status.errors,
-    isImageLoaded: (postId: string, width = 400, height = 300) =>
+    isImageLoaded: (postId: string, width = 400, height = 300) => 
       status.loaded.has(`${postId}-${width}x${height}`),
   };
 }
