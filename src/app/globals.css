@@ -214,45 +214,45 @@ body::-webkit-scrollbar {
 ::view-transition-old(page-panel-bg-left),
 ::view-transition-old(page-panel-bg-top),
 ::view-transition-old(page-panel-bg-bottom) {
-  animation: fade-out 0.4s ease-out forwards;
+  animation: fade-out 0s ease-out forwards;
 }
 
 ::view-transition-new(page-panel-bg-left),
 ::view-transition-new(page-panel-bg-top),
 ::view-transition-new(page-panel-bg-bottom) {
-  animation: fade-in 0.4s ease-out forwards;
+  animation: fade-in 0s ease-out forwards;
 }
 
 /* Page Panel - Slide In Animation - LEFT (Header Navigation) */
 ::view-transition-old(page-panel-left) {
-  animation: slide-out-right 0.5s ease-in-out forwards;
+  animation: slide-out-right 0.3s ease-in-out forwards;
   z-index: 1;
 }
 
 ::view-transition-new(page-panel-left) {
-  animation: slide-in-right 0.5s ease-in-out forwards;
+  animation: slide-in-right 0.3s ease-in-out forwards;
   z-index: 2;
 }
 
 /* Page Panel - Slide In Animation - TOP (Contact Button) */
 ::view-transition-old(page-panel-top) {
-  animation: slide-out-top 0.5s ease-in-out forwards;
+  animation: slide-out-top 0.3s ease-in-out forwards;
   z-index: 1;
 }
 
 ::view-transition-new(page-panel-top) {
-  animation: slide-in-top 0.5s ease-in-out forwards;
+  animation: slide-in-top 0.3s ease-in-out forwards;
   z-index: 2;
 }
 
 /* Page Panel - Slide In Animation - BOTTOM (Footer Links) */
 ::view-transition-old(page-panel-bottom) {
-  animation: slide-out-bottom 0.5s ease-in-out forwards;
+  animation: slide-out-bottom 0.3s ease-in-out forwards;
   z-index: 1;
 }
 
 ::view-transition-new(page-panel-bottom) {
-  animation: slide-in-bottom 0.5s ease-in-out forwards;
+  animation: slide-in-bottom 0.3s ease-in-out forwards;
   z-index: 2;
 }
 
@@ -289,7 +289,7 @@ body::-webkit-scrollbar {
 ::view-transition-old(page-panel-bg-resources),
 ::view-transition-old(page-panel-bg-privacy-policy),
 ::view-transition-old(page-panel-bg-terms-conditions) {
-  animation: fade-out 0.4s ease-out forwards;
+  animation: fade-out 0s ease-out forwards;
 }
 
 ::view-transition-new(page-panel-bg-about),
@@ -299,7 +299,7 @@ body::-webkit-scrollbar {
 ::view-transition-new(page-panel-bg-resources),
 ::view-transition-new(page-panel-bg-privacy-policy),
 ::view-transition-new(page-panel-bg-terms-conditions) {
-  animation: fade-in 0.4s ease-out forwards;
+  animation: fade-in 0s ease-out forwards;
 }
 
 ::view-transition-old(page-panel-about),
@@ -309,7 +309,7 @@ body::-webkit-scrollbar {
 ::view-transition-old(page-panel-resources),
 ::view-transition-old(page-panel-privacy-policy),
 ::view-transition-old(page-panel-terms-conditions) {
-  animation: slide-out-right 0.5s ease-in-out forwards;
+  animation: slide-out-right 0.3s ease-in-out forwards;
   z-index: 1;
 }
 
@@ -320,7 +320,7 @@ body::-webkit-scrollbar {
 ::view-transition-new(page-panel-resources),
 ::view-transition-new(page-panel-privacy-policy),
 ::view-transition-new(page-panel-terms-conditions) {
-  animation: slide-in-right 0.5s ease-in-out forwards;
+  animation: slide-in-right 0.3s ease-in-out forwards;
   z-index: 2;
 }
 

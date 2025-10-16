@@ -1,11 +1,9 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { getBlogPostBySlug, getBlogPostsForNavigation, getBlogPosts } from "@/lib/sanity/blog";
-import { getResourcesPage } from "@/lib/sanity";
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { BlogListClient } from "@/components/blog";
+import { Button } from "@/components/ui/button";
 import { truncateText } from "@/lib/utils/textUtils";
 import LazyImage from "@/components/ui/LazyImage";
 
@@ -29,12 +27,11 @@ export async function generateStaticParams() {
   }
 }
 
-const BlogPostPage = async ({ params }: BlogPostPageProps) => {
+const page = async ({ params }: BlogPostPageProps) => {
   const { slug } = await params;
-  const [blogPost, allBlogPosts, resourcesPageData] = await Promise.all([
+  const [blogPost, allBlogPosts] = await Promise.all([
     getBlogPostBySlug(slug),
     getBlogPostsForNavigation(),
-    getResourcesPage(),
   ]);
 
   if (!blogPost) {
@@ -51,57 +48,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
   const nextPost = hasNext ? allBlogPosts[currentIndex + 1] : null;
 
   return (
-    <div
-      className="h-full xl:grid xl:h-full xl:grid-cols-[150px_250px_1fr]"
-      style={{
-        boxShadow:
-          "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
-      }}
-    >
-      {/* Left Panel */}
-      <div className="relative xl:h-full">
-        <div className="relative z-10 flex size-full flex-col items-center justify-center gap-5 px-5 py-7">
-          {/* Mobile button */}
-          <Button
-            size={"sm"}
-            className="font-michroma w-20 text-[10px] tracking-[1px] xl:hidden xl:w-full"
-            variant={"default"}
-          >
-            Blogs
-          </Button>
-          {/* Desktop button */}
-          <Button
-            className="font-michroma hidden w-20 text-[10px] tracking-[1px] lg:w-full xl:block"
-            variant={"default"}
-          >
-            Blogs
-          </Button>
-        </div>
-        <div className="absolute top-0 left-0 size-full">
-          <LazyImage
-            src={
-              resourcesPageData?.leftPanelBackgroundImage ||
-              "/img/left-image.jpg"
-            }
-            alt={resourcesPageData?.leftPanelBackgroundImage?.alt || "blog bg"}
-            fill
-            className="object-cover grayscale"
-            priority={true}
-            mimeType={resourcesPageData?.leftPanelBackgroundImage?.asset?.mimeType}
-            lqip={resourcesPageData?.leftPanelBackgroundImage?.asset?.metadata?.lqip}
-          />
-          {/* <div className="absolute inset-0 bg-black/80">&nbsp;</div> */}
-        </div>
-      </div>
-
-      <BlogListClient
-        allBlogPosts={allBlogPosts}
-        currentSlug={slug}
-        blogSectionTitle={resourcesPageData?.blogSectionTitle || "LATEST BLOGS"}
-      />
-
-      {/* Right Panel - Blog Content */}
-      <div className="h-[calc(100dvh-237px)] overflow-y-auto bg-neutral-900 xl:h-full">
+    <div className="h-[calc(100dvh-237px)] overflow-y-auto bg-neutral-900 xl:h-full">
         <div className="text-sm text-neutral-100">
           {/* Title */}
           <h3 className="font-michroma my-4 text-center text-xl text-white">
@@ -188,7 +135,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
             <div className="flex flex-col">
               {hasPrev && prevPost ? (
                 <>
-                  <Link href={`/resources/${prevPost.slug.current}`}>
+                  <Link href={`/resources/blogs/${prevPost.slug.current}`}>
                     <Button
                       className="font-michroma text-[10px] tracking-[1px]"
                       variant={"outline"}
@@ -213,7 +160,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
             <div className="flex flex-col items-end">
               {hasNext && nextPost ? (
                 <>
-                  <Link href={`/resources/${nextPost.slug.current}`}>
+                  <Link href={`/resources/blogs/${nextPost.slug.current}`}>
                     <Button
                       className="font-michroma text-[10px] tracking-[1px]"
                       variant={"outline"}
@@ -238,8 +185,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
           </footer>
         </div>
       </div>
-    </div>
   );
 };
 
-export default BlogPostPage;
+export default page;

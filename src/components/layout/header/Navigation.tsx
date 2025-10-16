@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import NavItem from "./NavItem";
 import { NavigationItem, getNavigationData } from "@/lib/sanity/navigation";
 // import { usePrefetch } from "@/hooks/usePrefetch";
@@ -10,12 +10,14 @@ interface NavigationProps {
   isOpen: boolean;
   activePagePath?: string | null;
   onNavItemClick?: (href: string) => void;
+  firstBlogSlug?: string | null;
 }
 
 const Navigation: React.FC<NavigationProps> = ({
   isOpen,
   activePagePath,
   onNavItemClick,
+  firstBlogSlug,
 }) => {
   const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
   // Prefetch hooks for future hover implementation
@@ -54,7 +56,18 @@ const Navigation: React.FC<NavigationProps> = ({
     fetchNavigationData();
   }, []);
 
-  const displayItems = navigationItems;
+  // Dynamically update the resources link with the first blog slug
+  const displayItems = useMemo(() => {
+    return navigationItems.map((item) => {
+      if (item.href === "/resources" && firstBlogSlug) {
+        return {
+          ...item,
+          href: `/resources/blogs/${firstBlogSlug}`,
+        };
+      }
+      return item;
+    });
+  }, [navigationItems, firstBlogSlug]);
 
   // Don't render navigation if no items are available
   if (displayItems.length === 0) {
@@ -107,7 +120,7 @@ const Navigation: React.FC<NavigationProps> = ({
               href={item.href}
               hasDropdown={item.hasDropdown}
               isActive={
-                item.href === "/resources"
+                item.href === "/resources" || item.href.startsWith("/resources")
                   ? activePagePath?.startsWith("/resources") || false
                   : item.href === "/services"
                     ? activePagePath?.startsWith("/services") || false

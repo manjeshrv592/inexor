@@ -6,7 +6,11 @@ import MobileToggle from "./MobileToggle";
 import Logo from "./Logo";
 import Navigation from "./Navigation";
 
-const Header = () => {
+interface HeaderProps {
+  firstBlogSlug?: string | null;
+}
+
+const Header: React.FC<HeaderProps> = ({ firstBlogSlug }) => {
   const pathname = usePathname();
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
@@ -26,6 +30,7 @@ const Header = () => {
         isOpen={isMobileNavOpen}
         activePagePath={pathname}
         onNavItemClick={closeMobileNav}
+        firstBlogSlug={firstBlogSlug}
       />
     </header>
   );
