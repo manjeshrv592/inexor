@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { ZodError } from "zod";
 import {
   contactFormSchema,
   type ContactFormData,
@@ -27,14 +28,11 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
     const data = await response.json();
     console.log("🔐 reCAPTCHA verification result:", {
       success: data.success,
-      score: data.score,
-      action: data.action,
       hostname: data.hostname,
     });
 
-    // For reCAPTCHA v3, check both success and score
-    // Score ranges from 0.0 to 1.0, where 1.0 is very likely a good interaction
-    return data.success && data.score >= 0.5;
+    // For reCAPTCHA v2, only check success (no score)
+    return data.success;
   } catch (error) {
     console.error("❌ reCAPTCHA verification error:", error);
     return false;
@@ -487,6 +485,24 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error("Form submission error:", error);
+
+    // Handle validation errors specifically
+    if (error instanceof ZodError) {
+      const validationErrors = error.issues.map(err => {
+        if (err.path.includes('recaptchaToken')) {
+          return "Please complete the reCAPTCHA verification to continue";
+        }
+        return err.message;
+      });
+      
+      return NextResponse.json(
+        { 
+          error: validationErrors[0] || "Please check your form data and try again",
+          validationErrors: validationErrors
+        },
+        { status: 400 }
+      );
+    }
 
     // Always log the form data even if email fails
     console.log("📧 FORM SUBMISSION (with error):", {

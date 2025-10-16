@@ -24,7 +24,7 @@ export const contactFormSchema = z.object({
     .string()
     .max(1000, "Message must be less than 1000 characters")
     .optional(),
-  recaptchaToken: z.string().optional(), // Made optional since it's generated automatically in v3
+  recaptchaToken: z.string().min(1, "Please complete the reCAPTCHA verification to continue"), // Required for v2
 }).refine((data) => {
   // If phone is provided, validate its length based on country code
   if (data.phone && data.phone.length > 0) {

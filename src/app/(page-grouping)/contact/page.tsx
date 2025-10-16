@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import ReCAPTCHA from "react-google-recaptcha";
 import {
   Form,
   FormControl,
@@ -48,7 +48,7 @@ import {
 } from "@/components/ui/accordion";
 
 const ContactForm = () => {
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [contactInfo, setContactInfo] =
     useState<ContactInfo>(fallbackContactInfo);
@@ -93,6 +93,7 @@ const ContactForm = () => {
       company: "",
       service: "",
       message: "",
+      recaptchaToken: "", // Add recaptchaToken to default values
     },
   });
 
@@ -129,17 +130,33 @@ const ContactForm = () => {
   const onSubmit = async (data: ContactFormData) => {
     console.log("🎯 Form onSubmit called with data:", data);
 
-    if (!executeRecaptcha) {
+    if (!recaptchaRef.current) {
       toast.error("reCAPTCHA not available. Please try again.");
       return;
     }
 
+    // Get reCAPTCHA v2 token
+    const recaptchaToken = recaptchaRef.current.getValue();
+    
+    if (!recaptchaToken) {
+      toast.error("Please complete the reCAPTCHA verification.");
+      // Set the recaptchaToken error in the form
+      form.setError("recaptchaToken", {
+        type: "manual",
+        message: "Please complete the reCAPTCHA verification."
+      });
+      return;
+    }
+
+    // Clear any previous recaptcha errors
+    form.clearErrors("recaptchaToken");
+    
+    // Set the recaptcha token in the form data
+    form.setValue("recaptchaToken", recaptchaToken);
+
     setIsSubmitting(true);
 
     try {
-      // Execute reCAPTCHA v3
-      const recaptchaToken = await executeRecaptcha("contact_form");
-      
       // Add the token to form data
       const formDataWithToken = {
         ...data,
@@ -175,6 +192,7 @@ const ContactForm = () => {
         },
       );
       form.reset(); // Reset form on success
+      recaptchaRef.current.reset(); // Reset reCAPTCHA
     } catch (error) {
       console.error("❌ Form submission error:", error);
       toast.error(
@@ -661,6 +679,30 @@ const ContactForm = () => {
                 }}
               />
 
+              {/* reCAPTCHA v2 */}
+              <FormField
+                control={form.control}
+                name="recaptchaToken"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex justify-center">
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                        theme="dark"
+                        onChange={(token) => {
+                          field.onChange(token || "");
+                          if (token) {
+                            form.clearErrors("recaptchaToken");
+                          }
+                        }}
+                      />
+                    </div>
+                    <FormMessage className="text-red-400 text-center" />
+                  </FormItem>
+                )}
+              />
+
               {/* Submit Button */}
               <div className="text-center">
                 <Button
@@ -689,9 +731,7 @@ const ContactForm = () => {
 
 const ContactPage = () => {
   return (
-    <GoogleReCaptchaProvider reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}>
-      <ContactForm />
-    </GoogleReCaptchaProvider>
+    <ContactForm />
   );
 };
 

@@ -6,11 +6,41 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { truncateText } from "@/lib/utils/textUtils";
 import LazyImage from "@/components/ui/LazyImage";
+import { Metadata } from "next";
+import { urlForImageWithParams } from "../../../../../../sanity/lib/image";
 
 interface BlogPostPageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+// Generate metadata with preload links
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const blogPost = await getBlogPostBySlug(slug);
+  
+  if (!blogPost) {
+    return {
+      title: 'Blog Post Not Found'
+    };
+  }
+
+  // Generate preload URL for featured image using the same function as LazyImage
+  const preloadUrl = blogPost.featuredImage 
+    ? urlForImageWithParams(blogPost.featuredImage, {
+        quality: 75,
+        format: 'webp'
+      }).url()
+    : null;
+
+  return {
+    title: blogPost.title,
+    description: blogPost.excerpt,
+    other: preloadUrl ? {
+      'link': `<${preloadUrl}>; rel=preload; as=image`
+    } : {}
+  };
 }
 
 // Generate static params for all blog posts
@@ -47,13 +77,8 @@ const page = async ({ params }: BlogPostPageProps) => {
   const prevPost = hasPrev ? allBlogPosts[currentIndex - 1] : null;
   const nextPost = hasNext ? allBlogPosts[currentIndex + 1] : null;
 
-  // Get all blog posts for preloading (excluding current post)
-  const otherBlogPosts = allBlogPosts.filter(post => post.slug.current !== slug);
-
   return (
     <div className="h-[calc(100dvh-237px)] overflow-y-auto bg-neutral-900 xl:h-full">
-      {/* ImagePreloader removed to avoid duplicate preloading */}
-      {/* The layout already handles preloading, so we skip it here */}
       
         <div className="text-sm text-neutral-100">
           {/* Title */}
