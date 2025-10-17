@@ -12,7 +12,7 @@ import {
 import AutoScrollContainer, {
   AutoScrollContainerRef,
 } from "@/components/ui/AutoScrollContainer";
-import { urlForImage } from "../../../sanity/lib/image";
+import { urlForFeaturedImage, urlForImage } from "../../../sanity/lib/image";
 
 interface BlogContentProps {
   blogPost: BlogPost;
@@ -79,8 +79,9 @@ const BlogContent: React.FC<BlogContentProps> = ({
             <div className="absolute top-0 left-0 size-full bg-black">
               <Image
                 src={
-                  blogPost.featuredImage?.asset.url ||
-                  "/img/left-image.jpg"
+                  blogPost.featuredImage 
+                    ? urlForFeaturedImage(blogPost.featuredImage, 800, 200).url()
+                    : "/img/left-image.jpg"
                 }
                 alt={
                   blogPost.featuredImage?.alt ||

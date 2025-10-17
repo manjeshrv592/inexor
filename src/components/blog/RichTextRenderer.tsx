@@ -2,6 +2,7 @@ import React from "react";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
 import { PortableTextBlock } from "@portabletext/types";
 import { BlogImage } from "@/lib/sanity/blog";
+import { urlForFeaturedImage } from "@/../sanity/lib/image";
 
 // Define the ImageTextBlock interface
 interface ImageTextBlock {
@@ -26,8 +27,8 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
           return null;
         }
 
-        // Use direct Sanity CDN URL
-        const imageUrl = value.asset?.url;
+        // Use optimized Sanity image URL with urlForFeaturedImage
+        const imageUrl = urlForFeaturedImage(value, 800, 300)?.url();
 
         // Apply grayscale conditionally - default to true if not specified to match site style
         const shouldApplyGrayscale = value.isGrayscale !== false;
@@ -44,7 +45,7 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
             <div className="relative w-full" style={{ aspectRatio: "16/6" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={imageUrl}
+                src={imageUrl || "/img/left-image.jpg"}
                 alt={value.alt || "Blog image"}
                 className={`h-full w-full object-cover ${grayscaleClass}`}
                 style={clipPathStyle}

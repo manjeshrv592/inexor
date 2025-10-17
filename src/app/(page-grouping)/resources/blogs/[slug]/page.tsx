@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { truncateText } from "@/lib/utils/textUtils";
 import { Metadata } from "next";
 import LazyImage from "@/components/ui/LazyImage";
+import { urlForFeaturedImage } from "@/../sanity/lib/image";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -84,7 +85,11 @@ const page = async ({ params }: BlogPostPageProps) => {
           <div className="absolute top-0 left-0 size-full bg-black">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={blogPost.featuredImage?.asset?.url || "/img/left-image.jpg"}
+              src={
+                blogPost.featuredImage 
+                  ? urlForFeaturedImage(blogPost.featuredImage, 800, 300).url()
+                  : "/img/left-image.jpg"
+              }
               alt={blogPost.featuredImage?.alt || blogPost.title}
               className="w-full h-full object-cover grayscale"
             />

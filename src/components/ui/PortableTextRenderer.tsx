@@ -2,7 +2,7 @@ import React from "react";
 import { PortableText, PortableTextComponents } from "next-sanity";
 import { PortableTextBlock } from "@portabletext/types";
 import ProcessSteps from "@/components/ui/ProcessSteps";
-import { urlForImage } from "@/../sanity/lib/image";
+import { urlForFeaturedImage } from "@/../sanity/lib/image";
 
 interface PortableTextRendererProps {
   content: PortableTextBlock[];
@@ -61,14 +61,9 @@ const components: PortableTextComponents = {
       }
 
       // Generate optimized image URL using Sanity's image builder
-      const optimizedImageUrl = urlForImage(value)
-        .width(800)
-        .height(300)
-        .quality(85)
-        .format('webp')
-        .fit('crop')
-        .url();
+      const optimizedImageUrl = urlForFeaturedImage(value, 800, 300)?.url();
 
+      console.log('Image value:', value);
       console.log('Optimized image URL:', optimizedImageUrl);
 
       const shouldApplyGrayscale = value.isGrayscale !== false;
@@ -85,7 +80,7 @@ const components: PortableTextComponents = {
           <div className="relative w-full" style={{ aspectRatio: '16/6', ...clipPathStyle }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={optimizedImageUrl}
+            src={optimizedImageUrl || "/img/left-image.jpg"}
               alt={value.alt || "About image"}
               className={`w-full h-full object-cover ${grayscaleClass}`}
             />
@@ -110,13 +105,7 @@ const components: PortableTextComponents = {
       }
 
       // Generate optimized image URL using Sanity's image builder
-      const optimizedImageUrl = urlForImage(value.image)
-        .width(600)
-        .height(400)
-        .quality(85)
-        .format('webp')
-        .fit('crop')
-        .url();
+      const optimizedImageUrl = urlForFeaturedImage(value.image, 600, 400)?.url();
 
       const shouldApplyGrayscale = value.image.isGrayscale !== false;
       const grayscaleClass = shouldApplyGrayscale ? "grayscale" : "";
@@ -137,7 +126,7 @@ const components: PortableTextComponents = {
         <div className="relative mx-auto max-w-[600px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={optimizedImageUrl}
+            src={optimizedImageUrl || "/img/left-image.jpg"}
             alt={value.image.alt || "About image"}
             className={`h-auto w-full ${grayscaleClass}`}
             style={clipPathStyle}

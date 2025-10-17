@@ -2,9 +2,9 @@ import { getServices, getServiceBySlug, getServicesPageSettings, type Service } 
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import LazyImage from "@/components/ui/LazyImage";
 import { truncateText } from "@/lib/utils/textUtils";
 import ServiceContent from "@/components/services/ServiceContent";
+import { urlForFeaturedImage } from "../../../../../sanity/lib/image";
 
 interface ServicePageProps {
   params: Promise<{
@@ -54,21 +54,19 @@ const ServicePage = async ({ params }: ServicePageProps) => {
       {/* Left Panel - Service List - Mobile */}
       <div className="relative px-5 py-7 xl:hidden">
         <div className="absolute top-0 left-0 size-full">
-          <LazyImage
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={
-              servicesPageSettings?.leftPanelImage ||
-              "/img/left-image.jpg"
+              servicesPageSettings?.leftPanelImage 
+                ? urlForFeaturedImage(servicesPageSettings.leftPanelImage, 150, 600).url()
+                : "/img/left-image.jpg"
             }
             alt={servicesPageSettings?.leftPanelImage?.alt || "services bg"}
-            fill
-            className={`object-cover ${
+            className={`w-full h-full object-cover ${
               servicesPageSettings?.applyGrayscale !== false
                 ? "grayscale"
                 : ""
             }`}
-            priority={true}
-            mimeType={servicesPageSettings?.leftPanelImage?.asset?.mimeType}
-            lqip={servicesPageSettings?.leftPanelImage?.asset?.metadata?.lqip}
           />
         </div>
         {/* Mobile list */}
@@ -96,21 +94,19 @@ const ServicePage = async ({ params }: ServicePageProps) => {
       {/* Left Panel - Service List - Desktop */}
       <div className="relative hidden xl:flex xl:flex-1 xl:flex-col xl:justify-center xl:p-1">
         <div className="absolute top-0 left-0 size-full">
-          <LazyImage
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={
-              servicesPageSettings?.leftPanelImage ||
-              "/img/left-image.jpg"
+              servicesPageSettings?.leftPanelImage 
+                ? urlForFeaturedImage(servicesPageSettings.leftPanelImage, 150, 800).url()
+                : "/img/left-image.jpg"
             }
             alt={servicesPageSettings?.leftPanelImage?.alt || "services bg"}
-            fill
-            className={`object-cover ${
+            className={`w-full h-full object-cover ${
               servicesPageSettings?.applyGrayscale !== false
                 ? "grayscale"
                 : ""
             }`}
-            priority={true}
-            mimeType={servicesPageSettings?.leftPanelImage?.asset?.mimeType}
-            lqip={servicesPageSettings?.leftPanelImage?.asset?.metadata?.lqip}
           />
         </div>
         <div className="relative z-10 h-[calc(100vh-230px)] overflow-y-auto pr-1">

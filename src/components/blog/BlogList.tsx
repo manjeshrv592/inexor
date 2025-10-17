@@ -7,6 +7,7 @@ import { DynamicShape } from "@/components/ui/DynamicShape";
 import { type BlogPost } from "@/lib/sanity/blog";
 import { truncateText } from "@/lib/utils/textUtils";
 import Image from "next/image";
+import { urlForFeaturedImage } from "../../../sanity/lib/image";
 
 interface BlogListProps {
   allBlogPosts: BlogPost[];
@@ -31,7 +32,11 @@ const BlogCard = ({ post, isActive }: { post: BlogPost; isActive: boolean }) => 
         >
           <div className="xxl:h-[64px] xxl:w-[80px] relative h-[48px] w-[64px] flex-shrink-0">
             <Image
-              src={post.featuredImage?.asset?.url || "/img/left-image.jpg"}
+              src={
+                post.featuredImage 
+                  ? urlForFeaturedImage(post.featuredImage, 80, 64).url()
+                  : "/img/left-image.jpg"
+              }
               alt={post.featuredImage?.alt || post.title}
               fill
               unoptimized

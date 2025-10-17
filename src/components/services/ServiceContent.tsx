@@ -2,10 +2,9 @@
 
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import UseCasesSection from "@/components/ui/UseCasesSection";
-import LazyImage from "@/components/ui/LazyImage";
 import React from "react";
-import { motion } from "motion/react";
 import { type Service } from "@/lib/sanity/service";
+import { urlForFeaturedImage } from "../../../sanity/lib/image";
 
 interface ServiceContentProps {
   service: Service;
@@ -15,25 +14,15 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
   return (
     <div className="h-[calc(100dvh-158px)] overflow-y-auto bg-neutral-900 xl:h-full">
       <div className="pb-4">
-        <motion.div
-          key={service._id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-        >
+        <div>
           {/* Featured Image */}
           <div className="relative mb-6 h-[300px]">
             <div className="absolute top-0 left-0 size-full">
-              <LazyImage
-                src={service.featuredImage || "/img/left-image.jpg"}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={service.featuredImage ? urlForFeaturedImage(service.featuredImage, 800, 300).url() : "/img/left-image.jpg"}
                 alt={service.featuredImage?.alt || service.title}
-                fill
-                className="object-cover grayscale"
-                quality={85}
-                priority={true}
-                mimeType={service.featuredImage?.asset?.mimeType}
-                lqip={service.featuredImage?.asset?.metadata?.lqip}
+                className="w-full h-full object-cover grayscale"
               />
             </div>
             <div className="relative z-10 flex size-full items-center justify-center">
@@ -63,7 +52,7 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
               />
             )}
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
