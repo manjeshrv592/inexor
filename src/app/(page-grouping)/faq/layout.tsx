@@ -144,9 +144,7 @@ const FAQLayout = () => {
           <div className="relative xl:h-full">
             <div className="absolute inset-0 size-full">
               <LazyImage
-                src={
-                  faqPageSettings?.sidebarImage || "/img/faq.jpg"
-                }
+                src={faqPageSettings?.sidebarImage || "/img/faq.jpg"}
                 alt={faqPageSettings?.sidebarImage?.alt || "FAQ sidebar image"}
                 fill
                 className={`object-cover ${
@@ -174,7 +172,9 @@ const FAQLayout = () => {
                     <Link href={`/faq/${category.slug.current}`}>
                       <Button
                         variant={
-                          selectedCategoryIndex === index ? "default" : "outline"
+                          selectedCategoryIndex === index
+                            ? "default"
+                            : "outline"
                         }
                         size={"sm"}
                         className="font-michroma text-[10px] tracking-[1px]"
@@ -198,7 +198,10 @@ const FAQLayout = () => {
               </h5>
               <div className="flex flex-wrap justify-center gap-4">
                 {categories.map((category, index) => (
-                  <Link key={category._id} href={`/faq/${category.slug.current}`}>
+                  <Link
+                    key={category._id}
+                    href={`/faq/${category.slug.current}`}
+                  >
                     <CategoryButton
                       isActive={selectedCategoryIndex === index}
                       onClick={() => {}}
@@ -262,7 +265,9 @@ const FAQLayout = () => {
               {faqItems.map((item) => (
                 <FAQItemWithLink
                   key={item._id}
-                  categorySlug={categories[selectedCategoryIndex]?.slug.current || ""}
+                  categorySlug={
+                    categories[selectedCategoryIndex]?.slug.current || ""
+                  }
                   questionSlug={item.slug.current}
                   questionId={item._id}
                   question={item.question}
