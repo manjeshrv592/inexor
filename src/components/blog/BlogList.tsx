@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { DynamicShape } from "@/components/ui/DynamicShape";
 import { type BlogPost } from "@/lib/sanity/blog";
 import { truncateText } from "@/lib/utils/textUtils";
@@ -10,10 +13,10 @@ interface BlogListProps {
   blogSectionTitle: string;
 }
 
-const BlogCard = ({ post }: { post: BlogPost }) => {
+const BlogCard = ({ post, isActive }: { post: BlogPost; isActive: boolean }) => {
   return (
     <DynamicShape
-      fill="#404040"
+      fill={isActive ? "#2a2a2a" : "#404040"}
       stroke="none"
       strokeWidth={0}
       padding="p-0"
@@ -22,7 +25,9 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
       <div className="relative overflow-hidden">
         <Link
           href={`/resources/blogs/${post.slug.current}`}
-          className="flex cursor-pointer font-medium text-white opacity-70 transition-opacity hover:opacity-90"
+          className={`flex cursor-pointer font-medium transition-opacity hover:opacity-90 ${
+            isActive ? "text-orange-500 opacity-100" : "text-white opacity-70"
+          }`}
         >
           <div className="xxl:h-[64px] xxl:w-[80px] relative h-[48px] w-[64px] flex-shrink-0">
             <Image
@@ -46,7 +51,9 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
                 year: "numeric",
               })}
             </div>
-            <div className="font-michroma xxl:text-[10px] line-clamp-2 text-left text-[8px] leading-tight tracking-[1px] text-white">
+            <div className={`font-michroma xxl:text-[10px] line-clamp-2 text-left text-[8px] leading-tight tracking-[1px] ${
+              isActive ? "text-orange-500" : "text-white"
+            }`}>
               {truncateText(post.title, 20)}
             </div>
           </div>
@@ -60,6 +67,11 @@ const BlogList: React.FC<BlogListProps> = ({
   allBlogPosts,
   blogSectionTitle,
 }) => {
+  const pathname = usePathname();
+  
+  // Extract current slug from pathname
+  const currentSlug = pathname.split('/').pop() || '';
+
   return (
     <>
       {/* Middle Panel - Blog List - Mobile */}
@@ -76,23 +88,28 @@ const BlogList: React.FC<BlogListProps> = ({
             msOverflowStyle: "none",
           }}
         >
-          {allBlogPosts.map((post: BlogPost) => (
-            <div key={post._id} className="flex-shrink-0">
-              <DynamicShape
-                fill="#404040"
-                stroke="none"
-                strokeWidth={0}
-                className="flex flex-col items-center justify-center"
-              >
-                <Link
-                  href={`/resources/blogs/${post.slug.current}`}
-                  className="font-michroma hover:text-brand-orange-500 block w-[100px] text-[10px] tracking-[1px] text-white"
+          {allBlogPosts.map((post: BlogPost) => {
+            const isActive = post.slug.current === currentSlug;
+            return (
+              <div key={post._id} className="flex-shrink-0">
+                <DynamicShape
+                  fill={isActive ? "#2a2a2a" : "#404040"}
+                  stroke="none"
+                  strokeWidth={0}
+                  className="flex flex-col items-center justify-center"
                 >
-                  {truncateText(post.title, 10)}
-                </Link>
-              </DynamicShape>
-            </div>
-          ))}
+                  <Link
+                    href={`/resources/blogs/${post.slug.current}`}
+                    className={`font-michroma block w-[100px] text-[10px] tracking-[1px] transition-colors hover:text-orange-500 ${
+                      isActive ? "text-orange-500" : "text-white"
+                    }`}
+                  >
+                    {truncateText(post.title, 10)}
+                  </Link>
+                </DynamicShape>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -110,9 +127,12 @@ const BlogList: React.FC<BlogListProps> = ({
         >
           <div className="h-[calc(100vh-230px)] max-h-[400px] overflow-y-auto pr-1">
             <div className="space-y-2">
-              {allBlogPosts.map((post: BlogPost) => (
-                <BlogCard key={post._id} post={post} />
-              ))}
+              {allBlogPosts.map((post: BlogPost) => {
+                const isActive = post.slug.current === currentSlug;
+                return (
+                  <BlogCard key={post._id} post={post} isActive={isActive} />
+                );
+              })}
             </div>
           </div>
         </DynamicShape>

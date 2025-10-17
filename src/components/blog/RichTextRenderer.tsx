@@ -22,7 +22,7 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
       image: ({ value }: { value: BlogImage }) => {
         // Safety check: Skip rendering if image asset is missing
         if (!value?.asset) {
-          console.warn('Image block: Missing image asset, skipping render');
+          console.warn("Image block: Missing image asset, skipping render");
           return null;
         }
 
@@ -41,12 +41,12 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
 
         return (
           <div className="mx-auto my-6 max-w-[800px]">
-            <div className="relative w-full" style={{ aspectRatio: '16/6' }}>
+            <div className="relative w-full" style={{ aspectRatio: "16/6" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={imageUrl}
                 alt={value.alt || "Blog image"}
-                className={`w-full h-full object-cover ${grayscaleClass}`}
+                className={`h-full w-full object-cover ${grayscaleClass}`}
                 style={clipPathStyle}
               />
             </div>
@@ -61,15 +61,11 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
       imageTextBlock: ({ value }: { value: ImageTextBlock }) => {
         // Safety check: Skip rendering if image asset is missing
         if (!value.image?.asset) {
-          console.warn('ImageTextBlock: Missing image asset, skipping render');
+          console.warn("ImageTextBlock: Missing image asset, skipping render");
           return null;
         }
 
         const imageUrl = value.image.asset?.url;
-        const dimensions = value.image.asset.metadata?.dimensions || {
-          width: 600,
-          height: 400,
-        };
 
         // Apply grayscale conditionally - default to true if not specified
         const shouldApplyGrayscale = value.image.isGrayscale !== false;
@@ -131,7 +127,11 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
       },
     },
     block: {
-      normal: ({ children }) => <p className="mb-4 text-[12px] text-justify lg:text-[14px]">{children}</p>,
+      normal: ({ children }) => (
+        <p className="mb-4 text-justify text-[12px] lg:text-[14px]">
+          {children}
+        </p>
+      ),
       h2: ({ children }) => (
         <h2 className="mt-8 mb-4 text-2xl font-bold text-white">{children}</h2>
       ),
@@ -152,10 +152,14 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
     },
     list: {
       bullet: ({ children }) => (
-        <ul className="mb-4 list-inside list-disc space-y-2 text-[12px] text-justify lg:text-[14px]">{children}</ul>
+        <ul className="mb-4 list-inside list-disc space-y-2 text-justify text-[12px] lg:text-[14px]">
+          {children}
+        </ul>
       ),
       number: ({ children }) => (
-        <ol className="mb-4 list-inside list-decimal space-y-2 text-[12px] text-justify lg:text-[14px]">{children}</ol>
+        <ol className="mb-4 list-inside list-decimal space-y-2 text-justify text-[12px] lg:text-[14px]">
+          {children}
+        </ol>
       ),
     },
     listItem: {
