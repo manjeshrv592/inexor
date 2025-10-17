@@ -33,6 +33,8 @@ const REVALIDATE = {
  * Fetch all homepage data at build time
  */
 export async function getStaticHomepageData() {
+  console.log('🏗️ Fetching homepage data for static generation...');
+  
   const [
     heroData,
     keyValuePillarsSection,
@@ -63,6 +65,14 @@ export async function getStaticHomepageData() {
     client.fetch(FOOTER_QUERY, {}, { next: { revalidate: REVALIDATE.STATIC, tags: ['footer'] } }),
   ]);
 
+  console.log('✅ Homepage data fetched for static generation');
+  console.log('🔍 Testimonials data:', {
+    hasTestimonialsData: !!testimonialsData,
+    testimonialsCount: testimonialsData?.testimonials?.length || 0,
+    title: testimonialsData?.title,
+    subtitle: testimonialsData?.subtitle
+  });
+
   return {
     heroData,
     keyValuePillarsSection,
@@ -84,11 +94,15 @@ export async function getStaticHomepageData() {
  * Fetch About page data at build time
  */
 export async function getStaticAboutPageData() {
+  console.log('🏗️ Fetching About page data for static generation...');
+  
   const aboutPage = await client.fetch(
     aboutPageQuery, 
     {}, 
     { next: { revalidate: REVALIDATE.PAGES, tags: ['about-page'] } }
   );
+
+  console.log('✅ About page data fetched for static generation');
 
   return { aboutPage };
 }
@@ -97,10 +111,14 @@ export async function getStaticAboutPageData() {
  * Fetch FAQ data at build time
  */
 export async function getStaticFAQData() {
+  console.log('🏗️ Fetching FAQ data for static generation...');
+  
   const [categoriesData, faqPageInfo] = await Promise.all([
     client.fetch(FAQ_CATEGORIES_QUERY, {}, { next: { revalidate: REVALIDATE.PAGES, tags: ['faq-categories'] } }),
     client.fetch(FAQ_PAGE_QUERY, {}, { next: { revalidate: REVALIDATE.PAGES, tags: ['faq-page'] } }),
   ]);
+
+  console.log('✅ FAQ data fetched for static generation');
 
   return {
     categoriesData,

@@ -20,26 +20,6 @@ const Navigation: React.FC<NavigationProps> = ({
   firstBlogSlug,
 }) => {
   const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
-  // Prefetch hooks for future hover implementation
-  // const { prefetchAboutPage, prefetchFAQPage, prefetchServicesPage, prefetchResourcesPage } = usePrefetch();
-
-  // Prefetch functions for future hover implementation
-  // const handleNavItemHover = (href: string) => {
-  //   switch (href) {
-  //     case '/about':
-  //       prefetchAboutPage();
-  //       break;
-  //     case '/faq':
-  //       prefetchFAQPage();
-  //       break;
-  //     case '/services':
-  //       prefetchServicesPage();
-  //       break;
-  //     case '/resources':
-  //       prefetchResourcesPage();
-  //       break;
-  //   }
-  // };
 
   useEffect(() => {
     const fetchNavigationData = async () => {

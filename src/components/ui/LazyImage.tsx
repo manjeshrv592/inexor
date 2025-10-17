@@ -105,17 +105,6 @@ const LazyImage = ({
 
   const handleLoad = () => {
     setIsLoading(false);
-    setError(false);
-
-    // Only log for featured images (priority=true) to avoid multiple logs
-    const debugInfo = window.__blogImageDebug;
-    if (debugInfo && typeof window !== "undefined" && priority === true) {
-      console.log({
-        blogTitle: debugInfo.blogTitle,
-        actualImageUsedUrl: optimizedSrc, // Use the already computed optimizedSrc
-        prefetchedImageUrl: debugInfo.prefetchedImageUrl,
-      });
-    }
   };
 
   const handleError = () => {

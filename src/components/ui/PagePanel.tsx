@@ -39,6 +39,10 @@ const PagePanel = ({ children }: PagePanelProps) => {
   // Set button position based on navigation source and screen size
   useEffect(() => {
     const navigationSource = sessionStorage.getItem("navigationSource");
+    console.log(
+      "🎯 Setting button position based on navigation source:",
+      navigationSource,
+    );
 
     // For screens smaller than 1200px (xl breakpoint)
     if (
@@ -52,22 +56,40 @@ const PagePanel = ({ children }: PagePanelProps) => {
         (pathname === "/privacy-policy" || pathname === "/terms-conditions")
       ) {
         setButtonPosition("bottom");
+        console.log(
+          "📱 Mobile/Tablet view + Footer navigation (privacy/terms): Positioning go back button at BOTTOM (like header links)",
+        );
       } else if (navigationSource === "footer") {
         setButtonPosition("top");
+        console.log(
+          "📱 Mobile/Tablet view + Footer navigation: Positioning go back button at TOP (same as desktop)",
+        );
       } else {
         setButtonPosition("bottom");
+        console.log(
+          "📱 Mobile/Tablet view: Positioning go back button at BOTTOM",
+        );
       }
     } else if (pathname === "/contact") {
       // Always position at bottom for contact page with upward arrow
       setButtonPosition("bottom");
+      console.log(
+        "📞 Contact page: Positioning go back button at BOTTOM with upward arrow",
+      );
     } else if (navigationSource === "footer") {
       setButtonPosition("top");
+      console.log("⬆️ Footer navigation: Positioning go back button at TOP");
     } else {
       setButtonPosition("middle");
+      console.log("↔️ Header navigation: Positioning go back button at MIDDLE");
     }
   }, [pathname, currentBreakpoint]);
 
   const handleGoBackClick = () => {
+    console.log(
+      "⬅️ Go back button clicked - navigating to home from",
+      pathname,
+    );
     if (typeof window !== "undefined") {
       const currentPath = pathname;
       const isFromRoot = currentPath === "/";
@@ -81,6 +103,7 @@ const PagePanel = ({ children }: PagePanelProps) => {
 
       // Use transition router only when navigating from/to root
       if (isFromRoot || isToRoot) {
+        console.log("✨ Using transition router for go back navigation");
         requestAnimationFrame(() => {
           router.push("/");
         });
@@ -114,6 +137,13 @@ const PagePanel = ({ children }: PagePanelProps) => {
         positionClasses = `${baseClasses} top-1/2 right-0 translate-x-1/2 -translate-y-1/2`;
         break;
     }
+
+    console.log("🔘 Button position debug:", {
+      buttonPosition,
+      pathname,
+      currentBreakpoint,
+      positionClasses,
+    });
 
     return positionClasses;
   };

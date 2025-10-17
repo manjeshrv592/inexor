@@ -40,6 +40,7 @@ const UseCasesSection: React.FC<UseCasesSectionProps> = ({
           alt={imageAlt || "use cases image"}
           fill
           className="object-cover grayscale"
+          sizes="(max-width: 768px) 100vw, 50vw"
           quality={80}
         />
         <div className="absolute inset-0 bg-black/60" />

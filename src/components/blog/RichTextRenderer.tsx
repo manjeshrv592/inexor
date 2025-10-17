@@ -50,6 +50,7 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
                 fill
                 className={`object-cover ${grayscaleClass}`}
                 style={clipPathStyle}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 800px"
               />
             </div>
             {value.caption && (

@@ -144,6 +144,8 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
                         height={400}
                         className="mx-auto h-64 w-full object-cover md:h-full"
                         priority={index === 0}
+                        mimeType={testimonial.image.asset.mimeType}
+                        lqip={testimonial.image.asset.metadata.lqip}
                       />
                     ) : (
                       <div className="mx-auto flex h-64 w-full items-center justify-center bg-neutral-800 md:h-full">

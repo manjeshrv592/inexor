@@ -85,8 +85,11 @@ export async function withCache<T>(
   // Check if data exists in cache
   const cached = dataCache.get<T>(key);
   if (cached !== null) {
+    console.log(`📦 Cache HIT for key: ${key}`);
     return cached;
   }
+
+  console.log(`🔄 Cache MISS for key: ${key}, fetching data...`);
   
   try {
     // Fetch fresh data

@@ -155,6 +155,8 @@ const FAQLayout = () => {
                     : ""
                 }`}
                 priority={true}
+                mimeType={faqPageSettings?.sidebarImage?.asset?.mimeType}
+                lqip={faqPageSettings?.sidebarImage?.asset?.metadata?.lqip}
               />
             </div>
 
