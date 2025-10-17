@@ -6,6 +6,7 @@ import {
   SERVICE_BY_CODE_QUERY,
   SERVICE_NAVIGATION_QUERY,
   SERVICES_PAGE_SETTINGS_QUERY,
+  FIRST_SERVICE_SLUG_QUERY,
 } from "../../../sanity/lib/serviceQueries";
 
 // Types
@@ -117,5 +118,13 @@ export async function getServicesPageSettings(): Promise<ServicesPageSettings | 
     SERVICES_PAGE_SETTINGS_QUERY,
     {},
     { next: { tags: ["servicesPageSettings"] } },
+  );
+}
+
+export async function getFirstServiceSlug(): Promise<{ slug: { current: string } } | null> {
+  return client.fetch(
+    FIRST_SERVICE_SLUG_QUERY,
+    {},
+    { next: { tags: ["services"] } },
   );
 }

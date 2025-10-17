@@ -36,6 +36,11 @@ export const SERVICES_QUERY = `*[_type == "service" && isActive == true] | order
   isActive
 }`;
 
+// Lightweight query for redirects - only fetches slug
+export const FIRST_SERVICE_SLUG_QUERY = `*[_type == "service" && isActive == true] | order(order asc) [0] {
+  slug
+}`;
+
 export const SERVICE_BY_SLUG_QUERY = `*[_type == "service" && slug.current == $slug && isActive == true][0] {
   _id,
   title,

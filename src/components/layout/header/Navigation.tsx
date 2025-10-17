@@ -11,6 +11,7 @@ interface NavigationProps {
   activePagePath?: string | null;
   onNavItemClick?: (href: string) => void;
   firstBlogSlug?: string | null;
+  firstServiceSlug?: string | null;
 }
 
 const Navigation: React.FC<NavigationProps> = ({
@@ -18,6 +19,7 @@ const Navigation: React.FC<NavigationProps> = ({
   activePagePath,
   onNavItemClick,
   firstBlogSlug,
+  firstServiceSlug,
 }) => {
   const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
 
@@ -36,7 +38,7 @@ const Navigation: React.FC<NavigationProps> = ({
     fetchNavigationData();
   }, []);
 
-  // Dynamically update the resources link with the first blog slug
+  // Dynamically update the resources and services links with the first blog/service slug
   const displayItems = useMemo(() => {
     return navigationItems.map((item) => {
       if (item.href === "/resources" && firstBlogSlug) {
@@ -45,9 +47,15 @@ const Navigation: React.FC<NavigationProps> = ({
           href: `/resources/blogs/${firstBlogSlug}`,
         };
       }
+      if (item.href === "/services" && firstServiceSlug) {
+        return {
+          ...item,
+          href: `/services/${firstServiceSlug}`,
+        };
+      }
       return item;
     });
-  }, [navigationItems, firstBlogSlug]);
+  }, [navigationItems, firstBlogSlug, firstServiceSlug]);
 
   // Don't render navigation if no items are available
   if (displayItems.length === 0) {
@@ -102,7 +110,7 @@ const Navigation: React.FC<NavigationProps> = ({
               isActive={
                 item.href === "/resources" || item.href.startsWith("/resources")
                   ? activePagePath?.startsWith("/resources") || false
-                  : item.href === "/services"
+                  : item.href === "/services" || item.href.startsWith("/services")
                     ? activePagePath?.startsWith("/services") || false
                     : item.href === "/faq"
                       ? activePagePath?.startsWith("/faq") || false

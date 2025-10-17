@@ -8,9 +8,10 @@ import Navigation from "./Navigation";
 
 interface HeaderProps {
   firstBlogSlug?: string | null;
+  firstServiceSlug?: string | null;
 }
 
-const Header: React.FC<HeaderProps> = ({ firstBlogSlug }) => {
+const Header: React.FC<HeaderProps> = ({ firstBlogSlug, firstServiceSlug }) => {
   const pathname = usePathname();
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
@@ -31,6 +32,7 @@ const Header: React.FC<HeaderProps> = ({ firstBlogSlug }) => {
         activePagePath={pathname}
         onNavItemClick={closeMobileNav}
         firstBlogSlug={firstBlogSlug}
+        firstServiceSlug={firstServiceSlug}
       />
     </header>
   );

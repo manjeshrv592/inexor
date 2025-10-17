@@ -9,6 +9,7 @@ import LogoutButton from "@/components/auth/LogoutButton";
 import PrefetchProvider from "@/components/providers/PrefetchProvider";
 import { HomeScrollProvider } from "@/contexts/HomeScrollContext";
 import { getFirstBlogPostSlug } from "@/lib/sanity/blog";
+import { getFirstServiceSlug } from "@/lib/sanity/service";
 
 const michroma = Michroma({
   subsets: ["latin"],
@@ -37,6 +38,10 @@ export default async function RootLayout({
   const firstBlogPost = await getFirstBlogPostSlug();
   const firstBlogSlug = firstBlogPost?.slug?.current || null;
 
+  // Fetch first service slug server-side for navigation
+  const firstService = await getFirstServiceSlug();
+  const firstServiceSlug = firstService?.slug?.current || null;
+
   return (
     <ViewTransitions>
       <html lang="en" suppressHydrationWarning>
@@ -46,7 +51,7 @@ export default async function RootLayout({
           <AuthProvider>
             <HomeScrollProvider>
               <PrefetchProvider>
-                <Header firstBlogSlug={firstBlogSlug} />
+                <Header firstBlogSlug={firstBlogSlug} firstServiceSlug={firstServiceSlug} />
 
                 {children}
                 <LogoutButton />

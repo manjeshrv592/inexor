@@ -36,30 +36,14 @@ const NavItem: React.FC<NavItemProps> = ({
 
   const handleNavigation = (href: string) => {
     if (typeof window !== "undefined") {
-      // Special handling for resources, services, and FAQ routes
-      const isResourcesRoute = href === "/resources";
-      const isCurrentlyOnResources = pathname.startsWith("/resources");
-      const isServicesRoute = href === "/services";
-      const isCurrentlyOnServices = pathname.startsWith("/services");
-      const isFAQRoute = href === "/faq";
-      const isCurrentlyOnFAQ = pathname.startsWith("/faq");
-
-      // If user clicks on the same route they're already on, navigate to home instead
+      // If the navigation item is currently active, toggle to home page
+      // Otherwise, navigate to the intended href
       let targetHref;
-      if (isResourcesRoute && isCurrentlyOnResources) {
-        // User is on /resources/slug and clicks Resources -> go home
-        targetHref = "/";
-      } else if (isServicesRoute && isCurrentlyOnServices) {
-        // User is on /services/slug and clicks Services -> go home
-        targetHref = "/";
-      } else if (isFAQRoute && isCurrentlyOnFAQ) {
-        // User is on /faq/category/question and clicks FAQ -> go home
-        targetHref = "/";
-      } else if (pathname === href) {
-        // Normal same route logic
+      if (isActive) {
+        // Navigation item is active, so clicking it should go to home
         targetHref = "/";
       } else {
-        // Different route
+        // Navigation item is not active, navigate to the href
         targetHref = href;
       }
 
@@ -75,9 +59,11 @@ const NavItem: React.FC<NavItemProps> = ({
         router.push(targetHref);
       });
 
-      // Close mobile menu after navigation
+      // Close mobile menu when navigating to a different page OR when going home from active section
       if (onNavItemClick) {
-        onNavItemClick(href);
+        if (targetHref !== "/" || (targetHref === "/" && isActive)) {
+          onNavItemClick(href);
+        }
       }
     }
   };
