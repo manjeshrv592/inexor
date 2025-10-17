@@ -3,7 +3,7 @@ import Link from "next/link";
 import { DynamicShape } from "@/components/ui/DynamicShape";
 import { type BlogPost } from "@/lib/sanity/blog";
 import { truncateText } from "@/lib/utils/textUtils";
-import LazyImage from "@/components/ui/LazyImage";
+import Image from "next/image";
 
 interface BlogListProps {
   allBlogPosts: BlogPost[];
@@ -25,18 +25,17 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
           className="flex cursor-pointer font-medium text-white opacity-70 transition-opacity hover:opacity-90"
         >
           <div className="xxl:h-[64px] xxl:w-[80px] relative h-[48px] w-[64px] flex-shrink-0">
-            <LazyImage
-              src={post.featuredImage || "/img/left-image.jpg"}
+            <Image
+              src={post.featuredImage?.asset?.url || "/img/left-image.jpg"}
               alt={post.featuredImage?.alt || post.title}
               fill
+              unoptimized
               className="relative z-20 object-cover grayscale"
               style={{
                 clipPath:
                   "polygon(0% 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px))",
               }}
               sizes="(min-width: 1536px) 80px, 64px"
-              mimeType={post.featuredImage?.asset?.mimeType}
-              lqip={post.featuredImage?.asset?.metadata?.lqip}
             />
           </div>
           <div className="flex w-full flex-col justify-between p-2">

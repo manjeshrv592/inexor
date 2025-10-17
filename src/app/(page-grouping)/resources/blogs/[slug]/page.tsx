@@ -9,6 +9,7 @@ import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { truncateText } from "@/lib/utils/textUtils";
+import Image from "next/image";
 import LazyImage from "@/components/ui/LazyImage";
 import { Metadata } from "next";
 
@@ -82,15 +83,14 @@ const page = async ({ params }: BlogPostPageProps) => {
         {/* Featured Image */}
         <div className="xxl:h-[300px] relative h-[200px]">
           <div className="absolute top-0 left-0 size-full bg-black">
-            <LazyImage
-              src={blogPost.featuredImage || "/img/left-image.jpg"}
+            <Image
+              src={blogPost.featuredImage?.asset?.url || "/img/left-image.jpg"}
               alt={blogPost.featuredImage?.alt || blogPost.title}
               fill
+              unoptimized
               className="object-cover grayscale"
               priority={true}
               sizes="(max-width: 768px) 100vw, (max-width: 1536px) 800px, 1200px"
-              mimeType={blogPost.featuredImage?.asset?.mimeType}
-              lqip={blogPost.featuredImage?.asset?.metadata?.lqip}
             />
           </div>
         </div>
