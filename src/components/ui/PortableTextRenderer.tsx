@@ -1,8 +1,8 @@
 import React from "react";
 import { PortableText, PortableTextComponents } from "next-sanity";
 import { PortableTextBlock } from "@portabletext/types";
-import LazyImage from "@/components/ui/LazyImage";
 import ProcessSteps from "@/components/ui/ProcessSteps";
+import { urlForImage } from "@/../sanity/lib/image";
 
 interface PortableTextRendererProps {
   content: PortableTextBlock[];
@@ -27,6 +27,7 @@ interface ProcessStepsBlock {
 interface AboutImage {
   asset: {
     _ref: string;
+    url: string;
     metadata?: {
       dimensions: {
         width: number;
@@ -50,11 +51,25 @@ interface ImageTextBlock {
 const components: PortableTextComponents = {
   types: {
     image: ({ value }: { value: AboutImage }) => {
+      // Debug logging
+      console.log('PortableTextRenderer image value:', JSON.stringify(value, null, 2));
+      
       // Check if image exists and has asset
       if (!value || !value.asset || !value.asset._ref) {
         console.warn('Image block found but no image asset available');
         return null;
       }
+
+      // Generate optimized image URL using Sanity's image builder
+      const optimizedImageUrl = urlForImage(value)
+        .width(800)
+        .height(300)
+        .quality(85)
+        .format('webp')
+        .fit('crop')
+        .url();
+
+      console.log('Optimized image URL:', optimizedImageUrl);
 
       const shouldApplyGrayscale = value.isGrayscale !== false;
       const grayscaleClass = shouldApplyGrayscale ? "grayscale" : "";
@@ -68,12 +83,11 @@ const components: PortableTextComponents = {
       return (
         <div className="mx-auto my-6 max-w-[800px]">
           <div className="relative w-full" style={{ aspectRatio: '16/6', ...clipPathStyle }}>
-            <LazyImage
-              src={value}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={optimizedImageUrl}
               alt={value.alt || "About image"}
-              fill
-              className={`object-cover ${grayscaleClass}`}
-              quality={85}
+              className={`w-full h-full object-cover ${grayscaleClass}`}
             />
           </div>
           {value.caption && (
@@ -86,7 +100,7 @@ const components: PortableTextComponents = {
     },
     imageTextBlock: ({ value }: { value: ImageTextBlock }) => {
       // Check if image exists and has asset
-      if (!value?.image || !value.image.asset || !value.image.asset._ref) {
+      if (!value || !value.image || !value.image.asset || !value.image.asset._ref) {
         console.warn('ImageTextBlock found but no image asset available');
         return (
           <div className="my-8">
@@ -95,7 +109,15 @@ const components: PortableTextComponents = {
         );
       }
 
-      // Using LazyImage with Sanity image object directly
+      // Generate optimized image URL using Sanity's image builder
+      const optimizedImageUrl = urlForImage(value.image)
+        .width(600)
+        .height(400)
+        .quality(85)
+        .format('webp')
+        .fit('crop')
+        .url();
+
       const shouldApplyGrayscale = value.image.isGrayscale !== false;
       const grayscaleClass = shouldApplyGrayscale ? "grayscale" : "";
 
@@ -113,14 +135,12 @@ const components: PortableTextComponents = {
 
       const ImageComponent = (
         <div className="relative mx-auto max-w-[600px]">
-          <LazyImage
-            src={value.image}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={optimizedImageUrl}
             alt={value.image.alt || "About image"}
-            width={600}
-            height={400}
             className={`h-auto w-full ${grayscaleClass}`}
             style={clipPathStyle}
-            quality={85}
           />
           {value.image.caption && (
             <p className="mt-2 text-center text-sm text-gray-400 italic">

@@ -1,8 +1,6 @@
 import React from "react";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
 import { PortableTextBlock } from "@portabletext/types";
-import Image from "next/image";
-import { urlForBlogImage } from "../../../sanity/lib/image";
 import { BlogImage } from "@/lib/sanity/blog";
 
 // Define the ImageTextBlock interface
@@ -28,8 +26,8 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
           return null;
         }
 
-        // Use Sanity image builder with 16:6 aspect ratio (800x300)
-        const imageUrl = urlForBlogImage(value, 800, 300).url();
+        // Use direct Sanity CDN URL
+        const imageUrl = value.asset?.url;
 
         // Apply grayscale conditionally - default to true if not specified to match site style
         const shouldApplyGrayscale = value.isGrayscale !== false;
@@ -44,13 +42,12 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
         return (
           <div className="mx-auto my-6 max-w-[800px]">
             <div className="relative w-full" style={{ aspectRatio: '16/6' }}>
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={imageUrl}
                 alt={value.alt || "Blog image"}
-                fill
-                className={`object-cover ${grayscaleClass}`}
+                className={`w-full h-full object-cover ${grayscaleClass}`}
                 style={clipPathStyle}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 800px"
               />
             </div>
             {value.caption && (
@@ -68,7 +65,7 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
           return null;
         }
 
-        const imageUrl = urlForBlogImage(value.image, 600, 400).url();
+        const imageUrl = value.image.asset?.url;
         const dimensions = value.image.asset.metadata?.dimensions || {
           width: 600,
           height: 400,
@@ -93,11 +90,10 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content }) => {
 
         const ImageComponent = (
           <div className="relative mx-auto max-w-[600px]">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={imageUrl}
               alt={value.image.alt || "Blog image"}
-              width={dimensions.width}
-              height={dimensions.height}
               className={`h-auto w-full ${grayscaleClass}`}
               style={clipPathStyle}
             />
