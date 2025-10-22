@@ -183,7 +183,8 @@ export const FAQ_CATEGORIES_QUERY = groq`*[_type == "faqCategory" && isActive ==
   name,
   slug,
   order,
-  isActive
+  isActive,
+  "firstQuestionSlug": *[_type == "faqItem" && isActive == true && category->_id == ^._id] | order(order asc) [0].slug.current
 }`;
 
 export const FAQ_ITEMS_QUERY = groq`*[_type == "faqItem" && isActive == true] | order(category->order asc, order asc) {
@@ -220,6 +221,16 @@ export const FAQ_PAGE_QUERY = groq`*[_type == "faqPage" && isActive == true][0] 
   pageTitle,
   pageDescription,
   isActive
+}`;
+
+// Lightweight query for redirects - fetches first category and its first question slug
+export const FIRST_FAQ_SLUG_QUERY = groq`{
+  "firstCategory": *[_type == "faqCategory" && isActive == true] | order(order asc) [0] {
+    slug
+  },
+  "firstQuestion": *[_type == "faqItem" && isActive == true && category->_id == *[_type == "faqCategory" && isActive == true] | order(order asc) [0]._id] | order(order asc) [0] {
+    slug
+  }
 }`;
 
 export const KEY_VALUE_PILLARS_SECTION_QUERY = groq`*[_type == "keyValuePillarsSection" && isActive == true][0] {

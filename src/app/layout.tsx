@@ -10,6 +10,7 @@ import PrefetchProvider from "@/components/providers/PrefetchProvider";
 import { HomeScrollProvider } from "@/contexts/HomeScrollContext";
 import { getFirstBlogPostSlug } from "@/lib/sanity/blog";
 import { getFirstServiceSlug } from "@/lib/sanity/service";
+import { getFirstFAQSlugs } from "@/lib/sanity";
 
 const michroma = Michroma({
   subsets: ["latin"],
@@ -42,6 +43,11 @@ export default async function RootLayout({
   const firstService = await getFirstServiceSlug();
   const firstServiceSlug = firstService?.slug?.current || null;
 
+  // Fetch first FAQ slugs server-side for navigation
+  const firstFAQSlugs = await getFirstFAQSlugs();
+  const firstFAQCategorySlug = firstFAQSlugs?.firstCategory?.slug?.current || null;
+  const firstFAQQuestionSlug = firstFAQSlugs?.firstQuestion?.slug?.current || null;
+
   return (
     <ViewTransitions>
       <html lang="en" suppressHydrationWarning>
@@ -51,7 +57,12 @@ export default async function RootLayout({
           <AuthProvider>
             <HomeScrollProvider>
               <PrefetchProvider>
-                <Header firstBlogSlug={firstBlogSlug} firstServiceSlug={firstServiceSlug} />
+                <Header 
+                  firstBlogSlug={firstBlogSlug} 
+                  firstServiceSlug={firstServiceSlug}
+                  firstFAQCategorySlug={firstFAQCategorySlug}
+                  firstFAQQuestionSlug={firstFAQQuestionSlug}
+                />
 
                 {children}
                 <LogoutButton />

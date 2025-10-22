@@ -12,6 +12,8 @@ interface NavigationProps {
   onNavItemClick?: (href: string) => void;
   firstBlogSlug?: string | null;
   firstServiceSlug?: string | null;
+  firstFAQCategorySlug?: string | null;
+  firstFAQQuestionSlug?: string | null;
 }
 
 const Navigation: React.FC<NavigationProps> = ({
@@ -20,6 +22,8 @@ const Navigation: React.FC<NavigationProps> = ({
   onNavItemClick,
   firstBlogSlug,
   firstServiceSlug,
+  firstFAQCategorySlug,
+  firstFAQQuestionSlug,
 }) => {
   const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
 
@@ -38,7 +42,7 @@ const Navigation: React.FC<NavigationProps> = ({
     fetchNavigationData();
   }, []);
 
-  // Dynamically update the resources and services links with the first blog/service slug
+  // Dynamically update the resources, services, and FAQ links with the first slugs
   const displayItems = useMemo(() => {
     return navigationItems.map((item) => {
       if (item.href === "/resources" && firstBlogSlug) {
@@ -53,9 +57,15 @@ const Navigation: React.FC<NavigationProps> = ({
           href: `/services/${firstServiceSlug}`,
         };
       }
+      if (item.href === "/faq" && firstFAQCategorySlug && firstFAQQuestionSlug) {
+        return {
+          ...item,
+          href: `/faq/${firstFAQCategorySlug}/${firstFAQQuestionSlug}`,
+        };
+      }
       return item;
     });
-  }, [navigationItems, firstBlogSlug, firstServiceSlug]);
+  }, [navigationItems, firstBlogSlug, firstServiceSlug, firstFAQCategorySlug, firstFAQQuestionSlug]);
 
   // Don't render navigation if no items are available
   if (displayItems.length === 0) {

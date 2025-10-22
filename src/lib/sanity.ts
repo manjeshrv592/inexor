@@ -16,6 +16,7 @@ import {
   FAQ_ITEMS_QUERY,
   FAQ_ITEMS_BY_CATEGORY_QUERY,
   FAQ_PAGE_QUERY,
+  FIRST_FAQ_SLUG_QUERY,
   KEY_VALUE_PILLARS_SECTION_QUERY,
   KEY_VALUE_PILLAR_ITEMS_QUERY,
   FOOTER_QUERY,
@@ -341,6 +342,7 @@ export interface FAQCategory {
   };
   order: number;
   isActive: boolean;
+  firstQuestionSlug?: string;
 }
 
 export interface FAQItem {
@@ -393,6 +395,33 @@ export async function getFAQItemsByCategory(
 
 export async function getFAQPage(): Promise<FAQPage | null> {
   return client.fetch(FAQ_PAGE_QUERY, {}, { next: { tags: ["faq-page"] } });
+}
+
+export interface FirstFAQSlugs {
+  firstCategory: {
+    slug: {
+      current: string;
+    };
+  } | null;
+  firstQuestion: {
+    slug: {
+      current: string;
+    };
+  } | null;
+}
+
+export async function getFirstFAQSlugs(): Promise<FirstFAQSlugs> {
+  return client.fetch(
+    FIRST_FAQ_SLUG_QUERY,
+    {},
+    { 
+      cache: 'force-cache',
+      next: { 
+        tags: ["faq-categories", "faq-items"],
+        revalidate: 3600 // Cache for 1 hour
+      } 
+    }
+  );
 }
 
 export interface KeyValuePillarsSection {
