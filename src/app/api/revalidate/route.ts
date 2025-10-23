@@ -118,6 +118,12 @@ export async function POST(request: NextRequest) {
           revalidateTag("footer");
           revalidatedTags.push("footer");
           break;
+        case "homeSeo":
+          revalidateTag("home-seo");
+          revalidatedTags.push("home-seo");
+          // Also revalidate homepage
+          revalidatePath("/");
+          break;
         default:
           // Revalidate all tags for unknown types
           const allTags = [

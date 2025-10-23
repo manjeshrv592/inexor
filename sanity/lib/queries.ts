@@ -330,3 +330,171 @@ export const HOME_SEO_QUERY = groq`*[_type == "homeSeo" && isActive == true][0] 
   },
   isActive
 }`;
+
+export const ABOUT_PAGE_SEO_QUERY = groq`*[_type == "aboutPageSeo" && isActive == true][0] {
+  _id,
+  seo {
+    metaTitle,
+    metaDescription,
+    metaKeywords,
+    openGraphTitle,
+    openGraphDescription,
+    openGraphImage {
+      asset->{
+        url,
+        metadata {
+          dimensions
+        }
+      },
+      alt
+    },
+    canonicalUrl,
+    noIndex,
+    noFollow
+  },
+  isActive
+}`;
+
+export const RESOURCES_PAGE_SEO_QUERY = groq`*[_type == "resourcesPageSeo" && isActive == true][0] {
+  _id,
+  seo {
+    metaTitle,
+    metaDescription,
+    metaKeywords,
+    openGraphTitle,
+    openGraphDescription,
+    openGraphImage {
+      asset->{
+        url,
+        metadata {
+          dimensions
+        }
+      },
+      alt
+    },
+    canonicalUrl,
+    noIndex,
+    noFollow
+  },
+  isActive
+}`;
+
+export const SERVICES_PAGE_SEO_QUERY = groq`*[_type == "servicesPage" && isActive == true][0] {
+  _id,
+  seo {
+    metaTitle,
+    metaDescription,
+    metaKeywords,
+    openGraphTitle,
+    openGraphDescription,
+    openGraphImage {
+      asset->{
+        url,
+        metadata {
+          dimensions
+        }
+      },
+      alt
+    },
+    canonicalUrl,
+    noIndex,
+    noFollow
+  },
+  isActive
+}`;
+
+export const FAQ_PAGE_SEO_QUERY = groq`*[_type == "faqPage" && isActive == true][0] {
+  _id,
+  seo {
+    metaTitle,
+    metaDescription,
+    metaKeywords,
+    openGraphTitle,
+    openGraphDescription,
+    openGraphImage {
+      asset->{
+        url,
+        metadata {
+          dimensions
+        }
+      },
+      alt
+    },
+    canonicalUrl,
+    noIndex,
+    noFollow
+  },
+  isActive
+}`;
+
+export const CONTACT_PAGE_SEO_QUERY = groq`*[_type == "contactPage" && isActive == true][0] {
+  _id,
+  seo {
+    metaTitle,
+    metaDescription,
+    metaKeywords,
+    openGraphTitle,
+    openGraphDescription,
+    openGraphImage {
+      asset->{
+        url,
+        metadata {
+          dimensions
+        }
+      },
+      alt
+    },
+    canonicalUrl,
+    noIndex,
+    noFollow
+  },
+  isActive
+}`;
+
+export const PRIVACY_POLICY_SEO_QUERY = groq`*[_type == "privacyPolicy" && isActive == true][0] {
+  _id,
+  seo {
+    metaTitle,
+    metaDescription,
+    metaKeywords,
+    openGraphTitle,
+    openGraphDescription,
+    openGraphImage {
+      asset->{
+        url,
+        metadata {
+          dimensions
+        }
+      },
+      alt
+    },
+    canonicalUrl,
+    noIndex,
+    noFollow
+  },
+  isActive
+}`;
+
+export const TERMS_CONDITIONS_SEO_QUERY = groq`*[_type == "termsConditions" && isActive == true][0] {
+  _id,
+  seo {
+    metaTitle,
+    metaDescription,
+    metaKeywords,
+    openGraphTitle,
+    openGraphDescription,
+    openGraphImage {
+      asset->{
+        url,
+        metadata {
+          dimensions
+        }
+      },
+      alt
+    },
+    canonicalUrl,
+    noIndex,
+    noFollow
+  },
+  isActive
+}`;

@@ -1,6 +1,53 @@
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import React from "react";
-import { getTermsConditionsContent } from "@/lib/sanity";
+import { getTermsConditionsContent, getTermsConditionsSeo } from "@/lib/sanity";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seoData = await getTermsConditionsSeo();
+  
+  if (!seoData?.seo) {
+    return {
+      title: "Terms & Conditions",
+      description: "Our terms and conditions of service",
+    };
+  }
+
+  const { seo } = seoData;
+  const openGraphImage = seo.openGraphImage?.asset?.url;
+
+  return {
+    title: seo.metaTitle || "Terms & Conditions",
+    description: seo.metaDescription || "Our terms and conditions of service",
+    keywords: seo.metaKeywords || seo.keywords,
+    robots: {
+      index: !seo.noIndex,
+      follow: !seo.noFollow,
+    },
+    alternates: seo.canonicalUrl ? {
+      canonical: seo.canonicalUrl,
+    } : undefined,
+    openGraph: {
+      title: seo.openGraphTitle || seo.metaTitle || "Terms & Conditions",
+      description: seo.openGraphDescription || seo.metaDescription || "Our terms and conditions of service",
+      url: seo.canonicalUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/terms-conditions`,
+      siteName: "Inexor",
+      type: "website",
+      images: openGraphImage ? [{
+        url: openGraphImage,
+        width: seo.openGraphImage?.asset?.metadata?.dimensions?.width || 1200,
+        height: seo.openGraphImage?.asset?.metadata?.dimensions?.height || 630,
+        alt: seo.openGraphImage?.alt || "Terms & Conditions",
+      }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seo.openGraphTitle || seo.metaTitle || "Terms & Conditions",
+      description: seo.openGraphDescription || seo.metaDescription || "Our terms and conditions of service",
+      images: openGraphImage ? [openGraphImage] : undefined,
+    },
+  };
+}
 
 const TermsConditionsPage = async () => {
   const termsConditionsContent = await getTermsConditionsContent();

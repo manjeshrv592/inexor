@@ -3,6 +3,54 @@ import LazyImage from "@/components/ui/LazyImage";
 import React, { Suspense } from "react";
 import { getStaticAboutPageData } from "@/lib/static-generation";
 import { AboutPageSkeleton } from "@/components/ui/LoadingSkeleton";
+import { Metadata } from "next";
+import { getAboutPageSeo } from "@/lib/sanity";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seoData = await getAboutPageSeo();
+  
+  if (!seoData?.seo) {
+    return {
+      title: "About Us",
+      description: "Learn more about our company and mission",
+    };
+  }
+
+  const { seo } = seoData;
+  const openGraphImage = seo.openGraphImage?.asset?.url;
+
+  return {
+    title: seo.metaTitle || "About Us",
+    description: seo.metaDescription || "Learn more about our company and mission",
+    keywords: seo.metaKeywords || seo.keywords,
+    robots: {
+      index: !seo.noIndex,
+      follow: !seo.noFollow,
+    },
+    alternates: seo.canonicalUrl ? {
+      canonical: seo.canonicalUrl,
+    } : undefined,
+    openGraph: {
+      title: seo.openGraphTitle || seo.metaTitle || "About Us",
+      description: seo.openGraphDescription || seo.metaDescription || "Learn more about our company and mission",
+      url: seo.canonicalUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/about`,
+      siteName: "Inexor",
+      type: "website",
+      images: openGraphImage ? [{
+        url: openGraphImage,
+        width: seo.openGraphImage?.asset?.metadata?.dimensions?.width || 1200,
+        height: seo.openGraphImage?.asset?.metadata?.dimensions?.height || 630,
+        alt: seo.openGraphImage?.alt || "About Us",
+      }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seo.openGraphTitle || seo.metaTitle || "About Us",
+      description: seo.openGraphDescription || seo.metaDescription || "Learn more about our company and mission",
+      images: openGraphImage ? [openGraphImage] : undefined,
+    },
+  };
+}
 
 const AboutPageContent = async () => {
   const { aboutPage } = await getStaticAboutPageData();

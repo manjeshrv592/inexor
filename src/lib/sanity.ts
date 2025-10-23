@@ -25,6 +25,13 @@ import {
   TERMS_CONDITIONS_PAGE_QUERY,
   TERMS_CONDITIONS_CONTENT_QUERY,
   HOME_SEO_QUERY,
+  ABOUT_PAGE_SEO_QUERY,
+  RESOURCES_PAGE_SEO_QUERY,
+  SERVICES_PAGE_SEO_QUERY,
+  FAQ_PAGE_SEO_QUERY,
+  CONTACT_PAGE_SEO_QUERY,
+  PRIVACY_POLICY_SEO_QUERY,
+  TERMS_CONDITIONS_SEO_QUERY,
 } from "../../sanity/lib/queries";
 import { PortableTextBlock } from "@portabletext/types";
 
@@ -603,4 +610,81 @@ export interface HomeSeo {
 
 export async function getHomeSeo(): Promise<HomeSeo | null> {
   return client.fetch(HOME_SEO_QUERY, {}, { next: { tags: ["home-seo"] } });
+}
+
+// About Page SEO interfaces and functions
+export interface AboutPageSeo {
+  _id: string;
+  seo: SEO;
+  isActive: boolean;
+}
+
+export async function getAboutPageSeo(): Promise<AboutPageSeo | null> {
+  return client.fetch(ABOUT_PAGE_SEO_QUERY, {}, { next: { tags: ["about-page-seo"] } });
+}
+
+// Resources Page SEO interfaces and functions
+export interface ResourcesPageSeo {
+  _id: string;
+  seo: SEO;
+  isActive: boolean;
+}
+
+export async function getResourcesPageSeo(): Promise<ResourcesPageSeo | null> {
+  return client.fetch(RESOURCES_PAGE_SEO_QUERY, {}, { next: { tags: ["resources-page-seo"] } });
+}
+
+// Services Page SEO interfaces and functions
+export interface ServicesPageSeo {
+  _id: string;
+  seo: SEO;
+  isActive: boolean;
+}
+
+export async function getServicesPageSeo(): Promise<ServicesPageSeo | null> {
+  return client.fetch(SERVICES_PAGE_SEO_QUERY, {}, { next: { tags: ["services-page-seo"] } });
+}
+
+// FAQ Page SEO interfaces and functions
+export interface FaqPageSeo {
+  _id: string;
+  seo: SEO;
+  isActive: boolean;
+}
+
+export async function getFaqPageSeo(): Promise<FaqPageSeo | null> {
+  return client.fetch(FAQ_PAGE_SEO_QUERY, {}, { next: { tags: ["faq-page-seo"] } });
+}
+
+// Contact Page SEO interfaces and functions
+export interface ContactPageSeo {
+  _id: string;
+  seo: SEO;
+  isActive: boolean;
+}
+
+export async function getContactPageSeo(): Promise<ContactPageSeo | null> {
+  return client.fetch(CONTACT_PAGE_SEO_QUERY, {}, { next: { tags: ["contact-page-seo"] } });
+}
+
+// Privacy Policy SEO interfaces and functions
+export interface PrivacyPolicySeo {
+  _id: string;
+  seo: SEO;
+  isActive: boolean;
+}
+
+export async function getPrivacyPolicySeo(): Promise<PrivacyPolicySeo | null> {
+  return client.fetch(PRIVACY_POLICY_SEO_QUERY, {}, { next: { tags: ["privacy-policy-seo"] } });
+}
+
+// Terms Conditions SEO interfaces and functions
+export interface TermsConditionsSeo {
+  _id: string;
+  seo: SEO;
+  isActive: boolean;
+}
+
+export async function getTermsConditionsSeo(): Promise<TermsConditionsSeo | null> {
+  return client.fetch(TERMS_CONDITIONS_SEO_QUERY, {}, { next: { tags: ["terms-conditions-seo"] } });
 }

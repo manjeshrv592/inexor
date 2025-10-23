@@ -44,6 +44,9 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: seo.openGraphTitle || seo.metaTitle || "Inexor - Your Business Partner",
       description: seo.openGraphDescription || seo.metaDescription || "Professional business services and solutions",
+      url: seo.canonicalUrl || "https://inexor.com",
+      siteName: "Inexor",
+      type: "website",
       images: seo.openGraphImage?.asset?.url ? [{
         url: seo.openGraphImage.asset.url,
         width: seo.openGraphImage.asset.metadata?.dimensions?.width,
