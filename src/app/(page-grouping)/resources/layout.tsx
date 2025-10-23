@@ -1,9 +1,9 @@
 import React from "react";
 import { getResourcesPage } from "@/lib/sanity";
 import { Button } from "@/components/ui/button";
-import LazyImage from "@/components/ui/LazyImage";
 import PagePanelBg from "@/components/ui/PagePanelBg";
 import PagePanel from "@/components/ui/PagePanel";
+import { urlForFeaturedImage } from "@/../sanity/lib/image";
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
   const resourcesPageData = await getResourcesPage();
@@ -38,24 +38,17 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
               </Button>
             </div>
             <div className="absolute top-0 left-0 size-full">
-              <LazyImage
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={
-                  resourcesPageData?.leftPanelBackgroundImage ||
-                  "/img/left-image.jpg"
+                  resourcesPageData?.leftPanelBackgroundImage
+                    ? urlForFeaturedImage(resourcesPageData.leftPanelBackgroundImage, 150, 600).url()
+                    : "/img/left-image.jpg"
                 }
                 alt={
                   resourcesPageData?.leftPanelBackgroundImage?.alt || "blog bg"
                 }
-                fill
-                className="object-cover grayscale"
-                priority={true}
-                mimeType={
-                  resourcesPageData?.leftPanelBackgroundImage?.asset?.mimeType
-                }
-                lqip={
-                  resourcesPageData?.leftPanelBackgroundImage?.asset?.metadata
-                    ?.lqip
-                }
+                className="h-full w-full object-cover grayscale"
               />
               {/* <div className="absolute inset-0 bg-black/80">&nbsp;</div> */}
             </div>

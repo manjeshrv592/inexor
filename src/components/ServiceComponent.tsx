@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import LazyImage from "./ui/LazyImage";
+import { urlForImageWithParams } from "../../sanity/lib/image";
 
 interface ServiceComponentProps {
   code: string;
@@ -37,17 +37,23 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
 }) => {
   return (
     <div className="absolute size-full">
-      {/* Background Image with LazyImage */}
+      {/* Background Image with native img */}
       <div className="absolute z-10 size-full grayscale filter">
-        <LazyImage
-          src={backgroundImage}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={
+            backgroundImage?.asset?.url
+              ? urlForImageWithParams(backgroundImage, {
+                  width: 800,
+                  height: 350,
+                  quality: 85,
+                  format: 'webp',
+                  fit: 'crop'
+                }).url()
+              : "/img/left-image.jpg"
+          }
           alt={backgroundImage?.alt || `${title} service background`}
-          fill
-          className="object-cover"
-          priority={false}
-          quality={75}
-          mimeType={backgroundImage?.asset?.mimeType}
-          lqip={backgroundImage?.asset?.metadata?.lqip}
+          className="h-full w-full object-cover"
         />
       </div>
       <div className="relative z-20 flex size-full flex-col items-center justify-center p-4 xl:px-8 xl:py-16">

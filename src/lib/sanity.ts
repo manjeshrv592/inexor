@@ -573,7 +573,13 @@ export async function getPrivacyPolicyPage(): Promise<PrivacyPolicyPage | null> 
   return client.fetch(
     PRIVACY_POLICY_PAGE_QUERY,
     {},
-    { next: { tags: ["privacy-policy-page"] } },
+    { 
+      cache: 'force-cache',
+      next: { 
+        tags: ["privacy-policy-page"],
+        revalidate: 86400 // Cache for 24 hours (privacy policy rarely changes)
+      } 
+    },
   );
 }
 
@@ -581,7 +587,13 @@ export async function getPrivacyPolicyContent(): Promise<PrivacyPolicyContent | 
   return client.fetch(
     PRIVACY_POLICY_CONTENT_QUERY,
     {},
-    { next: { tags: ["privacy-policy-content"] } },
+    { 
+      cache: 'force-cache',
+      next: { 
+        tags: ["privacy-policy-content"],
+        revalidate: 86400 // Cache for 24 hours (privacy policy rarely changes)
+      } 
+    },
   );
 }
 
@@ -589,7 +601,13 @@ export async function getTermsConditionsPage(): Promise<TermsConditionsPage | nu
   return client.fetch(
     TERMS_CONDITIONS_PAGE_QUERY,
     {},
-    { next: { tags: ["terms-conditions-page"] } },
+    { 
+      cache: 'force-cache',
+      next: { 
+        tags: ["terms-conditions-page"],
+        revalidate: 86400 // Cache for 24 hours (terms rarely change)
+      } 
+    },
   );
 }
 
@@ -597,7 +615,13 @@ export async function getTermsConditionsContent(): Promise<TermsConditionsConten
   return client.fetch(
     TERMS_CONDITIONS_CONTENT_QUERY,
     {},
-    { next: { tags: ["terms-conditions-content"] } },
+    { 
+      cache: 'force-cache',
+      next: { 
+        tags: ["terms-conditions-content"],
+        revalidate: 86400 // Cache for 24 hours (terms rarely change)
+      } 
+    },
   );
 }
 
@@ -675,7 +699,17 @@ export interface PrivacyPolicySeo {
 }
 
 export async function getPrivacyPolicySeo(): Promise<PrivacyPolicySeo | null> {
-  return client.fetch(PRIVACY_POLICY_SEO_QUERY, {}, { next: { tags: ["privacy-policy-seo"] } });
+  return client.fetch(
+    PRIVACY_POLICY_SEO_QUERY, 
+    {}, 
+    { 
+      cache: 'force-cache',
+      next: { 
+        tags: ["privacy-policy-seo"],
+        revalidate: 86400 // Cache for 24 hours (SEO rarely changes)
+      } 
+    }
+  );
 }
 
 // Terms Conditions SEO interfaces and functions
@@ -686,5 +720,15 @@ export interface TermsConditionsSeo {
 }
 
 export async function getTermsConditionsSeo(): Promise<TermsConditionsSeo | null> {
-  return client.fetch(TERMS_CONDITIONS_SEO_QUERY, {}, { next: { tags: ["terms-conditions-seo"] } });
+  return client.fetch(
+    TERMS_CONDITIONS_SEO_QUERY, 
+    {}, 
+    { 
+      cache: 'force-cache',
+      next: { 
+        tags: ["terms-conditions-seo"],
+        revalidate: 86400 // Cache for 24 hours (SEO rarely changes)
+      } 
+    }
+  );
 }
