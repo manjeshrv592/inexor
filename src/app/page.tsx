@@ -18,17 +18,45 @@ import HomeScroller from "@/components/HomeScroller";
 export async function generateMetadata(): Promise<Metadata> {
   const homeSeoData = await getHomeSeo();
 
+  if (!homeSeoData?.seo) {
+    return {
+      title: "Inexor - Your Business Partner",
+      description: "Professional business services and solutions",
+    };
+  }
+
+  const seo = homeSeoData.seo;
+
+  // Build robots directive based on noIndex and noFollow flags
+  const robots = {
+    index: !seo.noIndex,
+    follow: !seo.noFollow,
+  };
+
   return {
-    title: homeSeoData?.seo?.metaTitle || "Inexor - Your Business Partner",
-    description:
-      homeSeoData?.seo?.metaDescription ||
-      "Professional business services and solutions",
-    keywords: homeSeoData?.seo?.keywords,
-    openGraph: homeSeoData?.seo?.ogImage?.asset?.url
-      ? {
-          images: [homeSeoData.seo.ogImage.asset.url],
-        }
-      : undefined,
+    title: seo.metaTitle || "Inexor - Your Business Partner",
+    description: seo.metaDescription || "Professional business services and solutions",
+    keywords: seo.metaKeywords,
+    robots,
+    alternates: seo.canonicalUrl ? {
+      canonical: seo.canonicalUrl,
+    } : undefined,
+    openGraph: {
+      title: seo.openGraphTitle || seo.metaTitle || "Inexor - Your Business Partner",
+      description: seo.openGraphDescription || seo.metaDescription || "Professional business services and solutions",
+      images: seo.openGraphImage?.asset?.url ? [{
+        url: seo.openGraphImage.asset.url,
+        width: seo.openGraphImage.asset.metadata?.dimensions?.width,
+        height: seo.openGraphImage.asset.metadata?.dimensions?.height,
+        alt: seo.openGraphImage.alt || seo.metaTitle || "Inexor",
+      }] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seo.openGraphTitle || seo.metaTitle || "Inexor - Your Business Partner",
+      description: seo.openGraphDescription || seo.metaDescription || "Professional business services and solutions",
+      images: seo.openGraphImage?.asset?.url ? [seo.openGraphImage.asset.url] : undefined,
+    },
   };
 }
 

@@ -137,20 +137,20 @@ const ContactForm = () => {
 
     // Get reCAPTCHA v2 token
     const recaptchaToken = recaptchaRef.current.getValue();
-    
+
     if (!recaptchaToken) {
       toast.error("Please complete the reCAPTCHA verification.");
       // Set the recaptchaToken error in the form
       form.setError("recaptchaToken", {
         type: "manual",
-        message: "Please complete the reCAPTCHA verification."
+        message: "Please complete the reCAPTCHA verification.",
       });
       return;
     }
 
     // Clear any previous recaptcha errors
     form.clearErrors("recaptchaToken");
-    
+
     // Set the recaptcha token in the form data
     form.setValue("recaptchaToken", recaptchaToken);
 
@@ -208,11 +208,11 @@ const ContactForm = () => {
 
   return (
     <div
-      className="h-full bg-[#222] text-white xl:grid xl:grid-cols-[2fr_3fr_2fr]"
+      className="h-full overflow-y-auto bg-[#222] text-white xl:grid xl:grid-cols-[2fr_3fr_2fr]"
       style={{ backgroundColor: "#1c1b1b" }}
     >
       {/* Left Panel - Map */}
-      <div className="hidden h-[calc(100dvh-290px)] overflow-y-auto xl:block xl:h-full">
+      <div className="overflow-y-auto xl:block xl:h-full">
         <h3 className="font-michroma py-5 text-center">
           Our <span className="text-brand-orange-500">Locations</span>
         </h3>
@@ -361,7 +361,7 @@ const ContactForm = () => {
       </div>
 
       {/* Right Panel - Contact Form */}
-      <div className="h-[calc(100dvh-290px)] overflow-y-auto xl:h-full">
+      <div className="xl:h-full xl:overflow-y-auto">
         <div className="pb-4">
           <h3 className="font-michroma py-5 text-center">
             Contact <span className="text-brand-orange-500">Information</span>
@@ -698,7 +698,7 @@ const ContactForm = () => {
                         }}
                       />
                     </div>
-                    <FormMessage className="text-red-400 text-center" />
+                    <FormMessage className="text-center text-red-400" />
                   </FormItem>
                 )}
               />
@@ -730,9 +730,7 @@ const ContactForm = () => {
 };
 
 const ContactPage = () => {
-  return (
-    <ContactForm />
-  );
+  return <ContactForm />;
 };
 
 export default ContactPage;
