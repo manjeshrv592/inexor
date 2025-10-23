@@ -12,6 +12,7 @@ import { truncateText } from "@/lib/utils/textUtils";
 import { Metadata } from "next";
 import LazyImage from "@/components/ui/LazyImage";
 import { urlForFeaturedImage } from "@/../sanity/lib/image";
+import Image from "next/image";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -83,15 +84,16 @@ const page = async ({ params }: BlogPostPageProps) => {
         {/* Featured Image */}
         <div className="xxl:h-[300px] relative h-[200px]">
           <div className="absolute top-0 left-0 size-full bg-black">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={
-                blogPost.featuredImage 
-                  ? urlForFeaturedImage(blogPost.featuredImage, 800, 300).url()
+                blogPost.featuredImage
+                  ? urlForFeaturedImage(blogPost.featuredImage, 1200, 450).url()
                   : "/img/left-image.jpg"
               }
               alt={blogPost.featuredImage?.alt || blogPost.title}
-              className="w-full h-full object-cover grayscale"
+              width={1200}
+              height={450}
+              className="h-full w-full object-cover grayscale"
             />
           </div>
         </div>
