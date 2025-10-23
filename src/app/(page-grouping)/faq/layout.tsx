@@ -21,36 +21,37 @@ import {
 import { Button } from "@/components/ui/button";
 
 // Memoized Left Panel Component to prevent unnecessary re-renders
-const LeftPanel = React.memo(({
-  faqPageSettings,
-  faqPageData,
-  categories,
-  selectedCategoryIndex
-}: {
-  faqPageSettings: FAQPageSettings | null;
-  faqPageData: FAQPageType | null;
-  categories: FAQCategory[];
-  selectedCategoryIndex: number;
-}) => {
-  return (
-    <div className="relative xl:h-full">
-      <div className="absolute inset-0 size-full">
-        <LazyImage
-          src={faqPageSettings?.sidebarImage || "/img/faq.jpg"}
-          alt={faqPageSettings?.sidebarImage?.alt || "FAQ sidebar image"}
-          fill
-          className={`object-cover ${
-            faqPageSettings?.sidebarImage?.isGrayscale !== false
-              ? "grayscale"
-              : ""
-          }`}
-          priority={true}
-          mimeType={faqPageSettings?.sidebarImage?.asset?.mimeType}
-          lqip={faqPageSettings?.sidebarImage?.asset?.metadata?.lqip}
-        />
-      </div>
+const LeftPanel = React.memo(
+  ({
+    faqPageSettings,
+    faqPageData,
+    categories,
+    selectedCategoryIndex,
+  }: {
+    faqPageSettings: FAQPageSettings | null;
+    faqPageData: FAQPageType | null;
+    categories: FAQCategory[];
+    selectedCategoryIndex: number;
+  }) => {
+    return (
+      <div className="relative xl:h-full">
+        <div className="absolute inset-0 size-full">
+          <LazyImage
+            src={faqPageSettings?.sidebarImage || "/img/faq.jpg"}
+            alt={faqPageSettings?.sidebarImage?.alt || "FAQ sidebar image"}
+            fill
+            className={`object-cover ${
+              faqPageSettings?.sidebarImage?.isGrayscale !== false
+                ? "grayscale"
+                : ""
+            }`}
+            priority={true}
+            mimeType={faqPageSettings?.sidebarImage?.asset?.mimeType}
+            lqip={faqPageSettings?.sidebarImage?.asset?.metadata?.lqip}
+          />
+        </div>
 
-      {/* Mobile Categories - Horizontal Scroll */}
+        {/* Mobile Categories - Horizontal Scroll */}
         <div className="relative z-10 flex h-full items-center p-5 py-7 xl:hidden">
           <div
             className="flex flex-nowrap gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden"
@@ -61,11 +62,11 @@ const LeftPanel = React.memo(({
           >
             {categories.map((category, index) => {
               // Get the first question slug for this category
-              const firstQuestionSlug = category.firstQuestionSlug || '';
-              const href = firstQuestionSlug 
+              const firstQuestionSlug = category.firstQuestionSlug || "";
+              const href = firstQuestionSlug
                 ? `/faq/${category.slug.current}/${firstQuestionSlug}`
                 : `/faq/${category.slug.current}`;
-              
+
               return (
                 <div key={category._id} className="flex-shrink-0">
                   <Link href={href}>
@@ -85,99 +86,99 @@ const LeftPanel = React.memo(({
           </div>
         </div>
 
-      {/* Desktop Categories - Vertical Layout */}
-      <div className="relative z-10 hidden h-full flex-col items-center justify-center gap-4 p-8 text-center xl:flex">
-        <p className="text-sm">
-          {faqPageData?.pageDescription ||
-            "Our FAQ Section Offers Fast, Clear Answers To Popular Questions, So You Can Find Information Easily."}
-        </p>
-        <h5 className="font-michroma">
-          Select <span className="text-brand-orange-500">Category</span>
-        </h5>
-        <div className="flex flex-wrap justify-center gap-4">
-          {categories.map((category, index) => {
-            // Get the first question slug for this category
-            const firstQuestionSlug = category.firstQuestionSlug || '';
-            const href = firstQuestionSlug 
-              ? `/faq/${category.slug.current}/${firstQuestionSlug}`
-              : `/faq/${category.slug.current}`;
-            
-            return (
-              <Link
-                key={category._id}
-                href={href}
-              >
-                <CategoryButton
-                  isActive={selectedCategoryIndex === index}
-                  onClick={() => {}}
-                >
-                  {category.name}
-                </CategoryButton>
-              </Link>
-            );
-          })}
+        {/* Desktop Categories - Vertical Layout */}
+        <div className="relative z-10 hidden h-full flex-col items-center justify-center gap-4 p-8 text-center xl:flex">
+          <p className="text-sm">
+            {faqPageData?.pageDescription ||
+              "Our FAQ Section Offers Fast, Clear Answers To Popular Questions, So You Can Find Information Easily."}
+          </p>
+          <h5 className="font-michroma">
+            Select <span className="text-brand-orange-500">Category</span>
+          </h5>
+          <div className="flex flex-wrap justify-center gap-4">
+            {categories.map((category, index) => {
+              // Get the first question slug for this category
+              const firstQuestionSlug = category.firstQuestionSlug || "";
+              const href = firstQuestionSlug
+                ? `/faq/${category.slug.current}/${firstQuestionSlug}`
+                : `/faq/${category.slug.current}`;
+
+              return (
+                <Link key={category._id} href={href}>
+                  <CategoryButton
+                    isActive={selectedCategoryIndex === index}
+                    onClick={() => {}}
+                  >
+                    {category.name}
+                  </CategoryButton>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
-  );
-});
+    );
+  },
+);
 
 LeftPanel.displayName = "LeftPanel";
 
 // Memoized Middle Panel Component
-const MiddlePanel = React.memo(({
-  faqPageData,
-  activeQuestion
-}: {
-  faqPageData: FAQPageType | null;
-  activeQuestion: FAQItemType | undefined;
-}) => {
-  return (
-    <div className="hidden h-full xl:grid xl:grid-rows-3">
-      <div className="flex items-end justify-center pb-8">
-        <h4 className="font-michroma text-brand-orange-500 text-center">
-          {faqPageData?.pageTitle || "FAQ's"}
-        </h4>
+const MiddlePanel = React.memo(
+  ({
+    faqPageData,
+    activeQuestion,
+  }: {
+    faqPageData: FAQPageType | null;
+    activeQuestion: FAQItemType | undefined;
+  }) => {
+    return (
+      <div className="hidden h-full xl:grid xl:grid-rows-3">
+        <div className="flex items-end justify-center pb-8">
+          <h4 className="font-michroma text-brand-orange-500 text-center">
+            {faqPageData?.pageTitle || "FAQ's"}
+          </h4>
+        </div>
+        <div
+          className="flex flex-col items-center justify-center gap-6 bg-[#292929] px-8 text-center"
+          style={{
+            boxShadow: "0px 4px 4px 0px #00000040 inset",
+          }}
+        >
+          <AnimatePresence mode="wait">
+            {activeQuestion ? (
+              <motion.div
+                key={activeQuestion._id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="flex flex-col items-center justify-center gap-6 text-center"
+              >
+                <h5 className="font-michroma text-sm text-orange-500">
+                  {activeQuestion.question}
+                </h5>
+                <p className="text-sm">{activeQuestion.answer}</p>
+              </motion.div>
+            ) : (
+              <motion.p
+                key="placeholder"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="text-sm text-gray-400"
+              >
+                Select a question to view the answer
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </div>
+        <div>&nbsp;</div>
       </div>
-      <div
-        className="flex flex-col items-center justify-center gap-6 bg-[#292929] px-8 text-center"
-        style={{
-          boxShadow: "0px 4px 4px 0px #00000040 inset",
-        }}
-      >
-        <AnimatePresence mode="wait">
-          {activeQuestion ? (
-            <motion.div
-              key={activeQuestion._id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="flex flex-col items-center justify-center gap-6 text-center"
-            >
-              <h5 className="font-michroma text-sm text-orange-500">
-                {activeQuestion.question}
-              </h5>
-              <p className="text-sm">{activeQuestion.answer}</p>
-            </motion.div>
-          ) : (
-            <motion.p
-              key="placeholder"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="text-sm text-gray-400"
-            >
-              Select a question to view the answer
-            </motion.p>
-          )}
-        </AnimatePresence>
-      </div>
-      <div>&nbsp;</div>
-    </div>
-  );
-});
+    );
+  },
+);
 
 MiddlePanel.displayName = "MiddlePanel";
 
@@ -287,15 +288,15 @@ const FAQLayout = () => {
   }, [currentCategorySlug, currentQuestionSlug, initialDataLoaded, categories]);
 
   // Get current active question's answer for desktop display
-  const activeQuestion = useMemo(() => 
-    faqItems.find((item) => item._id === activeQuestionId),
-    [faqItems, activeQuestionId]
+  const activeQuestion = useMemo(
+    () => faqItems.find((item) => item._id === activeQuestionId),
+    [faqItems, activeQuestionId],
   );
 
   // Memoize current category slug to prevent unnecessary re-renders
-  const currentCategorySlugMemo = useMemo(() => 
-    categories[selectedCategoryIndex]?.slug.current || "",
-    [categories, selectedCategoryIndex]
+  const currentCategorySlugMemo = useMemo(
+    () => categories[selectedCategoryIndex]?.slug.current || "",
+    [categories, selectedCategoryIndex],
   );
 
   if (loading) {
@@ -316,7 +317,7 @@ const FAQLayout = () => {
       <PagePanelBg />
       <PagePanel>
         <div
-          className="h-full bg-[#2f2f2f] xl:grid xl:grid-cols-[2fr_3fr_2fr]"
+          className="h-full bg-[#222] xl:grid xl:grid-cols-[2fr_3fr_2fr]"
           style={{
             boxShadow:
               "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",

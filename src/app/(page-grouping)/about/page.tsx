@@ -8,7 +8,7 @@ import { getAboutPageSeo } from "@/lib/sanity";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seoData = await getAboutPageSeo();
-  
+
   if (!seoData?.seo) {
     return {
       title: "About Us",
@@ -21,32 +21,47 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: seo.metaTitle || "About Us",
-    description: seo.metaDescription || "Learn more about our company and mission",
+    description:
+      seo.metaDescription || "Learn more about our company and mission",
     keywords: seo.metaKeywords || seo.keywords,
     robots: {
       index: !seo.noIndex,
       follow: !seo.noFollow,
     },
-    alternates: seo.canonicalUrl ? {
-      canonical: seo.canonicalUrl,
-    } : undefined,
+    alternates: seo.canonicalUrl
+      ? {
+          canonical: seo.canonicalUrl,
+        }
+      : undefined,
     openGraph: {
       title: seo.openGraphTitle || seo.metaTitle || "About Us",
-      description: seo.openGraphDescription || seo.metaDescription || "Learn more about our company and mission",
+      description:
+        seo.openGraphDescription ||
+        seo.metaDescription ||
+        "Learn more about our company and mission",
       url: seo.canonicalUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/about`,
       siteName: "Inexor",
       type: "website",
-      images: openGraphImage ? [{
-        url: openGraphImage,
-        width: seo.openGraphImage?.asset?.metadata?.dimensions?.width || 1200,
-        height: seo.openGraphImage?.asset?.metadata?.dimensions?.height || 630,
-        alt: seo.openGraphImage?.alt || "About Us",
-      }] : undefined,
+      images: openGraphImage
+        ? [
+            {
+              url: openGraphImage,
+              width:
+                seo.openGraphImage?.asset?.metadata?.dimensions?.width || 1200,
+              height:
+                seo.openGraphImage?.asset?.metadata?.dimensions?.height || 630,
+              alt: seo.openGraphImage?.alt || "About Us",
+            },
+          ]
+        : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title: seo.openGraphTitle || seo.metaTitle || "About Us",
-      description: seo.openGraphDescription || seo.metaDescription || "Learn more about our company and mission",
+      description:
+        seo.openGraphDescription ||
+        seo.metaDescription ||
+        "Learn more about our company and mission",
       images: openGraphImage ? [openGraphImage] : undefined,
     },
   };
@@ -55,7 +70,7 @@ export async function generateMetadata(): Promise<Metadata> {
 const AboutPageContent = async () => {
   const { aboutPage } = await getStaticAboutPageData();
   return (
-    <div className="size-full grid-cols-[2fr_3fr_2fr] bg-[#2f2f2f] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:grid">
+    <div className="size-full grid-cols-[2fr_3fr_2fr] bg-[#222] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:grid">
       <div className="relative h-[100px] xl:h-full">
         <div className="absolute inset-0 size-full overflow-hidden">
           <LazyImage

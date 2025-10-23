@@ -12,7 +12,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
       <PagePanelBg />
       <PagePanel>
         <div
-          className="h-full xl:grid xl:h-full xl:grid-cols-[150px_250px_1fr]"
+          className="h-full bg-[#222] xl:grid xl:h-full xl:grid-cols-[150px_250px_1fr]"
           style={{
             boxShadow:
               "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",

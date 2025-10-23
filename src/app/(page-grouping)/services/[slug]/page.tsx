@@ -1,4 +1,9 @@
-import { getServices, getServiceBySlug, getServicesPageSettings, type Service } from "@/lib/sanity/service";
+import {
+  getServices,
+  getServiceBySlug,
+  getServicesPageSettings,
+  type Service,
+} from "@/lib/sanity/service";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -16,12 +21,12 @@ interface ServicePageProps {
 export async function generateStaticParams() {
   try {
     const services = await getServices();
-    
+
     return services.map((service: Service) => ({
       slug: service.slug.current,
     }));
   } catch (error) {
-    console.error('Error generating service static params:', error);
+    console.error("Error generating service static params:", error);
     return [];
   }
 }
@@ -39,13 +44,11 @@ const ServicePage = async ({ params }: ServicePageProps) => {
   }
 
   // Find current index for active state
-  const currentIndex = allServices.findIndex(
-    (s) => s.slug.current === slug,
-  );
+  const currentIndex = allServices.findIndex((s) => s.slug.current === slug);
 
   return (
     <div
-      className="h-full bg-[#2f2f2f] xl:grid xl:h-full xl:grid-cols-[150px_1fr]"
+      className="h-full bg-[#222] xl:grid xl:h-full xl:grid-cols-[150px_1fr]"
       style={{
         boxShadow:
           "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
@@ -57,15 +60,17 @@ const ServicePage = async ({ params }: ServicePageProps) => {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={
-              servicesPageSettings?.leftPanelImage 
-                ? urlForFeaturedImage(servicesPageSettings.leftPanelImage, 150, 600).url()
+              servicesPageSettings?.leftPanelImage
+                ? urlForFeaturedImage(
+                    servicesPageSettings.leftPanelImage,
+                    150,
+                    600,
+                  ).url()
                 : "/img/left-image.jpg"
             }
             alt={servicesPageSettings?.leftPanelImage?.alt || "services bg"}
-            className={`w-full h-full object-cover ${
-              servicesPageSettings?.applyGrayscale !== false
-                ? "grayscale"
-                : ""
+            className={`h-full w-full object-cover ${
+              servicesPageSettings?.applyGrayscale !== false ? "grayscale" : ""
             }`}
           />
         </div>
@@ -97,22 +102,27 @@ const ServicePage = async ({ params }: ServicePageProps) => {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={
-              servicesPageSettings?.leftPanelImage 
-                ? urlForFeaturedImage(servicesPageSettings.leftPanelImage, 150, 800).url()
+              servicesPageSettings?.leftPanelImage
+                ? urlForFeaturedImage(
+                    servicesPageSettings.leftPanelImage,
+                    150,
+                    800,
+                  ).url()
                 : "/img/left-image.jpg"
             }
             alt={servicesPageSettings?.leftPanelImage?.alt || "services bg"}
-            className={`w-full h-full object-cover ${
-              servicesPageSettings?.applyGrayscale !== false
-                ? "grayscale"
-                : ""
+            className={`h-full w-full object-cover ${
+              servicesPageSettings?.applyGrayscale !== false ? "grayscale" : ""
             }`}
           />
         </div>
         <div className="relative z-10 h-[calc(100vh-230px)] overflow-y-auto pr-1">
           <div className="flex h-full flex-col justify-center gap-4">
             {allServices.map((service, index) => (
-              <Link key={service._id} href={`/services/${service.slug.current}`}>
+              <Link
+                key={service._id}
+                href={`/services/${service.slug.current}`}
+              >
                 <Button
                   className="font-michroma text-[10px] tracking-[1px] xl:w-full"
                   variant={currentIndex === index ? "default" : "outline"}
