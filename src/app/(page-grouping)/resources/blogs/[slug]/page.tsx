@@ -94,6 +94,7 @@ const page = async ({ params }: BlogPostPageProps) => {
               width={1200}
               height={450}
               className="h-full w-full object-cover grayscale"
+              unoptimized={true}
             />
           </div>
         </div>
