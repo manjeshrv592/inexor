@@ -144,6 +144,7 @@ const NavItem: React.FC<NavItemProps> = ({
                 transform: "rotate(180deg)",
                 letterSpacing: "1px",
                 lineHeight: "1.2",
+                backgroundColor: "#FF2525",
               }),
           }}
         >
