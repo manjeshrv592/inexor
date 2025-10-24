@@ -78,6 +78,9 @@ export default function LoginForm() {
       });
 
       if (response.ok) {
+        // Set flag to reset home page scroll position
+        sessionStorage.setItem('resetHomeScroll', 'true');
+        
         // Decode the redirect URL and ensure it's a local path
         const decodedRedirect = decodeURIComponent(redirect);
         const redirectUrl = new URL(decodedRedirect, window.location.origin);
@@ -118,6 +121,9 @@ export default function LoginForm() {
       if (res.ok) {
         // Check if user was authenticated directly (OTP bypassed)
         if (data.authenticated) {
+          // Set flag to reset home page scroll position
+          sessionStorage.setItem('resetHomeScroll', 'true');
+          
           // Direct authentication successful - redirect to dashboard
           const decodedRedirect = decodeURIComponent(redirect);
           const redirectUrl = new URL(decodedRedirect, window.location.origin);

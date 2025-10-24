@@ -73,6 +73,16 @@ export const HomeScrollProvider = ({ children }: HomeScrollProviderProps) => {
   // Restore scroll position when returning to home page
   useEffect(() => {
     if (isHomeRoute && !hasRestoredRef.current) {
+      // Check if user is coming from authentication and should reset scroll
+      const shouldResetScroll = sessionStorage.getItem('resetHomeScroll');
+      if (shouldResetScroll) {
+        // Clear the flag and reset scroll position
+        sessionStorage.removeItem('resetHomeScroll');
+        window.scrollTo(0, 0);
+        hasRestoredRef.current = true;
+        return; // Exit early, don't restore previous scroll position
+      }
+
       // Small delay to ensure page is fully rendered
       const timer = setTimeout(() => {
         const savedPosition = sessionStorage.getItem('homeScrollPosition');

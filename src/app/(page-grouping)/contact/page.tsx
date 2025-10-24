@@ -218,7 +218,7 @@ const ContactForm = () => {
         </h3>
         <p className="text-center text-sm">We&apos;d like to here from you</p>
         <div className="px-4 py-6">
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
             {Object.entries(groupedOffices).map(
               ([country, offices], countryIndex) => (
                 <AccordionItem key={country} value={`item-${countryIndex + 1}`}>
@@ -299,7 +299,7 @@ const ContactForm = () => {
             {contactInfo.mainTitle}
           </h5>
           <div className="bg-neutral-900 p-5 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-12px_18px_-12px_rgba(0,0,0,0.85),inset_0_12px_18px_-12px_rgba(0,0,0,0.9)] lg:p-8 xl:h-[200px]">
-            <h5 className="font-michroma text-brand-orange-500 my-4 hidden text-center text-sm xl:block">
+            <h5 className="font-michroma text-brand-orange-500 mt-1 mb-4 hidden text-center text-sm xl:block">
               {contactInfo.subTitle}
             </h5>
             <p className="text-center text-xs lg:text-sm">
