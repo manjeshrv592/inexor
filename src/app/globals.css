@@ -447,3 +447,21 @@ body::-webkit-scrollbar {
 .page-panel-exit {
   animation: slide-out-right 0.5s ease-in-out forwards;
 }
+
+/* Vertical text fallback for browsers that don't support writing-mode */
+@media (min-width: 1200px) {
+  .vertical-text-fallback {
+    transform: rotate(180deg);
+    white-space: nowrap;
+    display: inline-block;
+    line-height: 1;
+    letter-spacing: 0.1em;
+  }
+  
+  .vertical-text-fallback span {
+    display: inline-block;
+    transform: rotate(180deg);
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+  }
+}
