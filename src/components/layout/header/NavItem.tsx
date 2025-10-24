@@ -128,7 +128,7 @@ const NavItem: React.FC<NavItemProps> = ({
           // Apply inline styles for fallback when writing-mode is not supported
           ...(typeof window !== "undefined" &&
             !supportsWritingMode &&
-            window.innerWidth >= 1280 && {
+            window.innerWidth >= 1200 && {
               transform: "rotate(180deg)",
               transformOrigin: "center",
             }),
