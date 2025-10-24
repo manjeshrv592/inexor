@@ -4,7 +4,6 @@ import { useTransitionRouter } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { getVerticalTextClasses } from "@/lib/utils/browserSupport";
 
 interface NavItemProps {
   href: string;
@@ -24,16 +23,11 @@ const NavItem: React.FC<NavItemProps> = ({
   const router = useTransitionRouter();
   const pathname = usePathname();
   const [isDesktop, setIsDesktop] = useState(false);
-  const [verticalTextClasses, setVerticalTextClasses] = useState("");
 
   useEffect(() => {
     const checkScreenSize = () => {
       setIsDesktop(window.innerWidth >= 1200);
     };
-
-    // Set up vertical text classes based on browser support
-    const baseClasses = "font-michroma hover:text-brand-orange-500 xxl:text-sm flex cursor-pointer items-center gap-0 border-none bg-transparent text-[9px] tracking-[1px] duration-300 md:text-[10px]";
-    setVerticalTextClasses(getVerticalTextClasses(baseClasses));
 
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
@@ -86,7 +80,7 @@ const NavItem: React.FC<NavItemProps> = ({
     <li>
       <button
         onClick={() => handleNavigation(href)}
-        className={`${verticalTextClasses} ${
+        className={`font-michroma hover:text-brand-orange-500 xxl:text-sm flex cursor-pointer items-center gap-0 border-none bg-transparent text-[9px] tracking-[1px] duration-300 md:text-[10px] xl:rotate-180 xl:[writing-mode:vertical-rl] ${
           isActive ? "text-brand-orange-500" : "text-white"
         }`}
       >
