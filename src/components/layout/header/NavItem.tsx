@@ -29,6 +29,7 @@ const NavItem: React.FC<NavItemProps> = ({
   useEffect(() => {
     const checkScreenSize = () => {
       setIsDesktop(window.innerWidth >= 1200);
+      console.log("Hello");
     };
 
     checkScreenSize();
