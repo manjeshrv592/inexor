@@ -216,9 +216,14 @@ const ContactForm = () => {
         <h3 className="font-michroma py-5 text-center">
           Our <span className="text-brand-orange-500">Locations</span>
         </h3>
-        <p className="text-center text-sm">We&apos;d like to here from you</p>
+        {/* <p className="text-center text-sm">We&apos;d like to here from you</p> */}
         <div className="px-4 py-6">
-          <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full"
+            defaultValue="item-1"
+          >
             {Object.entries(groupedOffices).map(
               ([country, offices], countryIndex) => (
                 <AccordionItem key={country} value={`item-${countryIndex + 1}`}>
@@ -354,9 +359,9 @@ const ContactForm = () => {
               </div>
             </div>
           </div>
-          <div className="xxl:mt-[10%] mx-auto mt-4 hidden max-w-[300px] px-2 text-center text-sm xl:block">
+          {/* <div className="xxl:mt-[10%] mx-auto mt-4 hidden max-w-[300px] px-2 text-center text-sm xl:block">
             {contactInfo.address}
-          </div>
+          </div> */}
         </div>
       </div>
 
