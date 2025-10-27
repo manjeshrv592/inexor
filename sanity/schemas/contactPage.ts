@@ -24,19 +24,12 @@ export default defineType({
       type: "text",
       description: "Description text displayed below the page title",
     }),
-    defineField({
-      name: "isActive",
-      title: "Is Active",
-      type: "boolean",
-      description: "Only one Contact Us page should be active at a time",
-      initialValue: true,
-    }),
   ],
   preview: {
     select: {
       title: "pageTitle",
       subtitle: "seo.metaTitle",
-      isActive: "isActive",
+      isActive: "seo.isActive",
     },
     prepare(selection) {
       const { title, subtitle, isActive } = selection;
