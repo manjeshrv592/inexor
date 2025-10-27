@@ -14,7 +14,8 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
   // Fallback data for title and description when no Sanity data exists
   const title = heroData?.title || "Title";
   const description = heroData?.description || "description";
-  const scheduleCallButtonText = heroData?.scheduleCallButtonText || "Schedule a Call";
+  const scheduleCallButtonText =
+    heroData?.scheduleCallButtonText || "Schedule a Call";
   const contactButtonText = heroData?.contactButtonText || "Contact Us";
   const backgroundImage = heroData?.backgroundImage || null;
   const backgroundImageUrl = backgroundImage?.asset?.url || "/hero-bg.jpg";
@@ -74,7 +75,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
           </div>
           <div className="">
             <a
-              href="https://calendar.app.google/it8hbPUuhXvCG4YE8"
+              href="https://outlook.office.com/book/INEXOR1@inexor.io/"
               target="_blank"
               rel="noopener noreferrer"
             >
