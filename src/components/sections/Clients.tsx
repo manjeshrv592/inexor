@@ -10,7 +10,9 @@ export async function Clients() {
 
   // Use title and subtitle from Sanity or fallback to defaults
   const title = clientsData?.title || "TRUSTED BY 40+ INDUSTRY LEADERS";
-  const subtitle = clientsData?.subtitle || "Sub Title";
+  // Don't use a placeholder string when subtitle is missing —
+  // leave it undefined/empty so the <h3> renders no text instead of a filler.
+  const subtitle = clientsData?.subtitle;
 
   return (
     <Section className="">

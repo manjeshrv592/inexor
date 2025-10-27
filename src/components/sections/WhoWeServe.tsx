@@ -16,7 +16,9 @@ interface WhoWeServeProps {
 const WhoWeServe: React.FC<WhoWeServeProps> = ({ items, sectionData }) => {
   // Use section data from Sanity or fallback to default
   const title = sectionData?.title || "WHO WE SERVE";
-  const subtitle = sectionData?.subtitle || "Sub Title";
+  // Don't use a placeholder string when subtitle is missing —
+  // leave it undefined/empty so the <h3> renders no text instead of a filler.
+  const subtitle = sectionData?.subtitle;
 
   return (
     <Section className="">
