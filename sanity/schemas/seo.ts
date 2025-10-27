@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { createImageField, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
 
 export default defineType({
   name: "seo",
@@ -38,11 +39,35 @@ export default defineType({
       },
     }),
     defineField({
-      name: "isActive",
-      title: "Is Active",
-      type: "boolean",
-      description: "Enable or disable SEO settings for this page",
-      initialValue: true,
+      name: "openGraphTitle",
+      title: "Open Graph Title",
+      type: "string",
+      description:
+        "Title for social media sharing (falls back to Meta Title if not set)",
+    }),
+    defineField({
+      name: "openGraphDescription",
+      title: "Open Graph Description",
+      type: "text",
+      description:
+        "Description for social media sharing (falls back to Meta Description if not set)",
+    }),
+    createImageField({
+      name: "openGraphImage",
+      title: "Open Graph Image",
+      description: `Image for social media sharing (1200x630px recommended). ${IMAGE_UPLOAD_HELP_TEXT}`,
+      required: false,
+      hotspot: true,
+      includeAlt: true,
+      includeCaption: false,
+      includeGrayscale: false,
+    }),
+    defineField({
+      name: "canonicalUrl",
+      title: "Canonical URL",
+      type: "url",
+      description:
+        "Canonical URL for this page (helps prevent duplicate content issues)",
     }),
     defineField({
       name: "noIndex",
