@@ -313,18 +313,6 @@ export const HOME_SEO_QUERY = groq`*[_type == "homeSeo" && isActive == true][0] 
     metaTitle,
     metaDescription,
     metaKeywords,
-    openGraphTitle,
-    openGraphDescription,
-    openGraphImage {
-      asset->{
-        url,
-        metadata {
-          dimensions
-        }
-      },
-      alt
-    },
-    canonicalUrl,
     noIndex,
     noFollow
   },

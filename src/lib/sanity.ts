@@ -515,27 +515,6 @@ export interface SEO {
   metaDescription?: string;
   metaKeywords?: string[];
   keywords?: string[]; // Keep for backward compatibility
-  openGraphTitle?: string;
-  openGraphDescription?: string;
-  openGraphImage?: {
-    asset: {
-      url: string;
-      metadata?: {
-        dimensions?: {
-          width: number;
-          height: number;
-        };
-      };
-    };
-    alt?: string;
-  };
-  ogImage?: {
-    // Keep for backward compatibility
-    asset: {
-      url: string;
-    };
-  };
-  canonicalUrl?: string;
   noIndex?: boolean;
   noFollow?: boolean;
 }

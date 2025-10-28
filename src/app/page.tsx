@@ -40,43 +40,19 @@ export async function generateMetadata(): Promise<Metadata> {
       seo.metaDescription || "Professional business services and solutions",
     keywords: seo.metaKeywords,
     robots,
-    alternates: seo.canonicalUrl
-      ? {
-          canonical: seo.canonicalUrl,
-        }
-      : undefined,
     openGraph: {
-      title:
-        seo.openGraphTitle || seo.metaTitle || "Inexor - Your Business Partner",
+      title: seo.metaTitle || "Inexor - Your Business Partner",
       description:
-        seo.openGraphDescription ||
-        seo.metaDescription ||
-        "Professional business services and solutions",
-      url: seo.canonicalUrl || "https://inexor.com",
+        seo.metaDescription || "Professional business services and solutions",
+      url: "https://inexor.com",
       siteName: "Inexor",
       type: "website",
-      images: seo.openGraphImage?.asset?.url
-        ? [
-            {
-              url: seo.openGraphImage.asset.url,
-              width: seo.openGraphImage.asset.metadata?.dimensions?.width,
-              height: seo.openGraphImage.asset.metadata?.dimensions?.height,
-              alt: seo.openGraphImage.alt || seo.metaTitle || "Inexor",
-            },
-          ]
-        : undefined,
     },
     twitter: {
       card: "summary_large_image",
-      title:
-        seo.openGraphTitle || seo.metaTitle || "Inexor - Your Business Partner",
+      title: seo.metaTitle || "Inexor - Your Business Partner",
       description:
-        seo.openGraphDescription ||
-        seo.metaDescription ||
-        "Professional business services and solutions",
-      images: seo.openGraphImage?.asset?.url
-        ? [seo.openGraphImage.asset.url]
-        : undefined,
+        seo.metaDescription || "Professional business services and solutions",
     },
   };
 }
