@@ -25,10 +25,8 @@ export default function ContactDataPreloader() {
       }
     };
 
-    // Use a small delay to ensure the homepage has loaded first
-    const timer = setTimeout(startPreloading, 1000);
-
-    return () => clearTimeout(timer);
+    // Start preloading immediately when component mounts
+    startPreloading();
   }, []);
 
   // This component doesn't render anything visible
