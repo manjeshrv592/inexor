@@ -5,7 +5,7 @@ import Container from "../layout/Container";
 import { Button } from "../ui/button";
 import ContactUsButton from "../ui/ContactUsButton";
 import { Hero as HeroType } from "../../lib/sanity";
-import Link from "next/link";
+// import Link from "next/link";
 
 interface HeroProps {
   heroData: HeroType | null;
@@ -85,7 +85,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
               </Button>
             </a>
           </div>
-          <Link href={"/test"}>Test page</Link>
+          {/* <Link href={"/test"}>Test page</Link> */}
         </div>
       </Container>
     </Section>
