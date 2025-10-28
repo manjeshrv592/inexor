@@ -86,9 +86,9 @@ function convertConfigToItems(config: NavigationConfig): NavigationItem[] {
   if (!config) return [];
 
   return [
-    { _id: "resources", ...config.resources, order: 1 },
-    { _id: "services", ...config.services, order: 2 },
-    { _id: "about", ...config.about, order: 3 },
+    { _id: "resources", ...config.resources, order: 3 },
+    { _id: "services", ...config.services, order: 1 },
+    { _id: "about", ...config.about, order: 2 },
     { _id: "faq", ...config.faq, order: 4 },
   ];
 }

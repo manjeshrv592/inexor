@@ -47,8 +47,8 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
                   width: 800,
                   height: 350,
                   quality: 85,
-                  format: 'webp',
-                  fit: 'crop'
+                  format: "webp",
+                  fit: "crop",
                 }).url()
               : "/img/left-image.jpg"
           }
@@ -56,7 +56,7 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
           className="h-full w-full object-cover"
         />
       </div>
-      <div className="relative z-20 flex size-full flex-col items-center justify-center p-4 xl:px-8 xl:py-16">
+      <div className="relative z-20 flex size-full flex-col items-center justify-end p-4 xl:px-8 xl:py-16">
         <div className="absolute top-0 left-0 hidden h-full w-20 bg-gradient-to-r from-neutral-700/70 to-neutral-700/0 xl:block">
           <span className="text-brand-orange-500 font-michroma absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90 text-xl">
             {code}
