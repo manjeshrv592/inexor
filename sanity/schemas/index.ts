@@ -27,6 +27,10 @@ import socialLink from "./socialLink";
 import serviceUseCase from "./services/serviceUseCase";
 import serviceUseCasesSection from "./services/serviceUseCasesSection";
 
+import servicesPageSeo from "./servicesPageSeo";
+import faqPageSeo from "./faqPageSeo";
+import contactPageSeo from "./contactPageSeo";
+
 // SEO and Page schemas
 import seo from "./seo";
 import homeSeo from "./homeSeo";
@@ -81,6 +85,9 @@ export const schemaTypes = [
   // SEO and Page schemas
   seo,
   homeSeo,
+  servicesPageSeo,
+  faqPageSeo,
+  contactPageSeo,
   faqPage,
   aboutPage,
   aboutPageSeo,

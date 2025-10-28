@@ -217,7 +217,6 @@ export const FAQ_ITEMS_BY_CATEGORY_QUERY = groq`*[_type == "faqItem" && isActive
 
 export const FAQ_PAGE_QUERY = groq`*[_type == "faqPage" && isActive == true][0] {
   _id,
-  seo,
   pageTitle,
   pageDescription,
   isActive
@@ -281,7 +280,6 @@ export const FOOTER_QUERY = groq`*[_type == "footer" && isActive == true][0] {
 
 export const PRIVACY_POLICY_PAGE_QUERY = groq`*[_type == "privacyPolicyPage" && isActive == true][0] {
   _id,
-  seo,
   isActive
 }`;
 
@@ -295,7 +293,6 @@ export const PRIVACY_POLICY_CONTENT_QUERY = groq`*[_type == "privacyPolicyConten
 
 export const TERMS_CONDITIONS_PAGE_QUERY = groq`*[_type == "termsConditionsPage" && isActive == true][0] {
   _id,
-  seo,
   isActive
 }`;
 
@@ -343,7 +340,7 @@ export const RESOURCES_PAGE_SEO_QUERY = groq`*[_type == "resourcesPageSeo" && is
   isActive
 }`;
 
-export const SERVICES_PAGE_SEO_QUERY = groq`*[_type == "servicesPage" && isActive == true][0] {
+export const SERVICES_PAGE_SEO_QUERY = groq`*[_type == "servicesPageSeo" && isActive == true][0] {
   _id,
   seo {
     metaTitle,
@@ -355,7 +352,7 @@ export const SERVICES_PAGE_SEO_QUERY = groq`*[_type == "servicesPage" && isActiv
   isActive
 }`;
 
-export const FAQ_PAGE_SEO_QUERY = groq`*[_type == "faqPage" && isActive == true][0] {
+export const FAQ_PAGE_SEO_QUERY = groq`*[_type == "faqPageSeo" && isActive == true][0] {
   _id,
   seo {
     metaTitle,
@@ -367,7 +364,7 @@ export const FAQ_PAGE_SEO_QUERY = groq`*[_type == "faqPage" && isActive == true]
   isActive
 }`;
 
-export const CONTACT_PAGE_SEO_QUERY = groq`*[_type == "contactPage" && isActive == true][0] {
+export const CONTACT_PAGE_SEO_QUERY = groq`*[_type == "contactPageSeo" && isActive == true][0] {
   _id,
   seo {
     metaTitle,
@@ -379,7 +376,7 @@ export const CONTACT_PAGE_SEO_QUERY = groq`*[_type == "contactPage" && isActive 
   isActive
 }`;
 
-export const PRIVACY_POLICY_SEO_QUERY = groq`*[_type == "privacyPolicy" && isActive == true][0] {
+export const PRIVACY_POLICY_SEO_QUERY = groq`*[_type == "privacyPolicyPage" && isActive == true][0] {
   _id,
   seo {
     metaTitle,
@@ -391,7 +388,7 @@ export const PRIVACY_POLICY_SEO_QUERY = groq`*[_type == "privacyPolicy" && isAct
   isActive
 }`;
 
-export const TERMS_CONDITIONS_SEO_QUERY = groq`*[_type == "termsConditions" && isActive == true][0] {
+export const TERMS_CONDITIONS_SEO_QUERY = groq`*[_type == "termsConditionsPage" && isActive == true][0] {
   _id,
   seo {
     metaTitle,

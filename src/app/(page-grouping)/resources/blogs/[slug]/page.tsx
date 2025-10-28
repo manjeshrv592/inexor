@@ -5,6 +5,7 @@ import {
   getBlogPostsForNavigation,
   getBlogPosts,
 } from "@/lib/sanity/blog";
+import { getResourcesPageSeo } from "@/lib/sanity";
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,22 +20,59 @@ interface BlogPostPageProps {
   }>;
 }
 
-// Generate metadata
+// Generate metadata with parent inheritance
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
+  
+  // Get blog post data for specific metadata
   const blogPost = await getBlogPostBySlug(slug);
+  
+  // Get parent resources page SEO data for inheritance
+  const parentSeoData = await getResourcesPageSeo();
 
   if (!blogPost) {
     return {
       title: "Blog Post Not Found",
+      description: "The requested blog post could not be found",
     };
   }
 
+  // Use parent SEO data as fallback for blog posts
+  const parentSeo = parentSeoData?.seo;
+
   return {
-    title: blogPost.title,
-    description: blogPost.excerpt,
+    title: blogPost.title || parentSeo?.metaTitle || "Resources",
+    description: blogPost.excerpt || parentSeo?.metaDescription || "Explore our resources and insights",
+    keywords: parentSeo?.metaKeywords,
+    robots: {
+      index: !parentSeo?.noIndex,
+      follow: !parentSeo?.noFollow,
+    },
+    openGraph: {
+      title: blogPost.title || parentSeo?.metaTitle || "Resources",
+      description: blogPost.excerpt || parentSeo?.metaDescription || "Explore our resources and insights",
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/resources/blogs/${slug}`,
+      siteName: "Inexor",
+      type: "article",
+      publishedTime: blogPost.publishedAt,
+      authors: blogPost.author?.name ? [blogPost.author.name] : undefined,
+      images: blogPost.featuredImage ? [
+        {
+          url: urlForFeaturedImage(blogPost.featuredImage, 1200, 630).url(),
+          width: 1200,
+          height: 630,
+          alt: blogPost.featuredImage.alt || blogPost.title,
+        }
+      ] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: blogPost.title || parentSeo?.metaTitle || "Resources",
+      description: blogPost.excerpt || parentSeo?.metaDescription || "Explore our resources and insights",
+      images: blogPost.featuredImage ? [urlForFeaturedImage(blogPost.featuredImage, 1200, 630).url()] : undefined,
+    },
   };
 }
 

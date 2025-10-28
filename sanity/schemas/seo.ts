@@ -1,5 +1,4 @@
 import { defineField, defineType } from "sanity";
-import { createImageField, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
 
 export default defineType({
   name: "seo",
@@ -52,6 +51,13 @@ export default defineType({
       type: "boolean",
       description: "Prevent search engines from following links on this page",
       initialValue: false,
+    }),
+    defineField({
+      name: "isActive",
+      title: "Is Active",
+      type: "boolean",
+      description: "Enable/disable this SEO configuration",
+      initialValue: true,
     }),
   ],
   preview: {

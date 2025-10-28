@@ -4,17 +4,62 @@ import {
   getServicesPageSettings,
   type Service,
 } from "@/lib/sanity/service";
+import { getServicesPageSeo } from "@/lib/sanity";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { truncateText } from "@/lib/utils/textUtils";
 import ServiceContent from "@/components/services/ServiceContent";
 import { urlForFeaturedImage } from "../../../../../sanity/lib/image";
+import { Metadata } from "next";
 
 interface ServicePageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+// Generate metadata with parent inheritance
+export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
+  const { slug } = await params;
+  
+  // Get service data for specific metadata if available
+  const service = await getServiceBySlug(slug);
+  
+  // Get parent services page SEO data for inheritance
+  const parentSeoData = await getServicesPageSeo();
+  
+  if (!service) {
+    return {
+      title: "Service Not Found",
+      description: "The requested service could not be found",
+    };
+  }
+
+  // Use parent SEO data as fallback for service pages
+  const parentSeo = parentSeoData?.seo;
+  
+  return {
+    title: service.title || parentSeo?.metaTitle || "Services",
+    description: service.excerpt || parentSeo?.metaDescription || "Discover our comprehensive range of services",
+    keywords: parentSeo?.metaKeywords,
+    robots: {
+      index: !parentSeo?.noIndex,
+      follow: !parentSeo?.noFollow,
+    },
+    openGraph: {
+      title: service.title || parentSeo?.metaTitle || "Services",
+      description: service.excerpt || parentSeo?.metaDescription || "Discover our comprehensive range of services",
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/services/${slug}`,
+      siteName: "Inexor",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: service.title || parentSeo?.metaTitle || "Services",
+      description: service.excerpt || parentSeo?.metaDescription || "Discover our comprehensive range of services",
+    },
+  };
 }
 
 // Generate static params for all services
