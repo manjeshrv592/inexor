@@ -71,7 +71,7 @@ const AboutPageContent = async () => {
         <div className="p-5 lg:px-12">
           {/* Page Header */}
           <h3 className="font-michroma mb-2 text-center text-xl text-orange-500">
-            {aboutPage?.pageTitle || "About Inexor"}
+            {aboutPage?.seo?.metaTitle || aboutPage?.pageTitle || "About Inexor"}
           </h3>
           {aboutPage?.pageSubtitle && (
             <p className="mb-4 text-center text-lg text-white">

@@ -14,7 +14,14 @@ export interface ContentSection {
 
 export interface AboutPageData {
   _id: string;
-  pageTitle: string;
+  pageTitle?: string; // Keep for backward compatibility
   pageSubtitle?: string;
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    metaKeywords?: string[];
+    noIndex?: boolean;
+    noFollow?: boolean;
+  };
   isActive: boolean;
 }

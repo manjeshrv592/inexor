@@ -219,6 +219,25 @@ export const FAQ_PAGE_QUERY = groq`*[_type == "faqPage" && isActive == true][0] 
   _id,
   pageTitle,
   pageDescription,
+  seo {
+    metaTitle,
+    metaDescription,
+    metaKeywords,
+    noIndex,
+    noFollow
+  },
+  sidebarImage {
+    asset->{
+      url,
+      mimeType,
+      metadata {
+        dimensions,
+        lqip
+      }
+    },
+    alt,
+    isGrayscale
+  },
   isActive
 }`;
 

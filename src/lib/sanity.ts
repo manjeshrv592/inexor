@@ -370,9 +370,9 @@ export interface FAQItem {
 
 export interface FAQPage {
   _id: string;
-  seo: Record<string, unknown>; // Generic object type instead of any
-  pageTitle: string;
-  pageDescription?: string;
+  seo: SEO;
+  pageTitle?: string; // Keep for backward compatibility
+  pageDescription?: string; // Keep for backward compatibility
   isActive: boolean;
 }
 

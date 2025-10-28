@@ -19,6 +19,12 @@ export default defineType({
       description: "Description text displayed below the page title",
     }),
     defineField({
+      name: "seo",
+      title: "SEO Settings",
+      type: "seo",
+      description: "SEO metadata for the Contact Us page",
+    }),
+    defineField({
       name: "isActive",
       title: "Is Active",
       type: "boolean",

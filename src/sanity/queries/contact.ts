@@ -36,6 +36,24 @@ export const officeLocationsQuery = groq`
 export const contactPageQuery = groq`
   *[_type == "contactPage" && isActive == true][0] {
     _id,
+    mainTitle,
+    subTitle,
+    description,
+    seo {
+      metaTitle,
+      metaDescription,
+      metaKeywords,
+      noIndex,
+      noFollow
+    },
+    isActive
+  }
+`;
+
+// Legacy query for backward compatibility - will be removed after migration
+export const contactPageLegacyQuery = groq`
+  *[_type == "contactPage" && isActive == true][0] {
+    _id,
     pageTitle,
     pageDescription,
     mainTitle,

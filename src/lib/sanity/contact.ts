@@ -33,24 +33,17 @@ export interface OfficeLocation {
 
 export interface ContactPageData {
   _id: string;
-  pageTitle: string;
-  pageDescription?: string;
+  pageTitle?: string; // Keep for backward compatibility
+  pageDescription?: string; // Keep for backward compatibility
   mainTitle?: string;
   subTitle?: string;
   description?: string;
   seo: {
-    metaTitle: string;
-    metaDescription: string;
-    keywords?: string[];
-    ogTitle?: string;
-    ogDescription?: string;
-    ogImage?: {
-      asset: {
-        _id: string;
-        url: string;
-        altText?: string;
-      };
-    };
+    metaTitle?: string;
+    metaDescription?: string;
+    metaKeywords?: string[];
+    noIndex?: boolean;
+    noFollow?: boolean;
   };
   isActive: boolean;
 }

@@ -3,6 +3,38 @@ import { groq } from "next-sanity";
 export const aboutPageQuery = groq`
   *[_type == "aboutPage" && isActive == true][0] {
     _id,
+    pageSubtitle,
+    sidebarImage {
+      asset-> {
+        url,
+        mimeType,
+        metadata {
+          dimensions {
+            width,
+            height
+          },
+          lqip
+        }
+      },
+      alt,
+      isGrayscale
+    },
+    content[],
+    seo {
+      metaTitle,
+      metaDescription,
+      metaKeywords,
+      noIndex,
+      noFollow
+    },
+    isActive
+  }
+`;
+
+// Legacy query for backward compatibility - will be removed after migration
+export const aboutPageLegacyQuery = groq`
+  *[_type == "aboutPage" && isActive == true][0] {
+    _id,
     pageTitle,
     pageSubtitle,
     sidebarImage {
