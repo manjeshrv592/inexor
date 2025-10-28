@@ -52,13 +52,6 @@ export default defineType({
       description: "Prevent search engines from following links on this page",
       initialValue: false,
     }),
-    defineField({
-      name: "isActive",
-      title: "Is Active",
-      type: "boolean",
-      description: "Enable/disable this SEO configuration",
-      initialValue: true,
-    }),
   ],
   preview: {
     select: {
