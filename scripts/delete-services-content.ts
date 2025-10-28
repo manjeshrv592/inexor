@@ -38,7 +38,7 @@ async function deleteServicesContent() {
 
     for (const page of servicesPages) {
       await client.delete(page._id);
-      console.log(`✅ Deleted services page settings: ${page.pageTitle}`);
+      console.log(`✅ Deleted services page settings: ${page.seo?.metaTitle || page._id}`);
     }
 
     console.log("🎉 Services content deletion completed successfully!");

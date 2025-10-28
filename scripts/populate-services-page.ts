@@ -548,9 +548,6 @@ async function populateServicesData() {
     console.log("⚙️ Creating Services page settings...");
     const servicesPage = {
       _type: "servicesPage",
-      pageTitle: "Our Services",
-      pageDescription:
-        "Comprehensive trade compliance and logistics services to support your global business expansion.",
       isActive: true,
       seo: {
         metaTitle: "Services - Inexor Global Trade Solutions",

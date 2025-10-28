@@ -6,19 +6,6 @@ export default defineType({
   type: "document",
   fields: [
     defineField({
-      name: "pageTitle",
-      title: "Page Title",
-      type: "string",
-      description: "Main title displayed on the Services page",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "pageDescription",
-      title: "Page Description",
-      type: "text",
-      description: "Description text displayed below the page title",
-    }),
-    defineField({
       name: "seo",
       title: "SEO Settings",
       type: "seo",
@@ -34,7 +21,7 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: "pageTitle",
+      title: "seo.metaTitle",
       isActive: "isActive",
     },
     prepare(selection) {
