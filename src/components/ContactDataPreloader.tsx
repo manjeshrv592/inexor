@@ -12,9 +12,16 @@ export default function ContactDataPreloader() {
     // Start preloading contact data as soon as the homepage loads
     const startPreloading = async () => {
       try {
-        await preloadContactData();
+        console.log('🚀 Starting contact data preloading...');
+        const result = await preloadContactData();
+        console.log('✅ Contact data preloading completed successfully!');
+        console.log('📊 Preloaded data summary:', {
+          contactInfo: result?.contactInfo ? 'Loaded' : 'Failed',
+          officeLocations: result?.officeLocations ? `${result.officeLocations.length} locations` : 'Failed',
+          seoData: result?.seoData ? 'Loaded' : 'Failed'
+        });
       } catch (error) {
-        console.error('Failed to preload contact data:', error);
+        console.error('❌ Failed to preload contact data:', error);
       }
     };
 

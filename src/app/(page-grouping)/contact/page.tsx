@@ -38,7 +38,10 @@ import {
   type OfficeLocation,
   fallbackContactInfo,
 } from "@/lib/sanity/contact";
-import { getPreloadedContactInfo, getPreloadedOfficeLocations } from "@/lib/preloader/contact-preloader";
+import {
+  getPreloadedContactInfo,
+  getPreloadedOfficeLocations,
+} from "@/lib/preloader/contact-preloader";
 import {
   Accordion,
   AccordionContent,
