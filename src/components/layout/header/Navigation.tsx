@@ -57,7 +57,11 @@ const Navigation: React.FC<NavigationProps> = ({
           href: `/services/${firstServiceSlug}`,
         };
       }
-      if (item.href === "/faq" && firstFAQCategorySlug && firstFAQQuestionSlug) {
+      if (
+        item.href === "/faq" &&
+        firstFAQCategorySlug &&
+        firstFAQQuestionSlug
+      ) {
         return {
           ...item,
           href: `/faq/${firstFAQCategorySlug}/${firstFAQQuestionSlug}`,
@@ -65,7 +69,13 @@ const Navigation: React.FC<NavigationProps> = ({
       }
       return item;
     });
-  }, [navigationItems, firstBlogSlug, firstServiceSlug, firstFAQCategorySlug, firstFAQQuestionSlug]);
+  }, [
+    navigationItems,
+    firstBlogSlug,
+    firstServiceSlug,
+    firstFAQCategorySlug,
+    firstFAQQuestionSlug,
+  ]);
 
   // Don't render navigation if no items are available
   if (displayItems.length === 0) {
@@ -88,7 +98,7 @@ const Navigation: React.FC<NavigationProps> = ({
       }}
     >
       <motion.ul
-        className="xxl:p-0 flex w-[calc(100%-20px)] flex-row-reverse items-center justify-between bg-[#1f1f1f] px-2 py-6 [box-shadow:inset_0_-4px_4px_0_rgba(0,0,0,0.25),inset_0_4px_4px_0_rgba(0,0,0,0.25)] sm:justify-center sm:gap-6 xl:h-full xl:w-auto xl:flex-col xl:bg-transparent xl:px-0 xl:py-8 xl:!opacity-100 xl:[box-shadow:none]"
+        className="xxl:p-0 flex w-[calc(100%-20px)] flex-row items-center justify-between bg-[#1f1f1f] px-2 py-6 [box-shadow:inset_0_-4px_4px_0_rgba(0,0,0,0.25),inset_0_4px_4px_0_rgba(0,0,0,0.25)] sm:justify-center sm:gap-6 xl:h-full xl:w-auto xl:flex-col xl:bg-transparent xl:px-0 xl:py-8 xl:!opacity-100 xl:[box-shadow:none]"
         initial={{ opacity: 0 }}
         animate={{
           opacity: isOpen ? 1 : 0,
@@ -120,7 +130,8 @@ const Navigation: React.FC<NavigationProps> = ({
               isActive={
                 item.href === "/resources" || item.href.startsWith("/resources")
                   ? activePagePath?.startsWith("/resources") || false
-                  : item.href === "/services" || item.href.startsWith("/services")
+                  : item.href === "/services" ||
+                      item.href.startsWith("/services")
                     ? activePagePath?.startsWith("/services") || false
                     : item.href === "/faq"
                       ? activePagePath?.startsWith("/faq") || false
