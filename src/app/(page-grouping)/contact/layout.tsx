@@ -2,10 +2,10 @@ import PagePanel from "@/components/ui/PagePanel";
 import PagePanelBg from "@/components/ui/PagePanelBg";
 import React from "react";
 import { Metadata } from "next";
-import { getContactPageSeo } from "@/lib/sanity";
+import { getPreloadedContactSeo } from "@/lib/preloader/contact-preloader";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const seoData = await getContactPageSeo();
+  const seoData = await getPreloadedContactSeo();
   
   if (!seoData?.seo) {
     return {

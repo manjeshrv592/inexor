@@ -34,12 +34,11 @@ import {
 } from "@/lib/validations/contact";
 import { Mail, PhoneIcon } from "lucide-react";
 import {
-  getContactInfo,
-  fallbackContactInfo,
   type ContactInfo,
-  getOfficeLocations,
   type OfficeLocation,
+  fallbackContactInfo,
 } from "@/lib/sanity/contact";
+import { getPreloadedContactInfo, getPreloadedOfficeLocations } from "@/lib/preloader/contact-preloader";
 import {
   Accordion,
   AccordionContent,
@@ -58,7 +57,7 @@ const ContactForm = () => {
   useEffect(() => {
     const fetchContactInfo = async () => {
       try {
-        const info = await getContactInfo();
+        const info = await getPreloadedContactInfo();
         if (info) {
           setContactInfo(info);
         }
@@ -69,7 +68,7 @@ const ContactForm = () => {
 
     const fetchOfficeLocations = async () => {
       try {
-        const locations = await getOfficeLocations();
+        const locations = await getPreloadedOfficeLocations();
         if (locations) {
           setOfficeLocations(locations);
         }

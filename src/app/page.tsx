@@ -14,6 +14,7 @@ import Testimonials from "@/components/sections/Testimonials";
 import WhoWeServe from "@/components/sections/WhoWeServe";
 import Why from "@/components/sections/Why";
 import HomeScroller from "@/components/HomeScroller";
+import ContactDataPreloader from "@/components/ContactDataPreloader";
 
 export async function generateMetadata(): Promise<Metadata> {
   const homeSeoData = await getHomeSeo();
@@ -82,6 +83,7 @@ const HomePage = async () => {
 
   return (
     <HomeScroller>
+      <ContactDataPreloader />
       <main>
         <Hero heroData={heroData} />
         <KeyValuePillars
