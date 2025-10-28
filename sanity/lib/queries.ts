@@ -144,8 +144,8 @@ export const ABOUT_SECTION_QUERY = groq`*[_type == "aboutSection" && isActive ==
 export const ABOUT_ITEMS_QUERY = groq`*[_type == "aboutItem"] | order(order asc) {
   _id,
   content,
-  slug,
-  order
+  order,
+  "serviceSlug": linkedService->slug.current
 }`;
 
 export const SERVICES_SECTION_QUERY = groq`*[_type == "servicesSection" && isActive == true][0] {

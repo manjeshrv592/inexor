@@ -11,22 +11,24 @@ export default defineType({
       title: "Service Content",
       type: "string",
       components: {
-        input: (props) => TextWithCounter({ ...props, maxLength: 30, fieldType: 'string' }),
+        input: (props) =>
+          TextWithCounter({ ...props, maxLength: 30, fieldType: "string" }),
       },
-      validation: (Rule) => 
+      validation: (Rule) =>
         Rule.required()
           .max(30)
-          .error('Service content must be 30 characters or less'),
+          .error("Service content must be 30 characters or less"),
     }),
     defineField({
-      name: "slug",
-      title: "Slug",
-      type: "slug",
-      options: {
-        source: "content",
-        maxLength: 96,
-      },
+      name: "linkedService",
+      title: "Linked Service",
+      description: "Select a service to link this card to",
+      type: "reference",
+      to: [{ type: "service" }],
       validation: (Rule) => Rule.required(),
+      options: {
+        disableNew: true,
+      },
     }),
     defineField({
       name: "order",
