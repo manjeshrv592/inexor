@@ -325,18 +325,6 @@ export const ABOUT_PAGE_SEO_QUERY = groq`*[_type == "aboutPageSeo" && isActive =
     metaTitle,
     metaDescription,
     metaKeywords,
-    openGraphTitle,
-    openGraphDescription,
-    openGraphImage {
-      asset->{
-        url,
-        metadata {
-          dimensions
-        }
-      },
-      alt
-    },
-    canonicalUrl,
     noIndex,
     noFollow
   },
@@ -349,18 +337,6 @@ export const RESOURCES_PAGE_SEO_QUERY = groq`*[_type == "resourcesPageSeo" && is
     metaTitle,
     metaDescription,
     metaKeywords,
-    openGraphTitle,
-    openGraphDescription,
-    openGraphImage {
-      asset->{
-        url,
-        metadata {
-          dimensions
-        }
-      },
-      alt
-    },
-    canonicalUrl,
     noIndex,
     noFollow
   },
@@ -373,18 +349,6 @@ export const SERVICES_PAGE_SEO_QUERY = groq`*[_type == "servicesPage" && isActiv
     metaTitle,
     metaDescription,
     metaKeywords,
-    openGraphTitle,
-    openGraphDescription,
-    openGraphImage {
-      asset->{
-        url,
-        metadata {
-          dimensions
-        }
-      },
-      alt
-    },
-    canonicalUrl,
     noIndex,
     noFollow
   },
@@ -397,18 +361,6 @@ export const FAQ_PAGE_SEO_QUERY = groq`*[_type == "faqPage" && isActive == true]
     metaTitle,
     metaDescription,
     metaKeywords,
-    openGraphTitle,
-    openGraphDescription,
-    openGraphImage {
-      asset->{
-        url,
-        metadata {
-          dimensions
-        }
-      },
-      alt
-    },
-    canonicalUrl,
     noIndex,
     noFollow
   },
@@ -421,18 +373,6 @@ export const CONTACT_PAGE_SEO_QUERY = groq`*[_type == "contactPage" && isActive 
     metaTitle,
     metaDescription,
     metaKeywords,
-    openGraphTitle,
-    openGraphDescription,
-    openGraphImage {
-      asset->{
-        url,
-        metadata {
-          dimensions
-        }
-      },
-      alt
-    },
-    canonicalUrl,
     noIndex,
     noFollow
   },
@@ -445,18 +385,6 @@ export const PRIVACY_POLICY_SEO_QUERY = groq`*[_type == "privacyPolicy" && isAct
     metaTitle,
     metaDescription,
     metaKeywords,
-    openGraphTitle,
-    openGraphDescription,
-    openGraphImage {
-      asset->{
-        url,
-        metadata {
-          dimensions
-        }
-      },
-      alt
-    },
-    canonicalUrl,
     noIndex,
     noFollow
   },
@@ -469,18 +397,6 @@ export const TERMS_CONDITIONS_SEO_QUERY = groq`*[_type == "termsConditions" && i
     metaTitle,
     metaDescription,
     metaKeywords,
-    openGraphTitle,
-    openGraphDescription,
-    openGraphImage {
-      asset->{
-        url,
-        metadata {
-          dimensions
-        }
-      },
-      alt
-    },
-    canonicalUrl,
     noIndex,
     noFollow
   },

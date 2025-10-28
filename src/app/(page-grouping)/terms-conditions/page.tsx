@@ -14,7 +14,6 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   const { seo } = seoData;
-  const openGraphImage = seo.openGraphImage?.asset?.url;
 
   return {
     title: seo.metaTitle || "Terms & Conditions",
@@ -24,43 +23,21 @@ export async function generateMetadata(): Promise<Metadata> {
       index: !seo.noIndex,
       follow: !seo.noFollow,
     },
-    alternates: seo.canonicalUrl
-      ? {
-          canonical: seo.canonicalUrl,
-        }
-      : undefined,
     openGraph: {
-      title: seo.openGraphTitle || seo.metaTitle || "Terms & Conditions",
+      title: seo.metaTitle || "Terms & Conditions",
       description:
-        seo.openGraphDescription ||
         seo.metaDescription ||
         "Our terms and conditions of service",
-      url:
-        seo.canonicalUrl ||
-        `${process.env.NEXT_PUBLIC_SITE_URL}/terms-conditions`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/terms-conditions`,
       siteName: "Inexor",
       type: "website",
-      images: openGraphImage
-        ? [
-            {
-              url: openGraphImage,
-              width:
-                seo.openGraphImage?.asset?.metadata?.dimensions?.width || 1200,
-              height:
-                seo.openGraphImage?.asset?.metadata?.dimensions?.height || 630,
-              alt: seo.openGraphImage?.alt || "Terms & Conditions",
-            },
-          ]
-        : undefined,
     },
     twitter: {
       card: "summary_large_image",
-      title: seo.openGraphTitle || seo.metaTitle || "Terms & Conditions",
+      title: seo.metaTitle || "Terms & Conditions",
       description:
-        seo.openGraphDescription ||
         seo.metaDescription ||
         "Our terms and conditions of service",
-      images: openGraphImage ? [openGraphImage] : undefined,
     },
   };
 }

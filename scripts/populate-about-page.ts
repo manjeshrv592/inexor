@@ -134,7 +134,6 @@ async function populateAboutPage() {
           "Learn about Inexor, your trusted partner for international IT hardware shipping with specialized focus on global trade compliance.",
         metaKeywords:
           "Inexor, IT hardware shipping, global trade compliance, international logistics, customs compliance",
-        canonicalUrl: "/about",
         noIndex: false,
         noFollow: false,
       },
