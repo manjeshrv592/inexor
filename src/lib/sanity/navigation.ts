@@ -84,7 +84,7 @@ export async function getNavigationConfig(): Promise<NavigationConfig | null> {
 // Convert NavigationConfig to NavigationItem array
 function convertConfigToItems(config: NavigationConfig): NavigationItem[] {
   if (!config) return [];
-
+  // wjnfiwqe
   return [
     { _id: "resources", ...config.resources, order: 3 },
     { _id: "services", ...config.services, order: 1 },
