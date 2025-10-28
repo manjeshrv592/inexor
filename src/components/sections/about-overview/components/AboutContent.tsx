@@ -22,25 +22,25 @@ const AboutContent: React.FC<AboutContentProps> = ({
     {
       _id: "1",
       content: "Item One",
-      slug: { current: "item-one" },
+      serviceSlug: "ior",
       order: 1,
     },
     {
       _id: "2",
       content: "Item Two",
-      slug: { current: "item-two" },
+      serviceSlug: "eor",
       order: 2,
     },
     {
       _id: "3",
       content: "Item Three",
-      slug: { current: "item-three" },
+      serviceSlug: "vat",
       order: 3,
     },
     {
       _id: "4",
       content: "Item Four",
-      slug: { current: "item-four" },
+      serviceSlug: "ddp",
       order: 4,
     },
   ];
@@ -60,7 +60,9 @@ const AboutContent: React.FC<AboutContentProps> = ({
       </div>
       <div className="grid grid-cols-2 gap-4 text-xs lg:grid-cols-2 xl:grid-cols-4 xl:gap-6">
         {items.map((item) => (
-          <ServiceCard key={item._id}>{item.content}</ServiceCard>
+          <ServiceCard key={item._id} serviceSlug={item.serviceSlug}>
+            {item.content}
+          </ServiceCard>
         ))}
       </div>
     </div>

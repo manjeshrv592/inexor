@@ -119,10 +119,8 @@ export interface AboutSection {
 export interface AboutItem {
   _id: string;
   content: string;
-  slug: {
-    current: string;
-  };
   order: number;
+  serviceSlug: string;
 }
 
 export async function getWhoWeServeItems(): Promise<WhoWeServeItem[]> {
@@ -232,7 +230,7 @@ export async function getResourcesPage(): Promise<ResourcesPage | null> {
     },
     isActive
   }`;
-  
+
   return client.fetch(query, {}, { next: { tags: ["resourcesPage"] } });
 }
 
@@ -421,13 +419,13 @@ export async function getFirstFAQSlugs(): Promise<FirstFAQSlugs> {
   return client.fetch(
     FIRST_FAQ_SLUG_QUERY,
     {},
-    { 
-      cache: 'force-cache',
-      next: { 
+    {
+      cache: "force-cache",
+      next: {
         tags: ["faq-categories", "faq-items"],
-        revalidate: 3600 // Cache for 1 hour
-      } 
-    }
+        revalidate: 3600, // Cache for 1 hour
+      },
+    },
   );
 }
 
@@ -531,7 +529,8 @@ export interface SEO {
     };
     alt?: string;
   };
-  ogImage?: { // Keep for backward compatibility
+  ogImage?: {
+    // Keep for backward compatibility
     asset: {
       url: string;
     };
@@ -573,12 +572,12 @@ export async function getPrivacyPolicyPage(): Promise<PrivacyPolicyPage | null> 
   return client.fetch(
     PRIVACY_POLICY_PAGE_QUERY,
     {},
-    { 
-      cache: 'force-cache',
-      next: { 
+    {
+      cache: "force-cache",
+      next: {
         tags: ["privacy-policy-page"],
-        revalidate: 86400 // Cache for 24 hours (privacy policy rarely changes)
-      } 
+        revalidate: 86400, // Cache for 24 hours (privacy policy rarely changes)
+      },
     },
   );
 }
@@ -587,12 +586,12 @@ export async function getPrivacyPolicyContent(): Promise<PrivacyPolicyContent | 
   return client.fetch(
     PRIVACY_POLICY_CONTENT_QUERY,
     {},
-    { 
-      cache: 'force-cache',
-      next: { 
+    {
+      cache: "force-cache",
+      next: {
         tags: ["privacy-policy-content"],
-        revalidate: 86400 // Cache for 24 hours (privacy policy rarely changes)
-      } 
+        revalidate: 86400, // Cache for 24 hours (privacy policy rarely changes)
+      },
     },
   );
 }
@@ -601,12 +600,12 @@ export async function getTermsConditionsPage(): Promise<TermsConditionsPage | nu
   return client.fetch(
     TERMS_CONDITIONS_PAGE_QUERY,
     {},
-    { 
-      cache: 'force-cache',
-      next: { 
+    {
+      cache: "force-cache",
+      next: {
         tags: ["terms-conditions-page"],
-        revalidate: 86400 // Cache for 24 hours (terms rarely change)
-      } 
+        revalidate: 86400, // Cache for 24 hours (terms rarely change)
+      },
     },
   );
 }
@@ -615,12 +614,12 @@ export async function getTermsConditionsContent(): Promise<TermsConditionsConten
   return client.fetch(
     TERMS_CONDITIONS_CONTENT_QUERY,
     {},
-    { 
-      cache: 'force-cache',
-      next: { 
+    {
+      cache: "force-cache",
+      next: {
         tags: ["terms-conditions-content"],
-        revalidate: 86400 // Cache for 24 hours (terms rarely change)
-      } 
+        revalidate: 86400, // Cache for 24 hours (terms rarely change)
+      },
     },
   );
 }
@@ -644,7 +643,11 @@ export interface AboutPageSeo {
 }
 
 export async function getAboutPageSeo(): Promise<AboutPageSeo | null> {
-  return client.fetch(ABOUT_PAGE_SEO_QUERY, {}, { next: { tags: ["about-page-seo"] } });
+  return client.fetch(
+    ABOUT_PAGE_SEO_QUERY,
+    {},
+    { next: { tags: ["about-page-seo"] } },
+  );
 }
 
 // Resources Page SEO interfaces and functions
@@ -655,7 +658,11 @@ export interface ResourcesPageSeo {
 }
 
 export async function getResourcesPageSeo(): Promise<ResourcesPageSeo | null> {
-  return client.fetch(RESOURCES_PAGE_SEO_QUERY, {}, { next: { tags: ["resources-page-seo"] } });
+  return client.fetch(
+    RESOURCES_PAGE_SEO_QUERY,
+    {},
+    { next: { tags: ["resources-page-seo"] } },
+  );
 }
 
 // Services Page SEO interfaces and functions
@@ -666,7 +673,11 @@ export interface ServicesPageSeo {
 }
 
 export async function getServicesPageSeo(): Promise<ServicesPageSeo | null> {
-  return client.fetch(SERVICES_PAGE_SEO_QUERY, {}, { next: { tags: ["services-page-seo"] } });
+  return client.fetch(
+    SERVICES_PAGE_SEO_QUERY,
+    {},
+    { next: { tags: ["services-page-seo"] } },
+  );
 }
 
 // FAQ Page SEO interfaces and functions
@@ -677,7 +688,11 @@ export interface FaqPageSeo {
 }
 
 export async function getFaqPageSeo(): Promise<FaqPageSeo | null> {
-  return client.fetch(FAQ_PAGE_SEO_QUERY, {}, { next: { tags: ["faq-page-seo"] } });
+  return client.fetch(
+    FAQ_PAGE_SEO_QUERY,
+    {},
+    { next: { tags: ["faq-page-seo"] } },
+  );
 }
 
 // Contact Page SEO interfaces and functions
@@ -688,7 +703,11 @@ export interface ContactPageSeo {
 }
 
 export async function getContactPageSeo(): Promise<ContactPageSeo | null> {
-  return client.fetch(CONTACT_PAGE_SEO_QUERY, {}, { next: { tags: ["contact-page-seo"] } });
+  return client.fetch(
+    CONTACT_PAGE_SEO_QUERY,
+    {},
+    { next: { tags: ["contact-page-seo"] } },
+  );
 }
 
 // Privacy Policy SEO interfaces and functions
@@ -700,15 +719,15 @@ export interface PrivacyPolicySeo {
 
 export async function getPrivacyPolicySeo(): Promise<PrivacyPolicySeo | null> {
   return client.fetch(
-    PRIVACY_POLICY_SEO_QUERY, 
-    {}, 
-    { 
-      cache: 'force-cache',
-      next: { 
+    PRIVACY_POLICY_SEO_QUERY,
+    {},
+    {
+      cache: "force-cache",
+      next: {
         tags: ["privacy-policy-seo"],
-        revalidate: 86400 // Cache for 24 hours (SEO rarely changes)
-      } 
-    }
+        revalidate: 86400, // Cache for 24 hours (SEO rarely changes)
+      },
+    },
   );
 }
 
@@ -721,14 +740,14 @@ export interface TermsConditionsSeo {
 
 export async function getTermsConditionsSeo(): Promise<TermsConditionsSeo | null> {
   return client.fetch(
-    TERMS_CONDITIONS_SEO_QUERY, 
-    {}, 
-    { 
-      cache: 'force-cache',
-      next: { 
+    TERMS_CONDITIONS_SEO_QUERY,
+    {},
+    {
+      cache: "force-cache",
+      next: {
         tags: ["terms-conditions-seo"],
-        revalidate: 86400 // Cache for 24 hours (SEO rarely changes)
-      } 
-    }
+        revalidate: 86400, // Cache for 24 hours (SEO rarely changes)
+      },
+    },
   );
 }
