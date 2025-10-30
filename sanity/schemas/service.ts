@@ -65,7 +65,8 @@ export default defineType({
       hotspot: true,
       includeAlt: true,
       includeCaption: false,
-      includeGrayscale: false,
+      includeGrayscale: true,
+      grayscaleDefault: false,
     }),
     defineField({
       name: "content",

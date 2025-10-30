@@ -23,6 +23,7 @@ export interface ServiceImage {
     };
   };
   alt?: string;
+  isGrayscale?: boolean;
 }
 
 export interface ServiceUseCaseStep {

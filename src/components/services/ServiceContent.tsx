@@ -22,7 +22,7 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
               <img
                 src={service.featuredImage ? urlForFeaturedImage(service.featuredImage, 800, 300).url() : "/img/left-image.jpg"}
                 alt={service.featuredImage?.alt || service.title}
-                className="w-full h-full object-cover grayscale"
+                className={`w-full h-full object-cover ${service.featuredImage?.isGrayscale !== false ? "grayscale" : ""}`}
               />
             </div>
             <div className="relative z-10 flex size-full items-center justify-center">

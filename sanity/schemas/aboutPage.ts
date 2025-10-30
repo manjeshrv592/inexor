@@ -1,6 +1,10 @@
 import { defineField, defineType } from "sanity";
 import { StringInputProps } from "sanity";
-import { createImageField, createInlineImageBlock, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
+import {
+  createImageField,
+  createInlineImageBlock,
+  IMAGE_UPLOAD_HELP_TEXT,
+} from "../lib/imageConfig";
 import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
@@ -15,12 +19,13 @@ export default defineType({
       description:
         "Main title displayed on the About Us page (25 characters max)",
       components: {
-        input: (props: StringInputProps) => TextWithCounter({ ...props, maxLength: 25, fieldType: 'string' }),
+        input: (props: StringInputProps) =>
+          TextWithCounter({ ...props, maxLength: 25, fieldType: "string" }),
       },
-      validation: (Rule) => 
+      validation: (Rule) =>
         Rule.required()
           .max(25)
-          .error('Page title must be 25 characters or less'),
+          .error("Page title must be 25 characters or less"),
     }),
     defineField({
       name: "pageSubtitle",
@@ -29,11 +34,11 @@ export default defineType({
       description:
         "Subtitle displayed below the main title (55 characters max)",
       components: {
-        input: (props: StringInputProps) => TextWithCounter({ ...props, maxLength: 55, fieldType: 'string' }),
+        input: (props: StringInputProps) =>
+          TextWithCounter({ ...props, maxLength: 55, fieldType: "string" }),
       },
-      validation: (Rule) => 
-        Rule.max(55)
-          .error('Page subtitle must be 55 characters or less'),
+      validation: (Rule) =>
+        Rule.max(55).error("Page subtitle must be 55 characters or less"),
     }),
     createImageField({
       name: "sidebarImage",
@@ -50,7 +55,8 @@ export default defineType({
       name: "content",
       title: "Page Content",
       type: "array",
-      description: "Rich content for the About Us page - add text, images, and process steps",
+      description:
+        "Rich content for the About Us page - add text, images, and process steps",
       of: [
         {
           type: "block",
