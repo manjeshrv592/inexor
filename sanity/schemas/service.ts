@@ -1,6 +1,10 @@
 import { defineField, defineType } from "sanity";
 import TextWithCounter from "../components/TextWithCounter";
-import { createImageField, createInlineImageBlock, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
+import {
+  createImageField,
+  createInlineImageBlock,
+  IMAGE_UPLOAD_HELP_TEXT,
+} from "../lib/imageConfig";
 
 export default defineType({
   name: "service",
@@ -13,12 +17,13 @@ export default defineType({
       type: "string",
       description: "Main service title displayed (e.g., 'IMPORTER OF RECORDS')",
       components: {
-        input: (props) => TextWithCounter({ ...props, maxLength: 55, fieldType: 'string' }),
+        input: (props) =>
+          TextWithCounter({ ...props, maxLength: 55, fieldType: "string" }),
       },
-      validation: (Rule) => 
+      validation: (Rule) =>
         Rule.required()
           .max(55)
-          .error('Service title must be 55 characters or less'),
+          .error("Service title must be 55 characters or less"),
     }),
     defineField({
       name: "shortDescription",
@@ -105,6 +110,20 @@ export default defineType({
                     name: "blank",
                     type: "boolean",
                   },
+                  {
+                    name: "color",
+                    type: "string",
+                    title: "Link Color",
+                    options: {
+                      list: [
+                        { title: "Brand Orange", value: "brandOrange" },
+                        { title: "Sky Blue", value: "skyBlue" },
+                      ],
+                      layout: "radio",
+                    },
+                    initialValue: "brandOrange",
+                    description: "Choose the color for this link",
+                  },
                 ],
               },
               {
@@ -117,6 +136,19 @@ export default defineType({
                     type: "string",
                     title: "Note",
                     description: "This will style text in brand orange color",
+                  },
+                ],
+              },
+              {
+                name: "skyBlue",
+                type: "object",
+                title: "Sky Blue",
+                fields: [
+                  {
+                    name: "note",
+                    type: "string",
+                    title: "Note",
+                    description: "This will style text in sky blue color",
                   },
                 ],
               },
@@ -159,12 +191,13 @@ export default defineType({
           type: "string",
           description: "Service heading for homepage",
           components: {
-            input: (props) => TextWithCounter({ ...props, maxLength: 55, fieldType: 'string' }),
+            input: (props) =>
+              TextWithCounter({ ...props, maxLength: 55, fieldType: "string" }),
           },
-          validation: (Rule) => 
+          validation: (Rule) =>
             Rule.required()
               .max(55)
-              .error('Heading must be 55 characters or less'),
+              .error("Heading must be 55 characters or less"),
         }),
         defineField({
           name: "description",
@@ -174,10 +207,10 @@ export default defineType({
           components: {
             input: (props) => TextWithCounter({ ...props, maxLength: 310 }),
           },
-          validation: (Rule) => 
+          validation: (Rule) =>
             Rule.required()
               .max(310)
-              .error('Homepage description must be 310 characters or less'),
+              .error("Homepage description must be 310 characters or less"),
         }),
         createImageField({
           name: "backgroundImage",

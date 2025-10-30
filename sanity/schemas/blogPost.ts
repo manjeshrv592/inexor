@@ -1,6 +1,10 @@
 import { defineField, defineType } from "sanity";
 import { StringInputProps } from "sanity";
-import { createImageField, createInlineImageBlock, IMAGE_UPLOAD_HELP_TEXT } from "../lib/imageConfig";
+import {
+  createImageField,
+  createInlineImageBlock,
+  IMAGE_UPLOAD_HELP_TEXT,
+} from "../lib/imageConfig";
 import TextWithCounter from "../components/TextWithCounter";
 
 export default defineType({
@@ -14,12 +18,13 @@ export default defineType({
       type: "string",
       description: "Blog post title (35 characters max)",
       components: {
-        input: (props: StringInputProps) => TextWithCounter({ ...props, maxLength: 35, fieldType: 'string' }),
+        input: (props: StringInputProps) =>
+          TextWithCounter({ ...props, maxLength: 35, fieldType: "string" }),
       },
-      validation: (Rule) => 
+      validation: (Rule) =>
         Rule.required()
           .max(35)
-          .error('Blog title must be 35 characters or less'),
+          .error("Blog title must be 35 characters or less"),
     }),
     defineField({
       name: "slug",
@@ -59,12 +64,13 @@ export default defineType({
           type: "string",
           description: "Author's full name (22 characters max)",
           components: {
-            input: (props: StringInputProps) => TextWithCounter({ ...props, maxLength: 22, fieldType: 'string' }),
+            input: (props: StringInputProps) =>
+              TextWithCounter({ ...props, maxLength: 22, fieldType: "string" }),
           },
-          validation: (Rule) => 
+          validation: (Rule) =>
             Rule.required()
               .max(22)
-              .error('Author name must be 22 characters or less'),
+              .error("Author name must be 22 characters or less"),
         },
         createImageField({
           name: "image",
@@ -128,6 +134,20 @@ export default defineType({
                     name: "blank",
                     type: "boolean",
                   },
+                  {
+                    name: "color",
+                    type: "string",
+                    title: "Link Color",
+                    options: {
+                      list: [
+                        { title: "Brand Orange", value: "brandOrange" },
+                        { title: "Sky Blue", value: "skyBlue" },
+                      ],
+                      layout: "radio",
+                    },
+                    initialValue: "brandOrange",
+                    description: "Choose the color for this link",
+                  },
                 ],
               },
               {
@@ -140,6 +160,19 @@ export default defineType({
                     type: "string",
                     title: "Note",
                     description: "This will style text in brand orange color",
+                  },
+                ],
+              },
+              {
+                name: "skyBlue",
+                type: "object",
+                title: "Sky Blue",
+                fields: [
+                  {
+                    name: "note",
+                    type: "string",
+                    title: "Note",
+                    description: "This will style text in sky blue color",
                   },
                 ],
               },

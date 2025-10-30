@@ -64,6 +64,50 @@ export default defineType({
                   },
                 ],
               },
+              {
+                name: "skyBlue",
+                type: "object",
+                title: "Sky Blue",
+                fields: [
+                  {
+                    name: "note",
+                    type: "string",
+                    title: "Note",
+                    description: "This will style text in sky blue color",
+                  },
+                ],
+              },
+              {
+                name: "link",
+                type: "object",
+                title: "Link",
+                fields: [
+                  {
+                    name: "href",
+                    type: "url",
+                    title: "URL",
+                  },
+                  {
+                    title: "Open in new tab",
+                    name: "blank",
+                    type: "boolean",
+                  },
+                  {
+                    name: "color",
+                    type: "string",
+                    title: "Link Color",
+                    options: {
+                      list: [
+                        { title: "Brand Orange", value: "brandOrange" },
+                        { title: "Sky Blue", value: "skyBlue" },
+                      ],
+                      layout: "radio",
+                    },
+                    initialValue: "brandOrange",
+                    description: "Choose the color for this link",
+                  },
+                ],
+              },
             ],
           },
         },

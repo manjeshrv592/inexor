@@ -225,18 +225,24 @@ const components: PortableTextComponents = {
         {children}
       </code>
     ),
-    link: ({ value, children }) => (
-      <a
-        href={value.href}
-        target={value.blank ? "_blank" : "_self"}
-        rel={value.blank ? "noopener noreferrer" : undefined}
-        className="text-brand-orange-500 hover:underline"
-      >
-        {children}
-      </a>
-    ),
+    link: ({ value, children }) => {
+      const colorClass = value.color === 'skyBlue' ? 'text-sky-blue' : 'text-brand-orange-500';
+      return (
+        <a
+          href={value.href}
+          target={value.blank ? "_blank" : "_self"}
+          rel={value.blank ? "noopener noreferrer" : undefined}
+          className={`${colorClass} hover:underline`}
+        >
+          {children}
+        </a>
+      );
+    },
     brandOrange: ({ children }) => (
       <span className="text-brand-orange-500">{children}</span>
+    ),
+    skyBlue: ({ children }) => (
+      <span className="text-sky-blue">{children}</span>
     ),
   },
 };

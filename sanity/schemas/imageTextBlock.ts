@@ -60,6 +60,20 @@ export default defineType({
                     name: "blank",
                     type: "boolean",
                   },
+                  {
+                    name: "color",
+                    type: "string",
+                    title: "Link Color",
+                    options: {
+                      list: [
+                        { title: "Brand Orange", value: "brandOrange" },
+                        { title: "Sky Blue", value: "skyBlue" },
+                      ],
+                      layout: "radio",
+                    },
+                    initialValue: "brandOrange",
+                    description: "Choose the color for this link",
+                  },
                 ],
               },
               {
@@ -72,6 +86,19 @@ export default defineType({
                     type: "string",
                     title: "Note",
                     description: "This will style text in brand orange color",
+                  },
+                ],
+              },
+              {
+                name: "skyBlue",
+                type: "object",
+                title: "Sky Blue",
+                fields: [
+                  {
+                    name: "note",
+                    type: "string",
+                    title: "Note",
+                    description: "This will style text in sky blue color",
                   },
                 ],
               },
@@ -120,9 +147,11 @@ export default defineType({
     prepare(selection) {
       const { title, subtitle, media } = selection;
       const layoutText = subtitle === "imageLeft" ? "Image Left" : "Text Left";
-      
+
       return {
-        title: title ? `${title.substring(0, 50)}${title.length > 50 ? "..." : ""}` : "Image & Text Block",
+        title: title
+          ? `${title.substring(0, 50)}${title.length > 50 ? "..." : ""}`
+          : "Image & Text Block",
         subtitle: `Layout: ${layoutText}`,
         media,
       };
