@@ -8,6 +8,12 @@ import styles from "../maps/styles/Maps.module.css";
 // Dynamically import the new SVG map component to avoid SSR issues
 const DynamicSvgMap = dynamic(() => import("../maps/SvgMapWrapper"), {
   ssr: false,
+  loading: () => (
+    <div className="flex h-full w-full items-center justify-center bg-gray-900">
+      <span className="sr-only">Loading interactive map</span>
+      <div className="h-8 w-8 rounded-full border-2 border-neutral-700 border-t-orange-500 animate-spin" />
+    </div>
+  ),
 });
 
 interface MapComponentProps {

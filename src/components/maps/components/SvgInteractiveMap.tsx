@@ -61,7 +61,6 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
   const svgRef = useRef<SVGSVGElement>(null);
   const [geoData, setGeoData] = useState<GeoJSONData | null>(null);
   // Removed hoveredItem state - no longer needed after removing debug tooltip
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("continents");
   const [selectedContinent, setSelectedContinent] = useState<string | null>(
@@ -295,7 +294,6 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
 
     const loadGeoData = async () => {
       try {
-        setLoading(true);
 
         const lowUrl = SVG_MAP_CONFIG.lowResDataUrl || SVG_MAP_CONFIG.dataUrl;
         const highUrl = SVG_MAP_CONFIG.highResDataUrl || SVG_MAP_CONFIG.dataUrl;
@@ -308,7 +306,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
             lowResData = parseAndProcess(lowRaw);
             setGeoData(lowResData);
           }
-        } catch (_) {
+        } catch {
           // Ignore; will fall back to high-res
         }
 
@@ -330,7 +328,7 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
           }
         }
       } finally {
-        setLoading(false);
+        // no-op
       }
     };
 
