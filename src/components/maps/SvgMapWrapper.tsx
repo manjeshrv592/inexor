@@ -1,7 +1,14 @@
 "use client";
 
 import React from "react";
-import SvgInteractiveMap from "./components/SvgInteractiveMap";
+import dynamic from "next/dynamic";
+
+const SvgInteractiveMap = dynamic(() => import("./components/SvgInteractiveMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full min-h-[400px] animate-pulse bg-gray-100" />
+  ),
+});
 
 interface SvgMapWrapperProps {
   mapsSection: {

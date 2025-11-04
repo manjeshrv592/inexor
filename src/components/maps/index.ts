@@ -1,12 +1,8 @@
-// Components
-export * from "./components";
-
 // SVG Map Components
 export { default as SvgMapWrapper } from "./SvgMapWrapper";
 export { default as SvgInteractiveMap } from "./components/SvgInteractiveMap";
 
 // Hooks
-export { useCountriesData } from "./hooks/useCountriesData";
 export { useSanityMapsData } from "./hooks/useSanityMapsData";
 
 // Types
@@ -18,17 +14,6 @@ export type {
   CountriesGeoJSON,
   CountryFeature,
 } from "./types";
-
-// Constants (Leaflet-based)
-export {
-  SERVICE_LOCATIONS,
-  MAP_CONFIG,
-  COUNTRIES_GEOJSON_URL,
-  TILE_LAYER_CONFIG,
-  COUNTRY_STYLE,
-  COUNTRY_HOVER_STYLE,
-  DEBOUNCE_DELAY,
-} from "./constants";
 
 // SVG Map Constants
 export {

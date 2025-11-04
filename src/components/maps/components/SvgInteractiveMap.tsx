@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { geoPath, geoMercator } from "d3-geo";
 import { zoom, zoomIdentity } from "d3-zoom";
 import { select } from "d3-selection";
+import { feature as topojsonFeature } from "topojson-client";
 import { ZoomIn, ZoomOut, Home /* , ArrowLeft */ } from "lucide-react";
 import type {
   GeoJsonProperties,
@@ -224,15 +225,19 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
   };
 
   useEffect(() => {
-    // Load GeoJSON data
+    // Load TopoJSON or GeoJSON data
     const loadGeoData = async () => {
       try {
         setLoading(true);
         const response = await fetch(SVG_MAP_CONFIG.dataUrl);
         if (!response.ok) {
-          throw new Error("Failed to load GeoJSON data");
+          throw new Error("Failed to load map data");
         }
-        const countries: GeoJSONData = await response.json();
+        const raw = await response.json();
+        const countries: GeoJSONData =
+          raw && raw.type === "Topology"
+            ? (topojsonFeature(raw, raw.objects.countries) as GeoJSONData)
+            : (raw as GeoJSONData);
 
         // Special handling for France MultiPolygon - split into separate features
         const processedFeatures = [];

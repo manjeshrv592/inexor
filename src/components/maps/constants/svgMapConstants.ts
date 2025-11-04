@@ -338,6 +338,6 @@ export const SVG_MAP_CONFIG = {
   initialX: 0,
   initialY: 0,
   zoomExtent: [1.0, 8] as [number, number],
-  dataUrl: "/world-countries.geojson",
+  dataUrl: "/world-countries.topojson",
   defaultProjection: "equirectangular" as ProjectionType,
 };
