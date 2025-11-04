@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+// Sending emails via Microsoft Graph API using application permissions
 import { ZodError } from "zod";
 import {
   contactFormSchema,
@@ -42,11 +42,10 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
 export async function POST(request: NextRequest) {
   console.log("🚀 API ROUTE CALLED - /api/contact");
   console.log("🔧 Environment check:");
-  console.log("   GMAIL_USER:", process.env.GMAIL_USER || "❌ MISSING");
-  console.log(
-    "   GMAIL_APP_PASSWORD:",
-    process.env.GMAIL_APP_PASSWORD || "❌ MISSING",
-  );
+  console.log("   MS_TENANT_ID:", process.env.MS_TENANT_ID || "❌ MISSING");
+  console.log("   MS_CLIENT_ID:", process.env.MS_CLIENT_ID || "❌ MISSING");
+  console.log("   MS_CLIENT_SECRET:", process.env.MS_CLIENT_SECRET ? "✅ PRESENT" : "❌ MISSING");
+  console.log("   MS_OFFICE_EMAIL:", process.env.MS_OFFICE_EMAIL || "❌ MISSING");
   console.log("   EMAIL_RECEIVER:", process.env.EMAIL_RECEIVER || "❌ MISSING");
   console.log("   RECAPTCHA_SECRET_KEY:", process.env.RECAPTCHA_SECRET_KEY ? "✅ PRESENT" : "❌ MISSING");
 
@@ -376,8 +375,8 @@ export async function POST(request: NextRequest) {
                 Have questions? Feel free to reach out to us anytime.
               </p>
               <p style="color: #f97316; margin: 0; font-size: 16px; font-weight: 500;">
-                <a href="mailto:${process.env.EMAIL_RECEIVER || process.env.GMAIL_USER}" style="color: #f97316; text-decoration: none;">
-                  ${process.env.EMAIL_RECEIVER || process.env.GMAIL_USER}
+                <a href="mailto:${process.env.EMAIL_RECEIVER || process.env.MS_OFFICE_EMAIL}" style="color: #f97316; text-decoration: none;">
+                  ${process.env.EMAIL_RECEIVER || process.env.MS_OFFICE_EMAIL}
                 </a>
               </p>
             </div>
@@ -397,16 +396,14 @@ export async function POST(request: NextRequest) {
       </html>
     `;
 
-    // Email configurations
+    // Email configurations for Microsoft Graph API
     const adminEmailData = {
-      from: process.env.GMAIL_USER,
-      to: process.env.EMAIL_RECEIVER || process.env.GMAIL_USER,
+      to: process.env.EMAIL_RECEIVER || process.env.MS_OFFICE_EMAIL,
       subject: `New Contact Form Submission${validatedData.service ? ` - ${validatedData.service}` : ""}`,
       html: adminEmailHtml,
     };
 
     const customerEmailData = {
-      from: process.env.GMAIL_USER,
       to: validatedData.email,
       subject: `Thank you for contacting Inexor${validatedData.service ? ` - ${validatedData.service}` : ""}`,
       html: customerEmailHtml,
@@ -432,48 +429,95 @@ export async function POST(request: NextRequest) {
     }
     console.log("================================");
 
-    // Send email using Gmail SMTP
-    if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
-      try {
-        console.log("📧 Attempting to send email via Gmail SMTP...");
-        console.log("🔧 Gmail User:", process.env.GMAIL_USER);
-        console.log("🔧 Email Receiver:", process.env.EMAIL_RECEIVER);
+    // Send emails using Microsoft Graph API (application permissions)
+    async function getAzureAccessToken() {
+      const tenantId = process.env.MS_TENANT_ID;
+      const clientId = process.env.MS_CLIENT_ID;
+      const clientSecret = process.env.MS_CLIENT_SECRET;
 
-        // Create transporter using Gmail SMTP
-        const transporter = nodemailer.createTransport({
-          service: "gmail",
-          auth: {
-            user: process.env.GMAIL_USER,
-            pass: process.env.GMAIL_APP_PASSWORD,
-          },
-        });
-
-        console.log("🔧 Testing SMTP connection...");
-        await transporter.verify();
-        console.log("✅ SMTP connection verified!");
-
-        console.log("📧 Sending admin notification email...");
-        // Send admin notification email
-        const adminInfo = await transporter.sendMail(adminEmailData);
-        console.log("✅ Admin email sent successfully!");
-        console.log("📧 Admin Message ID:", adminInfo.messageId);
-        console.log("📧 Admin email sent to:", adminInfo.envelope?.to);
-
-        console.log("📧 Sending customer confirmation email...");
-        // Send customer confirmation email
-        const customerInfo = await transporter.sendMail(customerEmailData);
-        console.log("✅ Customer confirmation email sent successfully!");
-        console.log("📧 Customer Message ID:", customerInfo.messageId);
-        console.log("📧 Customer email sent to:", customerInfo.envelope?.to);
-      } catch (emailError) {
-        console.error("❌ Gmail SMTP failed:", emailError);
-        console.log("ℹ️ Form data is still logged above");
+      if (!tenantId || !clientId || !clientSecret) {
+        throw new Error("Azure credentials missing: MS_TENANT_ID/MS_CLIENT_ID/MS_CLIENT_SECRET");
       }
-    } else {
-      console.log("❌ Gmail credentials not found in environment variables");
-      console.log(
-        "ℹ️ Please check GMAIL_USER and GMAIL_APP_PASSWORD in .env.local",
-      );
+
+      const tokenUrl = `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`;
+      const params = new URLSearchParams();
+      params.append("client_id", clientId);
+      params.append("client_secret", clientSecret);
+      params.append("grant_type", "client_credentials");
+      params.append("scope", "https://graph.microsoft.com/.default");
+
+      const resp = await fetch(tokenUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString(),
+      });
+
+      if (!resp.ok) {
+        const errText = await resp.text();
+        throw new Error(`Failed to acquire Azure token: ${resp.status} ${errText}`);
+      }
+      const json = await resp.json();
+      return json.access_token as string;
+    }
+
+    async function sendMailViaGraph(
+      accessToken: string,
+      senderEmail: string,
+      toEmail: string,
+      subject: string,
+      htmlContent: string,
+    ) {
+      const endpoint = `https://graph.microsoft.com/v1.0/users/${encodeURIComponent(senderEmail)}/sendMail`;
+      const payload = {
+        message: {
+          subject,
+          body: { contentType: "HTML", content: htmlContent },
+          toRecipients: [{ emailAddress: { address: toEmail } }],
+        },
+        saveToSentItems: true,
+      };
+
+      const resp = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!resp.ok) {
+        const errText = await resp.text();
+        throw new Error(`Graph sendMail failed: ${resp.status} ${errText}`);
+      }
+    }
+
+    try {
+      console.log("📧 Attempting to send emails via Microsoft Graph API...");
+      const sender = process.env.MS_OFFICE_EMAIL;
+      const adminRecipient = adminEmailData.to;
+      const customerRecipient = customerEmailData.to;
+
+      if (!sender) {
+        throw new Error("MS_OFFICE_EMAIL is not configured");
+      }
+      if (!adminRecipient) {
+        throw new Error("EMAIL_RECEIVER/MS_OFFICE_EMAIL is not configured");
+      }
+
+      const token = await getAzureAccessToken();
+      console.log("✅ Azure access token acquired");
+
+      console.log("📧 Sending admin notification email via Graph...");
+      await sendMailViaGraph(token, sender, adminRecipient, adminEmailData.subject, adminEmailData.html);
+      console.log("✅ Admin email sent via Graph");
+
+      console.log("📧 Sending customer confirmation email via Graph...");
+      await sendMailViaGraph(token, sender, customerRecipient, customerEmailData.subject, customerEmailData.html);
+      console.log("✅ Customer email sent via Graph");
+    } catch (emailError) {
+      console.error("❌ Microsoft Graph email sending failed:", emailError);
+      console.log("ℹ️ Form data is still logged above");
     }
 
     return NextResponse.json(
