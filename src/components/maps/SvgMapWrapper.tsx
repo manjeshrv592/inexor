@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 const SvgInteractiveMap = dynamic(() => import("./components/SvgInteractiveMap"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-full min-h-[400px] animate-pulse bg-gray-100" />
+    <div className="w-full h-full min-h-[400px]">Loading...</div>
   ),
 });
 
