@@ -45,20 +45,29 @@ export default async function RootLayout({
 
   // Fetch first FAQ slugs server-side for navigation
   const firstFAQSlugs = await getFirstFAQSlugs();
-  const firstFAQCategorySlug = firstFAQSlugs?.firstCategory?.slug?.current || null;
-  const firstFAQQuestionSlug = firstFAQSlugs?.firstQuestion?.slug?.current || null;
+  const firstFAQCategorySlug =
+    firstFAQSlugs?.firstCategory?.slug?.current || null;
+  const firstFAQQuestionSlug =
+    firstFAQSlugs?.firstQuestion?.slug?.current || null;
 
   return (
     <ViewTransitions>
       <html lang="en" suppressHydrationWarning>
+        <head>
+          <link
+            rel="prefetch"
+            href="/world-countries.topojson"
+            crossOrigin="anonymous"
+          />
+        </head>
         <body
           className={`${michroma.variable} ${raleway.variable} bg-[#050505] text-white antialiased`}
         >
           <AuthProvider>
             <HomeScrollProvider>
               <PrefetchProvider>
-                <Header 
-                  firstBlogSlug={firstBlogSlug} 
+                <Header
+                  firstBlogSlug={firstBlogSlug}
                   firstServiceSlug={firstServiceSlug}
                   firstFAQCategorySlug={firstFAQCategorySlug}
                   firstFAQQuestionSlug={firstFAQQuestionSlug}

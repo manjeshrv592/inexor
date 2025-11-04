@@ -1,13 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 
 const SvgInteractiveMap = dynamic(() => import("./components/SvgInteractiveMap"), {
   ssr: false,
-  loading: () => (
-    <div className="w-full h-full min-h-[400px]">Loading...</div>
-  ),
 });
 
 interface SvgMapWrapperProps {
@@ -32,13 +29,40 @@ const SvgMapWrapper: React.FC<SvgMapWrapperProps> = ({
   serviceLocations,
   onInteraction,
 }) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    // Lazily mount when at least 10% visible
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="w-full h-full min-h-[400px]">
-      <SvgInteractiveMap
-        mapsSection={mapsSection}
-        serviceLocations={serviceLocations}
-        onInteraction={onInteraction}
-      />
+    <div ref={containerRef} className="w-full h-full min-h-[400px]">
+      {isVisible ? (
+        <SvgInteractiveMap
+          mapsSection={mapsSection}
+          serviceLocations={serviceLocations}
+          onInteraction={onInteraction}
+        />
+      ) : (
+        <div className="w-full min-h-[400px]" />
+      )}
     </div>
   );
 };

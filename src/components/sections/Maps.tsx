@@ -10,15 +10,10 @@ import Section from "../layout/Section";
 // Dynamic import of the actual map component to prevent SSR issues
 const MapComponent = dynamic(() => import("./MapComponent"), {
   ssr: false,
-  loading: () => (
-    <div className="flex h-[calc(100vh-100px)] w-full items-center justify-center">
-      <div className="text-gray-400">Loading map...</div>
-    </div>
-  ),
 });
 
 const Maps = () => {
-  const { mapsSection } = useSanityMapsData();
+  const { mapsSection, loading, error } = useSanityMapsData();
   // const [hasInteracted, setHasInteracted] = useState(false);
 
   // Fallback content if no Sanity data is available
@@ -33,6 +28,46 @@ const Maps = () => {
   const handleMapInteraction = useCallback(() => {
     // setHasInteracted(true);
   }, []);
+
+  if (loading) {
+    return (
+      <Section className="">
+        <Container>
+          <div className="flex h-[calc(100vh-100px)] w-full items-center justify-center">
+            <div
+              className="h-8 w-8 animate-spin rounded-full border-4 border-gray-700 border-t-orange-500"
+              aria-label="Loading"
+              role="status"
+            ></div>
+          </div>
+        </Container>
+      </Section>
+    );
+  }
+
+  if (error) {
+    return (
+      <Section className="">
+        <Container>
+          <div className="flex h-[calc(100vh-100px)] w-full items-center justify-center">
+            <div className="text-red-400">Error loading map: {error}</div>
+          </div>
+        </Container>
+      </Section>
+    );
+  }
+
+  if (!mapsSection) {
+    return (
+      <Section className="">
+        <Container>
+          <div className="flex h-[calc(100vh-100px)] w-full items-center justify-center">
+            <div className="text-gray-400">No maps configuration found</div>
+          </div>
+        </Container>
+      </Section>
+    );
+  }
 
   return (
     <Section className="">

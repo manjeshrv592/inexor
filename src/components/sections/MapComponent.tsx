@@ -8,11 +8,6 @@ import styles from "../maps/styles/Maps.module.css";
 // Dynamically import the new SVG map component to avoid SSR issues
 const DynamicSvgMap = dynamic(() => import("../maps/SvgMapWrapper"), {
   ssr: false,
-  loading: () => (
-    <div className="flex h-full w-full items-center justify-center bg-gray-900">
-      <div className="text-gray-400">Loading map...</div>
-    </div>
-  ),
 });
 
 interface MapComponentProps {
@@ -21,16 +16,6 @@ interface MapComponentProps {
 
 const MapComponent: React.FC<MapComponentProps> = ({ onInteraction }) => {
   const { mapsSection, serviceLocations, loading, error } = useSanityMapsData();
-
-  if (loading) {
-    return (
-      <div className={styles.mapContainer}>
-        <div className="flex h-full w-full items-center justify-center bg-gray-900">
-          <div className="text-gray-400">Loading map configuration...</div>
-        </div>
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -42,7 +27,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onInteraction }) => {
     );
   }
 
-  if (!mapsSection) {
+  if (!mapsSection && !loading) {
     return (
       <div className={styles.mapContainer}>
         <div className="flex h-full w-full items-center justify-center bg-gray-900">
@@ -50,6 +35,11 @@ const MapComponent: React.FC<MapComponentProps> = ({ onInteraction }) => {
         </div>
       </div>
     );
+  }
+
+  // During loading, Maps.tsx handles the spinner. Avoid rendering with null data here.
+  if (!mapsSection) {
+    return null;
   }
 
   return (

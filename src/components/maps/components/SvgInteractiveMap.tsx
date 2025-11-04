@@ -86,6 +86,8 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
   const zoomBehaviorRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(
     null,
   );
+  // Track current zoom/pan transform to preserve viewport across re-renders
+  const currentTransformRef = useRef(zoomIdentity);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
   
   // SVG path generation for button styling (matching design system)
@@ -225,118 +227,108 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
   };
 
   useEffect(() => {
-    // Load TopoJSON or GeoJSON data
+    // Load TopoJSON or GeoJSON data with progressive resolution swap
+    const parseAndProcess = (raw: unknown): GeoJSONData => {
+      const isTopology =
+        typeof raw === "object" &&
+        raw !== null &&
+        "type" in raw &&
+        (raw as { type?: string }).type === "Topology";
+
+      let countries: GeoJSONData;
+      if (isTopology) {
+        const topo = raw as { type: string; objects: Record<string, unknown> };
+        const countriesObject = topo.objects["countries"];
+        countries = topojsonFeature(topo, countriesObject) as GeoJSONData;
+      } else {
+        countries = raw as GeoJSONData;
+      }
+
+      const processedFeatures: Feature<Geometry, GeoJsonProperties>[] = [];
+
+      for (const feature of countries.features) {
+        const countryName = feature.properties?.name || feature.properties?.NAME || "";
+
+        if (countryName === "France" && feature.geometry.type === "MultiPolygon") {
+          const coordinates = feature.geometry.coordinates;
+          coordinates.forEach((polygon) => {
+            if (polygon[0] && polygon[0][0]) {
+              const firstCoord = polygon[0][0];
+              const newFeature = {
+                ...feature,
+                geometry: { type: "Polygon", coordinates: polygon },
+              } as Feature<Geometry, GeoJsonProperties>;
+
+              if (firstCoord[0] < -30) {
+                newFeature.properties = { ...feature.properties, NAME: "French Guiana", name: "French Guiana" };
+              } else {
+                newFeature.properties = { ...feature.properties, NAME: "France", name: "France" };
+              }
+              processedFeatures.push(newFeature);
+            }
+          });
+        } else if (countryName === "Russia" && feature.geometry.type === "MultiPolygon") {
+          const coordinates = feature.geometry.coordinates;
+          coordinates.forEach((polygon) => {
+            if (polygon[0] && polygon[0][0]) {
+              const firstCoord = polygon[0][0];
+              const newFeature = {
+                ...feature,
+                geometry: { type: "Polygon", coordinates: polygon },
+              } as Feature<Geometry, GeoJsonProperties>;
+
+              if (firstCoord[0] > 10 && firstCoord[0] < 30) {
+                newFeature.properties = { ...feature.properties, NAME: "Kaliningrad", name: "Kaliningrad" };
+              } else {
+                newFeature.properties = { ...feature.properties, NAME: "Russia", name: "Russia" };
+              }
+              processedFeatures.push(newFeature);
+            }
+          });
+        } else {
+          processedFeatures.push(feature);
+        }
+      }
+
+      return { ...countries, features: processedFeatures };
+    };
+
     const loadGeoData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(SVG_MAP_CONFIG.dataUrl);
-        if (!response.ok) {
-          throw new Error("Failed to load map data");
+
+        const lowUrl = SVG_MAP_CONFIG.lowResDataUrl || SVG_MAP_CONFIG.dataUrl;
+        const highUrl = SVG_MAP_CONFIG.highResDataUrl || SVG_MAP_CONFIG.dataUrl;
+
+        let lowResData: GeoJSONData | null = null;
+        try {
+          const lowResResp = await fetch(lowUrl, { cache: "force-cache" });
+          if (lowResResp.ok) {
+            const lowRaw = await lowResResp.json();
+            lowResData = parseAndProcess(lowRaw);
+            setGeoData(lowResData);
+          }
+        } catch (_) {
+          // Ignore; will fall back to high-res
         }
-        const raw = await response.json();
-        const countries: GeoJSONData =
-          raw && raw.type === "Topology"
-            ? (topojsonFeature(raw, raw.objects.countries) as GeoJSONData)
-            : (raw as GeoJSONData);
 
-        // Special handling for France MultiPolygon - split into separate features
-        const processedFeatures = [];
+        try {
+          const highResResp = await fetch(highUrl, { cache: "force-cache" });
+          if (highResResp.ok) {
+            const highRaw = await highResResp.json();
+            const highResData = parseAndProcess(highRaw);
 
-        for (const feature of countries.features) {
-          const countryName =
-            feature.properties?.name || feature.properties?.NAME || "";
-
-          if (
-            countryName === "France" &&
-            feature.geometry.type === "MultiPolygon"
-          ) {
-            // Split France MultiPolygon into separate features
-            const coordinates = feature.geometry.coordinates;
-
-            coordinates.forEach((polygon) => {
-              if (polygon[0] && polygon[0][0]) {
-                const firstCoord = polygon[0][0];
-                const newFeature = {
-                  ...feature,
-                  geometry: {
-                    type: "Polygon",
-                    coordinates: polygon,
-                  },
-                };
-
-                // Determine if this polygon is in South America (French Guiana)
-                if (firstCoord[0] < -30) {
-                  // This is French Guiana or Caribbean territories
-                  newFeature.properties = {
-                    ...feature.properties,
-                    NAME: "French Guiana",
-                    name: "French Guiana",
-                  };
-                } else {
-                  // This is mainland France or European territories
-                  newFeature.properties = {
-                    ...feature.properties,
-                    NAME: "France",
-                    name: "France",
-                  };
-                }
-
-                processedFeatures.push(newFeature);
-              }
-            });
-          } else if (
-            countryName === "Russia" &&
-            feature.geometry.type === "MultiPolygon"
-          ) {
-            // Split Russia MultiPolygon to separate Kaliningrad (Europe) from main Russia (Asia)
-            const coordinates = feature.geometry.coordinates;
-
-            coordinates.forEach((polygon) => {
-              if (polygon[0] && polygon[0][0]) {
-                const firstCoord = polygon[0][0];
-                const newFeature = {
-                  ...feature,
-                  geometry: {
-                    type: "Polygon",
-                    coordinates: polygon,
-                  },
-                };
-
-                // Kaliningrad Oblast is around 20°E, 54°N (longitude < 30°E and longitude > 10°E)
-                // Main Russia starts from around 30°E eastward
-                if (firstCoord[0] > 10 && firstCoord[0] < 30) {
-                  // This is Kaliningrad Oblast - belongs to Europe
-                  newFeature.properties = {
-                    ...feature.properties,
-                    NAME: "Kaliningrad",
-                    name: "Kaliningrad",
-                  };
-                } else {
-                  // This is main Russia - belongs to Asia
-                  newFeature.properties = {
-                    ...feature.properties,
-                    NAME: "Russia",
-                    name: "Russia",
-                  };
-                }
-
-                processedFeatures.push(newFeature);
-              }
-            });
-          } else {
-            // Keep other countries as-is
-            processedFeatures.push(feature);
+            if (!lowResData) {
+              setGeoData(highResData);
+            } else if (SVG_MAP_CONFIG.enableProgressiveSwap) {
+              setGeoData(highResData);
+            }
+          }
+        } catch (err) {
+          if (!lowResData) {
+            setError(err instanceof Error ? err.message : "Unknown error occurred");
           }
         }
-
-        const processedCountries = {
-          ...countries,
-          features: processedFeatures,
-        };
-
-        setGeoData(processedCountries);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Unknown error occurred");
       } finally {
         setLoading(false);
       }
@@ -458,6 +450,8 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
     if (!geoData || !svgRef.current) return;
 
     const svg = select(svgRef.current);
+    // Snapshot current transform to preserve viewport on re-render
+    const prevTransform = currentTransformRef.current;
     svg.selectAll("*").remove(); // Clear previous render
 
     // Set up projection - using Mercator like Google Maps
@@ -516,18 +510,26 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
         // Update country border widths to maintain consistent 1px appearance
         g.selectAll("path").attr("stroke-width", 1 / event.transform.k);
 
-        // Transform state tracking removed (was unused)
+        // Track current transform for re-application on redraws
+        currentTransformRef.current = event.transform;
       });
 
     svg.call(zoomBehavior);
 
-    // Set initial zoom level with optimal positioning
-    svg.call(
-      zoomBehavior.transform,
-      zoomIdentity
-        .translate(SVG_MAP_CONFIG.initialX, SVG_MAP_CONFIG.initialY)
-        .scale(SVG_MAP_CONFIG.initialZoom),
-    );
+    // Reapply previous transform if present; otherwise set initial view
+    if (
+      prevTransform &&
+      (prevTransform.k !== 1 || prevTransform.x !== 0 || prevTransform.y !== 0)
+    ) {
+      svg.call(zoomBehavior.transform, prevTransform);
+    } else {
+      svg.call(
+        zoomBehavior.transform,
+        zoomIdentity
+          .translate(SVG_MAP_CONFIG.initialX, SVG_MAP_CONFIG.initialY)
+          .scale(SVG_MAP_CONFIG.initialZoom),
+      );
+    }
 
     // Store references for zoom functionality
     svgElementRef.current = svg;
@@ -881,17 +883,6 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
     isTouchDevice,
     isMapEnabled,
   ]);
-
-  if (loading) {
-    return (
-      <div
-        className="flex h-full w-full items-center justify-center"
-        style={{ backgroundColor: "#050505" }}
-      >
-        <div className="text-xl text-white">Loading map data...</div>
-      </div>
-    );
-  }
 
   if (error) {
     return (
