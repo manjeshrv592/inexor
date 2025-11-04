@@ -49,8 +49,8 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
           src={
             backgroundImage?.asset?.url
               ? urlForImageWithParams(backgroundImage, {
-                  width: 800,
-                  height: 350,
+                  width: 1200,
+                  height: 500,
                   quality: 85,
                   format: "webp",
                   fit: "crop",
