@@ -3,9 +3,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 
-const SvgInteractiveMap = dynamic(() => import("./components/SvgInteractiveMap"), {
-  ssr: false,
-});
+const SvgInteractiveMap = dynamic(
+  () => import("./components/SvgInteractiveMap"),
+  {
+    ssr: false,
+  },
+);
 
 interface SvgMapWrapperProps {
   mapsSection: {
@@ -45,7 +48,7 @@ const SvgMapWrapper: React.FC<SvgMapWrapperProps> = ({
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     observer.observe(el);
@@ -53,7 +56,7 @@ const SvgMapWrapper: React.FC<SvgMapWrapperProps> = ({
   }, []);
 
   return (
-    <div ref={containerRef} className="w-full h-full min-h-[400px]">
+    <div ref={containerRef} className="h-full min-h-[400px] w-full">
       {isVisible ? (
         <SvgInteractiveMap
           mapsSection={mapsSection}
@@ -61,7 +64,7 @@ const SvgMapWrapper: React.FC<SvgMapWrapperProps> = ({
           onInteraction={onInteraction}
         />
       ) : (
-        <div className="w-full min-h-[400px]" />
+        <div className="min-h-[400px] w-full" />
       )}
     </div>
   );

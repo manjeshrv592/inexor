@@ -55,6 +55,12 @@ export default async function RootLayout({
       <html lang="en" suppressHydrationWarning>
         <head>
           <link
+            rel="preload"
+            href="/world-continents-low.topojson"
+            as="fetch"
+            crossOrigin="anonymous"
+          />
+          <link
             rel="prefetch"
             href="/world-countries.topojson"
             crossOrigin="anonymous"
