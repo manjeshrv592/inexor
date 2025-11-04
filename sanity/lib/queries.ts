@@ -171,7 +171,8 @@ export const SERVICES_FOR_HOMEPAGE_QUERY = groq`*[_type == "service" && isActive
           lqip
         }
       },
-      alt
+      alt,
+      isGrayscale
     }
   },
   order,

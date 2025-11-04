@@ -22,6 +22,7 @@ interface ServiceComponentProps {
       };
     };
     alt?: string;
+    isGrayscale?: boolean;
   };
   slug: string;
   title?: string;
@@ -38,7 +39,11 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
   return (
     <div className="absolute size-full">
       {/* Background Image with native img */}
-      <div className="absolute z-10 size-full grayscale filter">
+      <div
+        className={`absolute z-10 size-full filter ${
+          backgroundImage?.isGrayscale !== false ? "grayscale" : ""
+        }`}
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={
