@@ -56,7 +56,7 @@ export default async function RootLayout({
         <head>
           <link
             rel="preload"
-            href="/world-continents-low.topojson"
+            href="/world-countries-low.topojson"
             as="fetch"
             crossOrigin="anonymous"
           />

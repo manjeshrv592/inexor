@@ -342,7 +342,7 @@ export const SVG_MAP_CONFIG = {
   dataUrl: "/world-countries.topojson",
   // Optional low-res dataset for progressive swap; code will fallback
   // to `dataUrl` if this path is missing.
-  lowResDataUrl: "/world-continents-low.topojson",
+  lowResDataUrl: "/world-countries-low.topojson",
   highResDataUrl: "/world-countries.topojson",
   enableProgressiveSwap: true,
   defaultProjection: "equirectangular" as ProjectionType,
