@@ -5,6 +5,7 @@ import { Button } from "./button";
 import { useTransitionRouter } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { Phone } from "lucide-react";
+import { hasPrefetched, markPrefetched } from "@/lib/prefetchRegistry";
 
 interface ContactUsButtonProps {
   className?: string;
@@ -43,9 +44,13 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({
 
   // Prewarm the contact route to reduce delay
   useEffect(() => {
-    try {
-      router.prefetch?.("/contact");
-    } catch {}
+    const href = "/contact";
+    if (!hasPrefetched(href)) {
+      try {
+        router.prefetch?.(href);
+        markPrefetched(href);
+      } catch {}
+    }
   }, [router]);
 
   const handleContactClick = () => {
@@ -82,9 +87,13 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({
     <Button
       onClick={handleContactClick}
       onMouseEnter={() => {
-        try {
-          router.prefetch?.("/contact");
-        } catch {}
+        const href = "/contact";
+        if (!hasPrefetched(href)) {
+          try {
+            router.prefetch?.(href);
+            markPrefetched(href);
+          } catch {}
+        }
       }}
       variant={hasScrolledPastHero ? "default" : "outline"}
       size={hasScrolledPastHero ? "sm" : undefined}

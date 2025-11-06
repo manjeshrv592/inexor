@@ -4,6 +4,7 @@ import { useTransitionRouter } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { hasPrefetched, markPrefetched } from "@/lib/prefetchRegistry";
 
 interface NavItemProps {
   href: string;
@@ -81,10 +82,13 @@ const NavItem: React.FC<NavItemProps> = ({
       <button
         onClick={() => handleNavigation(href)}
         onMouseEnter={() => {
-          try {
-            // Prefetch destination to reduce transition delay
-            router.prefetch?.(href);
-          } catch {}
+          if (!hasPrefetched(href)) {
+            try {
+              // Prefetch destination to reduce transition delay
+              router.prefetch?.(href);
+              markPrefetched(href);
+            } catch {}
+          }
         }}
         className={`font-michroma hover:text-brand-orange-500 xxl:text-sm flex cursor-pointer items-center gap-0 border-none bg-transparent text-[9px] tracking-[1px] duration-300 md:text-[10px] xl:rotate-180 xl:[writing-mode:vertical-rl] ${
           isActive ? "text-brand-orange-500" : "text-white"

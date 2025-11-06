@@ -14,6 +14,7 @@ import {
   FaInstagram,
 } from "react-icons/fa6";
 import { Footer as FooterType } from "@/lib/sanity";
+import { hasPrefetched, markPrefetched } from "@/lib/prefetchRegistry";
 
 interface FooterProps {
   footerData: FooterType | null;
@@ -54,9 +55,12 @@ const Footer = ({ footerData }: FooterProps) => {
   };
 
   const handlePrefetch = (href: string) => {
-    try {
-      router.prefetch?.(href);
-    } catch {}
+    if (!hasPrefetched(href)) {
+      try {
+        router.prefetch?.(href);
+        markPrefetched(href);
+      } catch {}
+    }
   };
 
   // Render social links dynamically

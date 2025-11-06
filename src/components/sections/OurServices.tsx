@@ -7,6 +7,8 @@ import { ChevronRight } from "lucide-react";
 import Section from "../layout/Section";
 import SectionTitle from "../ui/SectionTitle";
 import { ServicesSection, ServiceForHomepage } from "@/lib/sanity";
+import { useRouter } from "next/navigation";
+import { hasPrefetched, markPrefetched } from "@/lib/prefetchRegistry";
 
 interface OurServicesProps {
   servicesSection: ServicesSection | null;
@@ -17,6 +19,7 @@ const OurServices: React.FC<OurServicesProps> = ({
   servicesSection,
   serviceItems,
 }) => {
+  const router = useRouter();
   const [activeEl, setActiveEl] = useState(4);
   const [clickedItem, setClickedItem] = useState<number | null>(null);
   const [isDesktop, setIsDesktop] = useState(true);
@@ -268,6 +271,15 @@ const OurServices: React.FC<OurServicesProps> = ({
           {serviceItems.slice(0, 4).map((service, index) => {
             const itemNumber = index + 1;
             const animation = getItemAnimation(itemNumber);
+            const href = `/services/${service.slug.current}`;
+            const handlePrefetch = () => {
+              if (!hasPrefetched(href)) {
+                try {
+                  router.prefetch?.(href);
+                  markPrefetched(href);
+                } catch {}
+              }
+            };
 
             return (
               <motion.div
@@ -279,6 +291,7 @@ const OurServices: React.FC<OurServicesProps> = ({
                 transition={transition}
                 onAnimationComplete={() => handleAnimationComplete(itemNumber)}
                 onClick={() => handleItemClick(itemNumber)}
+                onMouseEnter={handlePrefetch}
               >
                 <div
                   className={`font-michroma absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] ${
