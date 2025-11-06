@@ -53,6 +53,12 @@ const Footer = ({ footerData }: FooterProps) => {
     }
   };
 
+  const handlePrefetch = (href: string) => {
+    try {
+      router.prefetch?.(href);
+    } catch {}
+  };
+
   // Render social links dynamically
   const renderSocialLinks = () => {
     const socialLinks = [
@@ -133,6 +139,7 @@ const Footer = ({ footerData }: FooterProps) => {
                 </div>
                 <div className="mx-auto flex w-[220px] justify-between text-xs">
                   <button
+                    onMouseEnter={() => handlePrefetch("/privacy-policy")}
                     onClick={() => handleNavigation("/privacy-policy")}
                     className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
                   >
@@ -140,6 +147,7 @@ const Footer = ({ footerData }: FooterProps) => {
                   </button>
                   <span> | </span>
                   <button
+                    onMouseEnter={() => handlePrefetch("/terms-conditions")}
                     onClick={() => handleNavigation("/terms-conditions")}
                     className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
                   >
@@ -202,6 +210,7 @@ const Footer = ({ footerData }: FooterProps) => {
                 </div>
                 <div className="flex min-w-0 items-center justify-center gap-2 text-xs">
                   <button
+                    onMouseEnter={() => handlePrefetch("/privacy-policy")}
                     onClick={() => handleNavigation("/privacy-policy")}
                     className="hover:text-brand-orange-500 flex-shrink-0 cursor-pointer whitespace-nowrap duration-300"
                   >
@@ -209,6 +218,7 @@ const Footer = ({ footerData }: FooterProps) => {
                   </button>
                   <span className="flex-shrink-0"> | </span>
                   <button
+                    onMouseEnter={() => handlePrefetch("/terms-conditions")}
                     onClick={() => handleNavigation("/terms-conditions")}
                     className="hover:text-brand-orange-500 flex-shrink-0 cursor-pointer whitespace-nowrap duration-300"
                   >

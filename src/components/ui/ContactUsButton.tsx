@@ -38,6 +38,13 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className, children }
     };
   }, []);
 
+  // Prewarm the contact route to reduce delay
+  useEffect(() => {
+    try {
+      router.prefetch?.('/contact');
+    } catch {}
+  }, [router]);
+
   const handleContactClick = () => {
     console.log("📞 Contact Us button clicked from", pathname);
     if (typeof window !== 'undefined') {
@@ -65,6 +72,11 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className, children }
   return (
     <Button
       onClick={handleContactClick}
+      onMouseEnter={() => {
+        try {
+          router.prefetch?.('/contact');
+        } catch {}
+      }}
       variant={hasScrolledPastHero ? "default" : "outline"}
       size={hasScrolledPastHero ? "sm" : undefined}
       className={`font-michroma text-xs tracking-[1px] ${
