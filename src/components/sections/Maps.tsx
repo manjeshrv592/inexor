@@ -1,16 +1,11 @@
 "use client";
 
 import React, { useCallback } from "react";
-import dynamic from "next/dynamic";
 import Container from "../layout/Container";
 import { useSanityMapsData } from "../maps/hooks/useSanityMapsData";
 import SectionTitle from "../ui/SectionTitle";
 import Section from "../layout/Section";
-
-// Dynamic import of the actual map component to prevent SSR issues
-const MapComponent = dynamic(() => import("./MapComponent"), {
-  ssr: false,
-});
+import MapComponent from "./MapComponent";
 
 const Maps = () => {
   const { mapsSection, loading, error } = useSanityMapsData();

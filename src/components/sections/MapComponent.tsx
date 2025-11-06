@@ -1,20 +1,12 @@
 "use client";
 
 import React from "react";
-import dynamic from "next/dynamic";
+// Eagerly import the SVG map wrapper to include it in the main client bundle
+import SvgMapWrapper from "../maps/SvgMapWrapper";
 import { useSanityMapsData } from "../maps/hooks/useSanityMapsData";
 import styles from "../maps/styles/Maps.module.css";
 
-// Dynamically import the new SVG map component to avoid SSR issues
-const DynamicSvgMap = dynamic(() => import("../maps/SvgMapWrapper"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex h-full w-full items-center justify-center bg-gray-900">
-      <span className="sr-only">Loading interactive map</span>
-      <div className="h-8 w-8 rounded-full border-2 border-neutral-700 border-t-orange-500 animate-spin" />
-    </div>
-  ),
-});
+// Removed dynamic import to prioritize immediate rendering
 
 interface MapComponentProps {
   onInteraction?: () => void;
@@ -50,7 +42,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onInteraction }) => {
 
   return (
     <div className={styles.mapContainer}>
-      <DynamicSvgMap
+      <SvgMapWrapper
         mapsSection={mapsSection}
         serviceLocations={serviceLocations}
         onInteraction={onInteraction}
