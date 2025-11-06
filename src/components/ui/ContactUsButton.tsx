@@ -1,5 +1,5 @@
 "use client";
-
+// Remove this commit
 import React, { useState, useEffect } from "react";
 import { Button } from "./button";
 import { useTransitionRouter } from "next-view-transitions";
@@ -11,10 +11,13 @@ interface ContactUsButtonProps {
   children?: React.ReactNode;
 }
 
-const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className, children }) => {
+const ContactUsButton: React.FC<ContactUsButtonProps> = ({
+  className,
+  children,
+}) => {
   const router = useTransitionRouter();
   const pathname = usePathname();
-  
+
   // State to track if user has scrolled past the hero section
   const [hasScrolledPastHero, setHasScrolledPastHero] = useState(false);
 
@@ -41,22 +44,28 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className, children }
   // Prewarm the contact route to reduce delay
   useEffect(() => {
     try {
-      router.prefetch?.('/contact');
+      router.prefetch?.("/contact");
     } catch {}
   }, [router]);
 
   const handleContactClick = () => {
     console.log("📞 Contact Us button clicked from", pathname);
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // If user is already on contact page, navigate to home instead
-      const targetHref = pathname === '/contact' ? '/' : '/contact';
-      console.log("🎯 Contact target href:", targetHref, "(current:", pathname, ")");
-      
+      const targetHref = pathname === "/contact" ? "/" : "/contact";
+      console.log(
+        "🎯 Contact target href:",
+        targetHref,
+        "(current:",
+        pathname,
+        ")",
+      );
+
       // Store the current path before navigation
-      sessionStorage.setItem('lastPath', pathname);
+      sessionStorage.setItem("lastPath", pathname);
       // Set navigation source for animation direction
-      sessionStorage.setItem('navigationSource', 'contact-button');
-      
+      sessionStorage.setItem("navigationSource", "contact-button");
+
       // Always use transition router to prevent page reload
       // Animations will only show when transitioning from/to root due to PageTransition component logic
       console.log("✨ Using transition router for contact navigation");
@@ -74,14 +83,14 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className, children }
       onClick={handleContactClick}
       onMouseEnter={() => {
         try {
-          router.prefetch?.('/contact');
+          router.prefetch?.("/contact");
         } catch {}
       }}
       variant={hasScrolledPastHero ? "default" : "outline"}
       size={hasScrolledPastHero ? "sm" : undefined}
       className={`font-michroma text-xs tracking-[1px] ${
-        !hasScrolledPastHero ? '[&_.bg-svg_path]:!stroke-[#2A2A2A]' : ''
-      } ${className}` }
+        !hasScrolledPastHero ? "[&_.bg-svg_path]:!stroke-[#2A2A2A]" : ""
+      } ${className}`}
     >
       {shouldShowPhoneIcon ? (
         <>
@@ -89,9 +98,7 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({ className, children }
           <span className="xl:hidden">
             <Phone size={16} />
           </span>
-          <span className="hidden xl:inline">
-            {children || "Contact Us"}
-          </span>
+          <span className="hidden xl:inline">{children || "Contact Us"}</span>
         </>
       ) : (
         children || "Contact Us"
