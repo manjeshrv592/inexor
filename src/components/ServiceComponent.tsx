@@ -4,6 +4,8 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { urlForImageWithParams } from "../../sanity/lib/image";
+import { useTransitionRouter } from "next-view-transitions";
+import { usePathname } from "next/navigation";
 
 interface ServiceComponentProps {
   code: string;
@@ -36,6 +38,8 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
   slug,
   title,
 }) => {
+  const router = useTransitionRouter();
+  const pathname = usePathname();
   return (
     <div className="absolute size-full">
       {/* Background Image with native img */}
@@ -89,7 +93,22 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
           &quot;{description}&quot;
         </p>
         <div className="mt-4 text-center">
-          <Link href={`/services/${slug}`}>
+          <Link
+            href={`/services/${slug}`}
+            onClick={(e) => {
+              e.preventDefault();
+              if (typeof window !== "undefined") {
+                // Align animation behavior with header links
+                sessionStorage.setItem("lastPath", pathname);
+                sessionStorage.setItem("navigationSource", "header");
+                // Persist the active service so homepage can restore OurServices state
+                sessionStorage.setItem("homepageActiveServiceSlug", slug);
+                requestAnimationFrame(() => {
+                  router.push(`/services/${slug}`);
+                });
+              }
+            }}
+          >
             <Button
               className="font-michroma text-[10px] tracking-[1px] xl:text-xs"
               size={"sm"}

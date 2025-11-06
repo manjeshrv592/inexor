@@ -46,6 +46,25 @@ const OurServices: React.FC<OurServicesProps> = ({
     }
   }, [serviceItems.length, activeEl]);
 
+  // Restore active card from previous navigation (persisted in sessionStorage)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!serviceItems || serviceItems.length === 0) return;
+
+    const savedSlug = sessionStorage.getItem("homepageActiveServiceSlug");
+    if (savedSlug) {
+      const displayServices = serviceItems.slice(0, 4);
+      const idx = displayServices.findIndex(
+        (s) => s.slug.current === savedSlug,
+      );
+      if (idx !== -1) {
+        setActiveEl(idx + 1);
+      }
+      // Clear after restoring to avoid sticky state
+      sessionStorage.removeItem("homepageActiveServiceSlug");
+    }
+  }, [serviceItems]);
+
   // Return early if no service items
   if (!serviceItems || serviceItems.length === 0) {
     return (
