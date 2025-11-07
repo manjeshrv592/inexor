@@ -6,9 +6,7 @@ import {
 } from "@/lib/sanity/service";
 import { getServicesPageSeo } from "@/lib/sanity";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { truncateText } from "@/lib/utils/textUtils";
+
 import ServiceContent from "@/components/services/ServiceContent";
 import ServiceNavList from "@/components/services/ServiceNavList";
 import { urlForFeaturedImage } from "../../../../../sanity/lib/image";
@@ -21,15 +19,17 @@ interface ServicePageProps {
 }
 
 // Generate metadata with parent inheritance
-export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: ServicePageProps): Promise<Metadata> {
   const { slug } = await params;
-  
+
   // Get service data for specific metadata if available
   const service = await getServiceBySlug(slug);
-  
+
   // Get parent services page SEO data for inheritance
   const parentSeoData = await getServicesPageSeo();
-  
+
   if (!service) {
     return {
       title: "Service Not Found",
@@ -39,10 +39,13 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
 
   // Use parent SEO data as fallback for service pages
   const parentSeo = parentSeoData?.seo;
-  
+
   return {
     title: service.title || parentSeo?.metaTitle || "Services",
-    description: service.excerpt || parentSeo?.metaDescription || "Discover our comprehensive range of services",
+    description:
+      service.excerpt ||
+      parentSeo?.metaDescription ||
+      "Discover our comprehensive range of services",
     keywords: parentSeo?.metaKeywords,
     robots: {
       index: !parentSeo?.noIndex,
@@ -50,7 +53,10 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
     },
     openGraph: {
       title: service.title || parentSeo?.metaTitle || "Services",
-      description: service.excerpt || parentSeo?.metaDescription || "Discover our comprehensive range of services",
+      description:
+        service.excerpt ||
+        parentSeo?.metaDescription ||
+        "Discover our comprehensive range of services",
       url: `${process.env.NEXT_PUBLIC_SITE_URL}/services/${slug}`,
       siteName: "Inexor",
       type: "website",
@@ -58,7 +64,10 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
     twitter: {
       card: "summary_large_image",
       title: service.title || parentSeo?.metaTitle || "Services",
-      description: service.excerpt || parentSeo?.metaDescription || "Discover our comprehensive range of services",
+      description:
+        service.excerpt ||
+        parentSeo?.metaDescription ||
+        "Discover our comprehensive range of services",
     },
   };
 }
@@ -128,8 +137,11 @@ const ServicePage = async ({ params }: ServicePageProps) => {
             msOverflowStyle: "none",
           }}
         >
-          <ServiceNavList services={allServices} currentIndex={currentIndex} mode="mobile" />
-          
+          <ServiceNavList
+            services={allServices}
+            currentIndex={currentIndex}
+            mode="mobile"
+          />
         </div>
       </div>
 
@@ -155,8 +167,11 @@ const ServicePage = async ({ params }: ServicePageProps) => {
         </div>
         <div className="relative z-10 h-[calc(100vh-230px)] overflow-y-auto pr-1">
           <div className="flex h-full flex-col justify-center gap-4">
-            <ServiceNavList services={allServices} currentIndex={currentIndex} mode="desktop" />
-            
+            <ServiceNavList
+              services={allServices}
+              currentIndex={currentIndex}
+              mode="desktop"
+            />
           </div>
         </div>
       </div>
