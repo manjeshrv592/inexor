@@ -1,7 +1,7 @@
 "use client";
 import { ChevronDown } from "lucide-react";
 import { useTransitionRouter } from "next-view-transitions";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { hasPrefetched, markPrefetched } from "@/lib/prefetchRegistry";
@@ -22,6 +22,7 @@ const NavItem: React.FC<NavItemProps> = ({
   onNavItemClick,
 }) => {
   const router = useTransitionRouter();
+  const nextRouter = useRouter();
   const pathname = usePathname();
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -85,7 +86,7 @@ const NavItem: React.FC<NavItemProps> = ({
           if (!hasPrefetched(href)) {
             try {
               // Prefetch destination to reduce transition delay
-              router.prefetch?.(href);
+              nextRouter.prefetch?.(href);
               markPrefetched(href);
             } catch {}
           }

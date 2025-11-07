@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { useTransitionRouter } from "next-view-transitions";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { hasPrefetched, markPrefetched } from "@/lib/prefetchRegistry";
 
 interface ServiceCardProps {
@@ -11,13 +11,14 @@ interface ServiceCardProps {
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ children, serviceSlug }) => {
   const router = useTransitionRouter();
+  const nextRouter = useRouter();
   const pathname = usePathname();
 
   const href = `/services/${serviceSlug}`;
   const handlePrefetch = () => {
     if (!hasPrefetched(href)) {
       try {
-        router.prefetch?.(href);
+        nextRouter.prefetch?.(href);
         markPrefetched(href);
       } catch {}
     }

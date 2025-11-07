@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTransitionRouter } from "next-view-transitions";
 import { motion } from "framer-motion";
 import { Button } from "../ui/button";
@@ -22,6 +22,7 @@ interface FooterProps {
 
 const Footer = ({ footerData }: FooterProps) => {
   const router = useTransitionRouter();
+  const nextRouter = useRouter();
   const pathname = usePathname();
   const [isXXL, setIsXXL] = useState(false);
 
@@ -57,7 +58,7 @@ const Footer = ({ footerData }: FooterProps) => {
   const handlePrefetch = (href: string) => {
     if (!hasPrefetched(href)) {
       try {
-        router.prefetch?.(href);
+        nextRouter.prefetch?.(href);
         markPrefetched(href);
       } catch {}
     }

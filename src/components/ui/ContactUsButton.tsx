@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "./button";
 import { useTransitionRouter } from "next-view-transitions";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Phone } from "lucide-react";
 import { hasPrefetched, markPrefetched } from "@/lib/prefetchRegistry";
 
@@ -17,6 +17,7 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({
   children,
 }) => {
   const router = useTransitionRouter();
+  const nextRouter = useRouter();
   const pathname = usePathname();
 
   // State to track if user has scrolled past the hero section
@@ -47,11 +48,11 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({
     const href = "/contact";
     if (!hasPrefetched(href)) {
       try {
-        router.prefetch?.(href);
+        nextRouter.prefetch?.(href);
         markPrefetched(href);
       } catch {}
     }
-  }, [router]);
+  }, [nextRouter]);
 
   const handleContactClick = () => {
     console.log("📞 Contact Us button clicked from", pathname);
