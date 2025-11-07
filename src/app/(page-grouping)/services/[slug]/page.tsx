@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { truncateText } from "@/lib/utils/textUtils";
 import ServiceContent from "@/components/services/ServiceContent";
+import ServiceNavList from "@/components/services/ServiceNavList";
 import { urlForFeaturedImage } from "../../../../../sanity/lib/image";
 import { Metadata } from "next";
 
@@ -127,17 +128,8 @@ const ServicePage = async ({ params }: ServicePageProps) => {
             msOverflowStyle: "none",
           }}
         >
-          {allServices.map((service, index) => (
-            <Link key={service._id} href={`/services/${service.slug.current}`}>
-              <Button
-                className="font-michroma w-20 text-[10px] tracking-[1px] xl:w-full"
-                size={"sm"}
-                variant={currentIndex === index ? "default" : "outline"}
-              >
-                {truncateText(service.code, 3)}
-              </Button>
-            </Link>
-          ))}
+          <ServiceNavList services={allServices} currentIndex={currentIndex} mode="mobile" />
+          
         </div>
       </div>
 
@@ -163,19 +155,8 @@ const ServicePage = async ({ params }: ServicePageProps) => {
         </div>
         <div className="relative z-10 h-[calc(100vh-230px)] overflow-y-auto pr-1">
           <div className="flex h-full flex-col justify-center gap-4">
-            {allServices.map((service, index) => (
-              <Link
-                key={service._id}
-                href={`/services/${service.slug.current}`}
-              >
-                <Button
-                  className="font-michroma text-[10px] tracking-[1px] xl:w-full"
-                  variant={currentIndex === index ? "default" : "outline"}
-                >
-                  {service.code}
-                </Button>
-              </Link>
-            ))}
+            <ServiceNavList services={allServices} currentIndex={currentIndex} mode="desktop" />
+            
           </div>
         </div>
       </div>
