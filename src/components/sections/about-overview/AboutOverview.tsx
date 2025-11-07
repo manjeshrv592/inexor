@@ -19,9 +19,9 @@ const AboutOverview: React.FC<AboutOverviewProps> = ({
 
   // Fallback image URLs and grayscale settings
   const leftImageSrc =
-    aboutData?.leftImage?.asset?.url || "/img/about-left.jpg";
+    aboutData?.leftImage || "/img/about-left.jpg";
   const rightImageSrc =
-    aboutData?.rightImage?.asset?.url || "/img/about-right.jpg";
+    aboutData?.rightImage || "/img/about-right.jpg";
   
   // Get grayscale settings from Sanity data (default to true for fallback)
   const leftImageGrayscale = aboutData?.leftImage?.isGrayscale ?? true;

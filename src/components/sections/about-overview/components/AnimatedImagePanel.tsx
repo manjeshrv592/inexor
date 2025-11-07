@@ -1,9 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
-import LazyImage from "@/components/ui/LazyImage";
+import { urlForImageWithParams } from "../../../../../sanity/lib/image";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 interface AnimatedImagePanelProps {
-  imageSrc: string | undefined;
+  imageSrc: string | SanityImageSource | undefined;
   position: "left" | "right";
   shouldAnimate: boolean;
   isXlScreen: boolean;
@@ -47,24 +48,37 @@ const AnimatedImagePanel: React.FC<AnimatedImagePanelProps> = ({
       role="img"
       aria-label={alt || `${position} panel image`}
     >
-      <LazyImage
-        src={imageSrc}
-        alt={alt || `${position} panel image`}
-        fill
-        className={`object-cover ${grayscaleClass}`}
-        quality={80}
-      />
-      
-      {/* Gradient overlay for left positioned images */}
-      {position === "left" && (
-        <div
-          className="absolute h-full w-full z-10"
-          style={{
-            background:
-              "linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%)",
-          }}
+      <div className="absolute inset-0">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={
+            typeof imageSrc === "string"
+              ? imageSrc
+              : imageSrc
+                ? urlForImageWithParams(imageSrc, {
+                    width: 600,
+                    height: 1200,
+                    quality: 85,
+                    format: "webp",
+                    fit: "crop",
+                  }).url()
+                : undefined
+          }
+          alt={alt || `${position} panel image`}
+          className={`h-full w-full object-cover ${grayscaleClass}`}
         />
-      )}
+
+        {/* Gradient overlay for left positioned images */}
+        {position === "left" && (
+          <div
+            className="pointer-events-none absolute inset-0 z-10"
+            style={{
+              background:
+                "linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%)",
+            }}
+          />
+        )}
+      </div>
     </motion.div>
   );
 };

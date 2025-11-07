@@ -1,5 +1,5 @@
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
-import LazyImage from "@/components/ui/LazyImage";
+import { urlForImageWithParams } from "../../../../sanity/lib/image";
 import React, { Suspense } from "react";
 import { getStaticAboutPageData } from "@/lib/static-generation";
 import { AboutPageSkeleton } from "@/components/ui/LoadingSkeleton";
@@ -52,17 +52,24 @@ const AboutPageContent = async () => {
     <div className="size-full grid-cols-[2fr_3fr_2fr] bg-[#222] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:grid">
       <div className="relative h-[100px] xl:h-full">
         <div className="absolute inset-0 size-full overflow-hidden">
-          <LazyImage
-            src={aboutPage?.sidebarImage || "/img/about-us.jpg"}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={
+              aboutPage?.sidebarImage?.asset?.url
+                ? urlForImageWithParams(aboutPage.sidebarImage, {
+                    width: 600,
+                    height: 1000,
+                    quality: 85,
+                    format: "webp",
+                    fit: "crop",
+                  }).url()
+                : "/img/about-us.jpg"
+            }
             alt={aboutPage?.sidebarImage?.alt || "About Us"}
-            width={600}
-            height={1000}
             className={`size-full scale-[102%] object-cover ${
               aboutPage?.sidebarImage?.isGrayscale !== false ? "grayscale" : ""
             }`}
-            priority={true}
-            mimeType={aboutPage?.sidebarImage?.asset?.mimeType}
-            lqip={aboutPage?.sidebarImage?.asset?.metadata?.lqip}
+            loading="eager"
           />
           {/* <div className="absolute inset-0 z-10 bg-black/80"></div> */}
         </div>

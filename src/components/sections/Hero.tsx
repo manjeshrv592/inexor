@@ -1,10 +1,10 @@
 import React from "react";
 import Section from "../layout/Section";
-import LazyImage from "../ui/LazyImage";
 import Container from "../layout/Container";
 import { Button } from "../ui/button";
 import ContactUsButton from "../ui/ContactUsButton";
 import { Hero as HeroType } from "../../lib/sanity";
+import { urlForImageWithParams } from "../../../sanity/lib/image";
 // import Link from "next/link";
 
 interface HeroProps {
@@ -29,13 +29,22 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
         </ContactUsButton>
       </span>
       <div className="absolute inset-0">
-        <LazyImage
-          src={backgroundImage || backgroundImageUrl}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={
+            backgroundImage?.asset?.url
+              ? urlForImageWithParams(backgroundImage, {
+                  // Use large dimensions for full-screen hero while keeping size reasonable
+                  width: 1920,
+                  height: 1080,
+                  quality: 85,
+                  format: "webp",
+                  fit: "crop",
+                }).url()
+              : backgroundImageUrl
+          }
           alt="Hero background image"
-          fill
-          className="object-cover"
-          priority={true}
-          quality={85}
+          className="size-full object-cover"
         />
         {/* Vignette overlay with edge blur */}
         {/* <div

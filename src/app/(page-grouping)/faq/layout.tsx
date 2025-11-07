@@ -4,10 +4,10 @@ import PagePanelBg from "@/components/ui/PagePanelBg";
 import { CategoryButton } from "@/components/faq";
 import FAQItemWithLink from "@/components/faq/FAQItemWithLink";
 import Link from "next/link";
-import LazyImage from "@/components/ui/LazyImage";
 import React, { useState, useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
+import { urlForImageWithParams } from "../../../../sanity/lib/image";
 import {
   type FAQCategory,
   type FAQItem as FAQItemType,
@@ -36,18 +36,26 @@ const LeftPanel = React.memo(
     return (
       <div className="relative xl:h-full">
         <div className="absolute inset-0 size-full">
-          <LazyImage
-            src={faqPageSettings?.sidebarImage || "/img/faq.jpg"}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={
+              faqPageSettings?.sidebarImage?.asset?.url
+                ? urlForImageWithParams(faqPageSettings.sidebarImage, {
+                    width: 700,
+                    height: 1000,
+                    quality: 85,
+                    format: "webp",
+                    fit: "crop",
+                  }).url()
+                : "/img/faq.jpg"
+            }
             alt={faqPageSettings?.sidebarImage?.alt || "FAQ sidebar image"}
-            fill
-            className={`object-cover ${
+            className={`h-full w-full object-cover ${
               faqPageSettings?.sidebarImage?.isGrayscale !== false
                 ? "grayscale"
                 : ""
             }`}
-            priority={true}
-            mimeType={faqPageSettings?.sidebarImage?.asset?.mimeType}
-            lqip={faqPageSettings?.sidebarImage?.asset?.metadata?.lqip}
+            loading="eager"
           />
         </div>
 
@@ -89,7 +97,8 @@ const LeftPanel = React.memo(
         {/* Desktop Categories - Vertical Layout */}
         <div className="relative z-10 hidden h-full flex-col items-center justify-center gap-4 p-8 text-center xl:flex">
           <p className="text-sm">
-            {faqPageData?.seo?.metaDescription || faqPageData?.pageDescription ||
+            {faqPageData?.seo?.metaDescription ||
+              faqPageData?.pageDescription ||
               "Our FAQ Section Offers Fast, Clear Answers To Popular Questions, So You Can Find Information Easily."}
           </p>
           <h5 className="font-michroma">
