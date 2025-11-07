@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
@@ -95,18 +96,24 @@ const ServiceComponent: React.FC<ServiceComponentProps> = ({
         <div className="mt-4 text-center">
           <Link
             href={`/services/${slug}`}
+            onMouseEnter={() => {
+              try {
+                router.prefetch?.(`/services/${slug}`);
+              } catch {}
+            }}
             onClick={(e) => {
               e.preventDefault();
-              if (typeof window !== "undefined") {
-                // Align animation behavior with header links
-                sessionStorage.setItem("lastPath", pathname);
-                sessionStorage.setItem("navigationSource", "header");
-                // Persist the active service so homepage can restore OurServices state
-                sessionStorage.setItem("homepageActiveServiceSlug", slug);
-                requestAnimationFrame(() => {
-                  router.push(`/services/${slug}`);
-                });
-              }
+              try {
+                if (typeof window !== "undefined") {
+                  sessionStorage.setItem("lastPath", pathname);
+                  sessionStorage.setItem("navigationSource", "header");
+                  // Remember which service was opened so Home can restore active card on back
+                  sessionStorage.setItem("lastActiveServiceSlug", slug);
+                }
+              } catch {}
+              requestAnimationFrame(() => {
+                router.push(`/services/${slug}`);
+              });
             }}
           >
             <Button

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useTransitionRouter } from "next-view-transitions";
 import { motion } from "framer-motion";
 import { Button } from "../ui/button";
@@ -14,7 +14,6 @@ import {
   FaInstagram,
 } from "react-icons/fa6";
 import { Footer as FooterType } from "@/lib/sanity";
-import { hasPrefetched, markPrefetched } from "@/lib/prefetchRegistry";
 
 interface FooterProps {
   footerData: FooterType | null;
@@ -22,7 +21,6 @@ interface FooterProps {
 
 const Footer = ({ footerData }: FooterProps) => {
   const router = useTransitionRouter();
-  const nextRouter = useRouter();
   const pathname = usePathname();
   const [isXXL, setIsXXL] = useState(false);
 
@@ -56,12 +54,9 @@ const Footer = ({ footerData }: FooterProps) => {
   };
 
   const handlePrefetch = (href: string) => {
-    if (!hasPrefetched(href)) {
-      try {
-        nextRouter.prefetch?.(href);
-        markPrefetched(href);
-      } catch {}
-    }
+    try {
+      router.prefetch?.(href);
+    } catch {}
   };
 
   // Render social links dynamically

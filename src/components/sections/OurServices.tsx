@@ -7,8 +7,6 @@ import { ChevronRight } from "lucide-react";
 import Section from "../layout/Section";
 import SectionTitle from "../ui/SectionTitle";
 import { ServicesSection, ServiceForHomepage } from "@/lib/sanity";
-import { useRouter } from "next/navigation";
-import { hasPrefetched, markPrefetched } from "@/lib/prefetchRegistry";
 
 interface OurServicesProps {
   servicesSection: ServicesSection | null;
@@ -19,7 +17,6 @@ const OurServices: React.FC<OurServicesProps> = ({
   servicesSection,
   serviceItems,
 }) => {
-  const router = useRouter();
   const [activeEl, setActiveEl] = useState(4);
   const [clickedItem, setClickedItem] = useState<number | null>(null);
   const [isDesktop, setIsDesktop] = useState(true);
@@ -36,7 +33,25 @@ const OurServices: React.FC<OurServicesProps> = ({
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  // Set the default service as active
+  // On initial render (or when serviceItems change), restore previously active card once
+  useEffect(() => {
+    try {
+      const savedSlug = sessionStorage.getItem("lastActiveServiceSlug");
+      if (savedSlug) {
+        const displayServices = serviceItems.slice(0, 4);
+        const idx = displayServices.findIndex(
+          (s) => s.slug.current === savedSlug,
+        );
+        if (idx >= 0) {
+          setActiveEl(idx + 1);
+        }
+        // Clear so future clicks don’t keep reverting
+        sessionStorage.removeItem("lastActiveServiceSlug");
+      }
+    } catch {}
+  }, [serviceItems]);
+
+  // Ensure activeEl stays within bounds when list size changes
   useEffect(() => {
     if (
       serviceItems.length > 0 &&
@@ -45,25 +60,6 @@ const OurServices: React.FC<OurServicesProps> = ({
       setActiveEl(Math.min(serviceItems.length, 4));
     }
   }, [serviceItems.length, activeEl]);
-
-  // Restore active card from previous navigation (persisted in sessionStorage)
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (!serviceItems || serviceItems.length === 0) return;
-
-    const savedSlug = sessionStorage.getItem("homepageActiveServiceSlug");
-    if (savedSlug) {
-      const displayServices = serviceItems.slice(0, 4);
-      const idx = displayServices.findIndex(
-        (s) => s.slug.current === savedSlug,
-      );
-      if (idx !== -1) {
-        setActiveEl(idx + 1);
-      }
-      // Clear after restoring to avoid sticky state
-      sessionStorage.removeItem("homepageActiveServiceSlug");
-    }
-  }, [serviceItems]);
 
   // Return early if no service items
   if (!serviceItems || serviceItems.length === 0) {
@@ -290,15 +286,6 @@ const OurServices: React.FC<OurServicesProps> = ({
           {serviceItems.slice(0, 4).map((service, index) => {
             const itemNumber = index + 1;
             const animation = getItemAnimation(itemNumber);
-            const href = `/services/${service.slug.current}`;
-            const handlePrefetch = () => {
-              if (!hasPrefetched(href)) {
-                try {
-                  router.prefetch?.(href);
-                  markPrefetched(href);
-                } catch {}
-              }
-            };
 
             return (
               <motion.div
@@ -310,7 +297,6 @@ const OurServices: React.FC<OurServicesProps> = ({
                 transition={transition}
                 onAnimationComplete={() => handleAnimationComplete(itemNumber)}
                 onClick={() => handleItemClick(itemNumber)}
-                onMouseEnter={handlePrefetch}
               >
                 <div
                   className={`font-michroma absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] ${
