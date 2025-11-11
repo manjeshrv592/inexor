@@ -20,7 +20,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsData }) => {
 
   // Fallback values if no Sanity data
   const title = testimonialsData?.title || "WHAT OUR CLIENTS SAY";
-  const subtitle = testimonialsData?.subtitle || "Hear From Those Who Trust Us";
+  const subtitle = testimonialsData?.subtitle;
   const testimonials = testimonialsData?.testimonials || [];
   const autoplayDuration = testimonialsData?.autoplayDuration || 5;
   const enableAutoplay = testimonialsData?.enableAutoplay ?? true;
@@ -37,7 +37,9 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsData }) => {
         <div className="text-center">
           <SectionTitle>{title}</SectionTitle>
         </div>
-        <h3 className="mb-4 text-sm lg:text-lg">{subtitle}</h3>
+        {subtitle && (
+          <h3 className="mb-4 text-sm lg:text-lg">{subtitle}</h3>
+        )}
         <TestimonialCarousel
           testimonials={testimonials}
           autoplayDuration={autoplayDuration}

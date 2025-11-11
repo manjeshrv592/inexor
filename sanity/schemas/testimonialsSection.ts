@@ -25,14 +25,11 @@ export default defineType({
       title: "Section Subtitle",
       type: "string",
       description: "Subtitle/description for the testimonials section",
-      initialValue: "Hear From Those Who Trust Us",
       components: {
         input: (props) => TextWithCounter({ ...props, maxLength: 55, fieldType: 'string' }),
       },
-      validation: (Rule) => 
-        Rule.required()
-          .max(55)
-          .error('Subtitle must be 55 characters or less'),
+      validation: (Rule) =>
+        Rule.max(55).error('Subtitle must be 55 characters or less'),
     }),
     defineField({
       name: "autoplayDuration",
@@ -81,7 +78,7 @@ export default defineType({
       const status = isActive ? "🟠" : "⚪";
       return {
         title: `${status} ${title}`,
-        subtitle,
+        subtitle: subtitle || "No subtitle",
       };
     },
   },

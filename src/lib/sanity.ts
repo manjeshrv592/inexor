@@ -78,7 +78,7 @@ export interface Hero {
 export interface Why {
   _id: string;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   description: string;
   isActive: boolean;
 }
@@ -262,7 +262,7 @@ export interface Testimonial {
 export interface TestimonialsSection {
   _id: string;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   autoplayDuration: number;
   enableAutoplay: boolean;
   testimonials?: Testimonial[];
