@@ -15,7 +15,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ children, serviceSlug }) => {
   return (
     <Link
       href={`/services/${serviceSlug}`}
-      className="flex items-center justify-center border-x border-y border-x-white/10 border-y-white/60 bg-white/10 p-2 text-center text-[14px] font-semibold text-orange-500 transition-colors hover:bg-white/20 xl:p-4"
+      className="flex items-center justify-center border-x border-y border-x-white/10 border-y-white/60 bg-white/10 p-2 text-center text-[12px] font-semibold text-orange-500 transition-colors hover:bg-white/20 xl:p-4"
       onMouseEnter={() => {
         try {
           router.prefetch?.(`/services/${serviceSlug}`);
