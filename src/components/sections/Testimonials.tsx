@@ -11,11 +11,11 @@ interface TestimonialsProps {
 
 const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsData }) => {
   // Debug logging
-  console.log('🎭 Testimonials component received:', {
+  console.log("🎭 Testimonials component received:", {
     hasTestimonialsData: !!testimonialsData,
     testimonialsCount: testimonialsData?.testimonials?.length || 0,
     title: testimonialsData?.title,
-    subtitle: testimonialsData?.subtitle
+    subtitle: testimonialsData?.subtitle,
   });
 
   // Fallback values if no Sanity data
@@ -27,7 +27,9 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsData }) => {
 
   // If no testimonials data, don't render the section
   if (!testimonialsData || testimonials.length === 0) {
-    console.log('❌ Testimonials section not rendering - no data or empty testimonials array');
+    console.log(
+      "❌ Testimonials section not rendering - no data or empty testimonials array",
+    );
     return null;
   }
 
@@ -35,11 +37,9 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsData }) => {
     <Section className="">
       <Container className="text-center">
         <div className="text-center">
-          <SectionTitle>{title}</SectionTitle>
+          <SectionTitle className="mb-2">{title}</SectionTitle>
         </div>
-        {subtitle && (
-          <h3 className="mb-4 text-sm lg:text-lg">{subtitle}</h3>
-        )}
+        {subtitle && <h3 className="mb-4 text-sm lg:text-lg">{subtitle}</h3>}
         <TestimonialCarousel
           testimonials={testimonials}
           autoplayDuration={autoplayDuration}
