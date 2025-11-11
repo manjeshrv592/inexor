@@ -27,7 +27,7 @@ export interface SanityCountry {
 export interface SanityMapsSection {
   _id: string;
   title: string;
-  description?: string;
+  subtitle?: string;
   instructionText?: string;
   isActive: boolean;
   countries: SanityCountry[];
@@ -46,7 +46,7 @@ export async function getMapsSection(): Promise<SanityMapsSection | null> {
       *[_type == "mapsSection" && isActive == true][0] {
         _id,
         title,
-        description,
+        subtitle,
         instructionText,
         isActive,
         mapConfig
@@ -73,7 +73,7 @@ export async function getMapsSection(): Promise<SanityMapsSection | null> {
     return {
       _id: "default-maps-section",
       title: "GO GLOBAL. INSTANTLY.",
-      description: "Reach Over 120 Markets With Zero Compliance Issues",
+      subtitle: undefined,
       instructionText: "Click to interact with the map and select a continent to view service availability for your country",
       isActive: true,
       countries: activeCountries,

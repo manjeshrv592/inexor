@@ -21,17 +21,15 @@ export default defineType({
       description: "Main title displayed at the top of the maps section",
     }),
     defineField({
-      name: "description",
-      title: "Section Description",
-      type: "text",
+      name: "subtitle",
+      title: "Section Subtitle",
+      type: "string",
       components: {
         input: (props) => TextWithCounter({ ...props, maxLength: 55, fieldType: 'string' }),
       },
-      initialValue: "Reach Over 120 Markets With Zero Compliance Issues",
-      validation: (Rule) => 
-        Rule.max(55)
-          .error('Description must be 55 characters or less'),
-      description: "Description text displayed below the main title",
+      validation: (Rule) =>
+        Rule.max(55).error('Subtitle must be 55 characters or less'),
+      description: "Optional subtitle displayed below the main title",
     }),
     defineField({
       name: "instructionText",
@@ -97,19 +95,19 @@ export default defineType({
   preview: {
     select: {
       title: "title",
-      description: "description",
+      subtitle: "subtitle",
       instructionText: "instructionText",
       isActive: "isActive",
       countries: "countries",
     },
     prepare(selection) {
-      const { title, description, instructionText, isActive, countries } = selection;
+      const { title, subtitle, instructionText, isActive, countries } = selection;
       const countryCount = countries ? countries.length : 0;
       const hasInstructions = instructionText ? "✓" : "✗";
 
       return {
         title: `${isActive ? "🟢" : "🔴"} ${title}`,
-        subtitle: `${countryCount} countries | Instructions: ${hasInstructions} | ${description || "No description"}`,
+        subtitle: `${countryCount} countries | Instructions: ${hasInstructions} | ${subtitle || "No subtitle"}`,
       };
     },
   },

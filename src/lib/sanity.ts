@@ -109,7 +109,7 @@ export interface AboutImage {
 export interface AboutSection {
   _id: string;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   description: string;
   leftImage: AboutImage;
   rightImage: AboutImage;

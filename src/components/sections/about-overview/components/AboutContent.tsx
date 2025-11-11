@@ -14,7 +14,7 @@ const AboutContent: React.FC<AboutContentProps> = ({
 }) => {
   // Fallback data when no Sanity data exists
   const title = aboutData?.title || "Title";
-  const subtitle = aboutData?.subtitle || "Subtitle";
+  const subtitle = aboutData?.subtitle;
   const description = aboutData?.description || "Description";
 
   // Fallback items when no Sanity data exists
@@ -54,7 +54,9 @@ const AboutContent: React.FC<AboutContentProps> = ({
           <div className="text-center">
             <SectionTitle className="mb-2">{title}</SectionTitle>
           </div>
-          <h3 className="mb-4 text-sm lg:text-lg">{subtitle}</h3>
+          {subtitle && (
+            <h3 className="mb-4 text-sm lg:text-lg">{subtitle}</h3>
+          )}
         </div>
         <p className="text-xs lg:text-sm">{description}</p>
       </div>

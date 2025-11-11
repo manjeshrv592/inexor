@@ -26,10 +26,8 @@ export default defineType({
       components: {
         input: (props) => TextWithCounter({ ...props, maxLength: 55, fieldType: 'string' }),
       },
-      validation: (Rule) => 
-        Rule.required()
-          .max(55)
-          .error('Subtitle must be 55 characters or less'),
+      validation: (Rule) =>
+        Rule.max(55).error('Subtitle must be 55 characters or less'),
     }),
     defineField({
       name: "description",
@@ -81,7 +79,7 @@ export default defineType({
     prepare({ title, subtitle, isActive }) {
       return {
         title,
-        subtitle: `${subtitle} ${isActive ? "✅" : "❌"}`,
+        subtitle: `${subtitle ? subtitle : "No subtitle"} ${isActive ? "✅" : "❌"}`,
       };
     },
   },

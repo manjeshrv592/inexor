@@ -13,9 +13,7 @@ const Maps = () => {
 
   // Fallback content if no Sanity data is available
   const title = mapsSection?.title || "GO GLOBAL. INSTANTLY.";
-  const description =
-    mapsSection?.description ||
-    "Reach Over 120 Markets With Zero Compliance Issues";
+  const subtitle = mapsSection?.subtitle;
   // const instructionText =
   //   mapsSection?.instructionText ||
   //   "Click to interact with the map and select a continent to view service availability for your country";
@@ -72,7 +70,9 @@ const Maps = () => {
             <div className="text-center">
               <SectionTitle className="mb-2">{title}</SectionTitle>
             </div>
-            <h3 className="text-center text-sm lg:text-lg">{description}</h3>
+            {subtitle && (
+              <h3 className="text-center text-sm lg:text-lg">{subtitle}</h3>
+            )}
           </div>
 
           <div className="relative">

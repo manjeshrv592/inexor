@@ -170,10 +170,10 @@ const KeyValuePillars = ({ sectionData, items }: KeyValuePillarsProps) => {
             alt="Globe Icon"
           />
         </motion.span>
-        <h5 className="text-brand-orange-500 text-sm font-bold">
+        <h5 className="text-brand-orange-500 text-center text-sm font-bold">
           {item.title}
         </h5>
-        <p className="text-xs text-neutral-300 xl:text-sm">
+        <p className="text-center text-xs text-neutral-300 xl:text-sm">
           {item.description}
         </p>
       </motion.article>
