@@ -1,4 +1,4 @@
-import { client } from "../../sanity/lib/client";
+import { client, clientNoCdn } from "../../sanity/lib/client";
 import {
   WHO_WE_SERVE_QUERY,
   WHO_WE_SERVE_SECTION_QUERY,
@@ -140,7 +140,7 @@ export async function getWhoWeServeSection(): Promise<WhoWeServeSection | null> 
 }
 
 export async function getHero(): Promise<Hero | null> {
-  return client.fetch(HERO_QUERY, {}, { next: { tags: ["hero"] } });
+  return clientNoCdn.fetch(HERO_QUERY, {}, { next: { tags: ["hero"] } });
 }
 
 export async function getWhy(): Promise<Why | null> {

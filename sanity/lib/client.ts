@@ -12,3 +12,14 @@ export const client = createClient({
     enabled: false, // Disable stega for better performance
   },
 });
+
+export const clientNoCdn = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: false,
+  perspective: "published",
+  stega: {
+    enabled: false,
+  },
+});
