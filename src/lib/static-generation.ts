@@ -3,7 +3,7 @@
  * These functions fetch data at build time with ISR support
  */
 
-import { client, clientNoCdn } from '../../sanity/lib/client';
+import { client } from '../../sanity/lib/client';
 import {
   HERO_QUERY,
   KEY_VALUE_PILLARS_SECTION_QUERY,
@@ -50,7 +50,7 @@ export async function getStaticHomepageData() {
     testimonialsData,
     footerData,
   ] = await Promise.all([
-    clientNoCdn.fetch(HERO_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['hero'] } }),
+    client.fetch(HERO_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['hero'] } }),
     client.fetch(KEY_VALUE_PILLARS_SECTION_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['key-value-pillars-section'] } }),
     client.fetch(KEY_VALUE_PILLAR_ITEMS_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['key-value-pillar-items'] } }),
     client.fetch(ABOUT_SECTION_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['about'] } }),

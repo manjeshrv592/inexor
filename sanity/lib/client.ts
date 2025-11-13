@@ -6,7 +6,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true, // Always use CDN for better performance
+  useCdn: false,
   perspective: "published", // Use published perspective
   stega: {
     enabled: false, // Disable stega for better performance
