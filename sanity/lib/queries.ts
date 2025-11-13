@@ -15,7 +15,7 @@ export const WHO_WE_SERVE_SECTION_QUERY = groq`*[_type == "whoWeServeSection" &&
   isActive
 }`;
 
-export const HERO_QUERY = groq`*[_type == "hero" && isActive == true][0] {
+export const HERO_QUERY = groq`*[_type == "hero" && isActive == true] | order(_updatedAt desc)[0] {
   _id,
   title,
   description,
