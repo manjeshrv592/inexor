@@ -26,7 +26,9 @@ const WhoWeServe: React.FC<WhoWeServeProps> = ({ items, sectionData }) => {
         <div className="text-center">
           <SectionTitle className="mb-2">{title}</SectionTitle>
         </div>
-        <h3 className="mb-4 text-sm lg:text-lg">{subtitle}</h3>
+        {subtitle ? (
+          <h3 className="mb-4 text-sm lg:text-lg text-white">{subtitle}</h3>
+        ) : null}
         <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3 xl:gap-y-6">
           {items.map((item) => (
             <WhoWeServeItem
