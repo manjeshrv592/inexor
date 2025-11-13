@@ -28,6 +28,10 @@ export async function POST(request: NextRequest) {
           revalidateTag("who-we-serve");
           revalidatedTags.push("who-we-serve");
           break;
+        case "whoWeServeSection":
+          revalidateTag("who-we-serve-section");
+          revalidatedTags.push("who-we-serve-section");
+          break;
         case "why":
           revalidateTag("why");
           revalidatedTags.push("why");
@@ -70,6 +74,11 @@ export async function POST(request: NextRequest) {
           // Also revalidate services page
           revalidatePath("/services");
           break;
+        case "servicesPageSettings":
+          revalidateTag("servicesPageSettings");
+          revalidatedTags.push("servicesPageSettings");
+          revalidatePath("/services");
+          break;
         case "blogPost":
           revalidateTag("blog-posts");
           revalidatedTags.push("blog-posts");
@@ -89,7 +98,11 @@ export async function POST(request: NextRequest) {
         case "aboutPage":
           revalidateTag("about-page");
           revalidatedTags.push("about-page");
-          // Also revalidate about page
+          revalidatePath("/about");
+          break;
+        case "aboutPageSeo":
+          revalidateTag("about-page-seo");
+          revalidatedTags.push("about-page-seo");
           revalidatePath("/about");
           break;
         case "contactInfo":
@@ -98,15 +111,52 @@ export async function POST(request: NextRequest) {
           // Also revalidate contact page
           revalidatePath("/contact");
           break;
-        case "privacyPolicy":
-          revalidateTag("privacy-policy");
-          revalidatedTags.push("privacy-policy");
+        case "privacyPolicyPage":
+          revalidateTag("privacy-policy-page");
+          revalidateTag("privacy-policy-seo");
+          revalidatedTags.push("privacy-policy-page", "privacy-policy-seo");
           revalidatePath("/privacy-policy");
           break;
-        case "termsConditions":
-          revalidateTag("terms-conditions");
-          revalidatedTags.push("terms-conditions");
+        case "privacyPolicyContent":
+          revalidateTag("privacy-policy-content");
+          revalidatedTags.push("privacy-policy-content");
+          revalidatePath("/privacy-policy");
+          break;
+        case "termsConditionsPage":
+          revalidateTag("terms-conditions-page");
+          revalidateTag("terms-conditions-seo");
+          revalidatedTags.push("terms-conditions-page", "terms-conditions-seo");
           revalidatePath("/terms-conditions");
+          break;
+        case "termsConditionsContent":
+          revalidateTag("terms-conditions-content");
+          revalidatedTags.push("terms-conditions-content");
+          revalidatePath("/terms-conditions");
+          break;
+        case "resourcesPage":
+          revalidateTag("resourcesPage");
+          revalidatedTags.push("resourcesPage");
+          revalidatePath("/resources");
+          break;
+        case "resourcesPageSeo":
+          revalidateTag("resources-page-seo");
+          revalidatedTags.push("resources-page-seo");
+          revalidatePath("/resources");
+          break;
+        case "servicesPageSeo":
+          revalidateTag("services-page-seo");
+          revalidatedTags.push("services-page-seo");
+          revalidatePath("/services");
+          break;
+        case "faqPageSeo":
+          revalidateTag("faq-page-seo");
+          revalidatedTags.push("faq-page-seo");
+          revalidatePath("/faq");
+          break;
+        case "contactPageSeo":
+          revalidateTag("contact-page-seo");
+          revalidatedTags.push("contact-page-seo");
+          revalidatePath("/contact");
           break;
         case "keyValuePillarsSection":
         case "keyValuePillarItem":
@@ -129,11 +179,13 @@ export async function POST(request: NextRequest) {
           const allTags = [
             "hero",
             "who-we-serve",
+            "who-we-serve-section",
             "why",
             "why-items",
             "about",
             "about-items",
             "about-page",
+            "about-page-seo",
             "clients",
             "testimonials",
             "testimonials-section",
@@ -141,20 +193,29 @@ export async function POST(request: NextRequest) {
             "maps",
             "services",
             "services-section",
+            "servicesPageSettings",
             "blog-posts",
             "faq-categories",
             "faq-items",
             "faq-page",
+            "faq-page-seo",
             "contact-info",
-            "privacy-policy",
-            "terms-conditions",
+            "contact-page-seo",
+            "privacy-policy-page",
+            "privacy-policy-seo",
+            "privacy-policy-content",
+            "terms-conditions-page",
+            "terms-conditions-seo",
+            "terms-conditions-content",
+            "resourcesPage",
+            "resources-page-seo",
             "key-value-pillars-section",
             "key-value-pillar-items",
             "footer",
           ];
           allTags.forEach((tag) => revalidateTag(tag));
           revalidatedTags.push(...allTags);
-          
+
           // Revalidate all pages
           revalidatePath("/");
           revalidatePath("/about");
@@ -170,6 +231,7 @@ export async function POST(request: NextRequest) {
       const allTags = [
         "hero",
         "who-we-serve",
+        "who-we-serve-section",
         "why",
         "why-items",
         "about",
@@ -179,6 +241,28 @@ export async function POST(request: NextRequest) {
         "testimonials-section",
         "countries",
         "maps",
+        "services",
+        "services-section",
+        "servicesPageSettings",
+        "faq-categories",
+        "faq-items",
+        "faq-page",
+        "faq-page-seo",
+        "about-page",
+        "about-page-seo",
+        "contact-info",
+        "contact-page-seo",
+        "resourcesPage",
+        "resources-page-seo",
+        "privacy-policy-page",
+        "privacy-policy-seo",
+        "privacy-policy-content",
+        "terms-conditions-page",
+        "terms-conditions-seo",
+        "terms-conditions-content",
+        "key-value-pillars-section",
+        "key-value-pillar-items",
+        "footer",
       ];
       allTags.forEach((tag) => revalidateTag(tag));
       revalidatedTags.push(...allTags);
