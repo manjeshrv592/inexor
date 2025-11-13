@@ -56,7 +56,7 @@ export async function getStaticHomepageData() {
     client.fetch(ABOUT_SECTION_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['about'] } }),
     client.fetch(ABOUT_ITEMS_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['about-items'] } }),
     client.fetch(WHO_WE_SERVE_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['who-we-serve'] } }),
-    client.fetch(WHO_WE_SERVE_SECTION_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['who-we-serve'] } }),
+    client.fetch(WHO_WE_SERVE_SECTION_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['who-we-serve-section'] } }),
     client.fetch(WHY_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['why'] } }),
     client.fetch(WHY_ITEMS_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['why-items'] } }),
     client.fetch(SERVICES_SECTION_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['services-section'] } }),

@@ -162,10 +162,7 @@ export async function POST(request: NextRequest) {
         case "keyValuePillarItem":
           revalidateTag("key-value-pillars-section");
           revalidateTag("key-value-pillar-items");
-          revalidatedTags.push(
-            "key-value-pillars-section",
-            "key-value-pillar-items",
-          );
+          revalidatedTags.push("key-value-pillars-section", "key-value-pillar-items");
           break;
         case "footer":
           revalidateTag("footer");
