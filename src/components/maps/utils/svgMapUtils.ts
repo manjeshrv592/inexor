@@ -142,13 +142,6 @@ export const zoomToContinentAuto = (
   const translateX = width / 2 - projectedCenter[0] * clampedScale;
   const translateY = height / 2 - projectedCenter[1] * clampedScale;
 
-  console.log(`Auto-zooming to ${continentName}:`, {
-    center,
-    projectedCenter,
-    scale: clampedScale,
-    translate: [translateX, translateY]
-  });
-
   // Apply the zoom transformation
   svg.call(
     zoomBehavior.transform,
@@ -171,11 +164,6 @@ export const zoomToContinent = (
     console.warn(`No zoom coordinates found for continent: ${continentName}`);
     return;
   }
-
-  console.log(
-    `Zooming to ${continentName} with optimal coordinates:`,
-    coords
-  );
 
   // Apply zoom transformation using optimal coordinates
   // Note: Removed transition to avoid TypeScript issues with d3 types

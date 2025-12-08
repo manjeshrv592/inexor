@@ -92,10 +92,6 @@ export const getCachedFooter = (): Promise<Footer | null> =>
  * This replaces the individual Promise.all calls in the root layout
  */
 export async function getCachedHomepageData() {
-  console.log('🏠 Fetching cached homepage data...');
-  
-  const startTime = Date.now();
-  
   const [
     heroData,
     keyValuePillarsSection,
@@ -125,9 +121,6 @@ export async function getCachedHomepageData() {
     getCachedTestimonialsSection(),
     getCachedFooter(),
   ]);
-
-  const endTime = Date.now();
-  console.log(`🏠 Homepage data fetched in ${endTime - startTime}ms`);
 
   return {
     heroData,

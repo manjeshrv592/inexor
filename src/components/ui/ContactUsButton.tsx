@@ -49,17 +49,9 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({
   }, [router]);
 
   const handleContactClick = () => {
-    console.log("📞 Contact Us button clicked from", pathname);
     if (typeof window !== "undefined") {
       // If user is already on contact page, navigate to home instead
       const targetHref = pathname === "/contact" ? "/" : "/contact";
-      console.log(
-        "🎯 Contact target href:",
-        targetHref,
-        "(current:",
-        pathname,
-        ")",
-      );
 
       // Store the current path before navigation
       sessionStorage.setItem("lastPath", pathname);
@@ -68,7 +60,6 @@ const ContactUsButton: React.FC<ContactUsButtonProps> = ({
 
       // Always use transition router to prevent page reload
       // Animations will only show when transitioning from/to root due to PageTransition component logic
-      console.log("✨ Using transition router for contact navigation");
       requestAnimationFrame(() => {
         router.push(targetHref);
       });

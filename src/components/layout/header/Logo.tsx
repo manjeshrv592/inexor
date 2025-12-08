@@ -10,7 +10,6 @@ const Logo = () => {
   const pathname = usePathname();
 
   const handleLogoClick = () => {
-    console.log("🏠 Logo clicked - navigating to home from", pathname);
     if (typeof window !== "undefined") {
       const currentPath = pathname;
       const isFromRoot = currentPath === "/";
@@ -21,7 +20,6 @@ const Logo = () => {
 
       // Use transition router only when navigating from/to root
       if (isFromRoot || isToRoot) {
-        console.log("✨ Using transition router for logo navigation");
         requestAnimationFrame(() => {
           router.push("/");
         });

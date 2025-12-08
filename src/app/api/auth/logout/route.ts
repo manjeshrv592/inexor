@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 const COOKIE_NAME = "web_access";
 
 export async function POST() {
-  console.log("🔐 Logout API called");
   
   // Create response first
   const response = new NextResponse(JSON.stringify({
@@ -37,7 +36,5 @@ export async function POST() {
     sameSite: "lax",
     secure: false
   });
-  
-  console.log("✅ Logout cookie cleared using NextResponse.cookies methods");
   return response;
 }

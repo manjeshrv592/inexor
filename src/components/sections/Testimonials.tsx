@@ -11,12 +11,6 @@ interface TestimonialsProps {
 
 const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsData }) => {
   // Debug logging
-  console.log("🎭 Testimonials component received:", {
-    hasTestimonialsData: !!testimonialsData,
-    testimonialsCount: testimonialsData?.testimonials?.length || 0,
-    title: testimonialsData?.title,
-    subtitle: testimonialsData?.subtitle,
-  });
 
   // Fallback values if no Sanity data
   const title = testimonialsData?.title || "WHAT OUR CLIENTS SAY";
@@ -27,9 +21,6 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsData }) => {
 
   // If no testimonials data, don't render the section
   if (!testimonialsData || testimonials.length === 0) {
-    console.log(
-      "❌ Testimonials section not rendering - no data or empty testimonials array",
-    );
     return null;
   }
 

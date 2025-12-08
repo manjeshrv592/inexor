@@ -9,7 +9,6 @@ const PagePanelBg = () => {
   const pathname = usePathname();
 
   const handleBgClick = () => {
-    console.log("🌫️ Background clicked - navigating to home from", pathname);
     if (typeof window !== "undefined") {
       const currentPath = pathname;
       const isFromRoot = currentPath === "/";
@@ -20,7 +19,6 @@ const PagePanelBg = () => {
 
       // Use transition router only when navigating from/to root
       if (isFromRoot || isToRoot) {
-        console.log("✨ Using transition router for background navigation");
         requestAnimationFrame(() => {
           router.push("/");
         });

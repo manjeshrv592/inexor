@@ -130,7 +130,6 @@ const ContactForm = () => {
 
   // Handle form submission
   const onSubmit = async (data: ContactFormData) => {
-    console.log("🎯 Form onSubmit called with data:", data);
 
     if (!recaptchaRef.current) {
       toast.error("reCAPTCHA not available. Please try again.");
@@ -165,8 +164,6 @@ const ContactForm = () => {
         recaptchaToken,
       };
 
-      console.log("📡 Making direct API call to /api/contact...");
-
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
@@ -175,15 +172,12 @@ const ContactForm = () => {
         body: JSON.stringify(formDataWithToken),
       });
 
-      console.log("📡 API Response status:", response.status);
-
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to send message");
       }
 
       const result = await response.json();
-      console.log("📡 API Response:", result);
 
       toast.success(
         contactInfo.successMessage ||
@@ -717,12 +711,6 @@ const ContactForm = () => {
                   type="submit"
                   disabled={isSubmitting}
                   onClick={() => {
-                    console.log("🔘 Submit button clicked!");
-                    console.log("🔘 Form state:", {
-                      isValid: form.formState.isValid,
-                      isSubmitting: form.formState.isSubmitting,
-                      errors: Object.keys(form.formState.errors),
-                    });
                   }}
                 >
                   {isSubmitting ? "Sending..." : "Send Message"}

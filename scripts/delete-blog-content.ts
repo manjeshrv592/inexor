@@ -14,7 +14,6 @@ async function deleteBlogContent() {
     const blogPosts = await client.fetch(`*[_type == "blogPost"] { _id }`);
     for (const post of blogPosts) {
       await client.delete(post._id);
-      console.log(`✅ Deleted blog post: ${post._id}`);
     }
 
     // Delete all blog categories
@@ -24,24 +23,16 @@ async function deleteBlogContent() {
     );
     for (const category of blogCategories) {
       await client.delete(category._id);
-      console.log(`✅ Deleted blog category: ${category._id}`);
     }
 
     // Delete resources page settings
-    console.log("⚙️ Deleting resources page settings...");
+
     const resourcesPages = await client.fetch(
       `*[_type == "resourcesPage"] { _id }`,
     );
     for (const page of resourcesPages) {
       await client.delete(page._id);
-      console.log(`✅ Deleted resources page: ${page._id}`);
     }
-
-    console.log("🎉 All blog content deleted successfully!");
-    console.log("\n📋 Summary:");
-    console.log(`- Deleted ${blogPosts.length} blog posts`);
-    console.log(`- Deleted ${blogCategories.length} blog categories`);
-    console.log(`- Deleted ${resourcesPages.length} resources page settings`);
   } catch (error) {
     console.error("❌ Error deleting blog content:", error);
     process.exit(1);

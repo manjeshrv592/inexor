@@ -62,14 +62,6 @@ export function isOTPRequired(): boolean {
     // Reset time to compare only dates (already done in getCurrentDateInTimezone)
     otpStartDate.setHours(0, 0, 0, 0);
     
-    console.log('🕐 Timezone Debug:', {
-      configuredTimezone: timezone || 'server local time',
-      serverTime: new Date().toISOString(),
-      comparisonDate: currentDate.toISOString().split('T')[0],
-      otpStartDate: otpStartDate.toISOString().split('T')[0],
-      otpRequired: currentDate >= otpStartDate
-    });
-    
     // OTP is required if current date is >= the configured start date
     return currentDate >= otpStartDate;
   } catch (error) {

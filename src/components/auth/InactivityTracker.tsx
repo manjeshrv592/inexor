@@ -11,12 +11,10 @@ const InactivityTracker = () => {
 
   const handleLogout = useCallback(async () => {
     try {
-      console.log('[InactivityTracker] Logging out due to inactivity');
       // Use the same API endpoint as LogoutButton
       await fetch('/api/auth/logout', {
         method: 'POST',
       });
-      console.log('[InactivityTracker] Logout successful, redirecting to /auth');
       // Use window.location to ensure full page reload and proper redirection
       window.location.href = '/auth';
     } catch (error) {
@@ -34,7 +32,6 @@ const InactivityTracker = () => {
     // This function will be called by the useInactivity hook
     const handleWarning = (hideWarning = false) => {
       if (hideWarning) {
-        console.log('[InactivityTracker] Hiding warning due to user activity');
         setShowWarning(false);
         setCountdown(0);
         if (countdownInterval.current) {
@@ -43,7 +40,6 @@ const InactivityTracker = () => {
         }
       } else {
         // Always show warning when requested, regardless of current state
-        console.log('[InactivityTracker] Showing warning');
         setShowWarning(true);
         setCountdown(warningTime);
       }
@@ -62,7 +58,6 @@ const InactivityTracker = () => {
 
   // Handle resetting the timer when user interacts
   const handleStayLoggedIn = useCallback(async () => {
-    console.log('[InactivityTracker] User clicked Stay Logged In');
     
     // Refresh session first
     try {
@@ -99,8 +94,6 @@ const InactivityTracker = () => {
   useEffect(() => {
     if (!showWarning) return;
     
-    console.log(`[InactivityTracker] Starting countdown from ${warningTime} seconds`);
-    
     countdownInterval.current = setInterval(() => {
       setCountdown(prev => {
         if (prev <= 1) {
@@ -117,7 +110,6 @@ const InactivityTracker = () => {
 
     return () => {
       if (countdownInterval.current) {
-        console.log('[InactivityTracker] Cleaning up countdown interval');
         clearInterval(countdownInterval.current);
         countdownInterval.current = null;
       }

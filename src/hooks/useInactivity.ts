@@ -40,10 +40,8 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
       });
       
       if (response.ok) {
-        console.log('[Inactivity Timer] Session refreshed successfully');
         return true;
       } else {
-        console.log('[Inactivity Timer] Session refresh failed');
         return false;
       }
     } catch (error) {
@@ -59,32 +57,26 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
 
     // If resetWarningState is true, we're resetting due to user activity
     if (resetWarningState) {
-      console.log('[Inactivity Timer] Resetting timers due to user activity');
       // Always notify to hide the warning when there's user activity
-      console.log('[Inactivity Timer] Hiding warning due to user activity');
       warningCallbackRef.current?.(true);
       
       // Refresh session on user activity, unless we should skip it (e.g., logout button)
       if (!skipSessionRefresh) {
         refreshSession();
       } else {
-        console.log('[Inactivity Timer] Skipping session refresh (logout button clicked)');
       }
     }
 
     // Set the logout timer
     timerRef.current = setTimeout(() => {
-      console.log('[Inactivity Timer] Timeout reached, logging out');
       onInactive();
     }, timeout);
     
     // Set up the warning timer if we have time for a warning
     if (timeout > warningTimeMs) {
       const warningTimeout = timeout - warningTimeMs;
-      console.log(`[Inactivity Timer] Setting warning timer for ${warningTimeout}ms`);
       
       warningTimerRef.current = setTimeout(() => {
-        console.log('[Inactivity Timer] Showing warning');
         warningCallbackRef.current?.(false);
       }, warningTimeout);
     }
@@ -96,7 +88,6 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
 
   // Set up event listeners for user activity only
   useEffect(() => {
-    console.log('[Inactivity Timer] Setting up user activity listeners only');
     
     // Define handleActivity inside the effect to avoid dependency issues
     const handleActivity = (event: Event) => {
@@ -120,11 +111,8 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
           'closest' in target && 
           typeof target.closest === 'function' && 
           target.closest('.inactivity-warning')) {
-        console.log('[Inactivity Timer] Ignoring activity on warning element');
         return;
       }
-      
-      console.log(`[Inactivity Timer] Activity detected (${event.type}), resetting timers`);
       
       // Check if this is a logout button click - prevent session refresh
       const isLogoutButton = target && 
@@ -134,12 +122,10 @@ const useInactivity = (onInactive: () => void): UseInactivityReturn => {
           (target.closest('button[title="Logout"]') || target.closest('button[aria-label="Logout"]'));
       
       if (isLogoutButton) {
-        console.log('[Inactivity Timer] Logout button clicked - skipping session refresh');
       }
       
       // If we're in warning state, reset it
       if (warningTimerRef.current === null) {
-        console.log('[Inactivity Timer] Resetting warning state due to activity');
         warningCallbackRef.current?.(true);
         // Reset the warning timer ref to allow showing the warning again
         warningTimerRef.current = null;

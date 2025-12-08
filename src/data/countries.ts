@@ -776,7 +776,6 @@ export const getFlagFromCountryName = (countryName: string): string => {
   }
 
   // If no match found, return empty string
-  console.log("⚠️ No flag mapping found for country:", countryName);
   return "";
 };
 

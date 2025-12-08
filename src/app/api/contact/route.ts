@@ -26,10 +26,6 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
     });
 
     const data = await response.json();
-    console.log("🔐 reCAPTCHA verification result:", {
-      success: data.success,
-      hostname: data.hostname,
-    });
 
     // For reCAPTCHA v2, only check success (no score)
     return data.success;
@@ -40,22 +36,12 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
 }
 
 export async function POST(request: NextRequest) {
-  console.log("🚀 API ROUTE CALLED - /api/contact");
-  console.log("🔧 Environment check:");
-  console.log("   MS_TENANT_ID:", process.env.MS_TENANT_ID || "❌ MISSING");
-  console.log("   MS_CLIENT_ID:", process.env.MS_CLIENT_ID || "❌ MISSING");
-  console.log("   MS_CLIENT_SECRET:", process.env.MS_CLIENT_SECRET ? "✅ PRESENT" : "❌ MISSING");
-  console.log("   MS_OFFICE_EMAIL:", process.env.MS_OFFICE_EMAIL || "❌ MISSING");
-  console.log("   EMAIL_RECEIVER:", process.env.EMAIL_RECEIVER || "❌ MISSING");
-  console.log("   RECAPTCHA_SECRET_KEY:", process.env.RECAPTCHA_SECRET_KEY ? "✅ PRESENT" : "❌ MISSING");
 
   try {
     const data: ContactFormData = await request.json();
-    console.log("📨 Received data:", { ...data, recaptchaToken: data.recaptchaToken ? "[PRESENT]" : "[MISSING]" });
 
     // Validate the data
     const validatedData = contactFormSchema.parse(data);
-    console.log("✅ Data validated successfully");
 
     // Verify reCAPTCHA token
     if (!validatedData.recaptchaToken) {
@@ -74,8 +60,6 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
-    console.log("✅ reCAPTCHA verification successful");
 
     // Get country code from country abbreviation (only if provided)
     const selectedCountry = validatedData.countryCode
@@ -410,24 +394,14 @@ export async function POST(request: NextRequest) {
     };
 
     // Log the form submission
-    console.log("🎉 NEW CONTACT FORM SUBMISSION:");
-    console.log("================================");
-    console.log(`📅 Date: ${new Date().toLocaleString()}`);
-    console.log(`👤 Name: ${validatedData.name}`);
-    console.log(`📧 Email: ${validatedData.email}`);
     if (phoneDisplay) {
-      console.log(`📱 Phone: ${phoneDisplay}`);
     }
     if (validatedData.company) {
-      console.log(`🏢 Company: ${validatedData.company}`);
     }
     if (validatedData.service) {
-      console.log(`🛠️ Service: ${validatedData.service}`);
     }
     if (validatedData.message) {
-      console.log(`💬 Message: ${validatedData.message}`);
     }
-    console.log("================================");
 
     // Send emails using Microsoft Graph API (application permissions)
     async function getAzureAccessToken() {
@@ -493,7 +467,6 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      console.log("📧 Attempting to send emails via Microsoft Graph API...");
       const sender = process.env.MS_OFFICE_EMAIL;
       const adminRecipient = adminEmailData.to;
       const customerRecipient = customerEmailData.to;
@@ -506,18 +479,10 @@ export async function POST(request: NextRequest) {
       }
 
       const token = await getAzureAccessToken();
-      console.log("✅ Azure access token acquired");
-
-      console.log("📧 Sending admin notification email via Graph...");
       await sendMailViaGraph(token, sender, adminRecipient, adminEmailData.subject, adminEmailData.html);
-      console.log("✅ Admin email sent via Graph");
-
-      console.log("📧 Sending customer confirmation email via Graph...");
       await sendMailViaGraph(token, sender, customerRecipient, customerEmailData.subject, customerEmailData.html);
-      console.log("✅ Customer email sent via Graph");
     } catch (emailError) {
       console.error("❌ Microsoft Graph email sending failed:", emailError);
-      console.log("ℹ️ Form data is still logged above");
     }
 
     return NextResponse.json(
@@ -549,10 +514,6 @@ export async function POST(request: NextRequest) {
     }
 
     // Always log the form data even if email fails
-    console.log("📧 FORM SUBMISSION (with error):", {
-      error: error instanceof Error ? error.message : "Unknown error",
-      timestamp: new Date().toISOString(),
-    });
 
     // Still return success to user since we logged the data
     return NextResponse.json(

@@ -51,9 +51,21 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
                 imageAlt={service.useCases.image?.alt || service.title}
               />
             )}
+            {/* <div className="py-4">
+              <h3 className="mb-4 text-lg font-semibold text-brand-orange-500">IOR</h3>
+              <div className="flex items-center gap-3 flex-wrap">
+                <Link className="hover:text-brand-orange-500 duration-300" href="#">Austria</Link>
+                <span>/</span>
+                <Link className="hover:text-brand-orange-500 duration-300" href="#">Germany</Link>
+                <span>/</span>
+                <Link className="hover:text-brand-orange-500 duration-300" href="#">Switzerland</Link>
+              </div>
+            </div> */}
           </div>
         </div>
       </div>
+
+     
     </div>
   );
 };

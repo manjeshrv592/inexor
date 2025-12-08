@@ -115,25 +115,17 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
 
   // Touch device detection and viewport intersection logic
   useEffect(() => {
-    console.log('🔍 Touch device detection useEffect running');
     
     // Detect if device supports touch
     const checkTouchDevice = () => {
       const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      console.log('📱 Touch detection:', {
-        ontouchstart: 'ontouchstart' in window,
-        maxTouchPoints: navigator.maxTouchPoints,
-        hasTouch
-      });
       
       setIsTouchDevice(hasTouch);
       
       // On touch devices, start with map disabled
       if (hasTouch) {
-        console.log('🚫 Setting map disabled on touch device');
         setIsMapEnabled(false);
       } else {
-        console.log('✅ Setting map enabled on non-touch device');
         setIsMapEnabled(true);
       }
     };
@@ -144,38 +136,23 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
 
   // Separate useEffect for IntersectionObserver with delay
   useEffect(() => {
-    console.log('👀 IntersectionObserver useEffect running', {
-      isTouchDevice,
-      mapContainerRef: !!mapContainerRef.current
-    });
     
     // Only set up observer on touch devices
     if (!isTouchDevice) {
-      console.log('⏭️ Skipping observer setup - not a touch device');
       return;
     }
 
     // Add a delay to ensure DOM is ready
     const setupObserver = (): IntersectionObserver | null => {
       if (!mapContainerRef.current) {
-        console.log('⏭️ Still no map container ref, retrying...');
         return null;
       }
-
-      console.log('🎯 Setting up IntersectionObserver');
       const observer = new IntersectionObserver(
         (entries) => {
           const [entry] = entries;
-          console.log('📊 Map intersection update:', {
-            intersectionRatio: entry.intersectionRatio,
-            isIntersecting: entry.isIntersecting,
-            boundingClientRect: entry.boundingClientRect,
-            rootBounds: entry.rootBounds
-          });
           
           // If map is completely out of viewport, disable it and reset to continent mode
           if (entry.intersectionRatio === 0 && !entry.isIntersecting) {
-            console.log('🚫 Map completely out of viewport - disabling and resetting to continent mode');
             setIsMapEnabled(false);
             setViewMode("continents");
             setSelectedContinent(null);
@@ -188,7 +165,6 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
       );
 
       observer.observe(mapContainerRef.current);
-      console.log('✅ IntersectionObserver set up and observing element:', mapContainerRef.current);
       return observer;
     };
 
@@ -210,7 +186,6 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
     }
 
     return () => {
-      console.log('🧹 Cleaning up IntersectionObserver');
       if (timeoutId) clearTimeout(timeoutId);
       if (observer) observer.disconnect();
     };
@@ -468,31 +443,21 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
     const zoomBehavior = zoom<SVGSVGElement, unknown>()
       .scaleExtent(SVG_MAP_CONFIG.zoomExtent)
       .filter((event) => {
-        console.log('🎮 Zoom behavior filter:', {
-          eventType: event.type,
-          isTouchDevice,
-          isMapEnabled,
-          ctrlKey: event.ctrlKey
-        });
         
         // On touch devices, disable all zoom/pan when map is disabled
         if (isTouchDevice && !isMapEnabled) {
-          console.log('🚫 Blocking zoom/pan - map disabled on touch device');
           return false;
         }
         
         // Allow trackpad pinch gestures (they have ctrlKey modifier)
         if (event.type === "wheel" && event.ctrlKey) {
-          console.log('✅ Allowing trackpad pinch gesture');
           return true;
         }
         // Block regular scroll wheel events to allow page scrolling
         if (event.type === "wheel") {
-          console.log('🚫 Blocking regular scroll wheel');
           return false;
         }
         // Allow other zoom events (programmatic zoom from buttons, touch gestures)
-        console.log('✅ Allowing other zoom event');
         return true;
       })
       .on("start", () => {
@@ -742,16 +707,9 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
         onInteraction?.();
 
         if (continent) {
-          console.log('🗺️ Continent clicked:', {
-            continent,
-            countryName,
-            isTouchDevice,
-            isMapEnabled
-          });
           
           // On touch devices, enable map interaction when continent is clicked
           if (isTouchDevice && !isMapEnabled) {
-            console.log('✅ Enabling map interaction after continent click');
             setIsMapEnabled(true);
           }
           
@@ -1032,10 +990,6 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
         {/* Reset Button */}
         <button
           onClick={() => {
-            console.log('🔄 Reset button clicked:', {
-              isTouchDevice,
-              isMapEnabled
-            });
             
             onInteraction?.();
             hideTooltip();
@@ -1043,7 +997,6 @@ const SvgInteractiveMap: React.FC<SvgInteractiveMapProps> = ({
 
             // On touch devices, disable map interaction when reset is clicked
             if (isTouchDevice) {
-              console.log('🚫 Disabling map interaction after reset click');
               setIsMapEnabled(false);
             }
 

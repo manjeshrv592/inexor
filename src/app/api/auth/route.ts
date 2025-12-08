@@ -33,12 +33,6 @@ export async function POST(req: Request) {
 
   // Check if OTP is required based on the configured date
   const otpRequired = isOTPRequired();
-  
-  console.log("🔐 Authentication Debug:", {
-    otpRequired,
-    otpAuthFrom: process.env.NEXT_PUBLIC_OTP_AUTH_FROM,
-    currentDate: new Date().toISOString().split('T')[0]
-  });
 
   if (!otpRequired) {
     // OTP not required - set session cookie directly and authenticate user
@@ -68,8 +62,6 @@ export async function POST(req: Request) {
       maxAge: 60 * 60 * 24 * 7, // 7 days
       secure: false // Temporarily disabled for VPS testing
     });
-
-    console.log("✅ Direct authentication successful - OTP bypassed");
     return response;
   }
 

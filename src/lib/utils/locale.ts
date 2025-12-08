@@ -12,19 +12,15 @@ export function detectUserCountryCode(): string | null {
   try {
     // Get the user's locale from the browser
     const locale = navigator.language || navigator.languages?.[0];
-    console.log('🌍 Browser locale detected:', locale);
     
     if (!locale) {
-      console.log('🌍 No locale found');
       return null;
     }
 
     // Extract country code from locale (e.g., "en-US" -> "US", "hi-IN" -> "IN")
     const countryFromLocale = locale.split('-')[1]?.toUpperCase();
-    console.log('🌍 Country from locale:', countryFromLocale);
     
     if (!countryFromLocale) {
-      console.log('🌍 No country code in locale');
       return null;
     }
 
@@ -32,7 +28,6 @@ export function detectUserCountryCode(): string | null {
     const foundCountry = countryCodes.find(
       (country) => country.country === countryFromLocale
     );
-    console.log('🌍 Found country in list:', foundCountry);
 
     return foundCountry ? foundCountry.country : null;
   } catch (error) {

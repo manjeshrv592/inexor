@@ -37,7 +37,6 @@ async function run() {
   // Write to public
   fs.writeFileSync(topojsonPath, JSON.stringify(topo));
   const stats = fs.statSync(topojsonPath);
-  console.log(`TopoJSON written: ${topojsonPath} (${(stats.size / 1024 / 1024).toFixed(2)} MB)`);
 }
 
 run().catch((err) => {

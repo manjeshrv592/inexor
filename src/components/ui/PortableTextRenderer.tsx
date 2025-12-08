@@ -52,7 +52,6 @@ const components: PortableTextComponents = {
   types: {
     image: ({ value }: { value: AboutImage }) => {
       // Debug logging
-      console.log('PortableTextRenderer image value:', JSON.stringify(value, null, 2));
       
       // Check if image exists and has asset
       if (!value || !value.asset || !value.asset._ref) {
@@ -62,9 +61,6 @@ const components: PortableTextComponents = {
 
       // Generate optimized image URL using Sanity's image builder
       const optimizedImageUrl = urlForFeaturedImage(value, 800, 300)?.url();
-
-      console.log('Image value:', value);
-      console.log('Optimized image URL:', optimizedImageUrl);
 
       const shouldApplyGrayscale = value.isGrayscale !== false;
       const grayscaleClass = shouldApplyGrayscale ? "grayscale" : "";

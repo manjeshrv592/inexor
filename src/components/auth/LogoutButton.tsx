@@ -40,7 +40,6 @@ export default function LogoutButton() {
       if (!response.ok) {
         console.warn("Logout API returned non-OK status:", response.status);
       } else {
-        console.log("✅ Logout API successful");
       }
     } catch (error) {
       console.error("Logout error:", error);

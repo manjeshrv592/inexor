@@ -2,13 +2,8 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-  console.log("🔐 Middleware running:", {
-    enabled: process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED,
-    pathname: request.nextUrl.pathname,
-  });
 
   if (process.env.NEXT_PUBLIC_WEB_ACCESS_ENABLED !== "true") {
-    console.log("🚫 Auth disabled, allowing request");
     return NextResponse.next();
   }
 
@@ -28,11 +23,6 @@ export function middleware(request: NextRequest) {
   }
 
   const token = request.cookies.get("web_access")?.value;
-  console.log("🍪 Cookie check:", {
-    hasCookie: !!token,
-    secretSet: !!process.env.NEXT_PUBLIC_WEB_ACCESS_SECRET,
-    pathname,
-  });
 
   if (token) {
     // Parse cookie value: secret:timestamp
@@ -44,20 +34,15 @@ export function middleware(request: NextRequest) {
       if (expiresAtStr) {
         const expiresAt = parseInt(expiresAtStr);
         if (Date.now() > expiresAt) {
-          console.log("⏰ Session expired, redirecting to auth");
           const loginUrl = request.nextUrl.clone();
           loginUrl.pathname = "/auth";
           loginUrl.searchParams.set("redirect", pathname);
           return NextResponse.redirect(loginUrl);
         }
       }
-      
-      console.log("✅ Auth successful, allowing request");
       return NextResponse.next();
     }
   }
-
-  console.log("🔒 Redirecting to auth page");
   const loginUrl = request.nextUrl.clone();
   loginUrl.pathname = "/auth";
   loginUrl.searchParams.set("redirect", pathname);
