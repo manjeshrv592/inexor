@@ -15,6 +15,7 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/favicon") ||
     pathname.startsWith("/auth") ||
     pathname.startsWith("/api/auth") ||
+    pathname.startsWith("/api/health") ||
     pathname.startsWith("/api/revalidate") || // Allow revalidation webhook
     pathname.startsWith("/studio") ||
     pathname.match(/\.(jpg|jpeg|png|gif|svg|ico|webp|avif)$/i) // Allow image files
