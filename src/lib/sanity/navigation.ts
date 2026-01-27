@@ -46,7 +46,13 @@ export async function getNavigationItems(): Promise<NavigationItem[]> {
   return client.fetch(
     navigationItemsQuery,
     {},
-    { next: { tags: ["navigation", "navigationItems"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["navigation", "navigationItems"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -54,7 +60,13 @@ export async function getNavigationSettings(): Promise<NavigationSettings | null
   return client.fetch(
     navigationSettingsQuery,
     {},
-    { next: { tags: ["navigation", "navigationSettings"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["navigation", "navigationSettings"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -62,7 +74,13 @@ export async function getActiveNavigationItems(): Promise<NavigationItem[]> {
   return client.fetch(
     activeNavigationItemsQuery,
     {},
-    { next: { tags: ["navigation", "navigationItems"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["navigation", "navigationItems"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -71,7 +89,13 @@ export async function getNavigationConfig(): Promise<NavigationConfig | null> {
     const result = await client.fetch(
       navigationConfigQuery,
       {},
-      { next: { tags: ["navigation", "navigationConfig"] } },
+      {
+        cache: 'force-cache',
+        next: {
+          tags: ["navigation", "navigationConfig"],
+          revalidate: 3600
+        }
+      },
     );
 
     return result;

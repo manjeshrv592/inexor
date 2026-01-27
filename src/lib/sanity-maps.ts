@@ -56,7 +56,13 @@ export async function getMapsSection(): Promise<SanityMapsSection | null> {
     const mapsSection = await client.fetch(
       query,
       {},
-      { next: { tags: ["mapsSection"] } }
+      {
+        cache: 'force-cache',
+        next: {
+          tags: ["mapsSection"],
+          revalidate: 3600
+        }
+      }
     );
 
     // Get all active countries separately
@@ -110,7 +116,13 @@ export async function getActiveCountries(): Promise<SanityCountry[]> {
     return await client.fetch(
       query,
       {},
-      { next: { tags: ["countries", "maps"] } },
+      {
+        cache: 'force-cache',
+        next: {
+          tags: ["countries", "maps"],
+          revalidate: 3600
+        }
+      },
     );
   } catch (error) {
     console.error("Error fetching active countries:", error);
@@ -139,7 +151,13 @@ export async function getAllCountries(): Promise<SanityCountry[]> {
     return await client.fetch(
       query,
       {},
-      { next: { tags: ["countries", "maps"] } },
+      {
+        cache: 'force-cache',
+        next: {
+          tags: ["countries", "maps"],
+          revalidate: 3600
+        }
+      },
     );
   } catch (error) {
     console.error("Error fetching all countries:", error);

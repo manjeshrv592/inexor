@@ -31,7 +31,17 @@ export async function getAboutPageData(): Promise<{
   aboutPage: AboutPageData | null;
 }> {
   try {
-    const aboutPage = await client.fetch(aboutPageQuery);
+    const aboutPage = await client.fetch(
+      aboutPageQuery,
+      {},
+      {
+        cache: 'force-cache',
+        next: {
+          tags: ['about-page'],
+          revalidate: 3600
+        }
+      }
+    );
 
     return {
       aboutPage,

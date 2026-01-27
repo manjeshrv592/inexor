@@ -127,7 +127,13 @@ export async function getWhoWeServeItems(): Promise<WhoWeServeItem[]> {
   return client.fetch(
     WHO_WE_SERVE_QUERY,
     {},
-    { next: { tags: ["who-we-serve"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["who-we-serve"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -135,31 +141,83 @@ export async function getWhoWeServeSection(): Promise<WhoWeServeSection | null> 
   return client.fetch(
     WHO_WE_SERVE_SECTION_QUERY,
     {},
-    { next: { tags: ["who-we-serve-section"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["who-we-serve-section"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
 export async function getHero(): Promise<Hero | null> {
-  return client.fetch(HERO_QUERY, {}, { next: { tags: ["hero"] } });
+  return client.fetch(
+    HERO_QUERY,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["hero"],
+        revalidate: 3600
+      }
+    }
+  );
 }
 
 export async function getWhy(): Promise<Why | null> {
-  return client.fetch(WHY_QUERY, {}, { next: { tags: ["why"] } });
+  return client.fetch(
+    WHY_QUERY,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["why"],
+        revalidate: 3600
+      }
+    }
+  );
 }
 
 export async function getWhyItems(): Promise<WhyItem[]> {
-  return client.fetch(WHY_ITEMS_QUERY, {}, { next: { tags: ["why-items"] } });
+  return client.fetch(
+    WHY_ITEMS_QUERY,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["why-items"],
+        revalidate: 3600
+      }
+    }
+  );
 }
 
 export async function getAboutSection(): Promise<AboutSection | null> {
-  return client.fetch(ABOUT_SECTION_QUERY, {}, { next: { tags: ["about"] } });
+  return client.fetch(
+    ABOUT_SECTION_QUERY,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["about"],
+        revalidate: 3600
+      }
+    }
+  );
 }
 
 export async function getAboutItems(): Promise<AboutItem[]> {
   return client.fetch(
     ABOUT_ITEMS_QUERY,
     {},
-    { next: { tags: ["about-items"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["about-items"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -188,7 +246,17 @@ export interface ClientsSection {
 }
 
 export async function getClientsSection(): Promise<ClientsSection | null> {
-  return client.fetch(CLIENTS_QUERY, {}, { next: { tags: ["clients"] } });
+  return client.fetch(
+    CLIENTS_QUERY,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["clients"],
+        revalidate: 3600
+      }
+    }
+  );
 }
 
 export interface ResourcesPage {
@@ -231,7 +299,17 @@ export async function getResourcesPage(): Promise<ResourcesPage | null> {
     isActive
   }`;
 
-  return client.fetch(query, {}, { next: { tags: ["resourcesPage"] } });
+  return client.fetch(
+    query,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["resourcesPage"],
+        revalidate: 3600
+      }
+    }
+  );
 }
 
 export interface TestimonialImage {
@@ -272,7 +350,13 @@ export async function getTestimonials(): Promise<Testimonial[]> {
   return client.fetch(
     TESTIMONIALS_QUERY,
     {},
-    { next: { tags: ["testimonials"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["testimonials"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -280,7 +364,13 @@ export async function getTestimonialsSection(): Promise<TestimonialsSection | nu
   const section = await client.fetch(
     TESTIMONIALS_SECTION_QUERY,
     {},
-    { next: { tags: ["testimonials-section"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["testimonials-section"],
+        revalidate: 3600
+      }
+    },
   );
 
   // If section has no specific testimonials selected, get all active testimonials
@@ -332,11 +422,31 @@ export interface ServicesSection {
 }
 
 export async function getServicesSection(): Promise<ServicesSection | null> {
-  return client.fetch(SERVICES_SECTION_QUERY);
+  return client.fetch(
+    SERVICES_SECTION_QUERY,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["services-section"],
+        revalidate: 3600
+      }
+    }
+  );
 }
 
 export async function getServicesForHomepage(): Promise<ServiceForHomepage[]> {
-  return client.fetch(SERVICES_FOR_HOMEPAGE_QUERY);
+  return client.fetch(
+    SERVICES_FOR_HOMEPAGE_QUERY,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["services"],
+        revalidate: 3600
+      }
+    }
+  );
 }
 
 export interface FAQCategory {
@@ -380,12 +490,28 @@ export async function getFAQCategories(): Promise<FAQCategory[]> {
   return client.fetch(
     FAQ_CATEGORIES_QUERY,
     {},
-    { next: { tags: ["faq-categories"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["faq-categories"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
 export async function getFAQItems(): Promise<FAQItem[]> {
-  return client.fetch(FAQ_ITEMS_QUERY, {}, { next: { tags: ["faq-items"] } });
+  return client.fetch(
+    FAQ_ITEMS_QUERY,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["faq-items"],
+        revalidate: 3600
+      }
+    }
+  );
 }
 
 export async function getFAQItemsByCategory(
@@ -394,12 +520,28 @@ export async function getFAQItemsByCategory(
   return client.fetch(
     FAQ_ITEMS_BY_CATEGORY_QUERY,
     { categorySlug },
-    { next: { tags: ["faq-items", `faq-category-${categorySlug}`] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["faq-items", `faq-category-${categorySlug}`],
+        revalidate: 3600
+      }
+    },
   );
 }
 
 export async function getFAQPage(): Promise<FAQPage | null> {
-  return client.fetch(FAQ_PAGE_QUERY, {}, { next: { tags: ["faq-page"] } });
+  return client.fetch(
+    FAQ_PAGE_QUERY,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["faq-page"],
+        revalidate: 3600
+      }
+    }
+  );
 }
 
 export interface FirstFAQSlugs {
@@ -461,7 +603,13 @@ export async function getKeyValuePillarsSection(): Promise<KeyValuePillarsSectio
   return client.fetch(
     KEY_VALUE_PILLARS_SECTION_QUERY,
     {},
-    { next: { tags: ["key-value-pillars-section"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["key-value-pillars-section"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -469,7 +617,13 @@ export async function getKeyValuePillarItems(): Promise<KeyValuePillarItem[]> {
   return client.fetch(
     KEY_VALUE_PILLAR_ITEMS_QUERY,
     {},
-    { next: { tags: ["key-value-pillar-items"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["key-value-pillar-items"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -506,7 +660,17 @@ export interface Footer {
 }
 
 export async function getFooter(): Promise<Footer | null> {
-  return client.fetch(FOOTER_QUERY, {}, { next: { tags: ["footer"] } });
+  return client.fetch(
+    FOOTER_QUERY,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["footer"],
+        revalidate: 3600
+      }
+    }
+  );
 }
 
 // Privacy Policy and Terms & Conditions interfaces and functions
@@ -611,7 +775,17 @@ export interface HomeSeo {
 }
 
 export async function getHomeSeo(): Promise<HomeSeo | null> {
-  return client.fetch(HOME_SEO_QUERY, {}, { next: { tags: ["home-seo"] } });
+  return client.fetch(
+    HOME_SEO_QUERY,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["home-seo"],
+        revalidate: 3600
+      }
+    }
+  );
 }
 
 // About Page SEO interfaces and functions
@@ -625,7 +799,13 @@ export async function getAboutPageSeo(): Promise<AboutPageSeo | null> {
   return client.fetch(
     ABOUT_PAGE_SEO_QUERY,
     {},
-    { next: { tags: ["about-page-seo"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["about-page-seo"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -640,7 +820,13 @@ export async function getResourcesPageSeo(): Promise<ResourcesPageSeo | null> {
   return client.fetch(
     RESOURCES_PAGE_SEO_QUERY,
     {},
-    { next: { tags: ["resources-page-seo"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["resources-page-seo"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -655,7 +841,13 @@ export async function getServicesPageSeo(): Promise<ServicesPageSeo | null> {
   return client.fetch(
     SERVICES_PAGE_SEO_QUERY,
     {},
-    { next: { tags: ["services-page-seo"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["services-page-seo"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -670,7 +862,13 @@ export async function getFaqPageSeo(): Promise<FaqPageSeo | null> {
   return client.fetch(
     FAQ_PAGE_SEO_QUERY,
     {},
-    { next: { tags: ["faq-page-seo"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["faq-page-seo"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -685,7 +883,13 @@ export async function getContactPageSeo(): Promise<ContactPageSeo | null> {
   return client.fetch(
     CONTACT_PAGE_SEO_QUERY,
     {},
-    { next: { tags: ["contact-page-seo"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["contact-page-seo"],
+        revalidate: 3600
+      }
+    },
   );
 }
 

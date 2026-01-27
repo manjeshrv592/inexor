@@ -51,7 +51,17 @@ export interface ContactPageData {
 // Fetch active contact information
 export async function getContactInfo(): Promise<ContactInfo | null> {
   try {
-    const contactInfo = await client.fetch<ContactInfo>(contactInfoQuery);
+    const contactInfo = await client.fetch<ContactInfo>(
+      contactInfoQuery,
+      {},
+      {
+        cache: 'force-cache',
+        next: {
+          tags: ['contact-info'],
+          revalidate: 3600
+        }
+      }
+    );
     return contactInfo;
   } catch (error) {
     console.error("Error fetching contact info:", error);
@@ -62,7 +72,17 @@ export async function getContactInfo(): Promise<ContactInfo | null> {
 // Fetch office locations
 export async function getOfficeLocations(): Promise<OfficeLocation[]> {
   try {
-    const officeLocations = await client.fetch<OfficeLocation[]>(officeLocationsQuery);
+    const officeLocations = await client.fetch<OfficeLocation[]>(
+      officeLocationsQuery,
+      {},
+      {
+        cache: 'force-cache',
+        next: {
+          tags: ['office-locations'],
+          revalidate: 3600
+        }
+      }
+    );
     return officeLocations;
   } catch (error) {
     console.error("Error fetching office locations:", error);
@@ -73,7 +93,17 @@ export async function getOfficeLocations(): Promise<OfficeLocation[]> {
 // Fetch contact page data
 export async function getContactPageData(): Promise<ContactPageData | null> {
   try {
-    const contactPage = await client.fetch<ContactPageData>(contactPageQuery);
+    const contactPage = await client.fetch<ContactPageData>(
+      contactPageQuery,
+      {},
+      {
+        cache: 'force-cache',
+        next: {
+          tags: ['contact-page'],
+          revalidate: 3600
+        }
+      }
+    );
     return contactPage;
   } catch (error) {
     console.error("Error fetching contact page data:", error);

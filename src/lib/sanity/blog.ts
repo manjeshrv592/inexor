@@ -86,7 +86,17 @@ export interface BlogPostNavigation {
 
 // Functions
 export async function getBlogPosts(): Promise<BlogPost[]> {
-  return client.fetch(BLOG_POSTS_QUERY, {}, { next: { tags: ["blog-posts"] } });
+  return client.fetch(
+    BLOG_POSTS_QUERY,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["blog-posts"],
+        revalidate: 3600
+      }
+    }
+  );
 }
 
 export async function getBlogPostBySlug(
@@ -95,7 +105,13 @@ export async function getBlogPostBySlug(
   return client.fetch(
     BLOG_POST_BY_SLUG_QUERY,
     { slug },
-    { next: { tags: ["blog-posts", `blog-post-${slug}`] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["blog-posts", `blog-post-${slug}`],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -105,7 +121,13 @@ export async function getBlogPostNavigation(
   return client.fetch(
     BLOG_POST_NAVIGATION_QUERY,
     { currentDate },
-    { next: { tags: ["blog-posts"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["blog-posts"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -115,7 +137,13 @@ export async function getRecentBlogPosts(
   return client.fetch(
     RECENT_BLOG_POSTS_QUERY,
     { limit },
-    { next: { tags: ["blog-posts", "recent-blogs"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["blog-posts", "recent-blogs"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -123,10 +151,26 @@ export async function getFirstBlogPostSlug(): Promise<{ slug: { current: string 
   return client.fetch(
     FIRST_BLOG_POST_SLUG_QUERY,
     {},
-    { next: { tags: ["blog-posts"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["blog-posts"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
 export async function getBlogPostsForNavigation(): Promise<BlogPost[]> {
-  return client.fetch(BLOG_POSTS_NAVIGATION_QUERY, {}, { next: { tags: ["blog-posts"] } });
+  return client.fetch(
+    BLOG_POSTS_NAVIGATION_QUERY,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["blog-posts"],
+        revalidate: 3600
+      }
+    }
+  );
 }

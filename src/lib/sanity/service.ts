@@ -85,14 +85,30 @@ export interface ServicesPageSettings {
 
 // Functions
 export async function getServices(): Promise<Service[]> {
-  return client.fetch(SERVICES_QUERY, {}, { next: { tags: ["services"] } });
+  return client.fetch(
+    SERVICES_QUERY,
+    {},
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["services"],
+        revalidate: 3600
+      }
+    }
+  );
 }
 
 export async function getServiceBySlug(slug: string): Promise<Service | null> {
   return client.fetch(
     SERVICE_BY_SLUG_QUERY,
     { slug },
-    { next: { tags: ["services", `service-${slug}`] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["services", `service-${slug}`],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -100,7 +116,13 @@ export async function getServiceByCode(code: string): Promise<Service | null> {
   return client.fetch(
     SERVICE_BY_CODE_QUERY,
     { code },
-    { next: { tags: ["services", `service-${code.toLowerCase()}`] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["services", `service-${code.toLowerCase()}`],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -110,7 +132,13 @@ export async function getServiceNavigation(
   return client.fetch(
     SERVICE_NAVIGATION_QUERY,
     { currentOrder },
-    { next: { tags: ["services"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["services"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -118,7 +146,13 @@ export async function getServicesPageSettings(): Promise<ServicesPageSettings | 
   return client.fetch(
     SERVICES_PAGE_SETTINGS_QUERY,
     {},
-    { next: { tags: ["servicesPageSettings"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["servicesPageSettings"],
+        revalidate: 3600
+      }
+    },
   );
 }
 
@@ -126,6 +160,12 @@ export async function getFirstServiceSlug(): Promise<{ slug: { current: string }
   return client.fetch(
     FIRST_SERVICE_SLUG_QUERY,
     {},
-    { next: { tags: ["services"] } },
+    {
+      cache: 'force-cache',
+      next: {
+        tags: ["services"],
+        revalidate: 3600
+      }
+    },
   );
 }
