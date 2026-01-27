@@ -51,19 +51,19 @@ export async function getStaticHomepageData() {
     footerData,
     mapsSection,
   ] = await Promise.all([
-    client.fetch(HERO_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['hero'] } }),
-    client.fetch(KEY_VALUE_PILLARS_SECTION_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['key-value-pillars-section'] } }),
-    client.fetch(KEY_VALUE_PILLAR_ITEMS_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['key-value-pillar-items'] } }),
-    client.fetch(ABOUT_SECTION_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['about'] } }),
-    client.fetch(ABOUT_ITEMS_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['about-items'] } }),
-    client.fetch(WHO_WE_SERVE_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['who-we-serve'] } }),
-    client.fetch(WHO_WE_SERVE_SECTION_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['who-we-serve-section'] } }),
-    client.fetch(WHY_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['why'] } }),
-    client.fetch(WHY_ITEMS_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['why-items'] } }),
-    client.fetch(SERVICES_SECTION_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['services-section'] } }),
-    client.fetch(SERVICES_FOR_HOMEPAGE_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['services'] } }),
+    client.fetch(HERO_QUERY, {}, { cache: 'force-cache', next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['hero'] } }),
+    client.fetch(KEY_VALUE_PILLARS_SECTION_QUERY, {}, { cache: 'force-cache', next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['key-value-pillars-section'] } }),
+    client.fetch(KEY_VALUE_PILLAR_ITEMS_QUERY, {}, { cache: 'force-cache', next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['key-value-pillar-items'] } }),
+    client.fetch(ABOUT_SECTION_QUERY, {}, { cache: 'force-cache', next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['about'] } }),
+    client.fetch(ABOUT_ITEMS_QUERY, {}, { cache: 'force-cache', next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['about-items'] } }),
+    client.fetch(WHO_WE_SERVE_QUERY, {}, { cache: 'force-cache', next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['who-we-serve'] } }),
+    client.fetch(WHO_WE_SERVE_SECTION_QUERY, {}, { cache: 'force-cache', next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['who-we-serve-section'] } }),
+    client.fetch(WHY_QUERY, {}, { cache: 'force-cache', next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['why'] } }),
+    client.fetch(WHY_ITEMS_QUERY, {}, { cache: 'force-cache', next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['why-items'] } }),
+    client.fetch(SERVICES_SECTION_QUERY, {}, { cache: 'force-cache', next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['services-section'] } }),
+    client.fetch(SERVICES_FOR_HOMEPAGE_QUERY, {}, { cache: 'force-cache', next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['services'] } }),
     getTestimonialsSection(), // Use function with fallback logic instead of direct query
-    client.fetch(FOOTER_QUERY, {}, { next: { revalidate: REVALIDATE.STATIC, tags: ['footer'] } }),
+    client.fetch(FOOTER_QUERY, {}, { cache: 'force-cache', next: { revalidate: REVALIDATE.STATIC, tags: ['footer'] } }),
     getMapsSection(), // Fetch maps data server-side to avoid client-side API calls
   ]);
 
@@ -99,7 +99,7 @@ export async function getStaticAboutPageData() {
   const aboutPage = await client.fetch(
     aboutPageQuery,
     {},
-    { next: { revalidate: REVALIDATE.PAGES, tags: ['about-page'] } }
+    { cache: 'force-cache', next: { revalidate: REVALIDATE.PAGES, tags: ['about-page'] } }
   );
 
   return { aboutPage };
@@ -111,8 +111,8 @@ export async function getStaticAboutPageData() {
 export async function getStaticFAQData() {
 
   const [categoriesData, faqPageInfo] = await Promise.all([
-    client.fetch(FAQ_CATEGORIES_QUERY, {}, { next: { revalidate: REVALIDATE.PAGES, tags: ['faq-categories'] } }),
-    client.fetch(FAQ_PAGE_QUERY, {}, { next: { revalidate: REVALIDATE.PAGES, tags: ['faq-page'] } }),
+    client.fetch(FAQ_CATEGORIES_QUERY, {}, { cache: 'force-cache', next: { revalidate: REVALIDATE.PAGES, tags: ['faq-categories'] } }),
+    client.fetch(FAQ_PAGE_QUERY, {}, { cache: 'force-cache', next: { revalidate: REVALIDATE.PAGES, tags: ['faq-page'] } }),
   ]);
 
   return {
