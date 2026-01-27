@@ -6,7 +6,7 @@ import "./globals.css";
 import Header from "@/components/layout/header/Header";
 import AuthProvider from "@/components/providers/AuthProvider";
 import LogoutButton from "@/components/auth/LogoutButton";
-import PrefetchProvider from "@/components/providers/PrefetchProvider";
+
 import { HomeScrollProvider } from "@/contexts/HomeScrollContext";
 import { getFirstBlogPostSlug } from "@/lib/sanity/blog";
 import { getFirstServiceSlug } from "@/lib/sanity/service";
@@ -70,7 +70,7 @@ export default async function RootLayout({
         >
           <AuthProvider>
             <HomeScrollProvider>
-              <PrefetchProvider>
+              <>
                 <Header
                   firstBlogSlug={firstBlogSlug}
                   firstServiceSlug={firstServiceSlug}
@@ -81,7 +81,7 @@ export default async function RootLayout({
 
                 {children}
                 <LogoutButton />
-              </PrefetchProvider>
+              </>
             </HomeScrollProvider>
             <Toaster
               position="top-right"
