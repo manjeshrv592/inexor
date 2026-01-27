@@ -14,7 +14,6 @@ import Testimonials from "@/components/sections/Testimonials";
 import WhoWeServe from "@/components/sections/WhoWeServe";
 import Why from "@/components/sections/Why";
 import HomeScroller from "@/components/HomeScroller";
-import ContactDataPreloader from "@/components/ContactDataPreloader";
 import MapPrewarm from "@/lib/preloader/MapPrewarm";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -73,13 +72,14 @@ const HomePage = async () => {
     serviceItems,
     testimonialsData,
     footerData,
+    mapsSection,
+    serviceLocations,
   } = await getStaticHomepageData();
 
   return (
     <HomeScroller>
       {/* Prewarm map chunk and low-res data early for faster first interaction */}
       <MapPrewarm />
-      <ContactDataPreloader />
       <main>
         <Hero heroData={heroData} />
         <KeyValuePillars
@@ -93,7 +93,7 @@ const HomePage = async () => {
           servicesSection={servicesSection}
           serviceItems={[...serviceItems].reverse()}
         />
-        <Maps />
+        <Maps mapsSection={mapsSection} serviceLocations={serviceLocations} />
         <Why whyData={whyData} whyItems={whyItems} />
         <Clients />
         <Testimonials testimonialsData={testimonialsData} />

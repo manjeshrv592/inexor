@@ -1,10 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState, useMemo } from "react";
+import { useMemo } from "react";
 import NavItem from "./NavItem";
-import { NavigationItem, getNavigationData } from "@/lib/sanity/navigation";
-// import { usePrefetch } from "@/hooks/usePrefetch";
+import { NavigationItem } from "@/lib/sanity/navigation";
 
 interface NavigationProps {
   isOpen: boolean;
@@ -14,6 +13,7 @@ interface NavigationProps {
   firstServiceSlug?: string | null;
   firstFAQCategorySlug?: string | null;
   firstFAQQuestionSlug?: string | null;
+  navigationItems?: NavigationItem[];
 }
 
 const Navigation: React.FC<NavigationProps> = ({
@@ -24,24 +24,8 @@ const Navigation: React.FC<NavigationProps> = ({
   firstServiceSlug,
   firstFAQCategorySlug,
   firstFAQQuestionSlug,
+  navigationItems = [],
 }) => {
-  const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
-
-  useEffect(() => {
-    const fetchNavigationData = async () => {
-      try {
-        const { items } = await getNavigationData();
-
-        setNavigationItems(items);
-      } catch (error) {
-        console.error("❌ Failed to fetch navigation configuration:", error);
-        // Don't set any fallback items - keep navigationItems empty
-      }
-    };
-
-    fetchNavigationData();
-  }, []);
-
   // Dynamically update the resources, services, and FAQ links with the first slugs
   const displayItems = useMemo(() => {
     return navigationItems.map((item) => {
@@ -131,7 +115,7 @@ const Navigation: React.FC<NavigationProps> = ({
                 item.href === "/resources" || item.href.startsWith("/resources")
                   ? activePagePath?.startsWith("/resources") || false
                   : item.href === "/services" ||
-                      item.href.startsWith("/services")
+                    item.href.startsWith("/services")
                     ? activePagePath?.startsWith("/services") || false
                     : item.href === "/faq"
                       ? activePagePath?.startsWith("/faq") || false

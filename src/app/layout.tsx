@@ -11,6 +11,7 @@ import { HomeScrollProvider } from "@/contexts/HomeScrollContext";
 import { getFirstBlogPostSlug } from "@/lib/sanity/blog";
 import { getFirstServiceSlug } from "@/lib/sanity/service";
 import { getFirstFAQSlugs } from "@/lib/sanity";
+import { getNavigationData } from "@/lib/sanity/navigation";
 
 const michroma = Michroma({
   subsets: ["latin"],
@@ -35,20 +36,18 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Fetch first blog slug server-side for navigation
-  const firstBlogPost = await getFirstBlogPostSlug();
+  // Batch all navigation-related fetches in parallel for efficiency
+  const [firstBlogPost, firstService, firstFAQSlugs, navigationData] = await Promise.all([
+    getFirstBlogPostSlug(),
+    getFirstServiceSlug(),
+    getFirstFAQSlugs(),
+    getNavigationData(),
+  ]);
+
   const firstBlogSlug = firstBlogPost?.slug?.current || null;
-
-  // Fetch first service slug server-side for navigation
-  const firstService = await getFirstServiceSlug();
   const firstServiceSlug = firstService?.slug?.current || null;
-
-  // Fetch first FAQ slugs server-side for navigation
-  const firstFAQSlugs = await getFirstFAQSlugs();
-  const firstFAQCategorySlug =
-    firstFAQSlugs?.firstCategory?.slug?.current || null;
-  const firstFAQQuestionSlug =
-    firstFAQSlugs?.firstQuestion?.slug?.current || null;
+  const firstFAQCategorySlug = firstFAQSlugs?.firstCategory?.slug?.current || null;
+  const firstFAQQuestionSlug = firstFAQSlugs?.firstQuestion?.slug?.current || null;
 
   return (
     <ViewTransitions>
@@ -77,6 +76,7 @@ export default async function RootLayout({
                   firstServiceSlug={firstServiceSlug}
                   firstFAQCategorySlug={firstFAQCategorySlug}
                   firstFAQQuestionSlug={firstFAQQuestionSlug}
+                  navigationItems={navigationData.items}
                 />
 
                 {children}

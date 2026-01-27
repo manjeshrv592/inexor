@@ -5,19 +5,22 @@ import { usePathname } from "next/navigation";
 import MobileToggle from "./MobileToggle";
 import Logo from "./Logo";
 import Navigation from "./Navigation";
+import { NavigationItem } from "@/lib/sanity/navigation";
 
 interface HeaderProps {
   firstBlogSlug?: string | null;
   firstServiceSlug?: string | null;
   firstFAQCategorySlug?: string | null;
   firstFAQQuestionSlug?: string | null;
+  navigationItems?: NavigationItem[];
 }
 
-const Header: React.FC<HeaderProps> = ({ 
-  firstBlogSlug, 
-  firstServiceSlug, 
-  firstFAQCategorySlug, 
-  firstFAQQuestionSlug 
+const Header: React.FC<HeaderProps> = ({
+  firstBlogSlug,
+  firstServiceSlug,
+  firstFAQCategorySlug,
+  firstFAQQuestionSlug,
+  navigationItems = [],
 }) => {
   const pathname = usePathname();
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
@@ -42,9 +45,11 @@ const Header: React.FC<HeaderProps> = ({
         firstServiceSlug={firstServiceSlug}
         firstFAQCategorySlug={firstFAQCategorySlug}
         firstFAQQuestionSlug={firstFAQQuestionSlug}
+        navigationItems={navigationItems}
       />
     </header>
   );
 };
 
 export default Header;
+

@@ -5,6 +5,7 @@ import UseCasesSection from "@/components/ui/UseCasesSection";
 import React from "react";
 import { type Service } from "@/lib/sanity/service";
 import { urlForFeaturedImage } from "../../../sanity/lib/image";
+import Link from "next/link";
 
 interface ServiceContentProps {
   service: Service;
@@ -20,9 +21,13 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
             <div className="absolute top-0 left-0 size-full">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={service.featuredImage ? urlForFeaturedImage(service.featuredImage, 800, 300).url() : "/img/left-image.jpg"}
+                src={
+                  service.featuredImage
+                    ? urlForFeaturedImage(service.featuredImage, 800, 300).url()
+                    : "/img/left-image.jpg"
+                }
                 alt={service.featuredImage?.alt || service.title}
-                className={`w-full h-full object-cover ${service.featuredImage?.isGrayscale !== false ? "grayscale" : ""}`}
+                className={`h-full w-full object-cover ${service.featuredImage?.isGrayscale !== false ? "grayscale" : ""}`}
               />
             </div>
             <div className="relative z-10 flex size-full items-center justify-center">
@@ -51,21 +56,36 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
                 imageAlt={service.useCases.image?.alt || service.title}
               />
             )}
-            {/* <div className="py-4">
-              <h3 className="mb-4 text-lg font-semibold text-brand-orange-500">IOR</h3>
-              <div className="flex items-center gap-3 flex-wrap">
-                <Link className="hover:text-brand-orange-500 duration-300" href="#">Austria</Link>
+            <div className="py-4">
+              <h3 className="text-brand-orange-500 mb-4 text-lg font-semibold">
+                IOR
+              </h3>
+              <div className="flex flex-wrap items-center gap-3">
+                <Link
+                  className="hover:text-brand-orange-500 duration-300"
+                  href="/services/ior-country/austria"
+                >
+                  Austria
+                </Link>
                 <span>/</span>
-                <Link className="hover:text-brand-orange-500 duration-300" href="#">Germany</Link>
+                <Link
+                  className="hover:text-brand-orange-500 duration-300"
+                  href="/services/ior-country/germany"
+                >
+                  Germany
+                </Link>
                 <span>/</span>
-                <Link className="hover:text-brand-orange-500 duration-300" href="#">Switzerland</Link>
+                <Link
+                  className="hover:text-brand-orange-500 duration-300"
+                  href="/services/ior-country/switzerland"
+                >
+                  Switzerland
+                </Link>
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
       </div>
-
-     
     </div>
   );
 };

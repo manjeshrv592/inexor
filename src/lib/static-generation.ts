@@ -19,6 +19,7 @@ import {
   FOOTER_QUERY,
 } from '../../sanity/lib/queries';
 import { getTestimonialsSection } from './sanity';
+import { getMapsSection, sanityCountriesToServiceLocations } from './sanity-maps';
 import { aboutPageQuery } from '../sanity/queries/aboutPage';
 import { FAQ_CATEGORIES_QUERY, FAQ_PAGE_QUERY } from '../../sanity/lib/queries';
 
@@ -33,7 +34,7 @@ const REVALIDATE = {
  * Fetch all homepage data at build time
  */
 export async function getStaticHomepageData() {
-  
+
   const [
     heroData,
     keyValuePillarsSection,
@@ -48,6 +49,7 @@ export async function getStaticHomepageData() {
     serviceItems,
     testimonialsData,
     footerData,
+    mapsSection,
   ] = await Promise.all([
     client.fetch(HERO_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['hero'] } }),
     client.fetch(KEY_VALUE_PILLARS_SECTION_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['key-value-pillars-section'] } }),
@@ -62,7 +64,13 @@ export async function getStaticHomepageData() {
     client.fetch(SERVICES_FOR_HOMEPAGE_QUERY, {}, { next: { revalidate: REVALIDATE.HOMEPAGE, tags: ['services'] } }),
     getTestimonialsSection(), // Use function with fallback logic instead of direct query
     client.fetch(FOOTER_QUERY, {}, { next: { revalidate: REVALIDATE.STATIC, tags: ['footer'] } }),
+    getMapsSection(), // Fetch maps data server-side to avoid client-side API calls
   ]);
+
+  // Convert maps countries to service locations format
+  const serviceLocations = mapsSection
+    ? sanityCountriesToServiceLocations(mapsSection.countries.filter((c: { isActive: boolean }) => c.isActive))
+    : [];
 
   return {
     heroData,
@@ -78,6 +86,8 @@ export async function getStaticHomepageData() {
     serviceItems,
     testimonialsData,
     footerData,
+    mapsSection,
+    serviceLocations,
   };
 }
 
@@ -85,10 +95,10 @@ export async function getStaticHomepageData() {
  * Fetch About page data at build time
  */
 export async function getStaticAboutPageData() {
-  
+
   const aboutPage = await client.fetch(
-    aboutPageQuery, 
-    {}, 
+    aboutPageQuery,
+    {},
     { next: { revalidate: REVALIDATE.PAGES, tags: ['about-page'] } }
   );
 
@@ -99,7 +109,7 @@ export async function getStaticAboutPageData() {
  * Fetch FAQ data at build time
  */
 export async function getStaticFAQData() {
-  
+
   const [categoriesData, faqPageInfo] = await Promise.all([
     client.fetch(FAQ_CATEGORIES_QUERY, {}, { next: { revalidate: REVALIDATE.PAGES, tags: ['faq-categories'] } }),
     client.fetch(FAQ_PAGE_QUERY, {}, { next: { revalidate: REVALIDATE.PAGES, tags: ['faq-page'] } }),
