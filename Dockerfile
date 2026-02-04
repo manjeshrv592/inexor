@@ -21,7 +21,5 @@ ENV NODE_ENV=production
 COPY --from=builder /app ./
 
 # Cloud Run expects the app to listen on PORT
-ENV PORT=3000
-EXPOSE 3000
-
+EXPOSE 8080
 CMD ["npm", "start"]
