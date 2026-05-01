@@ -197,7 +197,6 @@ const FAQClientLayout = ({
     allFaqItems,
     faqPageData,
     faqPageSettings,
-    children,
 }: FAQClientLayoutProps) => {
     const [isMobile, setIsMobile] = useState(false);
     const pathname = usePathname();

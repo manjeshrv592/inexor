@@ -5,11 +5,8 @@ import {
   getFAQCategories,
   getFAQItems,
   getFAQPage,
-  type FAQCategory,
-  type FAQItem,
-  type FAQPage as FAQPageType,
 } from "@/lib/sanity";
-import { getFAQPageSettings, type FAQPageSettings } from "@/lib/sanity/faq";
+import { getFAQPageSettings } from "@/lib/sanity/faq";
 import FAQClientLayout from "./FAQClientLayout";
 
 // Server-side metadata generation
