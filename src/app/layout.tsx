@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Michroma, Raleway } from "next/font/google";
 import { ViewTransitions } from "next-view-transitions";
 import { Toaster } from "react-hot-toast";
@@ -66,6 +67,19 @@ export default async function RootLayout({
             href="/world-countries.topojson"
             crossOrigin="anonymous"
           />
+          {/* Google Analytics */}
+          <Script
+            src="https://www.googletagmanager.com/gtag/js?id=G-LJ9NL6SCQZ"
+            strategy="afterInteractive"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-LJ9NL6SCQZ');
+            `}
+          </Script>
         </head>
         <body
           className={`${michroma.variable} ${raleway.variable} bg-[#050505] text-white antialiased`}
