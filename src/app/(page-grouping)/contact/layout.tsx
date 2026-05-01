@@ -22,8 +22,8 @@ export async function generateMetadata(): Promise<Metadata> {
       seo.metaDescription || "Get in touch with us for all your inquiries",
     keywords: seo.metaKeywords || seo.keywords,
     robots: {
-      index: !seo.noIndex,
-      follow: !seo.noFollow,
+      index: true,
+      follow: true,
     },
     openGraph: {
       title: seo.metaTitle || "Contact Us",

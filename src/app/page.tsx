@@ -28,10 +28,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const seo = homeSeoData.seo;
 
-  // Build robots directive based on noIndex and noFollow flags
+  // Always allow indexing — noIndex is ignored intentionally
   const robots = {
-    index: !seo.noIndex,
-    follow: !seo.noFollow,
+    index: true,
+    follow: true,
   };
 
   return {

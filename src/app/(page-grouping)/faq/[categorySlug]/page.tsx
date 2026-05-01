@@ -33,8 +33,8 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     description: parentSeo?.metaDescription || "Frequently asked questions and answers",
     keywords: parentSeo?.metaKeywords,
     robots: {
-      index: !parentSeo?.noIndex,
-      follow: !parentSeo?.noFollow,
+      index: true,
+      follow: true,
     },
     openGraph: {
       title: `${category.name} - FAQ` || parentSeo?.metaTitle || "FAQ",

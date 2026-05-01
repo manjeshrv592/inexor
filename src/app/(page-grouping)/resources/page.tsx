@@ -18,8 +18,8 @@ export async function generateMetadata(): Promise<Metadata> {
     description: seo.metaDescription || "Explore our resources and insights",
     keywords: seo.metaKeywords || seo.keywords,
     robots: {
-      index: !seo.noIndex,
-      follow: !seo.noFollow,
+      index: true,
+      follow: true,
     },
     openGraph: {
       title: seo.metaTitle || "Resources",

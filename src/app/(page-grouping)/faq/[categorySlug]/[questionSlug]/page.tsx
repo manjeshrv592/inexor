@@ -34,8 +34,8 @@ export async function generateMetadata({ params }: QuestionPageProps): Promise<M
     description: question.answer || parentSeo?.metaDescription || "Frequently asked questions and answers",
     keywords: parentSeo?.metaKeywords,
     robots: {
-      index: !parentSeo?.noIndex,
-      follow: !parentSeo?.noFollow,
+      index: true,
+      follow: true,
     },
     openGraph: {
       title: `${question.question} - FAQ` || parentSeo?.metaTitle || "FAQ",

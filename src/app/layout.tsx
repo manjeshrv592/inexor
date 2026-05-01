@@ -28,7 +28,6 @@ const raleway = Raleway({
 export const metadata: Metadata = {
   title: "INEXOR - Web Access",
   description: "Secure web access portal",
-  robots: "noindex, nofollow",
 };
 
 export default async function RootLayout({
@@ -37,17 +36,20 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   // Batch all navigation-related fetches in parallel for efficiency
-  const [firstBlogPost, firstService, firstFAQSlugs, navigationData] = await Promise.all([
-    getFirstBlogPostSlug(),
-    getFirstServiceSlug(),
-    getFirstFAQSlugs(),
-    getNavigationData(),
-  ]);
+  const [firstBlogPost, firstService, firstFAQSlugs, navigationData] =
+    await Promise.all([
+      getFirstBlogPostSlug(),
+      getFirstServiceSlug(),
+      getFirstFAQSlugs(),
+      getNavigationData(),
+    ]);
 
   const firstBlogSlug = firstBlogPost?.slug?.current || null;
   const firstServiceSlug = firstService?.slug?.current || null;
-  const firstFAQCategorySlug = firstFAQSlugs?.firstCategory?.slug?.current || null;
-  const firstFAQQuestionSlug = firstFAQSlugs?.firstQuestion?.slug?.current || null;
+  const firstFAQCategorySlug =
+    firstFAQSlugs?.firstCategory?.slug?.current || null;
+  const firstFAQQuestionSlug =
+    firstFAQSlugs?.firstQuestion?.slug?.current || null;
 
   return (
     <ViewTransitions>

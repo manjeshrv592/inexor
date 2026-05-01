@@ -47,8 +47,8 @@ export async function generateMetadata({
     description: blogPost.excerpt || parentSeo?.metaDescription || "Explore our resources and insights",
     keywords: parentSeo?.metaKeywords,
     robots: {
-      index: !parentSeo?.noIndex,
-      follow: !parentSeo?.noFollow,
+      index: true,
+      follow: true,
     },
     openGraph: {
       title: blogPost.title || parentSeo?.metaTitle || "Resources",

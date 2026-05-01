@@ -22,8 +22,8 @@ export async function generateMetadata(): Promise<Metadata> {
       "Our privacy policy and data protection information",
     keywords: seo.metaKeywords || seo.keywords,
     robots: {
-      index: !seo.noIndex,
-      follow: !seo.noFollow,
+      index: true,
+      follow: true,
     },
     openGraph: {
       title: seo.metaTitle || "Privacy Policy",

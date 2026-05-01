@@ -48,8 +48,8 @@ export async function generateMetadata({
       "Discover our comprehensive range of services",
     keywords: parentSeo?.metaKeywords,
     robots: {
-      index: !parentSeo?.noIndex,
-      follow: !parentSeo?.noFollow,
+      index: true,
+      follow: true,
     },
     openGraph: {
       title: service.title || parentSeo?.metaTitle || "Services",

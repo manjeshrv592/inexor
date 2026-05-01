@@ -30,8 +30,8 @@ export async function generateMetadata(): Promise<Metadata> {
     description: seo.metaDescription || "Frequently Asked Questions",
     keywords: seo.metaKeywords || seo.keywords,
     robots: {
-      index: !seo.noIndex,
-      follow: !seo.noFollow,
+      index: true,
+      follow: true,
     },
   };
 }
