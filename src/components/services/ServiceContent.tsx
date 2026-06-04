@@ -56,7 +56,7 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
                 imageAlt={service.useCases.image?.alt || service.title}
               />
             )}
-            <div className="py-4">
+            {/* <div className="py-4">
               <h3 className="text-brand-orange-500 mb-4 text-lg font-semibold">
                 IOR
               </h3>
@@ -82,7 +82,7 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
                   Switzerland
                 </Link>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
