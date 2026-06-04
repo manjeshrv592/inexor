@@ -4,7 +4,6 @@ import { groq } from "next-sanity";
 export const contactInfoQuery = groq`
   *[_type == "contactInfo" && isActive == true][0] {
     _id,
-    phoneNumber,
     email,
     mainTitle,
     subTitle,

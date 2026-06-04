@@ -102,20 +102,6 @@ export default defineType({
       initialValue: () => new Date().toISOString(),
     }),
     defineField({
-      name: "phoneNumber",
-      title: "Phone Number",
-      type: "string",
-      description: "Contact phone number (e.g., 623211512211)",
-      components: {
-        input: (props) => TextWithCounter({ ...props, maxLength: 20, fieldType: 'string' }),
-      },
-      validation: (Rule) => 
-        Rule.required()
-          .max(20)
-          .error('Phone number must be 20 characters or less'),
-      initialValue: "623211512211",
-    }),
-    defineField({
       name: "email",
       title: "Email Address",
       type: "string",
@@ -133,16 +119,15 @@ export default defineType({
   ],
   preview: {
     select: {
-      phone: "phoneNumber",
       email: "email",
       mainTitle: "mainTitle",
       isActive: "isActive",
     },
     prepare(selection) {
-      const { phone, email, mainTitle, isActive } = selection;
+      const { email, mainTitle, isActive } = selection;
       return {
         title: `${isActive ? "🟢" : "🔴"} ${mainTitle || "Contact Information"}`,
-        subtitle: `📞 ${phone} | ✉️ ${email}`,
+        subtitle: `✉️ ${email}`,
       };
     },
   },

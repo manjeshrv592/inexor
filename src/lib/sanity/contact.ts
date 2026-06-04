@@ -4,7 +4,6 @@ import { contactInfoQuery, contactPageQuery, officeLocationsQuery } from "@/sani
 // TypeScript interfaces
 export interface ContactInfo {
   _id: string;
-  phoneNumber: string;
   email: string;
   mainTitle?: string;
   subTitle?: string;
@@ -114,7 +113,6 @@ export async function getContactPageData(): Promise<ContactPageData | null> {
 // Fallback contact information (used when Sanity fetch fails)
 export const fallbackContactInfo: ContactInfo = {
   _id: "fallback",
-  phoneNumber: "623211512211",
   email: "hello@inexor.io",
   mainTitle: "Contact Us",
   subTitle: "Get a Quote/Contact Us",

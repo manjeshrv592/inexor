@@ -32,7 +32,7 @@ import {
   serviceOptions,
   getPhoneLengthForCountry,
 } from "@/lib/validations/contact";
-import { Mail, PhoneIcon } from "lucide-react";
+import { Mail } from "lucide-react";
 import {
   type ContactInfo,
   type OfficeLocation,
@@ -298,21 +298,10 @@ const ContactFormClient = ({ contactInfo, officeLocations }: ContactFormClientPr
               </div>
 
               {/* Content */}
-              <div className="relative z-10 flex items-center justify-center gap-6 px-4 py-3 xl:gap-16 xl:px-8">
-                <a
-                  href={`tel:${contactInfo.phoneNumber}`}
-                  className="group flex cursor-pointer items-center gap-4 transition-colors hover:text-orange-500"
-                >
-                  <span className="text-sm font-medium">
-                    {contactInfo.phoneNumber}
-                  </span>
-                  <span className="flex size-8 items-center justify-center rounded-full bg-orange-500 transition-colors group-hover:bg-orange-600 xl:size-12">
-                    <PhoneIcon size={16} className="text-white" />
-                  </span>
-                </a>
+              <div className="relative z-10 flex items-center justify-center px-4 py-3 xl:px-8">
                 <a
                   href={`mailto:${contactInfo.email}`}
-                  className="group flex cursor-pointer items-center gap-4 transition-colors hover:text-orange-500"
+                  className="group flex cursor-pointer items-center justify-center gap-4 transition-colors hover:text-orange-500"
                 >
                   <span className="flex size-8 items-center justify-center rounded-full bg-orange-500 transition-colors group-hover:bg-orange-600 xl:size-12">
                     <Mail size={16} className="text-white" />
