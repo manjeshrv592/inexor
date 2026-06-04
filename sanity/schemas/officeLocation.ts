@@ -30,6 +30,14 @@ export default defineType({
               validation: (Rule) => Rule.required(),
             },
             {
+              name: "address",
+              title: "Address",
+              type: "text",
+              description:
+                "Full street address (optional). If left empty, it will not be shown on the website.",
+              rows: 3,
+            },
+            {
               name: "email",
               title: "Email",
               type: "string",
@@ -56,13 +64,13 @@ export default defineType({
           preview: {
             select: {
               city: "city",
-              email: "email",
+              address: "address",
             },
             prepare(selection) {
-              const { city, email } = selection;
+              const { city, address } = selection;
               return {
                 title: city,
-                subtitle: email,
+                subtitle: address?.substring(0, 60) + (address?.length > 60 ? "..." : ""),
               };
             },
           },
