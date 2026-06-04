@@ -60,6 +60,7 @@ export interface Hero {
   title: string;
   description: string;
   scheduleCallButtonText: string;
+  scheduleCallLink?: string;
   contactButtonText: string;
   backgroundImage: {
     asset: {

@@ -18,6 +18,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
   const scheduleCallButtonText =
     heroData?.scheduleCallButtonText || "Schedule a Call";
   const contactButtonText = heroData?.contactButtonText || "Contact Us";
+  const scheduleCallLink = heroData?.scheduleCallLink;
   const backgroundImage = heroData?.backgroundImage || null;
   const backgroundImageUrl = backgroundImage?.asset?.url || "/hero-bg.jpg";
 
@@ -83,17 +84,19 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
               {description}
             </p>
           </div>
-          <div className="">
-            <a
-              href="https://outlook.office.com/book/INEXOR1@inexor.io/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button className="font-michroma text-xs tracking-[1px]">
-                {scheduleCallButtonText}
-              </Button>
-            </a>
-          </div>
+          {scheduleCallLink && (
+            <div className="">
+              <a
+                href={scheduleCallLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button className="font-michroma text-xs tracking-[1px]">
+                  {scheduleCallButtonText}
+                </Button>
+              </a>
+            </div>
+          )}
           {/* <Link href={"/test"}>Test page</Link> */}
         </div>
       </Container>

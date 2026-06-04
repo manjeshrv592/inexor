@@ -20,6 +20,7 @@ export const HERO_QUERY = groq`*[_type == "hero" && isActive == true] | order(_u
   title,
   description,
   scheduleCallButtonText,
+  scheduleCallLink,
   contactButtonText,
   backgroundImage {
     asset->{

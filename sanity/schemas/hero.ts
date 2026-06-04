@@ -45,6 +45,17 @@ export default defineType({
       initialValue: "Schedule a Call",
     }),
     defineField({
+      name: "scheduleCallLink",
+      title: "Schedule Call Link",
+      type: "url",
+      description:
+        "Calendar link for the Schedule a Call button. If left empty, the button will be hidden.",
+      validation: (Rule) =>
+        Rule.uri({
+          scheme: ["http", "https"],
+        }).error("Please enter a valid URL (http or https)"),
+    }),
+    defineField({
       name: "contactButtonText",
       title: "Contact Button Text",
       type: "string",
