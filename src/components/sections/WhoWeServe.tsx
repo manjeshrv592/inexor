@@ -24,10 +24,10 @@ const WhoWeServe: React.FC<WhoWeServeProps> = ({ items, sectionData }) => {
     <Section className="">
       <Container className="text-center">
         <div className="text-center">
-          <SectionTitle className="mb-2">{title}</SectionTitle>
+          <SectionTitle className="mb-4">{title}</SectionTitle>
         </div>
         {subtitle ? (
-          <h3 className="mb-4 text-sm lg:text-lg text-white">{subtitle}</h3>
+          <h3 className="mb-4 text-sm text-white lg:text-lg">{subtitle}</h3>
         ) : null}
         <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3 xl:gap-y-6">
           {items.map((item) => (
