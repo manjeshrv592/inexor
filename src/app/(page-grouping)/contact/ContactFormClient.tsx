@@ -209,9 +209,6 @@ const ContactFormClient = ({ contactInfo, officeLocations }: ContactFormClientPr
                                     {address.city}
                                   </span>
                                 </div>
-                                <p className="text-xs text-gray-400">
-                                  {address.address}
-                                </p>
 
                                 {/* Contact information for this address */}
                                 <div className="space-y-1">

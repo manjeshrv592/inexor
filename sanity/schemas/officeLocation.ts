@@ -30,14 +30,6 @@ export default defineType({
               validation: (Rule) => Rule.required(),
             },
             {
-              name: "address",
-              title: "Address",
-              type: "text",
-              description: "Full street address",
-              validation: (Rule) => Rule.required(),
-              rows: 3,
-            },
-            {
               name: "email",
               title: "Email",
               type: "string",
@@ -64,13 +56,13 @@ export default defineType({
           preview: {
             select: {
               city: "city",
-              address: "address",
+              email: "email",
             },
             prepare(selection) {
-              const { city, address } = selection;
+              const { city, email } = selection;
               return {
                 title: city,
-                subtitle: address?.substring(0, 60) + (address?.length > 60 ? "..." : ""),
+                subtitle: email,
               };
             },
           },

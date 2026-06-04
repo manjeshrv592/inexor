@@ -23,7 +23,6 @@ export const officeLocationsQuery = groq`
     country,
     addresses[] {
       city,
-      address,
       email,
       phone,
       mapsLink

@@ -17,7 +17,6 @@ export interface ContactInfo {
 
 export interface OfficeAddress {
   city: string;
-  address: string;
   email?: string;
   phone?: string;
   mapsLink?: string;
