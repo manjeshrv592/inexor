@@ -1,5 +1,5 @@
 import { client } from "@/lib/sanity";
-import { contactInfoQuery, contactPageQuery, officeLocationsQuery } from "@/sanity/queries/contact";
+import { contactInfoQuery, officeLocationsQuery } from "@/sanity/queries/contact";
 
 // TypeScript interfaces
 export interface ContactInfo {
@@ -28,23 +28,6 @@ export interface OfficeLocation {
   country: string;
   addresses: OfficeAddress[];
   displayOrder?: number;
-}
-
-export interface ContactPageData {
-  _id: string;
-  pageTitle?: string; // Keep for backward compatibility
-  pageDescription?: string; // Keep for backward compatibility
-  mainTitle?: string;
-  subTitle?: string;
-  description?: string;
-  seo: {
-    metaTitle?: string;
-    metaDescription?: string;
-    metaKeywords?: string[];
-    noIndex?: boolean;
-    noFollow?: boolean;
-  };
-  isActive: boolean;
 }
 
 // Fetch active contact information
@@ -86,27 +69,6 @@ export async function getOfficeLocations(): Promise<OfficeLocation[]> {
   } catch (error) {
     console.error("Error fetching office locations:", error);
     return [];
-  }
-}
-
-// Fetch contact page data
-export async function getContactPageData(): Promise<ContactPageData | null> {
-  try {
-    const contactPage = await client.fetch<ContactPageData>(
-      contactPageQuery,
-      {},
-      {
-        cache: 'force-cache',
-        next: {
-          tags: ['contact-page'],
-          revalidate: 3600
-        }
-      }
-    );
-    return contactPage;
-  } catch (error) {
-    console.error("Error fetching contact page data:", error);
-    return null;
   }
 }
 

@@ -109,6 +109,11 @@ export const BLOG_POST_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current ==
   },
   tags,
   readingTime,
+  seo {
+    metaTitle,
+    metaDescription,
+    metaKeywords
+  },
   isActive
 }`;
 

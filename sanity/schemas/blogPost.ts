@@ -211,6 +211,13 @@ export default defineType({
       initialValue: 5,
     }),
     defineField({
+      name: "seo",
+      title: "SEO Settings",
+      type: "seo",
+      description:
+        "Per-post SEO meta tags for /resources/blogs/<slug>. If left empty, the post title/excerpt and the Resources page SEO are used as fallback.",
+    }),
+    defineField({
       name: "isActive",
       title: "Is Published",
       type: "boolean",

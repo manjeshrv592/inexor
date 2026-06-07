@@ -51,6 +51,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "seo",
+      title: "SEO Settings",
+      type: "seo",
+      description:
+        "Per-question SEO meta tags for /faq/<category>/<question>. If left empty, the question/answer and the FAQ page SEO are used as fallback.",
+    }),
+    defineField({
       name: "order",
       title: "Display Order",
       type: "number",

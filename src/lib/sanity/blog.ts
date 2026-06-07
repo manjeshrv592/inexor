@@ -8,6 +8,7 @@ import {
   FIRST_BLOG_POST_SLUG_QUERY,
   BLOG_POSTS_NAVIGATION_QUERY,
 } from "../../../sanity/lib/blogQueries";
+import type { ItemSeo } from "./service";
 
 // Types
 export interface BlogImage {
@@ -62,6 +63,7 @@ export interface BlogPost {
   content?: PortableTextBlock[]; // Rich text content
   tags?: string[];
   readingTime?: number;
+  seo?: ItemSeo;
   isActive: boolean;
   isFeatured?: boolean;
   order?: number;

@@ -37,37 +37,39 @@ export async function generateMetadata({
     };
   }
 
-  // Use parent SEO data as fallback for service pages
+  // Prefer the service's own SEO fields, then its title/excerpt, then the
+  // parent Services page SEO as a final fallback.
   const parentSeo = parentSeoData?.seo;
+  const serviceSeo = service.seo;
+
+  const metaTitle =
+    serviceSeo?.metaTitle || service.title || parentSeo?.metaTitle || "Services";
+  const metaDescription =
+    serviceSeo?.metaDescription ||
+    service.excerpt ||
+    parentSeo?.metaDescription ||
+    "Discover our comprehensive range of services";
+  const metaKeywords = serviceSeo?.metaKeywords || parentSeo?.metaKeywords;
 
   return {
-    title: service.title || parentSeo?.metaTitle || "Services",
-    description:
-      service.excerpt ||
-      parentSeo?.metaDescription ||
-      "Discover our comprehensive range of services",
-    keywords: parentSeo?.metaKeywords,
+    title: metaTitle,
+    description: metaDescription,
+    keywords: metaKeywords,
     robots: {
       index: true,
       follow: true,
     },
     openGraph: {
-      title: service.title || parentSeo?.metaTitle || "Services",
-      description:
-        service.excerpt ||
-        parentSeo?.metaDescription ||
-        "Discover our comprehensive range of services",
+      title: metaTitle,
+      description: metaDescription,
       url: `${process.env.NEXT_PUBLIC_SITE_URL}/services/${slug}`,
       siteName: "Inexor",
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: service.title || parentSeo?.metaTitle || "Services",
-      description:
-        service.excerpt ||
-        parentSeo?.metaDescription ||
-        "Discover our comprehensive range of services",
+      title: metaTitle,
+      description: metaDescription,
     },
   };
 }

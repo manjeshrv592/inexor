@@ -26,28 +26,42 @@ export async function generateMetadata({ params }: QuestionPageProps): Promise<M
     };
   }
 
-  // Use parent SEO data as fallback for question pages
+  // Prefer the question's own SEO fields, then the question/answer text, then
+  // the parent FAQ page SEO as a final fallback.
   const parentSeo = parentSeoData?.seo;
-  
+  const questionSeo = question.seo;
+
+  const metaTitle =
+    questionSeo?.metaTitle ||
+    `${question.question} - FAQ` ||
+    parentSeo?.metaTitle ||
+    "FAQ";
+  const metaDescription =
+    questionSeo?.metaDescription ||
+    question.answer ||
+    parentSeo?.metaDescription ||
+    "Frequently asked questions and answers";
+  const metaKeywords = questionSeo?.metaKeywords || parentSeo?.metaKeywords;
+
   return {
-    title: `${question.question} - FAQ` || parentSeo?.metaTitle || "FAQ",
-    description: question.answer || parentSeo?.metaDescription || "Frequently asked questions and answers",
-    keywords: parentSeo?.metaKeywords,
+    title: metaTitle,
+    description: metaDescription,
+    keywords: metaKeywords,
     robots: {
       index: true,
       follow: true,
     },
     openGraph: {
-      title: `${question.question} - FAQ` || parentSeo?.metaTitle || "FAQ",
-      description: question.answer || parentSeo?.metaDescription || "Frequently asked questions and answers",
+      title: metaTitle,
+      description: metaDescription,
       url: `${process.env.NEXT_PUBLIC_SITE_URL}/faq/${categorySlug}/${questionSlug}`,
       siteName: "Inexor",
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${question.question} - FAQ` || parentSeo?.metaTitle || "FAQ",
-      description: question.answer || parentSeo?.metaDescription || "Frequently asked questions and answers",
+      title: metaTitle,
+      description: metaDescription,
     },
   };
 }

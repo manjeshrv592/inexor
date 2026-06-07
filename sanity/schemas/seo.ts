@@ -37,21 +37,6 @@ export default defineType({
         layout: "tags",
       },
     }),
-
-    defineField({
-      name: "noIndex",
-      title: "No Index",
-      type: "boolean",
-      description: "Prevent search engines from indexing this page",
-      initialValue: false,
-    }),
-    defineField({
-      name: "noFollow",
-      title: "No Follow",
-      type: "boolean",
-      description: "Prevent search engines from following links on this page",
-      initialValue: false,
-    }),
   ],
   preview: {
     select: {

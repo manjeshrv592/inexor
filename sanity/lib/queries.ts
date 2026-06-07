@@ -213,6 +213,11 @@ export const FAQ_ITEMS_BY_CATEGORY_QUERY = groq`*[_type == "faqItem" && isActive
     slug
   },
   slug,
+  seo {
+    metaTitle,
+    metaDescription,
+    metaKeywords
+  },
   order,
   isActive
 }`;
@@ -325,28 +330,22 @@ export const TERMS_CONDITIONS_CONTENT_QUERY = groq`*[_type == "termsConditionsCo
   isActive
 }`;
 
-export const HOME_SEO_QUERY = groq`*[_type == "homeSeo" && isActive == true][0] {
+export const HOME_SEO_QUERY = groq`*[_type == "homeSeo"] | order(_updatedAt desc)[0] {
   _id,
   seo {
     metaTitle,
     metaDescription,
-    metaKeywords,
-    noIndex,
-    noFollow
-  },
-  isActive
+    metaKeywords
+  }
 }`;
 
-export const ABOUT_PAGE_SEO_QUERY = groq`*[_type == "aboutPageSeo" && isActive == true][0] {
+export const ABOUT_PAGE_SEO_QUERY = groq`*[_type == "aboutPageSeo"] | order(_updatedAt desc)[0] {
   _id,
   seo {
     metaTitle,
     metaDescription,
-    metaKeywords,
-    noIndex,
-    noFollow
-  },
-  isActive
+    metaKeywords
+  }
 }`;
 
 export const RESOURCES_PAGE_SEO_QUERY = groq`*[_type == "resourcesPageSeo" && isActive == true][0] {
@@ -385,38 +384,29 @@ export const FAQ_PAGE_SEO_QUERY = groq`*[_type == "faqPageSeo" && isActive == tr
   isActive
 }`;
 
-export const CONTACT_PAGE_SEO_QUERY = groq`*[_type == "contactPageSeo" && isActive == true][0] {
+export const CONTACT_PAGE_SEO_QUERY = groq`*[_type == "contactPageSeo"] | order(_updatedAt desc)[0] {
   _id,
   seo {
     metaTitle,
     metaDescription,
-    metaKeywords,
-    noIndex,
-    noFollow
-  },
-  isActive
+    metaKeywords
+  }
 }`;
 
-export const PRIVACY_POLICY_SEO_QUERY = groq`*[_type == "privacyPolicyPage" && isActive == true][0] {
+export const PRIVACY_POLICY_SEO_QUERY = groq`*[_type == "privacyPolicyPage"] | order(_updatedAt desc)[0] {
   _id,
   seo {
     metaTitle,
     metaDescription,
-    metaKeywords,
-    noIndex,
-    noFollow
-  },
-  isActive
+    metaKeywords
+  }
 }`;
 
-export const TERMS_CONDITIONS_SEO_QUERY = groq`*[_type == "termsConditionsPage" && isActive == true][0] {
+export const TERMS_CONDITIONS_SEO_QUERY = groq`*[_type == "termsConditionsPage"] | order(_updatedAt desc)[0] {
   _id,
   seo {
     metaTitle,
     metaDescription,
-    metaKeywords,
-    noIndex,
-    noFollow
-  },
-  isActive
+    metaKeywords
+  }
 }`;

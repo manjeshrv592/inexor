@@ -475,6 +475,7 @@ export interface FAQItem {
   slug: {
     current: string;
   };
+  seo?: SEO;
   order: number;
   isActive: boolean;
 }
@@ -680,8 +681,6 @@ export interface SEO {
   metaDescription?: string;
   metaKeywords?: string[];
   keywords?: string[]; // Keep for backward compatibility
-  noIndex?: boolean;
-  noFollow?: boolean;
 }
 
 export interface PrivacyPolicyPage {
@@ -772,7 +771,6 @@ export async function getTermsConditionsContent(): Promise<TermsConditionsConten
 export interface HomeSeo {
   _id: string;
   seo: SEO;
-  isActive: boolean;
 }
 
 export async function getHomeSeo(): Promise<HomeSeo | null> {
@@ -793,7 +791,6 @@ export async function getHomeSeo(): Promise<HomeSeo | null> {
 export interface AboutPageSeo {
   _id: string;
   seo: SEO;
-  isActive: boolean;
 }
 
 export async function getAboutPageSeo(): Promise<AboutPageSeo | null> {
@@ -877,7 +874,6 @@ export async function getFaqPageSeo(): Promise<FaqPageSeo | null> {
 export interface ContactPageSeo {
   _id: string;
   seo: SEO;
-  isActive: boolean;
 }
 
 export async function getContactPageSeo(): Promise<ContactPageSeo | null> {
@@ -898,7 +894,6 @@ export async function getContactPageSeo(): Promise<ContactPageSeo | null> {
 export interface PrivacyPolicySeo {
   _id: string;
   seo: SEO;
-  isActive: boolean;
 }
 
 export async function getPrivacyPolicySeo(): Promise<PrivacyPolicySeo | null> {
@@ -919,7 +914,6 @@ export async function getPrivacyPolicySeo(): Promise<PrivacyPolicySeo | null> {
 export interface TermsConditionsSeo {
   _id: string;
   seo: SEO;
-  isActive: boolean;
 }
 
 export async function getTermsConditionsSeo(): Promise<TermsConditionsSeo | null> {

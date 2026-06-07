@@ -252,7 +252,7 @@ export const structure = (S: StructureBuilder) =>
               S.listItem()
                 .title("🔍 SEO Settings")
                 .child(
-                  S.documentTypeList("contactPage").title(
+                  S.documentTypeList("contactPageSeo").title(
                     "Contact Us Page SEO",
                   ),
                 ),

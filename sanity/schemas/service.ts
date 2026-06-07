@@ -228,6 +228,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "seo",
+      title: "SEO Settings",
+      type: "seo",
+      description:
+        "Per-service SEO meta tags for /services/<slug>. If left empty, the service title/excerpt and the Services page SEO are used as fallback.",
+    }),
+    defineField({
       name: "order",
       title: "Display Order",
       type: "number",

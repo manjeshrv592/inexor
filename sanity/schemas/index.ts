@@ -41,7 +41,6 @@ import servicesPage from "./servicesPage";
 import servicesPageSettings from "./servicesPageSettings";
 import resourcesPage from "./resourcesPage";
 import resourcesPageSeo from "./resourcesPageSeo";
-import contactPage from "./contactPage";
 import contactInfo from "./contactInfo";
 import officeLocation from "./officeLocation";
 import blogPost from "./blogPost";
@@ -95,7 +94,6 @@ export const schemaTypes = [
   servicesPageSettings,
   resourcesPage,
   resourcesPageSeo,
-  contactPage,
   contactInfo,
   officeLocation,
   blogPost,

@@ -39,20 +39,31 @@ export async function generateMetadata({
     };
   }
 
-  // Use parent SEO data as fallback for blog posts
+  // Prefer the post's own SEO fields, then its title/excerpt, then the
+  // parent Resources page SEO as a final fallback.
   const parentSeo = parentSeoData?.seo;
+  const blogSeo = blogPost.seo;
+
+  const metaTitle =
+    blogSeo?.metaTitle || blogPost.title || parentSeo?.metaTitle || "Resources";
+  const metaDescription =
+    blogSeo?.metaDescription ||
+    blogPost.excerpt ||
+    parentSeo?.metaDescription ||
+    "Explore our resources and insights";
+  const metaKeywords = blogSeo?.metaKeywords || parentSeo?.metaKeywords;
 
   return {
-    title: blogPost.title || parentSeo?.metaTitle || "Resources",
-    description: blogPost.excerpt || parentSeo?.metaDescription || "Explore our resources and insights",
-    keywords: parentSeo?.metaKeywords,
+    title: metaTitle,
+    description: metaDescription,
+    keywords: metaKeywords,
     robots: {
       index: true,
       follow: true,
     },
     openGraph: {
-      title: blogPost.title || parentSeo?.metaTitle || "Resources",
-      description: blogPost.excerpt || parentSeo?.metaDescription || "Explore our resources and insights",
+      title: metaTitle,
+      description: metaDescription,
       url: `${process.env.NEXT_PUBLIC_SITE_URL}/resources/blogs/${slug}`,
       siteName: "Inexor",
       type: "article",
@@ -69,8 +80,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: blogPost.title || parentSeo?.metaTitle || "Resources",
-      description: blogPost.excerpt || parentSeo?.metaDescription || "Explore our resources and insights",
+      title: metaTitle,
+      description: metaDescription,
       images: blogPost.featuredImage ? [urlForFeaturedImage(blogPost.featuredImage, 1200, 630).url()] : undefined,
     },
   };

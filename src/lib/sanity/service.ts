@@ -10,6 +10,12 @@ import {
 } from "../../../sanity/lib/serviceQueries";
 
 // Types
+export interface ItemSeo {
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string[];
+}
+
 export interface ServiceImage {
   asset: {
     url: string;
@@ -53,6 +59,7 @@ export interface Service {
   featuredImage?: ServiceImage;
   content?: PortableTextBlock[]; // Rich text content
   useCases?: ServiceUseCasesSection;
+  seo?: ItemSeo;
   order: number;
   isActive: boolean;
 }
