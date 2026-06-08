@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTransitionRouter } from "next-view-transitions";
+import { Link as TransitionLink } from "next-view-transitions";
 import { motion } from "framer-motion";
 import { Button } from "../ui/button";
 import {
@@ -20,7 +20,6 @@ interface FooterProps {
 }
 
 const Footer = ({ footerData }: FooterProps) => {
-  const router = useTransitionRouter();
   const pathname = usePathname();
   const [isXXL, setIsXXL] = useState(false);
 
@@ -35,29 +34,18 @@ const Footer = ({ footerData }: FooterProps) => {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  const handleNavigation = (href: string) => {
+  // Record the current path + source so the page transition can pick the right
+  // animation direction. Navigation itself is handled by the crawlable
+  // <TransitionLink> (real <a href>) so search engines can follow these links.
+  const handleNavClick = () => {
     if (typeof window !== "undefined") {
-      // If user clicks on the same route they're already on, navigate to home instead
-      const targetHref = pathname === href ? "/" : href;
-
-      // Store the current path before navigation
       sessionStorage.setItem("lastPath", pathname);
-      // Set navigation source for animation direction
       sessionStorage.setItem("navigationSource", "footer");
-
-      // Always use transition router to prevent page reload
-      // Animations will only show when transitioning from/to root due to PageTransition component logic
-      requestAnimationFrame(() => {
-        router.push(targetHref);
-      });
     }
   };
 
-  const handlePrefetch = (href: string) => {
-    try {
-      router.prefetch?.(href);
-    } catch {}
-  };
+  // Toggle back to home when already on the linked page (preserves prior UX).
+  const toggleHref = (href: string) => (pathname === href ? "/" : href);
 
   // Render social links dynamically
   const renderSocialLinks = () => {
@@ -138,21 +126,21 @@ const Footer = ({ footerData }: FooterProps) => {
                   />
                 </div>
                 <div className="mx-auto flex w-[220px] justify-between text-xs">
-                  <button
-                    onMouseEnter={() => handlePrefetch("/privacy-policy")}
-                    onClick={() => handleNavigation("/privacy-policy")}
+                  <TransitionLink
+                    href={toggleHref("/privacy-policy")}
+                    onClick={handleNavClick}
                     className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
                   >
                     Privacy Policy
-                  </button>
+                  </TransitionLink>
                   <span> | </span>
-                  <button
-                    onMouseEnter={() => handlePrefetch("/terms-conditions")}
-                    onClick={() => handleNavigation("/terms-conditions")}
+                  <TransitionLink
+                    href={toggleHref("/terms-conditions")}
+                    onClick={handleNavClick}
                     className="hover:text-brand-orange-500 shrink-0 cursor-pointer duration-300"
                   >
                     Terms & Conditions
-                  </button>
+                  </TransitionLink>
                 </div>
               </div>
             </motion.div>
@@ -209,21 +197,21 @@ const Footer = ({ footerData }: FooterProps) => {
                   />
                 </div>
                 <div className="flex min-w-0 items-center justify-center gap-2 text-xs">
-                  <button
-                    onMouseEnter={() => handlePrefetch("/privacy-policy")}
-                    onClick={() => handleNavigation("/privacy-policy")}
+                  <TransitionLink
+                    href={toggleHref("/privacy-policy")}
+                    onClick={handleNavClick}
                     className="hover:text-brand-orange-500 flex-shrink-0 cursor-pointer whitespace-nowrap duration-300"
                   >
                     Privacy Policy
-                  </button>
+                  </TransitionLink>
                   <span className="flex-shrink-0"> | </span>
-                  <button
-                    onMouseEnter={() => handlePrefetch("/terms-conditions")}
-                    onClick={() => handleNavigation("/terms-conditions")}
+                  <TransitionLink
+                    href={toggleHref("/terms-conditions")}
+                    onClick={handleNavClick}
                     className="hover:text-brand-orange-500 flex-shrink-0 cursor-pointer whitespace-nowrap duration-300"
                   >
                     Terms & Conditions
-                  </button>
+                  </TransitionLink>
                 </div>
               </div>
             </motion.div>

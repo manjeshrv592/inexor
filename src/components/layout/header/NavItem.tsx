@@ -1,6 +1,6 @@
 "use client";
 import { ChevronDown } from "lucide-react";
-import { useTransitionRouter } from "next-view-transitions";
+import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -20,7 +20,6 @@ const NavItem: React.FC<NavItemProps> = ({
   isActive = false,
   onNavItemClick,
 }) => {
-  const router = useTransitionRouter();
   const pathname = usePathname();
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -34,38 +33,21 @@ const NavItem: React.FC<NavItemProps> = ({
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  const handleNavigation = (href: string) => {
+  // When the item is active, clicking it toggles back to the home page;
+  // otherwise it links to its real destination. Using a real href keeps the
+  // anchor crawlable for search engines, while next-view-transitions' Link
+  // still performs the animated client-side transition (no full reload).
+  const targetHref = isActive ? "/" : href;
+
+  const handleClick = () => {
     if (typeof window !== "undefined") {
-      // If the navigation item is currently active, toggle to home page
-      // Otherwise, navigate to the intended href
-      let targetHref;
-      if (isActive) {
-        // Navigation item is active, so clicking it should go to home
-        targetHref = "/";
-      } else {
-        // Navigation item is not active, navigate to the href
-        targetHref = href;
-      }
-
-      // Store the current path before navigation
+      // Store the current path + source so the page transition can pick the
+      // right animation direction.
       sessionStorage.setItem("lastPath", pathname);
-      // Set navigation source for animation direction
       sessionStorage.setItem("navigationSource", "header");
-
-      // Always use transition router to prevent page reload
-      // Animations will only show when transitioning from/to root due to PageTransition component logic
-
-      requestAnimationFrame(() => {
-        router.push(targetHref);
-      });
-
-      // Close mobile menu when navigating to a different page OR when going home from active section
-      if (onNavItemClick) {
-        if (targetHref !== "/" || (targetHref === "/" && isActive)) {
-          onNavItemClick(href);
-        }
-      }
     }
+    // Close mobile menu when navigating.
+    onNavItemClick?.(href);
   };
 
   // Calculate chevron rotation based on active state and screen size
@@ -78,14 +60,9 @@ const NavItem: React.FC<NavItemProps> = ({
 
   return (
     <li>
-      <button
-        onClick={() => handleNavigation(href)}
-        onMouseEnter={() => {
-          try {
-            // Prefetch destination to reduce transition delay
-            router.prefetch?.(href);
-          } catch {}
-        }}
+      <Link
+        href={targetHref}
+        onClick={handleClick}
         className={`font-michroma hover:text-brand-orange-500 xxl:text-sm flex cursor-pointer items-center gap-0 border-none bg-transparent text-[9px] tracking-[1px] duration-300 md:text-[10px] xl:rotate-180 xl:[writing-mode:vertical-rl] ${
           isActive ? "text-brand-orange-500" : "text-white"
         }`}
@@ -102,7 +79,7 @@ const NavItem: React.FC<NavItemProps> = ({
             <ChevronDown size={16} color="#f65009" />
           </motion.div>
         )}
-      </button>
+      </Link>
     </li>
   );
 };
