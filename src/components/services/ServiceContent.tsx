@@ -23,7 +23,11 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
               <img
                 src={
                   service.featuredImage
-                    ? urlForFeaturedImage(service.featuredImage, 800, 300).url()
+                    ? urlForFeaturedImage(
+                        service.featuredImage,
+                        1600,
+                        600,
+                      ).url()
                     : "/img/left-image.jpg"
                 }
                 alt={service.featuredImage?.alt || service.title}
