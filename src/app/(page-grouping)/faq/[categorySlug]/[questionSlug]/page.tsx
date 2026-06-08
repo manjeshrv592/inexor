@@ -1,4 +1,5 @@
 import { getFAQCategories, getFAQItemsByCategory } from "@/lib/sanity";
+import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
 interface QuestionPageProps {
@@ -81,7 +82,19 @@ export async function generateStaticParams() {
   }
 }
 
-const QuestionPage = () => {
+const QuestionPage = async ({ params }: QuestionPageProps) => {
+  const { categorySlug, questionSlug } = await params;
+
+  // Return a proper 404 for questions that don't exist (no loading.tsx in this
+  // tree, so notFound() yields a real 404 status — not a soft 404).
+  const items = await getFAQItemsByCategory(categorySlug);
+  const questionExists = items.some(
+    (item) => item.slug.current === questionSlug,
+  );
+  if (!questionExists) {
+    notFound();
+  }
+
   // Layout handles all the FAQ functionality with URL routing
   return null;
 };
