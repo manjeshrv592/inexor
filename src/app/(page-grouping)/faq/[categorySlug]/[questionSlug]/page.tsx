@@ -1,4 +1,4 @@
-import { getFAQCategories, getFAQItemsByCategory, getFaqPageSeo } from "@/lib/sanity";
+import { getFAQCategories, getFAQItemsByCategory } from "@/lib/sanity";
 import { Metadata } from "next";
 
 interface QuestionPageProps {
@@ -11,14 +11,11 @@ interface QuestionPageProps {
 // Generate metadata with parent inheritance
 export async function generateMetadata({ params }: QuestionPageProps): Promise<Metadata> {
   const { categorySlug, questionSlug } = await params;
-  
+
   // Get question data for specific metadata if available
   const items = await getFAQItemsByCategory(categorySlug);
   const question = items.find((item) => item.slug.current === questionSlug);
-  
-  // Get parent FAQ page SEO data for inheritance
-  const parentSeoData = await getFaqPageSeo();
-  
+
   if (!question) {
     return {
       title: "FAQ Question Not Found",
@@ -26,22 +23,15 @@ export async function generateMetadata({ params }: QuestionPageProps): Promise<M
     };
   }
 
-  // Prefer the question's own SEO fields, then the question/answer text, then
-  // the parent FAQ page SEO as a final fallback.
-  const parentSeo = parentSeoData?.seo;
+  // Use the question's own SEO fields, falling back to the question/answer text.
   const questionSeo = question.seo;
 
-  const metaTitle =
-    questionSeo?.metaTitle ||
-    `${question.question} - FAQ` ||
-    parentSeo?.metaTitle ||
-    "FAQ";
+  const metaTitle = questionSeo?.metaTitle || `${question.question} - FAQ`;
   const metaDescription =
     questionSeo?.metaDescription ||
     question.answer ||
-    parentSeo?.metaDescription ||
     "Frequently asked questions and answers";
-  const metaKeywords = questionSeo?.metaKeywords || parentSeo?.metaKeywords;
+  const metaKeywords = questionSeo?.metaKeywords;
 
   return {
     title: metaTitle,

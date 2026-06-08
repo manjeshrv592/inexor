@@ -4,7 +4,6 @@ import {
   getServicesPageSettings,
   type Service,
 } from "@/lib/sanity/service";
-import { getServicesPageSeo } from "@/lib/sanity";
 import { notFound } from "next/navigation";
 
 import ServiceContent from "@/components/services/ServiceContent";
@@ -27,9 +26,6 @@ export async function generateMetadata({
   // Get service data for specific metadata if available
   const service = await getServiceBySlug(slug);
 
-  // Get parent services page SEO data for inheritance
-  const parentSeoData = await getServicesPageSeo();
-
   if (!service) {
     return {
       title: "Service Not Found",
@@ -37,19 +33,15 @@ export async function generateMetadata({
     };
   }
 
-  // Prefer the service's own SEO fields, then its title/excerpt, then the
-  // parent Services page SEO as a final fallback.
-  const parentSeo = parentSeoData?.seo;
+  // Use the service's own SEO fields, falling back to its title/excerpt.
   const serviceSeo = service.seo;
 
-  const metaTitle =
-    serviceSeo?.metaTitle || service.title || parentSeo?.metaTitle || "Services";
+  const metaTitle = serviceSeo?.metaTitle || service.title || "Services";
   const metaDescription =
     serviceSeo?.metaDescription ||
     service.excerpt ||
-    parentSeo?.metaDescription ||
     "Discover our comprehensive range of services";
-  const metaKeywords = serviceSeo?.metaKeywords || parentSeo?.metaKeywords;
+  const metaKeywords = serviceSeo?.metaKeywords;
 
   return {
     title: metaTitle,

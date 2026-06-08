@@ -226,13 +226,6 @@ export const FAQ_PAGE_QUERY = groq`*[_type == "faqPage" && isActive == true][0] 
   _id,
   pageTitle,
   pageDescription,
-  seo {
-    metaTitle,
-    metaDescription,
-    metaKeywords,
-    noIndex,
-    noFollow
-  },
   sidebarImage {
     asset->{
       url,
@@ -346,42 +339,6 @@ export const ABOUT_PAGE_SEO_QUERY = groq`*[_type == "aboutPageSeo"] | order(_upd
     metaDescription,
     metaKeywords
   }
-}`;
-
-export const RESOURCES_PAGE_SEO_QUERY = groq`*[_type == "resourcesPageSeo" && isActive == true][0] {
-  _id,
-  seo {
-    metaTitle,
-    metaDescription,
-    metaKeywords,
-    noIndex,
-    noFollow
-  },
-  isActive
-}`;
-
-export const SERVICES_PAGE_SEO_QUERY = groq`*[_type == "servicesPageSeo" && isActive == true][0] {
-  _id,
-  seo {
-    metaTitle,
-    metaDescription,
-    metaKeywords,
-    noIndex,
-    noFollow
-  },
-  isActive
-}`;
-
-export const FAQ_PAGE_SEO_QUERY = groq`*[_type == "faqPageSeo" && isActive == true][0] {
-  _id,
-  seo {
-    metaTitle,
-    metaDescription,
-    metaKeywords,
-    noIndex,
-    noFollow
-  },
-  isActive
 }`;
 
 export const CONTACT_PAGE_SEO_QUERY = groq`*[_type == "contactPageSeo"] | order(_updatedAt desc)[0] {

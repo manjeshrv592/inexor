@@ -13,19 +13,9 @@ import FAQClientLayout from "./FAQClientLayout";
 export async function generateMetadata(): Promise<Metadata> {
   const faqPage = await getFAQPage();
 
-  if (!faqPage?.seo) {
-    return {
-      title: "FAQ",
-      description: "Frequently Asked Questions",
-    };
-  }
-
-  const { seo } = faqPage;
-
   return {
-    title: seo.metaTitle || "FAQ",
-    description: seo.metaDescription || "Frequently Asked Questions",
-    keywords: seo.metaKeywords || seo.keywords,
+    title: faqPage?.pageTitle || "FAQ",
+    description: faqPage?.pageDescription || "Frequently Asked Questions",
     robots: {
       index: true,
       follow: true,

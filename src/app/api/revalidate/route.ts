@@ -138,21 +138,6 @@ export async function POST(request: NextRequest) {
           revalidatedTags.push("resourcesPage");
           revalidatePath("/resources");
           break;
-        case "resourcesPageSeo":
-          revalidateTag("resources-page-seo");
-          revalidatedTags.push("resources-page-seo");
-          revalidatePath("/resources");
-          break;
-        case "servicesPageSeo":
-          revalidateTag("services-page-seo");
-          revalidatedTags.push("services-page-seo");
-          revalidatePath("/services");
-          break;
-        case "faqPageSeo":
-          revalidateTag("faq-page-seo");
-          revalidatedTags.push("faq-page-seo");
-          revalidatePath("/faq");
-          break;
         case "contactPageSeo":
           revalidateTag("contact-page-seo");
           revalidatedTags.push("contact-page-seo");
@@ -198,7 +183,6 @@ export async function POST(request: NextRequest) {
             "faq-categories",
             "faq-items",
             "faq-page",
-            "faq-page-seo",
             "contact-info",
             "contact-page-seo",
             "privacy-policy-page",
@@ -208,7 +192,6 @@ export async function POST(request: NextRequest) {
             "terms-conditions-seo",
             "terms-conditions-content",
             "resourcesPage",
-            "resources-page-seo",
             "key-value-pillars-section",
             "key-value-pillar-items",
             "footer",
@@ -247,13 +230,11 @@ export async function POST(request: NextRequest) {
         "faq-categories",
         "faq-items",
         "faq-page",
-        "faq-page-seo",
         "about-page",
         "about-page-seo",
         "contact-info",
         "contact-page-seo",
         "resourcesPage",
-        "resources-page-seo",
         "privacy-policy-page",
         "privacy-policy-seo",
         "privacy-policy-content",

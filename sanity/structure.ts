@@ -114,8 +114,8 @@ export const structure = (S: StructureBuilder) =>
             .title("FAQ Page Content")
             .items([
               S.listItem()
-                .title("🔍 SEO Settings")
-                .child(S.documentTypeList("faqPage").title("FAQ Page SEO")),
+                .title("📄 FAQ Page Content")
+                .child(S.documentTypeList("faqPage").title("FAQ Page Content")),
               S.listItem()
                 .title("⚙️ FAQ Page Settings")
                 .child(S.documentTypeList("faqPageSettings").title("FAQ Page Settings")),
@@ -175,12 +175,6 @@ export const structure = (S: StructureBuilder) =>
             .title("Services Page Content")
             .items([
               S.listItem()
-                .title("🔍 SEO Settings")
-                .child(
-                  S.documentTypeList("servicesPage").title("Services Page SEO"),
-                ),
-              S.divider(),
-              S.listItem()
                 .title("⚙️ Services Page Settings")
                 .child(
                   S.documentTypeList("servicesPageSettings")
@@ -214,14 +208,6 @@ export const structure = (S: StructureBuilder) =>
           S.list()
             .title("Resources Page Content")
             .items([
-              S.listItem()
-                .title("🔍 SEO Settings")
-                .child(
-                  S.documentTypeList("resourcesPageSeo").title(
-                    "Resources Page SEO",
-                  ),
-                ),
-              S.divider(),
               S.listItem()
                 .title("Resources Page Settings")
                 .child(

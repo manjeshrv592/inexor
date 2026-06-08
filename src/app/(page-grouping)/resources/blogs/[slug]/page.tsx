@@ -5,7 +5,6 @@ import {
   getBlogPostsForNavigation,
   getBlogPosts,
 } from "@/lib/sanity/blog";
-import { getResourcesPageSeo } from "@/lib/sanity";
 import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -25,12 +24,9 @@ export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
-  
+
   // Get blog post data for specific metadata
   const blogPost = await getBlogPostBySlug(slug);
-  
-  // Get parent resources page SEO data for inheritance
-  const parentSeoData = await getResourcesPageSeo();
 
   if (!blogPost) {
     return {
@@ -39,19 +35,15 @@ export async function generateMetadata({
     };
   }
 
-  // Prefer the post's own SEO fields, then its title/excerpt, then the
-  // parent Resources page SEO as a final fallback.
-  const parentSeo = parentSeoData?.seo;
+  // Use the post's own SEO fields, falling back to its title/excerpt.
   const blogSeo = blogPost.seo;
 
-  const metaTitle =
-    blogSeo?.metaTitle || blogPost.title || parentSeo?.metaTitle || "Resources";
+  const metaTitle = blogSeo?.metaTitle || blogPost.title || "Resources";
   const metaDescription =
     blogSeo?.metaDescription ||
     blogPost.excerpt ||
-    parentSeo?.metaDescription ||
     "Explore our resources and insights";
-  const metaKeywords = blogSeo?.metaKeywords || parentSeo?.metaKeywords;
+  const metaKeywords = blogSeo?.metaKeywords;
 
   return {
     title: metaTitle,

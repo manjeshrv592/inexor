@@ -26,9 +26,6 @@ import {
   TERMS_CONDITIONS_CONTENT_QUERY,
   HOME_SEO_QUERY,
   ABOUT_PAGE_SEO_QUERY,
-  RESOURCES_PAGE_SEO_QUERY,
-  SERVICES_PAGE_SEO_QUERY,
-  FAQ_PAGE_SEO_QUERY,
   CONTACT_PAGE_SEO_QUERY,
   PRIVACY_POLICY_SEO_QUERY,
   TERMS_CONDITIONS_SEO_QUERY,
@@ -482,9 +479,8 @@ export interface FAQItem {
 
 export interface FAQPage {
   _id: string;
-  seo: SEO;
-  pageTitle?: string; // Keep for backward compatibility
-  pageDescription?: string; // Keep for backward compatibility
+  pageTitle?: string;
+  pageDescription?: string;
   isActive: boolean;
 }
 
@@ -801,69 +797,6 @@ export async function getAboutPageSeo(): Promise<AboutPageSeo | null> {
       cache: 'force-cache',
       next: {
         tags: ["about-page-seo"],
-        revalidate: 3600
-      }
-    },
-  );
-}
-
-// Resources Page SEO interfaces and functions
-export interface ResourcesPageSeo {
-  _id: string;
-  seo: SEO;
-  isActive: boolean;
-}
-
-export async function getResourcesPageSeo(): Promise<ResourcesPageSeo | null> {
-  return client.fetch(
-    RESOURCES_PAGE_SEO_QUERY,
-    {},
-    {
-      cache: 'force-cache',
-      next: {
-        tags: ["resources-page-seo"],
-        revalidate: 3600
-      }
-    },
-  );
-}
-
-// Services Page SEO interfaces and functions
-export interface ServicesPageSeo {
-  _id: string;
-  seo: SEO;
-  isActive: boolean;
-}
-
-export async function getServicesPageSeo(): Promise<ServicesPageSeo | null> {
-  return client.fetch(
-    SERVICES_PAGE_SEO_QUERY,
-    {},
-    {
-      cache: 'force-cache',
-      next: {
-        tags: ["services-page-seo"],
-        revalidate: 3600
-      }
-    },
-  );
-}
-
-// FAQ Page SEO interfaces and functions
-export interface FaqPageSeo {
-  _id: string;
-  seo: SEO;
-  isActive: boolean;
-}
-
-export async function getFaqPageSeo(): Promise<FaqPageSeo | null> {
-  return client.fetch(
-    FAQ_PAGE_SEO_QUERY,
-    {},
-    {
-      cache: 'force-cache',
-      next: {
-        tags: ["faq-page-seo"],
         revalidate: 3600
       }
     },

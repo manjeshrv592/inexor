@@ -90,8 +90,7 @@ const LeftPanel = React.memo(
                 {/* Desktop Categories - Vertical Layout */}
                 <div className="relative z-10 hidden h-full flex-col items-center justify-center gap-4 p-8 text-center xl:flex">
                     <p className="text-sm">
-                        {faqPageData?.seo?.metaDescription ||
-                            faqPageData?.pageDescription ||
+                        {faqPageData?.pageDescription ||
                             "Our FAQ Section Offers Fast, Clear Answers To Popular Questions, So You Can Find Information Easily."}
                     </p>
                     <h5 className="font-michroma">
@@ -138,7 +137,7 @@ const MiddlePanel = React.memo(
             <div className="hidden h-full xl:grid xl:grid-rows-3">
                 <div className="flex items-end justify-center pb-8">
                     <h4 className="font-michroma text-brand-orange-500 text-center">
-                        {faqPageData?.seo?.metaTitle || faqPageData?.pageTitle || "FAQ's"}
+                        {faqPageData?.pageTitle || "FAQ's"}
                     </h4>
                 </div>
                 <div

@@ -27,8 +27,6 @@ import socialLink from "./socialLink";
 import serviceUseCase from "./services/serviceUseCase";
 import serviceUseCasesSection from "./services/serviceUseCasesSection";
 
-import servicesPageSeo from "./servicesPageSeo";
-import faqPageSeo from "./faqPageSeo";
 import contactPageSeo from "./contactPageSeo";
 
 // SEO and Page schemas
@@ -37,10 +35,8 @@ import homeSeo from "./homeSeo";
 import faqPage from "./faqPage";
 import aboutPage from "./aboutPage";
 import aboutPageSeo from "./aboutPageSeo";
-import servicesPage from "./servicesPage";
 import servicesPageSettings from "./servicesPageSettings";
 import resourcesPage from "./resourcesPage";
-import resourcesPageSeo from "./resourcesPageSeo";
 import contactInfo from "./contactInfo";
 import officeLocation from "./officeLocation";
 import blogPost from "./blogPost";
@@ -84,16 +80,12 @@ export const schemaTypes = [
   // SEO and Page schemas
   seo,
   homeSeo,
-  servicesPageSeo,
-  faqPageSeo,
   contactPageSeo,
   faqPage,
   aboutPage,
   aboutPageSeo,
-  servicesPage,
   servicesPageSettings,
   resourcesPage,
-  resourcesPageSeo,
   contactInfo,
   officeLocation,
   blogPost,

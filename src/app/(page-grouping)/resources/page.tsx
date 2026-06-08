@@ -1,40 +1,25 @@
 import { Metadata } from "next";
-import { getResourcesPageSeo } from "@/lib/sanity";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const seoData = await getResourcesPageSeo();
-  
-  if (!seoData?.seo) {
-    return {
-      title: "Resources",
-      description: "Explore our resources and insights",
-    };
-  }
-
-  const { seo } = seoData;
-
-  return {
-    title: seo.metaTitle || "Resources",
-    description: seo.metaDescription || "Explore our resources and insights",
-    keywords: seo.metaKeywords || seo.keywords,
-    robots: {
-      index: true,
-      follow: true,
-    },
-    openGraph: {
-      title: seo.metaTitle || "Resources",
-      description: seo.metaDescription || "Explore our resources and insights",
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/resources`,
-      siteName: "Inexor",
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: seo.metaTitle || "Resources",
-      description: seo.metaDescription || "Explore our resources and insights",
-    },
-  };
-}
+export const metadata: Metadata = {
+  title: "Resources",
+  description: "Explore our resources and insights",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Resources",
+    description: "Explore our resources and insights",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/resources`,
+    siteName: "Inexor",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Resources",
+    description: "Explore our resources and insights",
+  },
+};
 
 export default function ResourcesPage() {
   return (

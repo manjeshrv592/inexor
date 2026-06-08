@@ -1,40 +1,25 @@
 import { Metadata } from "next";
-import { getServicesPageSeo } from "@/lib/sanity";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const seoData = await getServicesPageSeo();
-  
-  if (!seoData?.seo) {
-    return {
-      title: "Services",
-      description: "Discover our comprehensive range of services",
-    };
-  }
-
-  const { seo } = seoData;
-
-  return {
-    title: seo.metaTitle || "Services",
-    description: seo.metaDescription || "Discover our comprehensive range of services",
-    keywords: seo.metaKeywords || seo.keywords,
-    robots: {
-      index: true,
-      follow: true,
-    },
-    openGraph: {
-      title: seo.metaTitle || "Services",
-      description: seo.metaDescription || "Discover our comprehensive range of services",
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/services`,
-      siteName: "Inexor",
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: seo.metaTitle || "Services",
-      description: seo.metaDescription || "Discover our comprehensive range of services",
-    },
-  };
-}
+export const metadata: Metadata = {
+  title: "Services",
+  description: "Discover our comprehensive range of services",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Services",
+    description: "Discover our comprehensive range of services",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/services`,
+    siteName: "Inexor",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Services",
+    description: "Discover our comprehensive range of services",
+  },
+};
 
 export default function ServicesPage() {
   return (

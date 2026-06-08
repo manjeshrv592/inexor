@@ -19,12 +19,6 @@ export default defineType({
       description: "Description text displayed below the page title",
     }),
     defineField({
-      name: "seo",
-      title: "SEO Settings",
-      type: "seo",
-      description: "SEO metadata for the FAQ page",
-    }),
-    defineField({
       name: "sidebarImage",
       title: "Sidebar Image",
       type: "image",
