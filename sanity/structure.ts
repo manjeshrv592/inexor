@@ -262,6 +262,14 @@ export const structure = (S: StructureBuilder) =>
                       { field: "country", direction: "asc" },
                     ]),
                 ),
+              S.listItem()
+                .title("📨 Form Submissions")
+                .child(
+                  S.document()
+                    .schemaType("formSubmissions")
+                    .documentId("form-submissions")
+                    .title("Form Submissions"),
+                ),
             ]),
         ),
 

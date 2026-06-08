@@ -16,6 +16,13 @@ export const contactInfoQuery = groq`
   }
 `;
 
+// Query to get the customer query email shown in the confirmation email template
+export const formSubmissionsQuery = groq`
+  *[_type == "formSubmissions"][0] {
+    customerQueryEmail
+  }
+`;
+
 // Query to get office locations grouped by country
 export const officeLocationsQuery = groq`
   *[_type == "officeLocation"] {

@@ -1,5 +1,9 @@
 import { client } from "@/lib/sanity";
-import { contactInfoQuery, officeLocationsQuery } from "@/sanity/queries/contact";
+import {
+  contactInfoQuery,
+  officeLocationsQuery,
+  formSubmissionsQuery,
+} from "@/sanity/queries/contact";
 
 // TypeScript interfaces
 export interface ContactInfo {
@@ -69,6 +73,31 @@ export async function getOfficeLocations(): Promise<OfficeLocation[]> {
   } catch (error) {
     console.error("Error fetching office locations:", error);
     return [];
+  }
+}
+
+// Form submissions settings (email shown in the customer confirmation template)
+export interface FormSubmissionsSettings {
+  customerQueryEmail?: string;
+}
+
+export async function getFormSubmissionsSettings(): Promise<FormSubmissionsSettings | null> {
+  try {
+    const settings = await client.fetch<FormSubmissionsSettings>(
+      formSubmissionsQuery,
+      {},
+      {
+        cache: "force-cache",
+        next: {
+          tags: ["form-submissions"],
+          revalidate: 3600,
+        },
+      },
+    );
+    return settings;
+  } catch (error) {
+    console.error("Error fetching form submissions settings:", error);
+    return null;
   }
 }
 

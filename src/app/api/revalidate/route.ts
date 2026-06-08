@@ -111,6 +111,11 @@ export async function POST(request: NextRequest) {
           // Also revalidate contact page
           revalidatePath("/contact");
           break;
+        case "formSubmissions":
+          revalidateTag("form-submissions");
+          revalidatedTags.push("form-submissions");
+          revalidatePath("/contact");
+          break;
         case "privacyPolicyPage":
           revalidateTag("privacy-policy-page");
           revalidateTag("privacy-policy-seo");

@@ -39,6 +39,7 @@ import servicesPageSettings from "./servicesPageSettings";
 import resourcesPage from "./resourcesPage";
 import contactInfo from "./contactInfo";
 import officeLocation from "./officeLocation";
+import formSubmissions from "./formSubmissions";
 import blogPost from "./blogPost";
 import imageTextBlock from "./imageTextBlock";
 import processStepsBlock from "./processStepsBlock";
@@ -88,6 +89,7 @@ export const schemaTypes = [
   resourcesPage,
   contactInfo,
   officeLocation,
+  formSubmissions,
   blogPost,
   imageTextBlock,
   processStepsBlock,

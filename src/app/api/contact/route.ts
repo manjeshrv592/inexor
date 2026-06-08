@@ -6,6 +6,7 @@ import {
   type ContactFormData,
   countryCodes,
 } from "@/lib/validations/contact";
+import { getFormSubmissionsSettings } from "@/lib/sanity/contact";
 
 // Function to verify reCAPTCHA token
 async function verifyRecaptcha(token: string): Promise<boolean> {
@@ -74,6 +75,16 @@ export async function POST(request: NextRequest) {
     const phoneDisplay = validatedData.phone
       ? `${countryCodeDisplay ? countryCodeDisplay + " " : ""}${validatedData.phone}`
       : null;
+
+    // Email shown to customers in the confirmation template's "Have questions?"
+    // section. Managed in Sanity (Contact Us → Form Submissions); falls back to
+    // the env values if not set. This is display-only and does not affect where
+    // emails are sent from or to.
+    const formSubmissionsSettings = await getFormSubmissionsSettings();
+    const customerQueryEmail =
+      formSubmissionsSettings?.customerQueryEmail ||
+      process.env.EMAIL_RECEIVER ||
+      process.env.MS_OFFICE_EMAIL;
 
     // Admin email template
     const adminEmailHtml = `
@@ -359,8 +370,8 @@ export async function POST(request: NextRequest) {
                 Have questions? Feel free to reach out to us anytime.
               </p>
               <p style="color: #f97316; margin: 0; font-size: 16px; font-weight: 500;">
-                <a href="mailto:${process.env.EMAIL_RECEIVER || process.env.MS_OFFICE_EMAIL}" style="color: #f97316; text-decoration: none;">
-                  ${process.env.EMAIL_RECEIVER || process.env.MS_OFFICE_EMAIL}
+                <a href="mailto:${customerQueryEmail}" style="color: #f97316; text-decoration: none;">
+                  ${customerQueryEmail}
                 </a>
               </p>
             </div>
