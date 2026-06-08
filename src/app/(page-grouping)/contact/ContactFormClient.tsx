@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
@@ -76,6 +76,31 @@ const ContactFormClient = ({ contactInfo, officeLocations }: ContactFormClientPr
   const phoneMaxLength = useMemo(() => {
     return getPhoneLengthForCountry(countryCodeValue || "US");
   }, [countryCodeValue]);
+
+  // Auto-detect the visitor's country code via a server-side IP lookup.
+  // Defaults to "US" (the initial value); only applied if it's a supported
+  // code and the user hasn't already changed the selector.
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch("/api/detect-country")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (cancelled || !data?.countryCode) return;
+        const code = data.countryCode as string;
+        const isSupported = countryCodes.some((c) => c.country === code);
+        if (isSupported && form.getValues("countryCode") === "US") {
+          form.setValue("countryCode", code);
+        }
+      })
+      .catch(() => {
+        // Ignore — the form already defaults to "US".
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [form]);
 
   // Group office locations by country
   const groupedOffices = useMemo(() => {

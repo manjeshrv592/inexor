@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   experimental: {
     viewTransition: true,
   },
+  // geoip-country ships a local binary database; keep it external so its data
+  // files are not bundled and remain loadable at runtime (incl. standalone).
+  serverExternalPackages: ['geoip-country'],
   // Enable static generation
   output: 'standalone', // For VPS deployment
   
