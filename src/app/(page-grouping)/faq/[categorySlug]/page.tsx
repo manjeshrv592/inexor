@@ -1,5 +1,4 @@
 import { getFAQCategories, type FAQCategory } from "@/lib/sanity";
-import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
 interface CategoryPageProps {
@@ -62,18 +61,7 @@ export async function generateStaticParams() {
   }
 }
 
-const CategoryPage = async ({ params }: CategoryPageProps) => {
-  const { categorySlug } = await params;
-
-  // Return a proper 404 for categories that don't exist.
-  const categories = await getFAQCategories();
-  const categoryExists = categories.some(
-    (category: FAQCategory) => category.slug.current === categorySlug,
-  );
-  if (!categoryExists) {
-    notFound();
-  }
-
+const CategoryPage = () => {
   // Layout handles all the FAQ functionality with URL routing
   return null;
 };
