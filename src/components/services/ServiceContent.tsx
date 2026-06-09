@@ -31,7 +31,7 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
                     : "/img/left-image.jpg"
                 }
                 alt={service.featuredImage?.alt || service.title}
-                className={`h-full w-full object-cover ${service.featuredImage?.isGrayscale !== false ? "grayscale" : ""}`}
+                className={`h-full w-full object-cover ${service.featuredImage?.isGrayscale ? "grayscale" : ""}`}
               />
             </div>
             <div className="relative z-10 flex size-full items-center justify-center">
