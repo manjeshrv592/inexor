@@ -38,7 +38,7 @@ export { client };
 export interface WhoWeServeItem {
   _id: string;
   title: string;
-  description: string;
+  description?: string;
   slug: {
     current: string;
   };

@@ -2,7 +2,7 @@ import React from "react";
 
 interface WhoWeServeItemProps {
   title: string;
-  description: string;
+  description?: string;
 }
 
 const WhoWeServeItem: React.FC<WhoWeServeItemProps> = ({
@@ -14,7 +14,9 @@ const WhoWeServeItem: React.FC<WhoWeServeItemProps> = ({
       <h5 className="text-brand-orange-500 mb-2 text-base font-semibold lg:text-lg">
         {title}
       </h5>
-      <p className="text-xs lg:text-sm">{description}</p>
+      {description ? (
+        <p className="text-xs lg:text-sm">{description}</p>
+      ) : null}
     </div>
   );
 };

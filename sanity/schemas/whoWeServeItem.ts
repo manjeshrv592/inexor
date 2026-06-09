@@ -25,9 +25,8 @@ export default defineType({
       components: {
         input: (props) => TextWithCounter({ ...props, maxLength: 75 }),
       },
-      validation: (Rule) => 
-        Rule.required()
-          .max(75)
+      validation: (Rule) =>
+        Rule.max(75)
           .error('Description must be 75 characters or less'),
     }),
     defineField({

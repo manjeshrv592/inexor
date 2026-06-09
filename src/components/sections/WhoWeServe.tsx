@@ -24,7 +24,7 @@ const WhoWeServe: React.FC<WhoWeServeProps> = ({ items, sectionData }) => {
     <Section className="">
       <Container className="text-center">
         <div className="text-center">
-          <SectionTitle className="mb-4">{title}</SectionTitle>
+          <SectionTitle className="mb-6">{title}</SectionTitle>
         </div>
         {subtitle ? (
           <h3 className="mb-4 text-sm text-white lg:text-lg">{subtitle}</h3>
