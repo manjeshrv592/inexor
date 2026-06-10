@@ -767,6 +767,7 @@ export async function getTermsConditionsContent(): Promise<TermsConditionsConten
 export interface HomeSeo {
   _id: string;
   seo: SEO;
+  structuredData?: string[];
 }
 
 export async function getHomeSeo(): Promise<HomeSeo | null> {
