@@ -65,7 +65,6 @@ export interface BlogPost {
   readingTime?: number;
   seo?: ItemSeo;
   isActive: boolean;
-  isFeatured?: boolean;
   order?: number;
 }
 

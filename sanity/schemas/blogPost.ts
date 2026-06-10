@@ -225,13 +225,6 @@ export default defineType({
       initialValue: false,
     }),
     defineField({
-      name: "isFeatured",
-      title: "Is Featured",
-      type: "boolean",
-      description: "Featured posts appear first in listings",
-      initialValue: false,
-    }),
-    defineField({
       name: "order",
       title: "Order",
       type: "number",
@@ -262,18 +255,16 @@ export default defineType({
       author: "author.name",
       publishedAt: "publishedAt",
       isActive: "isActive",
-      isFeatured: "isFeatured",
       media: "featuredImage",
     },
     prepare(selection) {
-      const { title, author, publishedAt, isActive, isFeatured, media } =
-        selection;
+      const { title, author, publishedAt, isActive, media } = selection;
       const date = publishedAt
         ? new Date(publishedAt).toLocaleDateString()
         : "No date";
 
       return {
-        title: `${isActive ? "🟢" : "🔴"}${isFeatured ? "⭐" : ""} ${title}`,
+        title: `${isActive ? "🟢" : "🔴"} ${title}`,
         subtitle: `${author} • ${date}`,
         media,
       };
