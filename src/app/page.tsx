@@ -57,6 +57,29 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+const websiteJsonLd = {
+  "@context": "https://schema.org/",
+  "@type": "WebSite",
+  name: "Inexor",
+  url: "https://inexor.io/",
+  potentialAction: {
+    "@type": "SearchAction",
+    target:
+      "https://inexor.io/services/ior{search_term_string}Your Trusted Global Partner for Importer Of Record (IOR), EOR & DDP Services",
+    "query-input": "required name=search_term_string",
+  },
+};
+
+const corporationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Corporation",
+  name: "Inexor",
+  alternateName: "Inexor.io - IOR, EOR, DDP and VAT Service Provider",
+  url: "https://inexor.io/",
+  logo: "https://inexor.io/logo.svg",
+  sameAs: "https://www.linkedin.com/company/inexor-io/",
+};
+
 const HomePage = async () => {
   const {
     heroData,
@@ -78,6 +101,15 @@ const HomePage = async () => {
 
   return (
     <HomeScroller>
+      {/* JSON-LD structured data (SEO) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(corporationJsonLd) }}
+      />
       {/* Prewarm map chunk and low-res data early for faster first interaction */}
       <MapPrewarm />
       <main>
