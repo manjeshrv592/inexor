@@ -5,6 +5,7 @@ import { ViewTransitions } from "next-view-transitions";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Header from "@/components/layout/header/Header";
+import CopyColorFix from "@/components/providers/CopyColorFix";
 
 import { HomeScrollProvider } from "@/contexts/HomeScrollContext";
 import { getFirstBlogPostSlug } from "@/lib/sanity/blog";
@@ -82,6 +83,7 @@ export default async function RootLayout({
         <body
           className={`${michroma.variable} ${raleway.variable} bg-[#050505] text-white antialiased`}
         >
+          <CopyColorFix />
           <HomeScrollProvider>
             <>
               <Header
