@@ -31,6 +31,7 @@ import contactPageSeo from "./contactPageSeo";
 
 // SEO and Page schemas
 import seo from "./seo";
+import jsonLdSnippet from "./jsonLdSnippet";
 import homeSeo from "./homeSeo";
 import faqPage from "./faqPage";
 import aboutPage from "./aboutPage";
@@ -80,6 +81,7 @@ export const schemaTypes = [
 
   // SEO and Page schemas
   seo,
+  jsonLdSnippet,
   homeSeo,
   contactPageSeo,
   faqPage,

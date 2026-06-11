@@ -330,7 +330,7 @@ export const HOME_SEO_QUERY = groq`*[_type == "homeSeo"] | order(_updatedAt desc
     metaDescription,
     metaKeywords
   },
-  structuredData
+  structuredData[]{ code }
 }`;
 
 export const ABOUT_PAGE_SEO_QUERY = groq`*[_type == "aboutPageSeo"] | order(_updatedAt desc)[0] {

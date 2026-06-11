@@ -764,10 +764,14 @@ export async function getTermsConditionsContent(): Promise<TermsConditionsConten
 }
 
 // Home SEO interfaces and functions
+export interface JsonLdSnippet {
+  code?: string;
+}
+
 export interface HomeSeo {
   _id: string;
   seo: SEO;
-  structuredData?: string[];
+  structuredData?: JsonLdSnippet[];
 }
 
 export async function getHomeSeo(): Promise<HomeSeo | null> {

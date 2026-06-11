@@ -15,6 +15,7 @@ import WhoWeServe from "@/components/sections/WhoWeServe";
 import Why from "@/components/sections/Why";
 import HomeScroller from "@/components/HomeScroller";
 import MapPrewarm from "@/lib/preloader/MapPrewarm";
+import JsonLd from "@/components/seo/JsonLd";
 
 export async function generateMetadata(): Promise<Metadata> {
   const homeSeoData = await getHomeSeo();
@@ -57,19 +58,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-// Removes an optional <script type="application/ld+json">…</script> wrapper so
-// editors can paste either the full snippet or just the JSON from Sanity.
-const cleanJsonLd = (snippet: string) =>
-  snippet
-    .replace(/<script[^>]*>/i, "")
-    .replace(/<\/script>/i, "")
-    .trim();
-
 const HomePage = async () => {
   const homeSeo = await getHomeSeo();
-  const structuredData = (homeSeo?.structuredData ?? [])
-    .map(cleanJsonLd)
-    .filter(Boolean);
 
   const {
     heroData,
@@ -92,13 +82,7 @@ const HomePage = async () => {
   return (
     <HomeScroller>
       {/* JSON-LD structured data (SEO) — managed from Sanity (Home Page SEO) */}
-      {structuredData.map((snippet, i) => (
-        <script
-          key={i}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: snippet }}
-        />
-      ))}
+      <JsonLd items={homeSeo?.structuredData} />
       {/* Prewarm map chunk and low-res data early for faster first interaction */}
       <MapPrewarm />
       <main>
