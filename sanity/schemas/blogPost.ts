@@ -16,15 +16,15 @@ export default defineType({
       name: "title",
       title: "Title",
       type: "string",
-      description: "Blog post title (35 characters max)",
+      description: "Blog post title (150 characters max)",
       components: {
         input: (props: StringInputProps) =>
-          TextWithCounter({ ...props, maxLength: 35, fieldType: "string" }),
+          TextWithCounter({ ...props, maxLength: 150, fieldType: "string" }),
       },
       validation: (Rule) =>
         Rule.required()
-          .max(35)
-          .error("Blog title must be 35 characters or less"),
+          .max(150)
+          .error("Blog title must be 150 characters or less"),
     }),
     defineField({
       name: "slug",
