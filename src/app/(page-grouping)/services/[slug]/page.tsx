@@ -10,6 +10,7 @@ import ServiceContent from "@/components/services/ServiceContent";
 import ServiceNavList from "@/components/services/ServiceNavList";
 import { urlForFeaturedImage } from "../../../../../sanity/lib/image";
 import { Metadata } from "next";
+import JsonLd from "@/components/seo/JsonLd";
 
 interface ServicePageProps {
   params: Promise<{
@@ -103,6 +104,7 @@ const ServicePage = async ({ params }: ServicePageProps) => {
           "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
       }}
     >
+      <JsonLd items={service.seo?.structuredData} />
       {/* Left Panel - Service List - Mobile */}
       <div className="relative px-5 py-7 xl:hidden">
         <div className="absolute top-0 left-0 size-full">

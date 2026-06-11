@@ -5,11 +5,14 @@ interface Snippet {
 }
 
 // Remove an optional <script type="application/ld+json">...</script> wrapper so
-// editors can paste either the full block or just the JSON.
+// editors can paste either the full block or just the JSON. Anchored to the
+// start/end so a </script> appearing *inside* the JSON content is left alone
+// (it gets neutralized later by escapeForScript instead).
 const stripScriptWrapper = (value: string) =>
   value
-    .replace(/<script[^>]*>/i, "")
-    .replace(/<\/script>/i, "")
+    .trim()
+    .replace(/^<script[^>]*>/i, "")
+    .replace(/<\/script>\s*$/i, "")
     .trim();
 
 // Escape the characters that could let pasted content "break out" of the

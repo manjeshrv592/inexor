@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { structuredDataField } from "./structuredDataField";
 
 export default defineType({
   name: "seo",
@@ -37,6 +38,7 @@ export default defineType({
         layout: "tags",
       },
     }),
+    structuredDataField(),
   ],
   preview: {
     select: {

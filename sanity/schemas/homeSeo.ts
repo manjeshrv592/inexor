@@ -1,5 +1,4 @@
 import { defineField, defineType } from "sanity";
-import { structuredDataField } from "./structuredDataField";
 
 export default defineType({
   name: "homeSeo",
@@ -12,7 +11,6 @@ export default defineType({
       type: "seo",
       validation: (Rule) => Rule.required(),
     }),
-    structuredDataField(),
   ],
   preview: {
     select: {

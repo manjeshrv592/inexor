@@ -677,6 +677,7 @@ export interface SEO {
   metaDescription?: string;
   metaKeywords?: string[];
   keywords?: string[]; // Keep for backward compatibility
+  structuredData?: JsonLdSnippet[];
 }
 
 export interface PrivacyPolicyPage {
@@ -771,7 +772,6 @@ export interface JsonLdSnippet {
 export interface HomeSeo {
   _id: string;
   seo: SEO;
-  structuredData?: JsonLdSnippet[];
 }
 
 export async function getHomeSeo(): Promise<HomeSeo | null> {

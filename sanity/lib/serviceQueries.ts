@@ -92,7 +92,8 @@ export const SERVICE_BY_SLUG_QUERY = `*[_type == "service" && slug.current == $s
   seo {
     metaTitle,
     metaDescription,
-    metaKeywords
+    metaKeywords,
+    structuredData[]{ code }
   },
   order,
   isActive

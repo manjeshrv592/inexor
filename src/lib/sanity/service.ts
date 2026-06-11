@@ -14,6 +14,7 @@ export interface ItemSeo {
   metaTitle?: string;
   metaDescription?: string;
   metaKeywords?: string[];
+  structuredData?: { code?: string }[];
 }
 
 export interface ServiceImage {

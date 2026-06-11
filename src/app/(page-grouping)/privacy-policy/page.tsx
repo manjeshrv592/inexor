@@ -2,6 +2,7 @@ import PortableTextRenderer from "@/components/ui/PortableTextRenderer";
 import React from "react";
 import { getPrivacyPolicyContent, getPrivacyPolicySeo } from "@/lib/sanity";
 import { Metadata } from "next";
+import JsonLd from "@/components/seo/JsonLd";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seoData = await getPrivacyPolicySeo();
@@ -45,10 +46,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const PrivacyPolicyPage = async () => {
-  const privacyPolicyContent = await getPrivacyPolicyContent();
+  const [privacyPolicyContent, seoData] = await Promise.all([
+    getPrivacyPolicyContent(),
+    getPrivacyPolicySeo(),
+  ]);
 
   return (
     <div className="size-full bg-[#222] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:grid">
+      <JsonLd items={seoData?.seo?.structuredData} />
       <div className="h-full overflow-y-auto">
         <div className="h-full px-8 py-12 xl:px-12">
           <h1 className="font-michroma text-brand-orange-500 mb-4 text-center text-xl">

@@ -12,6 +12,7 @@ import { truncateText } from "@/lib/utils/textUtils";
 import { Metadata } from "next";
 import LazyImage from "@/components/ui/LazyImage";
 import { urlForFeaturedImage } from "@/../sanity/lib/image";
+import JsonLd from "@/components/seo/JsonLd";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -115,6 +116,7 @@ const page = async ({ params }: BlogPostPageProps) => {
 
   return (
     <div className="h-[calc(100dvh-237px)] overflow-y-auto bg-neutral-900 xl:h-full">
+      <JsonLd items={blogPost.seo?.structuredData} />
       <div className="text-sm text-neutral-100">
         {/* Title */}
         <h3 className="font-michroma my-4 text-center text-xl text-white">

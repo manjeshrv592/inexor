@@ -5,6 +5,7 @@ import { getStaticAboutPageData } from "@/lib/static-generation";
 import { AboutPageSkeleton } from "@/components/ui/LoadingSkeleton";
 import { Metadata } from "next";
 import { getAboutPageSeo } from "@/lib/sanity";
+import JsonLd from "@/components/seo/JsonLd";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seoData = await getAboutPageSeo();
@@ -47,9 +48,13 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const AboutPageContent = async () => {
-  const { aboutPage } = await getStaticAboutPageData();
+  const [{ aboutPage }, seoData] = await Promise.all([
+    getStaticAboutPageData(),
+    getAboutPageSeo(),
+  ]);
   return (
     <div className="size-full grid-cols-[2fr_3fr_2fr] bg-[#222] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:grid">
+      <JsonLd items={seoData?.seo?.structuredData} />
       <div className="relative h-[100px] xl:h-full">
         <div className="absolute inset-0 size-full overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}

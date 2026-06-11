@@ -82,7 +82,7 @@ const HomePage = async () => {
   return (
     <HomeScroller>
       {/* JSON-LD structured data (SEO) — managed from Sanity (Home Page SEO) */}
-      <JsonLd items={homeSeo?.structuredData} />
+      <JsonLd items={homeSeo?.seo?.structuredData} />
       {/* Prewarm map chunk and low-res data early for faster first interaction */}
       <MapPrewarm />
       <main>

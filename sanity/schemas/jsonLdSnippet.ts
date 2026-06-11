@@ -2,10 +2,12 @@ import { defineField, defineType } from "sanity";
 
 // Removes an optional <script type="application/ld+json">…</script> wrapper so
 // editors can paste either the full snippet or just the JSON inside it.
+// Anchored to the start/end so a </script> inside the JSON content is kept.
 const stripScriptWrapper = (value: string) =>
   value
-    .replace(/<script[^>]*>/i, "")
-    .replace(/<\/script>/i, "")
+    .trim()
+    .replace(/^<script[^>]*>/i, "")
+    .replace(/<\/script>\s*$/i, "")
     .trim();
 
 export default defineType({

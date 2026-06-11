@@ -216,7 +216,8 @@ export const FAQ_ITEMS_BY_CATEGORY_QUERY = groq`*[_type == "faqItem" && isActive
   seo {
     metaTitle,
     metaDescription,
-    metaKeywords
+    metaKeywords,
+    structuredData[]{ code }
   },
   order,
   isActive
@@ -328,9 +329,9 @@ export const HOME_SEO_QUERY = groq`*[_type == "homeSeo"] | order(_updatedAt desc
   seo {
     metaTitle,
     metaDescription,
-    metaKeywords
-  },
-  structuredData[]{ code }
+    metaKeywords,
+    structuredData[]{ code }
+  }
 }`;
 
 export const ABOUT_PAGE_SEO_QUERY = groq`*[_type == "aboutPageSeo"] | order(_updatedAt desc)[0] {
@@ -338,7 +339,8 @@ export const ABOUT_PAGE_SEO_QUERY = groq`*[_type == "aboutPageSeo"] | order(_upd
   seo {
     metaTitle,
     metaDescription,
-    metaKeywords
+    metaKeywords,
+    structuredData[]{ code }
   }
 }`;
 
@@ -347,7 +349,8 @@ export const CONTACT_PAGE_SEO_QUERY = groq`*[_type == "contactPageSeo"] | order(
   seo {
     metaTitle,
     metaDescription,
-    metaKeywords
+    metaKeywords,
+    structuredData[]{ code }
   }
 }`;
 
@@ -356,7 +359,8 @@ export const PRIVACY_POLICY_SEO_QUERY = groq`*[_type == "privacyPolicyPage"] | o
   seo {
     metaTitle,
     metaDescription,
-    metaKeywords
+    metaKeywords,
+    structuredData[]{ code }
   }
 }`;
 
@@ -365,6 +369,7 @@ export const TERMS_CONDITIONS_SEO_QUERY = groq`*[_type == "termsConditionsPage"]
   seo {
     metaTitle,
     metaDescription,
-    metaKeywords
+    metaKeywords,
+    structuredData[]{ code }
   }
 }`;

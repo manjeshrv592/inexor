@@ -3,6 +3,7 @@ import PagePanelBg from "@/components/ui/PagePanelBg";
 import React from "react";
 import { Metadata } from "next";
 import { getPreloadedContactSeo } from "@/lib/preloader/contact-preloader";
+import JsonLd from "@/components/seo/JsonLd";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seoData = await getPreloadedContactSeo();
@@ -42,9 +43,11 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const ContactLayout = ({ children }: { children: React.ReactNode }) => {
+const ContactLayout = async ({ children }: { children: React.ReactNode }) => {
+  const seoData = await getPreloadedContactSeo();
   return (
     <>
+      <JsonLd items={seoData?.seo?.structuredData} />
       <PagePanelBg />
       <PagePanel>{children}</PagePanel>
     </>

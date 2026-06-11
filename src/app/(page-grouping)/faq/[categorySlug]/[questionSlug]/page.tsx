@@ -1,5 +1,6 @@
 import { getFAQCategories, getFAQItemsByCategory } from "@/lib/sanity";
 import { Metadata } from "next";
+import JsonLd from "@/components/seo/JsonLd";
 
 interface QuestionPageProps {
   params: Promise<{
@@ -81,9 +82,14 @@ export async function generateStaticParams() {
   }
 }
 
-const QuestionPage = () => {
-  // Layout handles all the FAQ functionality with URL routing
-  return null;
+const QuestionPage = async ({ params }: QuestionPageProps) => {
+  // Layout handles the FAQ UI with URL routing; here we only emit the
+  // question's structured data (JSON-LD) for SEO.
+  const { categorySlug, questionSlug } = await params;
+  const items = await getFAQItemsByCategory(categorySlug);
+  const question = items.find((item) => item.slug.current === questionSlug);
+
+  return <JsonLd items={question?.seo?.structuredData} />;
 };
 
 export default QuestionPage;
