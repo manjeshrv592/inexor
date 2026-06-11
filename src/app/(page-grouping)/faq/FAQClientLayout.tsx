@@ -148,7 +148,7 @@ const MiddlePanel = React.memo(
           }}
         >
           <AnimatePresence mode="wait">
-            <p>Inexor`&apos;s Answers</p>
+            <p>Inexor&apos;s Answers</p>
             {activeQuestion ? (
               <motion.div
                 key={activeQuestion._id}
