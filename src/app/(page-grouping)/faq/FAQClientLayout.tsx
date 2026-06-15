@@ -198,6 +198,7 @@ const FAQClientLayout = ({
   allFaqItems,
   faqPageData,
   faqPageSettings,
+  children,
 }: FAQClientLayoutProps) => {
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
@@ -284,6 +285,11 @@ const FAQClientLayout = ({
           "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
       }}
     >
+      {/* Renders the route's page (faq/page.tsx). It outputs nothing visible
+          but must be in the committed tree so its server-side redirect from
+          the bare /faq to the first category/question is honored. */}
+      {children}
+
       {/* Left Panel - Category Selection (Memoized) */}
       <LeftPanel
         faqPageSettings={faqPageSettings}
