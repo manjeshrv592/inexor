@@ -117,7 +117,7 @@ const Navigation: React.FC<NavigationProps> = ({
                   : item.href === "/services" ||
                     item.href.startsWith("/services")
                     ? activePagePath?.startsWith("/services") || false
-                    : item.href === "/faq"
+                    : item.href === "/faq" || item.href.startsWith("/faq")
                       ? activePagePath?.startsWith("/faq") || false
                       : activePagePath === item.href
               }

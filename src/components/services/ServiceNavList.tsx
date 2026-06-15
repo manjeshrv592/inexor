@@ -2,8 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useTransitionRouter } from "next-view-transitions";
-import { usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { truncateText } from "@/lib/utils/textUtils";
 import type { Service } from "@/lib/sanity/service";
 
@@ -18,7 +17,7 @@ const ServiceNavList: React.FC<ServiceNavListProps> = ({
   currentIndex,
   mode,
 }) => {
-  const router = useTransitionRouter();
+  const router = useRouter();
   const pathname = usePathname();
 
   const handleClick = (href: string) => {
@@ -28,9 +27,10 @@ const ServiceNavList: React.FC<ServiceNavListProps> = ({
         sessionStorage.setItem("navigationSource", "header");
       }
     } catch {}
-    requestAnimationFrame(() => {
-      router.push(href);
-    });
+    // Use a plain router push (no next-view-transitions) so navigating
+    // between services swaps the content without re-running the panel
+    // open/slide animation.
+    router.push(href);
   };
 
   return (
