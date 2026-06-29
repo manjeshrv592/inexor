@@ -102,7 +102,10 @@ const HomePage = async () => {
         <Why whyData={whyData} whyItems={whyItems} />
         <Clients />
         <Testimonials testimonialsData={testimonialsData} />
-        <Footer footerData={footerData} />
+        <Footer
+          footerData={footerData}
+          scheduleCallLink={heroData?.scheduleCallLink}
+        />
       </main>
     </HomeScroller>
   );

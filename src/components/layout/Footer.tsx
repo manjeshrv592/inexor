@@ -17,9 +17,14 @@ import { Footer as FooterType } from "@/lib/sanity";
 
 interface FooterProps {
   footerData: FooterType | null;
+  scheduleCallLink?: string;
 }
 
-const Footer = ({ footerData }: FooterProps) => {
+const FALLBACK_SCHEDULE_CALL_LINK =
+  "https://calendar.app.google/it8hbPUuhXvCG4YE8";
+
+const Footer = ({ footerData, scheduleCallLink }: FooterProps) => {
+  const scheduleCallHref = scheduleCallLink || FALLBACK_SCHEDULE_CALL_LINK;
   const pathname = usePathname();
   const [isXXL, setIsXXL] = useState(false);
 
@@ -149,7 +154,7 @@ const Footer = ({ footerData }: FooterProps) => {
             <div className="mb-4 flex h-full flex-col items-center justify-center gap-4">
               <div className="text-center">
                 <a
-                  href="https://calendar.app.google/it8hbPUuhXvCG4YE8"
+                  href={scheduleCallHref}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -233,7 +238,7 @@ const Footer = ({ footerData }: FooterProps) => {
               <div className="flex h-full flex-col items-center justify-center gap-4">
                 <div className="text-center">
                   <a
-                    href="https://calendar.app.google/it8hbPUuhXvCG4YE8"
+                    href={scheduleCallHref}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
