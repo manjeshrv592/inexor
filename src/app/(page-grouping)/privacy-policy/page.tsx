@@ -3,12 +3,14 @@ import React from "react";
 import { getPrivacyPolicyContent, getPrivacyPolicySeo } from "@/lib/sanity";
 import { Metadata } from "next";
 import JsonLd from "@/components/seo/JsonLd";
+import { absoluteUrl, canonical } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seoData = await getPrivacyPolicySeo();
 
   if (!seoData?.seo) {
     return {
+      ...canonical("/privacy-policy"),
       title: "Privacy Policy",
       description: "Our privacy policy and data protection information",
     };
@@ -17,6 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const { seo } = seoData;
 
   return {
+    ...canonical("/privacy-policy"),
     title: seo.metaTitle || "Privacy Policy",
     description:
       seo.metaDescription ||
@@ -31,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         seo.metaDescription ||
         "Our privacy policy and data protection information",
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/privacy-policy`,
+      url: absoluteUrl("/privacy-policy"),
       siteName: "Inexor",
       type: "website",
     },

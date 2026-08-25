@@ -1,6 +1,7 @@
 // Blog Posts Queries
 export const BLOG_POSTS_QUERY = `*[_type == "blogPost" && isActive == true] | order(publishedAt desc) {
   _id,
+  _updatedAt,
   title,
   slug,
   excerpt,

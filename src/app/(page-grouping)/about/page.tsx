@@ -6,12 +6,14 @@ import { AboutPageSkeleton } from "@/components/ui/LoadingSkeleton";
 import { Metadata } from "next";
 import { getAboutPageSeo } from "@/lib/sanity";
 import JsonLd from "@/components/seo/JsonLd";
+import { absoluteUrl, canonical } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seoData = await getAboutPageSeo();
 
   if (!seoData?.seo) {
     return {
+      ...canonical("/about"),
       title: "About Us",
       description: "Learn more about our company and mission",
     };
@@ -20,6 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const { seo } = seoData;
 
   return {
+    ...canonical("/about"),
     title: seo.metaTitle || "About Us",
     description:
       seo.metaDescription || "Learn more about our company and mission",
@@ -33,7 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         seo.metaDescription ||
         "Learn more about our company and mission",
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/about`,
+      url: absoluteUrl("/about"),
       siteName: "Inexor",
       type: "website",
     },

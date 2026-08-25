@@ -12,6 +12,7 @@ import { getFirstBlogPostSlug } from "@/lib/sanity/blog";
 import { getFirstServiceSlug } from "@/lib/sanity/service";
 import { getFirstFAQSlugs } from "@/lib/sanity";
 import { getNavigationData } from "@/lib/sanity/navigation";
+import { METADATA_BASE } from "@/lib/seo";
 
 const michroma = Michroma({
   subsets: ["latin"],
@@ -26,8 +27,22 @@ const raleway = Raleway({
 });
 
 export const metadata: Metadata = {
-  title: "INEXOR - Web Access",
-  description: "Secure web access portal",
+  // Resolves every relative URL in page metadata (canonicals, og:image, …)
+  // against the real origin instead of localhost.
+  metadataBase: METADATA_BASE,
+  // No `template` here on purpose: page titles come from Sanity and several
+  // already end in "| Inexor", which a template would duplicate.
+  title: "Inexor — Importer of Record (IOR) & Global Trade Compliance",
+  description:
+    "Inexor provides Importer of Record (IOR), Exporter of Record (EOR), DDP and VAT compliance services for data center, IT, telecom and networking equipment in 80+ countries.",
+  openGraph: {
+    siteName: "Inexor",
+    type: "website",
+    locale: "en",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default async function RootLayout({

@@ -11,6 +11,7 @@ import ServiceNavList from "@/components/services/ServiceNavList";
 import { urlForFeaturedImage } from "../../../../../sanity/lib/image";
 import { Metadata } from "next";
 import JsonLd from "@/components/seo/JsonLd";
+import { absoluteUrl, canonical } from "@/lib/seo";
 
 interface ServicePageProps {
   params: Promise<{
@@ -28,9 +29,11 @@ export async function generateMetadata({
   const service = await getServiceBySlug(slug);
 
   if (!service) {
+    // This slug renders a 404, so keep it out of the index entirely.
     return {
       title: "Service Not Found",
       description: "The requested service could not be found",
+      robots: { index: false, follow: true },
     };
   }
 
@@ -45,6 +48,7 @@ export async function generateMetadata({
   const metaKeywords = serviceSeo?.metaKeywords;
 
   return {
+    ...canonical(`/services/${slug}`),
     title: metaTitle,
     description: metaDescription,
     keywords: metaKeywords,
@@ -55,7 +59,7 @@ export async function generateMetadata({
     openGraph: {
       title: metaTitle,
       description: metaDescription,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/services/${slug}`,
+      url: absoluteUrl(`/services/${slug}`),
       siteName: "Inexor",
       type: "website",
     },

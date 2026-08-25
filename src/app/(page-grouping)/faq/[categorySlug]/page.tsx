@@ -1,5 +1,6 @@
 import { getFAQCategories, type FAQCategory } from "@/lib/sanity";
 import { Metadata } from "next";
+import { absoluteUrl, canonical } from "@/lib/seo";
 
 interface CategoryPageProps {
   params: Promise<{
@@ -19,6 +20,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     return {
       title: "FAQ Category Not Found",
       description: "The requested FAQ category could not be found",
+      robots: { index: false, follow: true },
     };
   }
 
@@ -26,6 +28,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   const metaDescription = "Frequently asked questions and answers";
 
   return {
+    ...canonical(`/faq/${categorySlug}`),
     title: metaTitle,
     description: metaDescription,
     robots: {
@@ -35,7 +38,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     openGraph: {
       title: metaTitle,
       description: metaDescription,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/faq/${categorySlug}`,
+      url: absoluteUrl(`/faq/${categorySlug}`),
       siteName: "Inexor",
       type: "website",
     },

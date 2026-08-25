@@ -1,6 +1,7 @@
 import { getFAQCategories, getFAQItemsByCategory } from "@/lib/sanity";
 import { Metadata } from "next";
 import JsonLd from "@/components/seo/JsonLd";
+import { absoluteUrl, canonical } from "@/lib/seo";
 
 interface QuestionPageProps {
   params: Promise<{
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: QuestionPageProps): Promise<M
     return {
       title: "FAQ Question Not Found",
       description: "The requested FAQ question could not be found",
+      robots: { index: false, follow: true },
     };
   }
 
@@ -35,6 +37,7 @@ export async function generateMetadata({ params }: QuestionPageProps): Promise<M
   const metaKeywords = questionSeo?.metaKeywords;
 
   return {
+    ...canonical(`/faq/${categorySlug}/${questionSlug}`),
     title: metaTitle,
     description: metaDescription,
     keywords: metaKeywords,
@@ -45,7 +48,7 @@ export async function generateMetadata({ params }: QuestionPageProps): Promise<M
     openGraph: {
       title: metaTitle,
       description: metaDescription,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/faq/${categorySlug}/${questionSlug}`,
+      url: absoluteUrl(`/faq/${categorySlug}/${questionSlug}`),
       siteName: "Inexor",
       type: "website",
     },

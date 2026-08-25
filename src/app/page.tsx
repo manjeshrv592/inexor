@@ -16,12 +16,14 @@ import Why from "@/components/sections/Why";
 import HomeScroller from "@/components/HomeScroller";
 import MapPrewarm from "@/lib/preloader/MapPrewarm";
 import JsonLd from "@/components/seo/JsonLd";
+import { absoluteUrl, canonical } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const homeSeoData = await getHomeSeo();
 
   if (!homeSeoData?.seo) {
     return {
+      ...canonical("/"),
       title: "Inexor - Your Business Partner",
       description: "Professional business services and solutions",
     };
@@ -36,6 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 
   return {
+    ...canonical("/"),
     title: seo.metaTitle || "Inexor - Your Business Partner",
     description:
       seo.metaDescription || "Professional business services and solutions",
@@ -45,7 +48,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: seo.metaTitle || "Inexor - Your Business Partner",
       description:
         seo.metaDescription || "Professional business services and solutions",
-      url: "https://inexor.com",
+      url: absoluteUrl("/"),
       siteName: "Inexor",
       type: "website",
     },

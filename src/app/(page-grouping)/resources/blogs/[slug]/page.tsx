@@ -13,6 +13,7 @@ import { Metadata } from "next";
 import LazyImage from "@/components/ui/LazyImage";
 import { urlForFeaturedImage } from "@/../sanity/lib/image";
 import JsonLd from "@/components/seo/JsonLd";
+import { absoluteUrl, canonical } from "@/lib/seo";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -30,9 +31,11 @@ export async function generateMetadata({
   const blogPost = await getBlogPostBySlug(slug);
 
   if (!blogPost) {
+    // This slug renders a 404, so keep it out of the index entirely.
     return {
       title: "Blog Post Not Found",
       description: "The requested blog post could not be found",
+      robots: { index: false, follow: true },
     };
   }
 
@@ -47,6 +50,7 @@ export async function generateMetadata({
   const metaKeywords = blogSeo?.metaKeywords;
 
   return {
+    ...canonical(`/resources/blogs/${slug}`),
     title: metaTitle,
     description: metaDescription,
     keywords: metaKeywords,
@@ -57,7 +61,7 @@ export async function generateMetadata({
     openGraph: {
       title: metaTitle,
       description: metaDescription,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/resources/blogs/${slug}`,
+      url: absoluteUrl(`/resources/blogs/${slug}`),
       siteName: "Inexor",
       type: "article",
       publishedTime: blogPost.publishedAt,

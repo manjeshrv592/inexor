@@ -52,6 +52,8 @@ export interface BlogAuthor {
 
 export interface BlogPost {
   _id: string;
+  /** Sanity's last-modified stamp; used for sitemap <lastmod>. */
+  _updatedAt?: string;
   title: string;
   slug: {
     current: string;

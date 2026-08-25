@@ -449,6 +449,8 @@ export async function getServicesForHomepage(): Promise<ServiceForHomepage[]> {
 
 export interface FAQCategory {
   _id: string;
+  /** Sanity's last-modified stamp; used for sitemap <lastmod>. */
+  _updatedAt?: string;
   name: string;
   slug: {
     current: string;
@@ -460,6 +462,8 @@ export interface FAQCategory {
 
 export interface FAQItem {
   _id: string;
+  /** Sanity's last-modified stamp; used for sitemap <lastmod>. */
+  _updatedAt?: string;
   question: string;
   answer: string;
   category: {

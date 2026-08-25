@@ -182,6 +182,7 @@ export const SERVICES_FOR_HOMEPAGE_QUERY = groq`*[_type == "service" && isActive
 
 export const FAQ_CATEGORIES_QUERY = groq`*[_type == "faqCategory" && isActive == true] | order(order asc) {
   _id,
+  _updatedAt,
   name,
   slug,
   order,
@@ -191,6 +192,7 @@ export const FAQ_CATEGORIES_QUERY = groq`*[_type == "faqCategory" && isActive ==
 
 export const FAQ_ITEMS_QUERY = groq`*[_type == "faqItem" && isActive == true] | order(category->order asc, order asc) {
   _id,
+  _updatedAt,
   question,
   answer,
   category->{

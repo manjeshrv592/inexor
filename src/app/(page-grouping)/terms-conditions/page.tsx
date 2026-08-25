@@ -3,12 +3,14 @@ import React from "react";
 import { getTermsConditionsContent, getTermsConditionsSeo } from "@/lib/sanity";
 import { Metadata } from "next";
 import JsonLd from "@/components/seo/JsonLd";
+import { absoluteUrl, canonical } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seoData = await getTermsConditionsSeo();
 
   if (!seoData?.seo) {
     return {
+      ...canonical("/terms-conditions"),
       title: "Terms & Conditions",
       description: "Our terms and conditions of service",
     };
@@ -17,6 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const { seo } = seoData;
 
   return {
+    ...canonical("/terms-conditions"),
     title: seo.metaTitle || "Terms & Conditions",
     description: seo.metaDescription || "Our terms and conditions of service",
     keywords: seo.metaKeywords || seo.keywords,
@@ -29,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         seo.metaDescription ||
         "Our terms and conditions of service",
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/terms-conditions`,
+      url: absoluteUrl("/terms-conditions"),
       siteName: "Inexor",
       type: "website",
     },

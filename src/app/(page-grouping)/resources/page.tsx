@@ -1,7 +1,11 @@
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getFirstBlogPostSlug } from "@/lib/sanity/blog";
+import { absoluteUrl } from "@/lib/seo";
 
+// NOTE: this route redirects to the first blog post, so it is intentionally
+// absent from sitemap.ts and carries no self-canonical — the destination
+// page owns the canonical for this content.
 export const metadata: Metadata = {
   title: "Resources",
   description: "Explore our resources and insights",
@@ -12,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Resources",
     description: "Explore our resources and insights",
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/resources`,
+    url: absoluteUrl("/resources"),
     siteName: "Inexor",
     type: "website",
   },

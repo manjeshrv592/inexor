@@ -1,6 +1,7 @@
 // Service Queries
 export const SERVICES_QUERY = `*[_type == "service" && isActive == true] | order(order asc) {
   _id,
+  _updatedAt,
   title,
   code,
   slug,
