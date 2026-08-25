@@ -123,9 +123,9 @@ const page = async ({ params }: BlogPostPageProps) => {
       <JsonLd items={blogPost.seo?.structuredData} />
       <div className="text-sm text-neutral-100">
         {/* Title */}
-        <h3 className="font-michroma my-4 text-center text-xl text-white">
+        <h1 className="font-michroma my-4 text-center text-xl text-white">
           {blogPost.title}
-        </h3>
+        </h1>
 
         {/* Featured Image */}
         <div className="xxl:h-[300px] relative h-[200px]">

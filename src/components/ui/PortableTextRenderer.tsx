@@ -175,8 +175,11 @@ const components: PortableTextComponents = {
     normal: ({ children }) => (
       <p className="mb-2 text-[12px] text-justify text-white lg:text-[14px]">{children}</p>
     ),
+    // Rendered as <h2>, not <h1>: the page template already owns the single
+    // <h1>, and an "H1" block chosen by an editor in Sanity must not add a
+    // second one. The visual size is unchanged.
     h1: ({ children }) => (
-      <h1 className="mb-4 text-2xl font-bold text-white">{children}</h1>
+      <h2 className="mb-4 text-2xl font-bold text-white">{children}</h2>
     ),
     h2: ({ children }) => (
       <h2 className="mb-4 text-xl font-bold text-white">{children}</h2>

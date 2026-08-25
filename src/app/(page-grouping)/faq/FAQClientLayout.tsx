@@ -285,6 +285,15 @@ const FAQClientLayout = ({
           "10px 2px 60px 0px #0000001A inset, 10px 2px 60px 0px #00000080 inset",
       }}
     >
+      {/* The page's single <h1>. The visible question heading lives in
+          MiddlePanel, which is `hidden` below xl and would therefore be
+          display:none under Google's mobile-first rendering. This one is
+          `sr-only` (clipped, not hidden) so it is present at every breakpoint,
+          and absolutely positioned so it takes no slot in the xl grid. */}
+      <h1 className="sr-only">
+        {activeQuestion?.question || faqPageData?.pageTitle || "FAQs"}
+      </h1>
+
       {/* Renders the route's page (faq/page.tsx). It outputs nothing visible
           but must be in the committed tree so its server-side redirect from
           the bare /faq to the first category/question is honored. */}

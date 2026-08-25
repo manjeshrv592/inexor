@@ -36,10 +36,12 @@ const ServiceContent = ({ service }: ServiceContentProps) => {
             </div>
             <div className="relative z-10 flex size-full items-center justify-center">
               <div className="flex flex-col items-center justify-center gap-2 bg-black/5 p-4 text-center backdrop-blur-[5px]">
-                <h2 className="font-michroma text-lg">
+                <h1 className="font-michroma text-lg">
                   {service.title.toUpperCase()}
-                </h2>
-                <h5 className="max-w-[300px]">{service.shortDescription}</h5>
+                </h1>
+                {/* A tagline, not a section heading — plain <p> so it does not
+                    sit between the <h1> and the content's <h3>s. */}
+                <p className="max-w-[300px]">{service.shortDescription}</p>
               </div>
             </div>
           </div>

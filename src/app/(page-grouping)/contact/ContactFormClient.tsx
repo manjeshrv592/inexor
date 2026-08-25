@@ -292,9 +292,12 @@ const ContactFormClient = ({ contactInfo, officeLocations }: ContactFormClientPr
       {/* Center Panel - Info */}
       <div className="items-center pb-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-8px_12px_-8px_rgba(0,0,0,0.6),inset_0_8px_12px_-8px_rgba(0,0,0,0.7)] xl:flex">
         <div className="xl:flex-1">
-          <h5 className="font-michroma text-brand-orange-500 my-4 hidden text-center text-lg md:text-2xl xl:block">
+          {/* `sr-only` rather than `hidden` below xl: this is the page's only
+              <h1>, and Google indexes mobile-first — a display:none heading
+              would be discounted. Visually identical at every breakpoint. */}
+          <h1 className="font-michroma text-brand-orange-500 my-4 sr-only text-center text-lg md:text-2xl xl:not-sr-only xl:my-4 xl:block">
             {contactInfo.mainTitle}
-          </h5>
+          </h1>
           <div className="bg-neutral-900 p-5 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-12px_18px_-12px_rgba(0,0,0,0.85),inset_0_12px_18px_-12px_rgba(0,0,0,0.9)] lg:p-8 xl:h-[200px]">
             <h5 className="font-michroma text-brand-orange-500 mt-1 mb-4 hidden text-center text-sm xl:block">
               {contactInfo.subTitle}
